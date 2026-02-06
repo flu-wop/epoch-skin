@@ -84,7 +84,7 @@ export const products: Product[] = [
     benefits: ["Brightens dull skin", "Deep hydration", "Promotes even tone", "Leaves skin dewy and glowing"],
     size: "50 g",
     inStock: true,
-    featured: false,
+    featured: true,
   },
 ];
 
