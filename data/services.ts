@@ -1,142 +1,131 @@
-export interface Service {
-  id: string;
-  name: string;
-  price: number;
-  duration: string;
-  description: string;
-  category: string;
-  popular?: boolean;
-}
+// types/index.ts (or lib/types.ts)
+
+// ──────────────────────────────────────────────
+// Service Types
+// ──────────────────────────────────────────────
+
+
+
+export type ServiceCategory =
+  | "body-waxing"
+  | "facial-waxing"
+  | "specialty-treatments";
+
+// ──────────────────────────────────────────────
+// Service Data
+// ──────────────────────────────────────────────
 
 export const services: Service[] = [
-  // Waxing Services
+  // Body Waxing
   {
-    id: "eyebrow-wax",
-    name: "Eyebrow Wax",
-    price: 25,
-    duration: "15 min",
-    description: "Professional eyebrow shaping and waxing for perfectly sculpted brows, performed by licensed estheticians.",
-    category: "Waxing"
-  },
-  {
-    id: "lip-wax",
-    name: "Lip Wax",
-    price: 15,
-    duration: "10 min",
-    description: "Gentle upper lip waxing for smooth, hair-free skin, performed by licensed estheticians.",
-    category: "Waxing"
-  },
-  {
-    id: "chin-wax",
-    name: "Chin Wax",
-    price: 20,
-    duration: "15 min",
-    description: "Precise chin waxing for a clean, smooth appearance, performed by licensed estheticians.",
-    category: "Waxing"
-  },
-  {
-    id: "full-face-wax",
-    name: "Full Face Wax",
-    price: 55,
-    duration: "30 min",
-    description: "Complete facial waxing service for ultimate smoothness, performed by licensed estheticians.",
-    category: "Waxing",
-    popular: true
-  },
-  {
-    id: "underarm-wax",
-    name: "Underarm Wax",
-    price: 30,
-    duration: "20 min",
-    description: "Quick and effective underarm hair removal, performed by licensed estheticians.",
-    category: "Waxing"
-  },
-  {
-    id: "half-arm-wax",
-    name: "Half Arm Wax",
-    price: 40,
-    duration: "25 min",
-    description: "Smooth, hair-free lower or upper arms, performed by licensed estheticians.",
-    category: "Waxing"
-  },
-  {
-    id: "full-arm-wax",
-    name: "Full Arm Wax",
-    price: 65,
-    duration: "40 min",
-    description: "Complete arm waxing from shoulders to fingertips, performed by licensed estheticians.",
-    category: "Waxing"
-  },
-  {
-    id: "half-leg-wax",
-    name: "Half Leg Wax",
-    price: 50,
-    duration: "30 min",
-    description: "Lower or upper leg waxing for silky smooth skin, performed by licensed estheticians.",
-    category: "Waxing"
-  },
-  {
-    id: "full-leg-wax",
-    name: "Full Leg Wax",
+    id: "full-leg",
+    name: "Full Leg Waxing",
+    slug: "full-leg-waxing",
+    category: "body-waxing",
     price: 85,
     duration: "50 min",
-    description: "Complete leg waxing from thighs to toes, performed by licensed estheticians.",
-    category: "Waxing",
-    popular: true
+    description: "Complete leg waxing from thighs to toes for silky smooth skin.",
+    benefits: ["Long-lasting smoothness", "Gentle exfoliation", "Reduced ingrown hairs"],
+    image: "/images/services/full-leg.jpg",
+    popular: true,
   },
   {
-    id: "bikini-wax",
-    name: "Bikini Wax",
-    price: 45,
-    duration: "25 min",
-    description: "Classic bikini line waxing, performed by licensed estheticians.",
-    category: "Waxing"
+    id: "half-leg",
+    name: "Half Leg Wax",
+    slug: "half-leg-wax",
+    category: "body-waxing",
+    price: 50,
+    duration: "30 min",
+    description: "Lower or upper leg waxing for smooth, flawless results.",
+    benefits: ["Quick session", "Smooth finish", "Minimal discomfort"],
+    image: "/images/services/half-leg.jpg",
   },
   {
-    id: "brazilian-wax",
+    id: "brazilian",
     name: "Brazilian Wax",
+    slug: "brazilian-wax",
+    category: "body-waxing",
     price: 70,
     duration: "35 min",
-    description: "Complete Brazilian waxing service with premium care, performed by licensed estheticians.",
-    category: "Waxing",
-    popular: true
+    description: "Complete Brazilian waxing with expert care and premium products.",
+    benefits: ["Clean, confident results", "Gentle technique", "Long-lasting"],
+    image: "/images/services/brazilian.jpg",
+    popular: true,
   },
-  // Facial Services
+  {
+    id: "bikini",
+    name: "Bikini Wax",
+    slug: "bikini-wax",
+    category: "body-waxing",
+    price: 45,
+    duration: "25 min",
+    description: "Classic bikini line waxing for a neat, smooth appearance.",
+    benefits: ["Precise shaping", "Comfortable process", "Quick recovery"],
+    image: "/images/services/bikini.jpg",
+  },
+  // Add more body waxing services as needed...
+
+  // Facial Waxing
+  {
+    id: "full-face",
+    name: "Full Face Wax",
+    slug: "full-face-wax",
+    category: "facial-waxing",
+    price: 55,
+    duration: "30 min",
+    description: "Complete facial waxing for a flawless, radiant complexion.",
+    benefits: ["Smooth skin", "Brightened appearance", "Gentle on sensitive areas"],
+    image: "/images/services/full-face.jpg",
+    popular: true,
+  },
+  {
+    id: "lip",
+    name: "Lip Wax",
+    slug: "lip-wax",
+    category: "facial-waxing",
+    price: 15,
+    duration: "10 min",
+    description: "Gentle upper lip waxing for a clean, polished look.",
+    benefits: ["Quick and precise", "Minimal irritation", "Smooth finish"],
+    image: "/images/services/lip.jpg",
+  },
+  {
+    id: "chin",
+    name: "Chin Wax",
+    slug: "chin-wax",
+    category: "facial-waxing",
+    price: 20,
+    duration: "15 min",
+    description: "Targeted chin waxing to remove unwanted hair cleanly.",
+    benefits: ["Precise results", "Comfortable technique", "Smooth skin"],
+    image: "/images/services/chin.jpg",
+  },
+  // Add more facial waxing services as needed...
+
+  // Specialty Treatments (example)
   {
     id: "organic-facial",
     name: "Organic Facial",
+    slug: "organic-facial",
+    category: "specialty-treatments",
     price: 85,
     duration: "60 min",
-    description: "Custom facial using our organic products for deep hydration and glow, performed by licensed estheticians.",
-    category: "Facial",
-    popular: true
+    description: "Custom facial using certified organic products for deep hydration and glow.",
+    benefits: ["Nourished skin", "Natural radiance", "Relaxing experience"],
+    image: "/images/services/organic-facial.jpg",
+    popular: true,
   },
-  {
-    id: "glass-skin-treatment",
-    name: "Glass Skin Treatment",
-    price: 95,
-    duration: "75 min",
-    description: "K-Beauty inspired session with organic masking and massage for plump, radiant skin.",
-    category: "Facial",
-    popular: true
-  }
 ];
 
-export const serviceCategories = [
-  "All Services",
-  "Waxing",
-  "Facial"
-];
-
-// Helper function to get featured/popular services
+// Helper: featured / popular services
 export function getFeaturedServices(): Service[] {
-  return services.filter(service => service.popular);
+  return services.filter((service) => service.popular);
 }
 
-// Helper function to get services by category
+// Helper: services by category
 export function getServicesByCategory(category: string): Service[] {
   if (category === "All Services") {
     return services;
   }
-  return services.filter(service => service.category === category);
+  return services.filter((service) => service.category === category);
 }

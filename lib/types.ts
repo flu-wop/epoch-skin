@@ -54,7 +54,7 @@ export interface Service {
   slug: string;
   category: ServiceCategory;
   price: number;
-  duration: number;              // Duration in minutes
+  duration: string;              // Duration in minutes
   description: string;
   benefits: string[];
   image: string;                 // Main service image
@@ -206,3 +206,16 @@ export type OrderStatus =
   | "shipped"
   | "delivered"
   | "cancelled";
+
+export interface Service {
+  id: string;
+  name: string;
+  slug: string;
+  category: ServiceCategory;
+  price: number;
+  duration: string;      // ← change from number to string
+  description: string;
+  benefits: string[];
+  image: string;
+  popular?: boolean;
+}

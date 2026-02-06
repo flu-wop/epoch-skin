@@ -14,7 +14,6 @@ export default function BookPage() {
     time: "",
     notes: ""
   });
-
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -111,7 +110,6 @@ export default function BookPage() {
                     placeholder="your@email.com"
                   />
                 </div>
-
                 <div>
                   <label htmlFor="phone" className="block text-sm font-semibold text-gray-900 mb-2">
                     Phone *
@@ -143,19 +141,19 @@ export default function BookPage() {
                   className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#b87968] focus:border-transparent"
                 >
                   <option value="">Choose a service...</option>
-                  
+
                   {/* Facial Services */}
                   <optgroup label="Facial Services">
-                    {services.filter(s => s.category === "Facial").map(service => (
+                    {services.filter(s => s.category === "facial-waxing").map(service => (
                       <option key={service.id} value={service.id}>
                         {service.name} - ${service.price} ({service.duration})
                       </option>
                     ))}
                   </optgroup>
 
-                  {/* Waxing Services */}
-                  <optgroup label="Waxing Services">
-                    {services.filter(s => s.category === "Waxing").map(service => (
+                  {/* Body Waxing Services */}
+                  <optgroup label="Body Waxing Services">
+                    {services.filter(s => s.category === "body-waxing").map(service => (
                       <option key={service.id} value={service.id}>
                         {service.name} - ${service.price} ({service.duration})
                       </option>
@@ -181,7 +179,6 @@ export default function BookPage() {
                     className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#b87968] focus:border-transparent"
                   />
                 </div>
-
                 <div>
                   <label htmlFor="time" className="block text-sm font-semibold text-gray-900 mb-2">
                     Preferred Time *
