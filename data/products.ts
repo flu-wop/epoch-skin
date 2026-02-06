@@ -7,7 +7,8 @@ export const products: Product[] = [
     slug: "turmeric-oat-cleanser",
     price: 32,
     compareAtPrice: 38,
-    description: "Mild foaming cleanser with organic turmeric for radiant glow, colloidal oats for ultra-smooth/calming, aloe for intense hydration/dewiness.",
+    description:
+      "Mild foaming cleanser with organic turmeric for radiant glow, colloidal oats for ultra-smooth/calming, aloe for intense hydration/dewiness.",
     shortDescription: "Gentle radiance-boosting cleanser",
     images: [
       "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=600&q=80",
@@ -27,7 +28,8 @@ export const products: Product[] = [
     slug: "snow-mushroom-serum",
     price: 48,
     compareAtPrice: 55,
-    description: "With tremella fuciformis extract, beta-glucan, Kakadu plum, licorice, turmeric, rosehip, squalane for deep hydration and brightening.",
+    description:
+      "With tremella fuciformis extract, beta-glucan, Kakadu plum, licorice, turmeric, rosehip, squalane for deep hydration and brightening.",
     shortDescription: "Plumping hydration serum",
     images: [
       "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=600&q=80",
@@ -47,19 +49,42 @@ export const products: Product[] = [
     slug: "barrier-repair-moisturizer",
     price: 45,
     compareAtPrice: 52,
-    description: "Aloe, glycerin, tremella, beta-glucan, licorice, squalane, jojoba, camellia, rosehip, shea for moisture lock and softness.",
+    description:
+      "Aloe, glycerin, tremella, beta-glucan, licorice, squalane, jojoba, camellia, rosehip, shea for moisture lock and softness.",
     shortDescription: "Moisture-locking barrier cream",
     images: [
       "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=600&q=80",
     ],
     category: "moisturizers" as ProductCategory,
     skinType: ["all", "dry", "sensitive"] as SkinType[],
-    ingredients: ["Aloe Vera", "Glycerin", "Tremella", "Beta-Glucan", "Squalane", "Jojoba", "Shea Butter"],
-    howToUse: "Apply a pea-sized amount to clean skin morning and night. Massage until absorbed.",
+    ingredients: ["Aloe Vera Juice", "Glycerin", "Tremella Extract", "Beta-Glucan", "Licorice Root", "Squalane", "Jojoba Oil", "Shea Butter"],
+    howToUse: "Apply a pea-sized amount to clean skin morning and night. Massage gently until absorbed.",
     benefits: ["Locks in moisture", "Repairs barrier", "Soothes irritation", "Softens skin"],
     size: "50 ml",
     inStock: true,
     featured: true,
+  },
+  {
+    id: "rice-peel-off-mask",
+    name: "Organic Dewy Rice Peel Off Mask",
+    slug: "rice-peel-off-mask",
+    price: 38,
+    compareAtPrice: 45,
+    description:
+      "Gentle peel-off mask with organic rice extract, hyaluronic acid, and niacinamide for brightening, hydration, and a dewy glass-skin finish.",
+    shortDescription: "Brightening & hydrating peel-off mask",
+    images: [
+      "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=600&q=80", // placeholder — replace with your real image
+    ],
+    category: "masks" as ProductCategory,
+    skinType: ["all", "dull", "uneven"] as SkinType[],
+    ingredients: ["Organic Rice Extract", "Hyaluronic Acid", "Niacinamide", "Aloe Vera"],
+    howToUse:
+      "Apply evenly to clean, dry skin. Leave on 15–20 minutes until dry, then gently peel off. Rinse residue and moisturize.",
+    benefits: ["Brightens dull skin", "Deep hydration", "Promotes even tone", "Leaves skin dewy and glowing"],
+    size: "50 g",
+    inStock: true,
+    featured: false,
   },
 ];
 
