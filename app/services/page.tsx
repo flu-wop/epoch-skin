@@ -11,13 +11,13 @@ export const metadata: Metadata = {
 };
 
 export default function ServicesPage() {
-  // Group services by category
-  const bodyWaxing = services.filter(s => s.category === "body-waxing");
-  const facialWaxing = services.filter(s => s.category === "facial-waxing");
+  // Group services by category (using the same filtering logic)
+  const bodyWaxing = services.filter((s) => s.category === "body-waxing");
+  const facialWaxing = services.filter((s) => s.category === "facial-waxing");
 
   return (
     <>
-      {/* Hero section */}
+      {/* Hero section – exact same structure & classes */}
       <section className="bg-gradient-to-br from-sage-50 via-sand-50 to-sage-50 py-16 lg:py-24">
         <Container>
           <div className="mx-auto max-w-3xl text-center">
@@ -25,11 +25,11 @@ export default function ServicesPage() {
               Our Services
             </h1>
             <p className="mt-6 text-lg text-neutral-600 leading-relaxed">
-              Experience the difference of expert waxing with our premium, gentle products. 
-              We specialize in making you feel comfortable and confident with every visit.
+              Experience expert waxing and curated organic skincare in a calm, luxurious setting.
+              We use only premium, gentle products for smooth, radiant results every time.
             </p>
-            <Button 
-              asChild 
+            <Button
+              asChild
               size="lg"
               className="mt-8 bg-clay-500 hover:bg-clay-600"
             >
@@ -39,7 +39,7 @@ export default function ServicesPage() {
         </Container>
       </section>
 
-      {/* Body Waxing section */}
+      {/* Body Waxing section – same grid & styling */}
       <section className="py-16 lg:py-24">
         <Container>
           <div className="mb-12">
@@ -47,10 +47,9 @@ export default function ServicesPage() {
               Body Waxing
             </h2>
             <p className="mt-3 text-lg text-neutral-600">
-              Professional body waxing services for smooth, long-lasting results.
+              Full-body and targeted waxing services for smooth, long-lasting results.
             </p>
           </div>
-
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {bodyWaxing.map((service) => (
               <ServiceCard key={service.id} service={service} />
@@ -59,7 +58,7 @@ export default function ServicesPage() {
         </Container>
       </section>
 
-      {/* Facial Waxing section */}
+      {/* Facial Waxing section – same background & layout */}
       <section className="bg-sage-50/30 py-16 lg:py-24">
         <Container>
           <div className="mb-12">
@@ -67,10 +66,9 @@ export default function ServicesPage() {
               Facial Waxing
             </h2>
             <p className="mt-3 text-lg text-neutral-600">
-              Gentle, precise facial waxing to enhance your natural beauty.
+              Gentle, precise facial waxing to enhance your natural glow and clarity.
             </p>
           </div>
-
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {facialWaxing.map((service) => (
               <ServiceCard key={service.id} service={service} />
@@ -79,14 +77,14 @@ export default function ServicesPage() {
         </Container>
       </section>
 
-      {/* Pre/Post care tips */}
+      {/* Pre/Post care tips – same layout, updated content for waxing */}
       <section className="py-16 lg:py-24">
         <Container>
           <div className="mx-auto max-w-4xl">
             <h2 className="text-center font-serif text-4xl font-bold text-sage-900">
-              Waxing Care Tips
+              Waxing Aftercare Tips
             </h2>
-            
+
             <div className="mt-12 grid gap-8 md:grid-cols-2">
               {/* Pre-care */}
               <div className="rounded-xl border border-sage-100 bg-white p-8">
@@ -97,25 +95,25 @@ export default function ServicesPage() {
                   <li className="flex items-start gap-3">
                     <div className="mt-1 h-2 w-2 flex-shrink-0 rounded-full bg-clay-500"></div>
                     <span className="text-neutral-700">
-                      Ensure hair is at least 1/4 inch long for best results
+                      Let hair grow to at least ¼ inch for best results
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
                     <div className="mt-1 h-2 w-2 flex-shrink-0 rounded-full bg-clay-500"></div>
                     <span className="text-neutral-700">
-                      Exfoliate gently 24 hours before your appointment
+                      Gently exfoliate 24–48 hours before (no harsh scrubs)
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
                     <div className="mt-1 h-2 w-2 flex-shrink-0 rounded-full bg-clay-500"></div>
                     <span className="text-neutral-700">
-                      Avoid caffeine and alcohol before your session
+                      Avoid caffeine, alcohol, and blood-thinning meds 24 hours prior
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
                     <div className="mt-1 h-2 w-2 flex-shrink-0 rounded-full bg-clay-500"></div>
                     <span className="text-neutral-700">
-                      Arrive with clean, dry skin (no lotions or oils)
+                      Arrive with clean, dry skin — no lotions, oils, or deodorant
                     </span>
                   </li>
                 </ul>
@@ -130,25 +128,31 @@ export default function ServicesPage() {
                   <li className="flex items-start gap-3">
                     <div className="mt-1 h-2 w-2 flex-shrink-0 rounded-full bg-clay-500"></div>
                     <span className="text-neutral-700">
-                      Avoid hot showers, saunas, and steam rooms for 24 hours
+                      Avoid hot showers, saunas, steam rooms, and sun exposure for 24–48 hours
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
                     <div className="mt-1 h-2 w-2 flex-shrink-0 rounded-full bg-clay-500"></div>
                     <span className="text-neutral-700">
-                      Skip the gym and avoid sweating for 24-48 hours
+                      Skip tight clothing and exercise/sweating for 24 hours
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
                     <div className="mt-1 h-2 w-2 flex-shrink-0 rounded-full bg-clay-500"></div>
                     <span className="text-neutral-700">
-                      Wear loose, breathable clothing after your service
+                      Wear loose, breathable clothing to prevent irritation
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
                     <div className="mt-1 h-2 w-2 flex-shrink-0 rounded-full bg-clay-500"></div>
                     <span className="text-neutral-700">
-                      Gently exfoliate 2-3 times per week to prevent ingrown hairs
+                      Moisturize daily with a gentle, fragrance-free lotion
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <div className="mt-1 h-2 w-2 flex-shrink-0 rounded-full bg-clay-500"></div>
+                    <span className="text-neutral-700">
+                      Exfoliate gently 2–3 times per week to prevent ingrown hairs
                     </span>
                   </li>
                 </ul>
@@ -158,7 +162,7 @@ export default function ServicesPage() {
         </Container>
       </section>
 
-      {/* CTA section */}
+      {/* CTA section – same gradient, same button style */}
       <section className="bg-gradient-to-br from-clay-50 to-sand-50 py-16">
         <Container>
           <div className="text-center">
@@ -168,8 +172,8 @@ export default function ServicesPage() {
             <p className="mt-4 text-lg text-neutral-600">
               Schedule your appointment today and experience the Epoch Skin difference.
             </p>
-            <Button 
-              asChild 
+            <Button
+              asChild
               size="lg"
               className="mt-8 bg-clay-500 hover:bg-clay-600"
             >
