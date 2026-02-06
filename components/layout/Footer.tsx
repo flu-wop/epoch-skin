@@ -1,138 +1,93 @@
 import Link from "next/link";
-import { Instagram, Facebook } from "lucide-react";
-import { Container } from "./Container";
-import { 
-  SITE_NAME, 
-  CONTACT_EMAIL, 
-  CONTACT_PHONE, 
-  STUDIO_ADDRESS,
-  SOCIAL_LINKS,
-  NAV_LINKS 
-} from "@/lib/constants";
+import { Container } from "@/components/layout/Container";
 
 export function Footer() {
-  const currentYear = new Date().getFullYear();
-
   return (
-    <footer className="border-t bg-sage-50">
+    <footer className="bg-sage-900 text-white py-12">
       <Container>
-        {/* Main footer content */}
-        <div className="grid gap-12 py-12 md:grid-cols-2 lg:grid-cols-4">
-          {/* Brand column */}
-          <div className="space-y-4">
-            <h3 className="font-serif text-2xl font-semibold text-sage-900">
-              {SITE_NAME}
-            </h3>
-            <p className="text-sm text-neutral-600">
-              Premium waxing studio and curated skincare products. Natural, 
-              luxurious, and effective treatments for your skin.
+        <div className="grid md:grid-cols-4 gap-8">
+          {/* Column 1 - Brand */}
+          <div>
+            <h3 className="font-serif text-xl font-bold mb-4">Epoch Skin</h3>
+            <p className="text-sage-200">
+              Premium waxing studio and curated organic skincare products. 
+              Natural, luxurious, and effective treatments for your skin.
             </p>
-            <div className="flex gap-4">
-              <a
-                href={SOCIAL_LINKS.instagram}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-full p-2 transition-colors hover:bg-sage-100"
-                aria-label="Instagram"
-              >
-                <Instagram className="h-5 w-5 text-sage-700" />
-              </a>
-              <a
-                href={SOCIAL_LINKS.facebook}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-full p-2 transition-colors hover:bg-sage-100"
-                aria-label="Facebook"
-              >
-                <Facebook className="h-5 w-5 text-sage-700" />
-              </a>
-            </div>
           </div>
 
-          {/* Quick Links */}
-          <div className="space-y-4">
-            <h4 className="font-serif text-lg font-semibold text-sage-900">
-              Quick Links
-            </h4>
-            <nav className="flex flex-col space-y-2">
-              {NAV_LINKS.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="text-sm text-neutral-600 transition-colors hover:text-sage-700"
-                >
-                  {link.name}
+          {/* Column 2 - Quick Links */}
+          <div>
+            <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
+            <ul className="space-y-2">
+              <li>
+                <Link href="/services" className="hover:text-clay-300 transition-colors">
+                  Services
                 </Link>
-              ))}
-              <Link
-                href="/book"
-                className="text-sm text-neutral-600 transition-colors hover:text-sage-700"
-              >
-                Book Appointment
-              </Link>
-            </nav>
+              </li>
+              <li>
+                <Link href="/shop" className="hover:text-clay-300 transition-colors">
+                  Shop
+                </Link>
+              </li>
+              <li>
+                <Link href="/about" className="hover:text-clay-300 transition-colors">
+                  About
+                </Link>
+              </li>
+              <li>
+                <Link href="/contact" className="hover:text-clay-300 transition-colors">
+                  Contact
+                </Link>
+              </li>
+            </ul>
           </div>
 
-          {/* Contact Info */}
-          <div className="space-y-4">
-            <h4 className="font-serif text-lg font-semibold text-sage-900">
-              Contact
-            </h4>
-            <div className="flex flex-col space-y-2 text-sm text-neutral-600">
-              <p>
-                {STUDIO_ADDRESS.street}<br />
-                {STUDIO_ADDRESS.city}, {STUDIO_ADDRESS.state} {STUDIO_ADDRESS.zip}
-              </p>
-              <a 
-                href={`tel:${CONTACT_PHONE}`}
-                className="transition-colors hover:text-sage-700"
-              >
-                {CONTACT_PHONE}
-              </a>
-              <a 
-                href={`mailto:${CONTACT_EMAIL}`}
-                className="transition-colors hover:text-sage-700"
-              >
-                {CONTACT_EMAIL}
-              </a>
-            </div>
+          {/* Column 3 - Contact (updated - no address) */}
+          <div>
+            <h4 className="text-lg font-semibold mb-4">Contact</h4>
+            <ul className="space-y-2">
+              <li>
+                <a 
+                  href="tel:5047774094" 
+                  className="hover:text-clay-300 transition-colors"
+                >
+                  (504) 777-4094
+                </a>
+              </li>
+              <li>
+                <a 
+                  href="mailto:kayla@epochskin.com" 
+                  className="hover:text-clay-300 transition-colors"
+                >
+                  kayla@epochskin.com
+                </a>
+              </li>
+            </ul>
           </div>
 
-          {/* Newsletter signup - placeholder for now */}
-          <div className="space-y-4">
-            <h4 className="font-serif text-lg font-semibold text-sage-900">
-              Newsletter
-            </h4>
-            <p className="text-sm text-neutral-600">
+          {/* Column 4 - Newsletter */}
+          <div>
+            <h4 className="text-lg font-semibold mb-4">Newsletter</h4>
+            <p className="text-sage-200 mb-4">
               Subscribe for skincare tips, exclusive offers, and updates.
             </p>
-            {/* Newsletter form will be added in later phase */}
-            <div className="text-sm text-neutral-500">
-              Coming soon
-            </div>
+            {/* Your newsletter form component goes here */}
+            {/* <Newsletter /> */}
+            {/* If you have a form, keep it in this space */}
           </div>
         </div>
 
         {/* Bottom bar */}
-        <div className="flex flex-col items-center justify-between gap-4 border-t py-6 text-sm text-neutral-600 md:flex-row">
-          <p>© {currentYear} {SITE_NAME}. All rights reserved.</p>
-          <div className="flex gap-6">
-            <Link 
-              href="/privacy" 
-              className="transition-colors hover:text-sage-700"
-            >
+        <div className="mt-8 pt-8 border-t border-sage-700 text-center text-sm text-sage-400">
+          <p>© 2026 Epoch Skin. All rights reserved.</p>
+          <div className="mt-2 space-x-4">
+            <Link href="/privacy" className="hover:text-clay-300 transition-colors">
               Privacy Policy
             </Link>
-            <Link 
-              href="/terms" 
-              className="transition-colors hover:text-sage-700"
-            >
+            <Link href="/terms" className="hover:text-clay-300 transition-colors">
               Terms of Service
             </Link>
-            <Link 
-              href="/shipping-returns" 
-              className="transition-colors hover:text-sage-700"
-            >
+            <Link href="/shipping-returns" className="hover:text-clay-300 transition-colors">
               Shipping & Returns
             </Link>
           </div>
