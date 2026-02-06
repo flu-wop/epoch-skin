@@ -1,76 +1,68 @@
-export interface Product {
-  id: number;
-  name: string;
-  price: number;
-  description: string;
-  shortDescription?: string;
-  image: string;
-  category: string;
-  featured?: boolean;
-  skinType?: string[];
-}
+import { Product, ProductCategory, SkinType } from "@/lib/types";
 
 export const products: Product[] = [
   {
-    id: 1,
-    name: "Organic Dewy Glow Oat Cleanser",
-    price: 35,
-    description: "Mild foaming facial cleanser with organic licorice root extract, colloidal oats, and aloe for gentle cleansing, deep hydration, and radiant glow.",
-    shortDescription: "Mild foaming cleanser with organic licorice root extract and colloidal oats.",
-    image: "/images/products/cleanser.jpg",
-    category: "Cleanser",
+    id: "turmeric-oat-cleanser",
+    name: "Organic Dewy Glow Turmeric Oat Cleanser",
+    slug: "turmeric-oat-cleanser",
+    price: 32,
+    compareAtPrice: 38,
+    description: "Mild foaming cleanser with organic turmeric for radiant glow, colloidal oats for ultra-smooth/calming, aloe for intense hydration/dewiness.",
+    shortDescription: "Gentle radiance-boosting cleanser",
+    images: [
+      "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=600&q=80",
+    ],
+    category: "cleansers" as ProductCategory,
+    skinType: ["all", "sensitive", "dry"] as SkinType[],
+    ingredients: ["Organic Turmeric", "Colloidal Oats", "Aloe Vera", "Glycerin"],
+    howToUse: "Massage a small amount onto damp skin in circular motions, then rinse thoroughly. Use morning and night as the first step in your routine.",
+    benefits: ["Brightens dull skin", "Calms irritation", "Deeply hydrates", "Gently exfoliates", "Supports skin barrier"],
+    size: "100 ml",
+    inStock: true,
     featured: true,
-    skinType: ["all"]
   },
   {
-    id: 2,
-    name: "Organic Dewy Rice Peel-Off Glow Mask",
-    price: 42,
-    description: "Gentle peel-off mask with organic ultra-fine rice powder, Centella Asiatica, and licorice for polishing, smoothness, and brightened appearance.",
-    shortDescription: "Peel-off mask with organic rice powder for polished, bright skin.",
-    image: "/images/products/peel-mask.jpg",
-    category: "Mask",
+    id: "snow-mushroom-serum",
+    name: "Organic Snow Mushroom Hydrating Serum",
+    slug: "snow-mushroom-serum",
+    price: 48,
+    compareAtPrice: 55,
+    description: "With tremella fuciformis extract, beta-glucan, Kakadu plum, licorice, turmeric, rosehip, squalane for deep hydration and brightening.",
+    shortDescription: "Plumping hydration serum",
+    images: [
+      "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=600&q=80",
+    ],
+    category: "serums" as ProductCategory,
+    skinType: ["all", "dry", "dehydrated"] as SkinType[],
+    ingredients: ["Tremella Mushroom", "Beta-Glucan", "Kakadu Plum", "Licorice", "Rosehip", "Squalane"],
+    howToUse: "Apply 3–5 drops after cleansing, morning and night. Pat gently into skin.",
+    benefits: ["Intense hydration", "Plumps skin", "Brightens", "Strengthens barrier"],
+    size: "30 ml",
+    inStock: true,
     featured: true,
-    skinType: ["all"]
   },
   {
-    id: 3,
-    name: "Organic Dewy Barrier Glow Cream",
-    price: 42,
-    description: "Lightweight moisturizer with tremella fuciformis, beta-glucan, and organic shea for intense hydration, barrier support, and plump dewy skin.",
-    shortDescription: "Lightweight moisturizer with tremella fuciformis and beta-glucan.",
-    image: "/images/products/cream.jpg",
-    category: "Moisturizer",
+    id: "barrier-repair-moisturizer",
+    name: "Organic Barrier Repair Moisturizer",
+    slug: "barrier-repair-moisturizer",
+    price: 45,
+    compareAtPrice: 52,
+    description: "Aloe, glycerin, tremella, beta-glucan, licorice, squalane, jojoba, camellia, rosehip, shea for moisture lock and softness.",
+    shortDescription: "Moisture-locking barrier cream",
+    images: [
+      "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=600&q=80",
+    ],
+    category: "moisturizers" as ProductCategory,
+    skinType: ["all", "dry", "sensitive"] as SkinType[],
+    ingredients: ["Aloe Vera", "Glycerin", "Tremella", "Beta-Glucan", "Squalane", "Jojoba", "Shea Butter"],
+    howToUse: "Apply a pea-sized amount to clean skin morning and night. Massage until absorbed.",
+    benefits: ["Locks in moisture", "Repairs barrier", "Soothes irritation", "Softens skin"],
+    size: "50 ml",
+    inStock: true,
     featured: true,
-    skinType: ["all"]
   },
-  {
-    id: 4,
-    name: "Organic Aloe Glow Hydrating Mask",
-    price: 40,
-    description: "Soothing hydrating mask with organic aloe, snow mushroom extract, and kakadu plum for plump moisture and radiant look.",
-    shortDescription: "Soothing mask with organic aloe and snow mushroom extract.",
-    image: "/images/products/hydrating-mask.jpg",
-    category: "Mask",
-    featured: true,
-    skinType: ["all"]
-  }
 ];
 
-// Helper function to get featured products
 export function getFeaturedProducts(): Product[] {
-  return products.filter(product => product.featured);
-}
-
-// Helper function to get products by category
-export function getProductsByCategory(category: string): Product[] {
-  if (category === "All") {
-    return products;
-  }
-  return products.filter(product => product.category === category);
-}
-
-// Helper function to get a single product by ID
-export function getProductById(id: number): Product | undefined {
-  return products.find(product => product.id === id);
+  return products.filter((product) => product.featured);
 }
