@@ -1,8 +1,8 @@
-// Import the Product type from lib/types instead of redefining it
+// Import the Product type from lib/types
 import type { Product } from "@/lib/types";
 
 // ──────────────────────────────────────────────
-// Products Data
+// Products Data - COMPLETE WITH ALL FIELDS
 // ──────────────────────────────────────────────
 
 export const products: Product[] = [
@@ -17,6 +17,8 @@ export const products: Product[] = [
     category: "cleansers" as const,
     featured: true,
     skinType: ["all"],
+    size: "120ml",
+    inStock: true,
     ingredients: [
       "Organic Licorice Root Extract",
       "Colloidal Oats",
@@ -42,6 +44,8 @@ export const products: Product[] = [
     category: "masks" as const,
     featured: true,
     skinType: ["all"],
+    size: "100ml",
+    inStock: true,
     ingredients: [
       "Organic Ultra-Fine Rice Powder",
       "Centella Asiatica Extract",
@@ -67,6 +71,8 @@ export const products: Product[] = [
     category: "moisturizers" as const,
     featured: true,
     skinType: ["all"],
+    size: "50ml",
+    inStock: true,
     ingredients: [
       "Tremella Fuciformis (Snow Mushroom)",
       "Beta-Glucan",
@@ -92,6 +98,8 @@ export const products: Product[] = [
     category: "masks" as const,
     featured: true,
     skinType: ["all"],
+    size: "100ml",
+    inStock: true,
     ingredients: [
       "Organic Aloe Vera Gel",
       "Snow Mushroom Extract",
@@ -112,12 +120,10 @@ export const products: Product[] = [
 // Helper Functions
 // ──────────────────────────────────────────────
 
-// Helper function to get featured products
 export function getFeaturedProducts(): Product[] {
   return products.filter(product => product.featured);
 }
 
-// Helper function to get products by category
 export function getProductsByCategory(category: string): Product[] {
   if (category === "All" || category === "all") {
     return products;
@@ -125,12 +131,10 @@ export function getProductsByCategory(category: string): Product[] {
   return products.filter(product => product.category.toLowerCase() === category.toLowerCase());
 }
 
-// Helper function to get a single product by ID
 export function getProductById(id: string): Product | undefined {
   return products.find(product => product.id === id);
 }
 
-// Helper function to get a single product by slug
 export function getProductBySlug(slug: string): Product | undefined {
   return products.find(product => product.slug === slug);
 }
