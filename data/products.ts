@@ -15,7 +15,7 @@ export const products: Product[] = [
     shortDescription: "Mild foaming cleanser with organic licorice root extract and colloidal oats.",
     images: ["/images/products/cleanser.jpg"],
     image: "/images/products/cleanser.jpg",
-    category: "cleanser" as const,
+    category: "cleansers" as const,
     featured: true,
     skinType: ["all"],
     ingredients: [
@@ -41,7 +41,7 @@ export const products: Product[] = [
     shortDescription: "Peel-off mask with organic rice powder for polished, bright skin.",
     images: ["/images/products/peel-mask.jpg"],
     image: "/images/products/peel-mask.jpg",
-    category: "mask" as const,
+    category: "masks" as const,
     featured: true,
     skinType: ["all"],
     ingredients: [
@@ -67,7 +67,7 @@ export const products: Product[] = [
     shortDescription: "Lightweight moisturizer with tremella fuciformis and beta-glucan.",
     images: ["/images/products/cream.jpg"],
     image: "/images/products/cream.jpg",
-    category: "moisturizer" as const,
+    category: "moisturizers" as const,
     featured: true,
     skinType: ["all"],
     ingredients: [
@@ -93,7 +93,7 @@ export const products: Product[] = [
     shortDescription: "Soothing mask with organic aloe and snow mushroom extract.",
     images: ["/images/products/hydrating-mask.jpg"],
     image: "/images/products/hydrating-mask.jpg",
-    category: "mask" as const,
+    category: "masks" as const,
     featured: true,
     skinType: ["all"],
     ingredients: [
