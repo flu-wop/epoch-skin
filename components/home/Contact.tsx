@@ -14,7 +14,7 @@ export default function Contact() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a 
               href="mailto:kayla@epochskin.com"
-              className="inline-block px-8 py-4 bg-[#b87968] text-white rounded-md hover:opacity-90 transition-all text-lg font-medium shadow-sm hover:shadow-md"
+              className="inline-block px-8 py-4 border-2 border-[#b87968] text-[#b87968] rounded-md hover:bg-[#b87968] hover:text-white transition-all text-lg font-medium shadow-sm"
             >
               Email Us
             </a>

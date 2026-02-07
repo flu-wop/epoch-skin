@@ -7,7 +7,7 @@ import type { Product } from "@/lib/types";
 
 export const products: Product[] = [
   {
-    id: 1,
+    id: "1",
     slug: "organic-dewy-glow-oat-cleanser",
     name: "Organic Dewy Glow Oat Cleanser",
     price: 35,
@@ -33,7 +33,7 @@ export const products: Product[] = [
     ]
   },
   {
-    id: 2,
+    id: "2",
     slug: "organic-dewy-rice-peel-off-glow-mask",
     name: "Organic Dewy Rice Peel-Off Glow Mask",
     price: 42,
@@ -59,7 +59,7 @@ export const products: Product[] = [
     ]
   },
   {
-    id: 3,
+    id: "3",
     slug: "organic-dewy-barrier-glow-cream",
     name: "Organic Dewy Barrier Glow Cream",
     price: 42,
@@ -85,7 +85,7 @@ export const products: Product[] = [
     ]
   },
   {
-    id: 4,
+    id: "4",
     slug: "organic-aloe-glow-hydrating-mask",
     name: "Organic Aloe Glow Hydrating Mask",
     price: 40,
@@ -130,7 +130,7 @@ export function getProductsByCategory(category: string): Product[] {
 }
 
 // Helper function to get a single product by ID
-export function getProductById(id: number): Product | undefined {
+export function getProductById(id: string): Product | undefined {
   return products.find(product => product.id === id);
 }
 
