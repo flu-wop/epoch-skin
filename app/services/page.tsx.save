@@ -1,4 +1,4 @@
-"use client";
+# (replace entire content with above, save with Ctrl+X, Y, Enter)"use client";
 
 import { useState } from "react";
 import { Container } from "@/components/layout/Container";

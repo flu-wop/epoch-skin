@@ -1,167 +1,154 @@
 "use client";
 
-import { Metadata } from "next";
-import Link from "next/link";
 import { Container } from "@/components/layout/Container";
-import { Button } from "@/components/ui/button";
-import { CartItem } from "@/components/cart/CartItem";
 import { useCart } from "@/lib/hooks/useCart";
-import { formatPrice } from "@/lib/utils";
-import { ShoppingBag, ArrowRight } from "lucide-react";
-import { FREE_SHIPPING_THRESHOLD, STANDARD_SHIPPING_COST } from "@/lib/constants";
+import Link from "next/link";
+import Image from "next/image";
 
 export default function CartPage() {
-  const { items, updateQuantity, removeItem, subtotal, tax, total, itemCount } = useCart();
+  const { items, removeItem, updateQuantity, total } = useCart();
 
-  const shipping = subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : STANDARD_SHIPPING_COST;
-  const finalTotal = total + shipping;
-
-  // Empty cart state
   if (items.length === 0) {
     return (
-      <div className="min-h-[60vh] py-16 lg:py-24">
+      <main className="min-h-screen py-20 bg-sand/10">
         <Container>
-          <div className="mx-auto max-w-md text-center">
-            <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-sage-100">
-              <ShoppingBag className="h-12 w-12 text-sage-600" />
-            </div>
-            <h1 className="mt-6 font-serif text-3xl font-bold text-sage-900">
-              Your Cart is Empty
-            </h1>
-            <p className="mt-3 text-neutral-600">
-              Looks like you haven't added any products yet. Start shopping to fill your cart!
-            </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
-              <Button asChild size="lg" className="bg-clay-500 hover:bg-clay-600">
-                <Link href="/shop">Shop Products</Link>
-              </Button>
-              <Button asChild size="lg" variant="outline">
-                <Link href="/services">View Services</Link>
-              </Button>
+          <div className="max-w-2xl mx-auto text-center">
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-12">
+              <h1 className="text-3xl font-serif font-bold text-gray-900 mb-4">
+                Your Cart is Empty
+              </h1>
+              <p className="text-lg text-gray-600 mb-8">
+                Add some of our organic products to get started.
+              </p>
+              <Link
+                href="/shop"
+                className="inline-block px-6 py-3 bg-clay-500 text-white rounded-lg font-semibold hover:bg-clay-600 transition-colors"
+              >
+                Shop Products
+              </Link>
             </div>
           </div>
         </Container>
-      </div>
+      </main>
     );
   }
 
   return (
-    <>
-      {/* Page header */}
-      <section className="border-b bg-sage-50/30 py-12">
-        <Container>
-          <h1 className="font-serif text-4xl font-bold text-sage-900">Shopping Cart</h1>
-          <p className="mt-2 text-neutral-600">
-            {itemCount} {itemCount === 1 ? "item" : "items"} in your cart
-          </p>
-        </Container>
-      </section>
+    <main className="min-h-screen py-20 bg-sand/10">
+      <Container>
+        <div className="max-w-4xl mx-auto">
+          <h1 className="text-4xl font-serif font-bold text-gray-900 mb-8">
+            Shopping Cart
+          </h1>
 
-      {/* Cart content */}
-      <section className="py-12 lg:py-16">
-        <Container>
-          <div className="grid gap-8 lg:grid-cols-3">
-            {/* Cart items */}
-            <div className="lg:col-span-2">
-              <div className="rounded-xl border border-sage-100 bg-white p-6">
-                {items.map((item) => (
-                  <CartItem
-                    key={item.productId}
-                    item={item}
-                    onUpdateQuantity={updateQuantity}
-                    onRemove={removeItem}
-                  />
-                ))}
-              </div>
+          <div className="grid lg:grid-cols-3 gap-8">
+            {/* Cart Items */}
+            <div className="lg:col-span-2 space-y-4">
+              {items.map((item) => (
+                <div
+                  key={item.id}
+                  className="bg-white rounded-lg shadow-sm border border-gray-200 p-6"
+                >
+                  <div className="flex gap-6">
+                    {/* Product Image Placeholder */}
+                    <div className="w-24 h-24 bg-sand-100 rounded-lg flex-shrink-0 flex items-center justify-center">
+                      <span className="text-sand-400 text-sm">No Image</span>
+                    </div>
 
-              {/* Continue shopping link */}
-              <Link
-                href="/shop"
-                className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-clay-600 transition-colors hover:text-clay-700"
-              >
-                ← Continue Shopping
-              </Link>
-            </div>
+                    {/* Product Details */}
+                    <div className="flex-1">
+                      <h3 className="font-serif text-lg font-semibold text-gray-900 mb-1">
+                        {item.name}
+                      </h3>
+                      <p className="text-sm text-gray-600 mb-3">{item.size}</p>
+                      <p className="text-lg font-semibold text-clay-600">
+                        ${item.price.toFixed(2)}
+                      </p>
+                    </div>
 
-            {/* Order summary */}
-            <div>
-              <div className="sticky top-24 rounded-xl border border-sage-100 bg-white p-6">
-                <h2 className="font-serif text-2xl font-bold text-sage-900">
-                  Order Summary
-                </h2>
+                    {/* Quantity Controls */}
+                    <div className="flex flex-col items-end gap-4">
+                      <button
+                        onClick={() => removeItem(item.id)}
+                        className="text-sm text-gray-500 hover:text-red-600 transition-colors"
+                      >
+                        Remove
+                      </button>
 
-                <div className="mt-6 space-y-3">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-neutral-600">Subtotal</span>
-                    <span className="font-medium text-sage-900">
-                      {formatPrice(subtotal)}
-                    </span>
-                  </div>
+                      <div className="flex items-center gap-3">
+                        <button
+                          onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                          className="w-8 h-8 rounded-md border border-gray-300 flex items-center justify-center hover:bg-gray-50 transition-colors"
+                        >
+                          −
+                        </button>
+                        <span className="w-12 text-center font-medium text-gray-900">
+                          {item.quantity}
+                        </span>
+                        <button
+                          onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                          className="w-8 h-8 rounded-md border border-gray-300 flex items-center justify-center hover:bg-gray-50 transition-colors"
+                        >
+                          +
+                        </button>
+                      </div>
 
-                  <div className="flex justify-between text-sm">
-                    <span className="text-neutral-600">Shipping</span>
-                    <span className="font-medium text-sage-900">
-                      {shipping === 0 ? "FREE" : formatPrice(shipping)}
-                    </span>
-                  </div>
-
-                  {subtotal < FREE_SHIPPING_THRESHOLD && (
-                    <p className="rounded-lg bg-clay-50 p-3 text-xs text-clay-700">
-                      Add {formatPrice(FREE_SHIPPING_THRESHOLD - subtotal)} more for free shipping!
-                    </p>
-                  )}
-
-                  <div className="flex justify-between text-sm">
-                    <span className="text-neutral-600">Tax</span>
-                    <span className="font-medium text-sage-900">
-                      {formatPrice(tax)}
-                    </span>
-                  </div>
-
-                  <div className="border-t border-sage-100 pt-3">
-                    <div className="flex justify-between">
-                      <span className="font-serif text-lg font-semibold text-sage-900">
-                        Total
-                      </span>
-                      <span className="font-serif text-2xl font-bold text-sage-900">
-                        {formatPrice(finalTotal)}
-                      </span>
+                      <p className="font-semibold text-gray-900">
+                        ${(item.price * item.quantity).toFixed(2)}
+                      </p>
                     </div>
                   </div>
                 </div>
+              ))}
+            </div>
 
-                {/* Checkout button */}
-                <Button
-                  asChild
-                  size="lg"
-                  className="mt-6 w-full bg-clay-500 hover:bg-clay-600"
-                >
-                  <Link href="/checkout">
-                    Proceed to Checkout
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Link>
-                </Button>
+            {/* Order Summary */}
+            <div className="lg:col-span-1">
+              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 sticky top-8">
+                <h2 className="text-xl font-serif font-bold text-gray-900 mb-6">
+                  Order Summary
+                </h2>
 
-                {/* Trust badges */}
-                <div className="mt-6 space-y-2 border-t border-sage-100 pt-6 text-xs text-neutral-600">
-                  <div className="flex items-center gap-2">
-                    <div className="h-1.5 w-1.5 rounded-full bg-success"></div>
-                    <span>Secure checkout</span>
+                <div className="space-y-3 mb-6">
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-600">Subtotal</span>
+                    <span className="font-medium text-gray-900">
+                      ${total.toFixed(2)}
+                    </span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <div className="h-1.5 w-1.5 rounded-full bg-success"></div>
-                    <span>Free returns within 30 days</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="h-1.5 w-1.5 rounded-full bg-success"></div>
-                    <span>Ships within 1-2 business days</span>
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-600">Shipping</span>
+                    <span className="font-medium text-gray-900">Free</span>
                   </div>
                 </div>
+
+                <div className="border-t border-gray-200 pt-4 mb-6">
+                  <div className="flex items-center justify-between">
+                    <span className="text-lg font-semibold text-gray-900">Total</span>
+                    <span className="text-2xl font-bold text-clay-600">
+                      ${total.toFixed(2)}
+                    </span>
+                  </div>
+                </div>
+
+                <Link
+                  href="/checkout"
+                  className="block w-full py-3 px-6 bg-clay-500 text-white text-center rounded-lg font-semibold hover:bg-clay-600 transition-colors mb-3"
+                >
+                  Proceed to Checkout
+                </Link>
+
+                <Link
+                  href="/shop"
+                  className="block w-full py-3 px-6 border-2 border-gray-300 text-gray-700 text-center rounded-lg font-semibold hover:bg-gray-50 transition-colors"
+                >
+                  Continue Shopping
+                </Link>
               </div>
             </div>
           </div>
-        </Container>
-      </section>
-    </>
+        </div>
+      </Container>
+    </main>
   );
 }
