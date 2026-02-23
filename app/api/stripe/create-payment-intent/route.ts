@@ -17,7 +17,7 @@ export async function POST(request: Request) {
 
     // Initialize Stripe with the secret key
     const stripe = new Stripe(stripeSecretKey, {
-      apiVersion: "2024-11-20.acacia",
+      apiVersion: "2026-01-28.clover",
     });
 
     // Calculate total amount
