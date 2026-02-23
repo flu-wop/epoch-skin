@@ -1,67 +1,67 @@
 import Link from "next/link";
+import { Container } from "@/components/layout/Container";
 import { Button } from "@/components/ui/button";
 
 export function HeroSection() {
   return (
-    <section className="relative flex min-h-[600px] items-center justify-center overflow-hidden bg-gradient-to-br from-sand-100 via-sage-50 to-sand-50 lg:min-h-[700px]">
-      {/* Background pattern overlay */}
-      <div className="absolute inset-0 opacity-5">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,_var(--tw-gradient-stops))] from-sage-300 via-transparent to-transparent"></div>
-      </div>
+    <section className="relative bg-gradient-to-br from-sage-50 via-sand-50 to-sage-50 py-16 sm:py-20 md:py-24 lg:py-32">
+      <Container>
+        <div className="mx-auto max-w-4xl text-center">
+          {/* Heading - Better mobile sizing */}
+          <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-sage-900 leading-tight">
+            Premium Waxing Studio
+            <br />
+            <span className="text-clay-600">& Organic Skincare</span>
+          </h1>
 
-      <div className="container relative z-10 px-4 py-20 text-center sm:px-6 lg:px-8">
-        {/* Main heading */}
-        <h1 className="font-serif text-5xl font-bold leading-tight text-sage-900 sm:text-6xl lg:text-7xl">
-          Organic Beauty,
-          <br />
-          <span className="text-clay-600">Timeless Results</span>
-        </h1>
+          {/* Subheading - Better mobile spacing */}
+          <p className="mt-6 sm:mt-8 text-base sm:text-lg md:text-xl text-neutral-600 leading-relaxed px-4 sm:px-0">
+            Experience expert waxing services and curated organic skincare in New Orleans. 
+            Natural, luxurious, and effective treatments for your skin.
+          </p>
 
-        {/* Subheading */}
-        <p className="mx-auto mt-6 max-w-2xl text-lg text-neutral-600 sm:text-xl">
-          Experience premium waxing services and discover our curated collection 
-          of Organic skincare products. Your journey to radiant skin begins here.
-        </p>
+          {/* CTA Buttons - Better mobile layout */}
+          <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row gap-4 justify-center px-4 sm:px-0">
+            <Button
+              asChild
+              size="lg"
+              className="bg-clay-500 hover:bg-clay-600 w-full sm:w-auto text-base"
+            >
+              <Link href="/book">Book Your Appointment</Link>
+            </Button>
+            <Button
+              asChild
+              variant="outline"
+              size="lg"
+              className="w-full sm:w-auto text-base"
+            >
+              <Link href="/services">View Services</Link>
+            </Button>
+          </div>
 
-        {/* CTA buttons */}
-        <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-          <Button 
-            asChild 
-            size="lg"
-            className="w-full bg-clay-500 px-8 text-base hover:bg-clay-600 sm:w-auto"
-          >
-            <Link href="/book">Book Appointment</Link>
-          </Button>
-          <Button 
-            asChild 
-            size="lg"
-            variant="outline"
-            className="w-full border-sage-300 px-8 text-base text-sage-700 hover:bg-sage-50 sm:w-auto"
-          >
-            <Link href="/shop">Shop Products</Link>
-          </Button>
+          {/* Trust indicators - Better mobile spacing */}
+          <div className="mt-12 sm:mt-16 flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-12 text-sm text-neutral-600 px-4 sm:px-0">
+            <div className="flex items-center gap-2">
+              <svg className="h-5 w-5 text-sage-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+              </svg>
+              <span>Licensed Estheticians</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <svg className="h-5 w-5 text-sage-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+              </svg>
+              <span>Organic Products</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <svg className="h-5 w-5 text-sage-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+              </svg>
+              <span>Premium Experience</span>
+            </div>
+          </div>
         </div>
-
-        {/* Features/badges */}
-        <div className="mt-16 flex flex-wrap items-center justify-center gap-8 text-sm text-neutral-600">
-          <div className="flex items-center gap-2">
-            <div className="h-1.5 w-1.5 rounded-full bg-sage-500"></div>
-            <span>Organic Ingredients</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="h-1.5 w-1.5 rounded-full bg-sage-500"></div>
-            <span>Cruelty-Free</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="h-1.5 w-1.5 rounded-full bg-sage-500"></div>
-            <span>Expert Estheticians</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Decorative elements */}
-      <div className="absolute bottom-0 left-0 h-32 w-32 rounded-full bg-sage-200 opacity-20 blur-3xl"></div>
-      <div className="absolute right-0 top-0 h-40 w-40 rounded-full bg-clay-200 opacity-20 blur-3xl"></div>
+      </Container>
     </section>
   );
 }

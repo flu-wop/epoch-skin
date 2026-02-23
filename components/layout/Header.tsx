@@ -3,106 +3,107 @@
 import Link from "next/link";
 import { useState } from "react";
 import { ShoppingCart, Menu, X } from "lucide-react";
-import { Container } from "./Container";
+import { Container } from "@/components/layout/Container";
 import { Button } from "@/components/ui/button";
-import { NAV_LINKS } from "@/lib/constants";
-import { cn } from "@/lib/utils";
 import { useCart } from "@/lib/hooks/useCart";
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { itemCount } = useCart();
 
+  const navLinks = [
+    { href: "/services", label: "Services" },
+    { href: "/shop", label: "Shop" },
+    { href: "/about", label: "About" },
+    { href: "/contact", label: "Contact" },
+  ];
+
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
       <Container>
-        <div className="flex h-16 items-center justify-between">
+        <div className="flex h-16 md:h-20 items-center justify-between">
           {/* Logo */}
-          <Link 
-            href="/" 
-            className="flex items-center space-x-2 font-serif text-2xl font-semibold tracking-tight text-sage-900 transition-colors hover:text-sage-700"
-          >
+          <Link href="/" className="font-serif text-2xl md:text-3xl font-bold text-sage-900 hover:text-sage-800 transition-colors">
             Epoch Skin
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex md:items-center md:gap-8">
-            {NAV_LINKS.map((link) => (
+          <nav className="hidden md:flex items-center gap-8">
+            {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-sm font-medium text-neutral-700 transition-colors hover:text-sage-600"
+                className="text-base font-medium text-neutral-700 hover:text-clay-600 transition-colors"
               >
-                {link.name}
+                {link.label}
               </Link>
             ))}
           </nav>
 
           {/* Right side actions */}
-          <div className="flex items-center gap-4">
-            {/* Book Now button - hidden on mobile to save space */}
-            <Button 
-              asChild 
-              className="hidden bg-clay-500 hover:bg-clay-600 sm:inline-flex"
+          <div className="flex items-center gap-3 md:gap-4">
+            {/* Book Now Button - Hidden on smallest screens */}
+            <Button
+              asChild
+              className="hidden sm:inline-flex bg-clay-500 hover:bg-clay-600 text-sm md:text-base"
+              size="default"
             >
               <Link href="/book">Book Now</Link>
             </Button>
 
-            {/* Cart icon */}
+            {/* Cart Icon */}
             <Link
               href="/cart"
-              className="relative rounded-full p-2 transition-colors hover:bg-sage-50"
+              className="relative p-2 hover:bg-sage-50 rounded-lg transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
               aria-label="Shopping cart"
             >
-              <ShoppingCart className="h-5 w-5 text-neutral-700" />
-              {/* Cart count badge */}
+              <ShoppingCart className="h-6 w-6 text-sage-900" />
               {itemCount > 0 && (
-                <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-clay-500 text-xs font-medium text-white">
+                <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-clay-500 text-white text-xs font-semibold flex items-center justify-center">
                   {itemCount}
                 </span>
               )}
             </Link>
 
-            {/* Mobile menu button */}
+            {/* Mobile Menu Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="rounded-md p-2 text-neutral-700 transition-colors hover:bg-sage-50 md:hidden"
+              className="md:hidden p-2 hover:bg-sage-50 rounded-lg transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
               aria-label="Toggle menu"
             >
               {mobileMenuOpen ? (
-                <X className="h-6 w-6" />
+                <X className="h-6 w-6 text-sage-900" />
               ) : (
-                <Menu className="h-6 w-6" />
+                <Menu className="h-6 w-6 text-sage-900" />
               )}
             </button>
           </div>
         </div>
 
-        {/* Mobile Navigation */}
-        <div
-          className={cn(
-            "md:hidden",
-            mobileMenuOpen ? "block" : "hidden"
-          )}
-        >
-          <nav className="flex flex-col space-y-4 pb-4 pt-4">
-            {NAV_LINKS.map((link) => (
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <div className="md:hidden border-t py-4 animate-in slide-in-from-top">
+            <nav className="flex flex-col space-y-1">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="py-3 px-4 text-base font-medium text-neutral-700 hover:bg-sage-50 hover:text-clay-600 rounded-lg transition-colors min-h-[44px] flex items-center"
+                >
+                  {link.label}
+                </Link>
+              ))}
               <Link
-                key={link.href}
-                href={link.href}
+                href="/book"
                 onClick={() => setMobileMenuOpen(false)}
-                className="text-base font-medium text-neutral-700 transition-colors hover:text-sage-600"
+                className="mt-2 py-3 px-4 bg-clay-500 text-white text-center font-semibold rounded-lg hover:bg-clay-600 transition-colors min-h-[44px] flex items-center justify-center"
               >
-                {link.name}
-              </Link>
-            ))}
-            <Button asChild className="w-full bg-clay-500 hover:bg-clay-600">
-              <Link href="/book" onClick={() => setMobileMenuOpen(false)}>
                 Book Now
               </Link>
-            </Button>
-          </nav>
-        </div>
+            </nav>
+          </div>
+        )}
       </Container>
     </header>
   );

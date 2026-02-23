@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Container } from "@/components/layout/Container";
+import { NewsletterSignup } from "@/components/newsletter/NewsletterSignup";
 
 export function Footer() {
   return (
@@ -35,6 +36,11 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/blog" className="hover:text-clay-300 transition-colors">
+                  Blog
+                </Link>
+              </li>
+              <li>
                 <Link href="/contact" className="hover:text-clay-300 transition-colors">
                   Contact
                 </Link>
@@ -42,7 +48,7 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Column 3 - Contact (updated - no address) */}
+          {/* Column 3 - Contact */}
           <div>
             <h4 className="text-lg font-semibold mb-4">Contact</h4>
             <ul className="space-y-2">
@@ -67,13 +73,7 @@ export function Footer() {
 
           {/* Column 4 - Newsletter */}
           <div>
-            <h4 className="text-lg font-semibold mb-4">Newsletter</h4>
-            <p className="text-sage-200 mb-4">
-              Subscribe for skincare tips, exclusive offers, and updates.
-            </p>
-            {/* Your newsletter form component goes here */}
-            {/* <Newsletter /> */}
-            {/* If you have a form, keep it in this space */}
+            <NewsletterSignup />
           </div>
         </div>
 
@@ -81,10 +81,10 @@ export function Footer() {
         <div className="mt-8 pt-8 border-t border-sage-700 text-center text-sm text-sage-400">
           <p>© 2026 Epoch Skin. All rights reserved.</p>
           <div className="mt-2 space-x-4">
-            <Link href="/privacy" className="hover:text-clay-300 transition-colors">
+            <Link href="/privacy-policy" className="hover:text-clay-300 transition-colors">
               Privacy Policy
             </Link>
-            <Link href="/terms" className="hover:text-clay-300 transition-colors">
+            <Link href="/terms-of-service" className="hover:text-clay-300 transition-colors">
               Terms of Service
             </Link>
             <Link href="/shipping-returns" className="hover:text-clay-300 transition-colors">

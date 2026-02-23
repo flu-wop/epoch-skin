@@ -122,6 +122,7 @@ export function DateTimeSelector({
               disabled={disabledDays}
               fromDate={new Date()}
               toDate={addDays(new Date(), 60)} // Can book up to 60 days ahead
+              required={true}
             />
           </div>
         </div>

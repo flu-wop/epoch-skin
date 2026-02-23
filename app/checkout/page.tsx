@@ -5,31 +5,28 @@ import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import { Container } from "@/components/layout/Container";
 import { StripeCheckoutForm } from "@/components/checkout/StripeCheckoutForm";
+import { useCart } from "@/lib/hooks/useCart";
 import Link from "next/link";
 
 // Initialize Stripe
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || "");
 
 export default function CheckoutPage() {
+  const { items, total, clearCart } = useCart();
   const [clientSecret, setClientSecret] = useState("");
-  const [cartItems, setCartItems] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showSuccess, setShowSuccess] = useState(false);
 
   useEffect(() => {
-    // Get cart from localStorage
-    const cart = localStorage.getItem("cart");
-    if (cart) {
-      const items = JSON.parse(cart);
-      setCartItems(items);
-      createPaymentIntent(items);
+    if (items.length > 0) {
+      createPaymentIntent();
     } else {
       setIsLoading(false);
     }
-  }, []);
+  }, [items]);
 
-  const createPaymentIntent = async (items: any[]) => {
+  const createPaymentIntent = async () => {
     try {
       const response = await fetch("/api/stripe/create-payment-intent", {
         method: "POST",
@@ -43,9 +40,13 @@ export default function CheckoutPage() {
             price: item.price,
             quantity: item.quantity,
           })),
-          customerEmail: "", // Can add email field if needed
+          customerEmail: "",
         }),
       });
+
+      if (!response.ok) {
+        throw new Error("Failed to create payment intent");
+      }
 
       const data = await response.json();
 
@@ -54,20 +55,16 @@ export default function CheckoutPage() {
       } else {
         setError("Failed to initialize payment");
       }
-    } catch (err) {
-      setError("Failed to initialize payment");
+    } catch (err: any) {
+      console.error("Payment intent error:", err);
+      setError(err.message || "Failed to initialize payment");
     } finally {
       setIsLoading(false);
     }
   };
 
-  const calculateTotal = () => {
-    return cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
-  };
-
   const handlePaymentSuccess = () => {
-    // Clear cart
-    localStorage.removeItem("cart");
+    clearCart();
     setShowSuccess(true);
   };
 
@@ -126,7 +123,7 @@ export default function CheckoutPage() {
   }
 
   // Empty Cart State
-  if (!isLoading && cartItems.length === 0) {
+  if (!isLoading && items.length === 0) {
     return (
       <main className="min-h-screen py-20 bg-sand/10">
         <Container>
@@ -167,6 +164,9 @@ export default function CheckoutPage() {
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-12">
               <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
                 <p className="text-red-600">{error}</p>
+                <p className="text-sm text-gray-600 mt-2">
+                  Note: Stripe is not fully configured yet. Add your real Stripe API keys to .env.local to enable payments.
+                </p>
               </div>
               <Link
                 href="/cart"
@@ -185,7 +185,7 @@ export default function CheckoutPage() {
                   </h2>
 
                   <div className="space-y-4 mb-6">
-                    {cartItems.map((item) => (
+                    {items.map((item) => (
                       <div key={item.id} className="flex items-center gap-4">
                         <div className="flex-1">
                           <p className="font-medium text-gray-900">{item.name}</p>
@@ -202,7 +202,7 @@ export default function CheckoutPage() {
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-gray-600">Subtotal</span>
                       <span className="font-medium text-gray-900">
-                        ${calculateTotal().toFixed(2)}
+                        ${total.toFixed(2)}
                       </span>
                     </div>
                     <div className="flex items-center justify-between mb-2">
@@ -213,7 +213,7 @@ export default function CheckoutPage() {
                       <div className="flex items-center justify-between">
                         <span className="text-lg font-semibold text-gray-900">Total</span>
                         <span className="text-2xl font-bold text-clay-600">
-                          ${calculateTotal().toFixed(2)}
+                          ${total.toFixed(2)}
                         </span>
                       </div>
                     </div>
@@ -223,7 +223,7 @@ export default function CheckoutPage() {
 
               {/* Payment Form */}
               <div>
-                {clientSecret && (
+                {clientSecret ? (
                   <Elements
                     stripe={stripePromise}
                     options={{
@@ -240,10 +240,14 @@ export default function CheckoutPage() {
                     }}
                   >
                     <StripeCheckoutForm
-                      amount={calculateTotal()}
+                      amount={total}
                       onSuccess={handlePaymentSuccess}
                     />
                   </Elements>
+                ) : (
+                  <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <p className="text-gray-600">Payment form will appear here when Stripe is configured.</p>
+                  </div>
                 )}
               </div>
             </div>

@@ -1,14 +1,14 @@
 "use client";
 
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Container } from "@/components/layout/Container";
-import { getFeaturedProducts } from "@/data/products";
-import { formatPrice } from "@/lib/utils";
-import { ShoppingCart } from "lucide-react";
-import { useCart } from "@/lib/hooks/useCart";
 import { useState } from "react";
+import Link from "next/link";
+import { ShoppingCart } from "lucide-react";
+import { getFeaturedProducts } from "@/data/products";
+import { useCart } from "@/lib/hooks/useCart";
+import { Container } from "@/components/layout/Container";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { formatPrice } from "@/lib/utils";
 
 export function FeaturedProducts() {
   const products = getFeaturedProducts();
@@ -17,11 +17,10 @@ export function FeaturedProducts() {
 
   const handleAddToCart = (product: any) => {
     addItem({
-      productId: product.id,
+      id: product.id,
       name: product.name,
       price: product.price,
       image: product.images[0],
-      slug: product.slug,
       size: product.size,
     });
 
@@ -56,18 +55,12 @@ export function FeaturedProducts() {
                 <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-sand-100 to-neutral-100">
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-center">
-                      <div className="mx-auto h-24 w-24 rounded-full bg-sage-200/30 backdrop-blur-sm"></div>
+                      <div className="mx-auto h-16 w-16 rounded-full bg-sage-200/50 flex items-center justify-center">
+                        <span className="text-sage-600 text-sm font-medium">Image</span>
+                      </div>
                     </div>
                   </div>
-                  {/* Overlay on hover */}
                   <div className="absolute inset-0 bg-sage-900/0 transition-all group-hover:bg-sage-900/5"></div>
-                  
-                  {/* Sale badge if compareAtPrice exists */}
-                  {product.compareAtPrice && (
-                    <div className="absolute right-3 top-3 rounded-full bg-clay-500 px-3 py-1 text-xs font-semibold text-white">
-                      Sale
-                    </div>
-                  )}
                 </div>
               </Link>
 
@@ -87,11 +80,6 @@ export function FeaturedProducts() {
                   <span className="font-serif text-xl font-semibold text-sage-900">
                     {formatPrice(product.price)}
                   </span>
-                  {product.compareAtPrice && (
-                    <span className="text-sm text-neutral-400 line-through">
-                      {formatPrice(product.compareAtPrice)}
-                    </span>
-                  )}
                 </div>
 
                 {/* Add to cart button */}

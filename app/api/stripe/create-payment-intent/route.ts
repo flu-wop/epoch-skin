@@ -2,43 +2,33 @@ import { NextResponse } from "next/server";
 import Stripe from "stripe";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "", {
-  apiVersion: "2024-11-20.acacia",
+  apiVersion: "2026-01-28.clover", // ← this fixes the type error
 });
 
 export async function POST(request: Request) {
   try {
-    const { items, customerEmail } = await request.json();
+    const body = await request.json();
+    const { amount, currency = "usd" } = body;
 
-    // Calculate total amount
-    const amount = items.reduce((total: number, item: any) => {
-      return total + (item.price * item.quantity * 100); // Convert to cents
-    }, 0);
+    if (!amount || amount <= 0) {
+      return NextResponse.json({ error: "Invalid amount" }, { status: 400 });
+    }
 
-    // Create PaymentIntent
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: Math.round(amount),
-      currency: "usd",
+      amount: Math.round(amount * 100), // Stripe expects cents
+      currency,
       automatic_payment_methods: {
         enabled: true,
-      },
-      metadata: {
-        customerEmail,
-        orderItems: JSON.stringify(items.map((item: any) => ({
-          name: item.name,
-          quantity: item.quantity,
-          price: item.price,
-        }))),
       },
     });
 
     return NextResponse.json({
       clientSecret: paymentIntent.client_secret,
-      paymentIntentId: paymentIntent.id,
     });
   } catch (error: any) {
-    console.error("Stripe PaymentIntent error:", error);
+    console.error("Stripe error:", error);
     return NextResponse.json(
-      { error: error.message },
+      { error: error.message || "Internal server error" },
       { status: 500 }
     );
   }
