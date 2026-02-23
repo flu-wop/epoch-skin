@@ -1,8 +1,6 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 export async function POST(request: Request) {
   try {
     const bookingData = await request.json();
@@ -31,12 +29,18 @@ export async function POST(request: Request) {
       .map((s: any) => `- ${s.name} (${s.duration}) - $${s.price}`)
       .join("\n");
 
-    // Email to business owner
-    const businessEmail = {
-      from: "Epoch Skin Bookings <bookings@epochskin.com>",
-      to: process.env.BUSINESS_EMAIL || "kayla@epochskin.com",
-      subject: `New Booking Request - ${customer.name}`,
-      text: `
+    // Only send emails if Resend is configured
+    const resendApiKey = process.env.RESEND_API_KEY;
+    
+    if (resendApiKey && resendApiKey !== "re_placeholder") {
+      const resend = new Resend(resendApiKey);
+
+      // Email to business owner
+      const businessEmail = {
+        from: "Epoch Skin Bookings <bookings@epochskin.com>",
+        to: process.env.BUSINESS_EMAIL || "kayla@epochskin.com",
+        subject: `New Booking Request - ${customer.name}`,
+        text: `
 NEW BOOKING REQUEST
 
 Customer Details:
@@ -59,16 +63,16 @@ ${customer.notes ? `Additional Notes:\n${customer.notes}` : ""}
 
 ---
 Please confirm this appointment with the customer within 24 hours.
-      `,
-    };
+        `,
+      };
 
-    // Email to customer
-    const customerEmail = {
-      from: "Epoch Skin <bookings@epochskin.com>",
-      to: customer.email,
-      replyTo: process.env.REPLY_TO_EMAIL || "kayla@epochskin.com",
-      subject: "Booking Request Received - Epoch Skin",
-      text: `
+      // Email to customer
+      const customerEmail = {
+        from: "Epoch Skin <bookings@epochskin.com>",
+        to: customer.email,
+        replyTo: process.env.REPLY_TO_EMAIL || "kayla@epochskin.com",
+        subject: "Booking Request Received - Epoch Skin",
+        text: `
 Hi ${customer.name},
 
 Thank you for choosing Epoch Skin! We've received your booking request.
@@ -99,19 +103,21 @@ The Epoch Skin Team
 Epoch Skin
 Premium Waxing Studio & Organic Skincare
 New Orleans, LA
-      `,
-    };
+        `,
+      };
 
-    // Send emails
-    try {
-      await Promise.all([
-        resend.emails.send(businessEmail),
-        resend.emails.send(customerEmail),
-      ]);
-    } catch (emailError) {
-      console.error("Email sending error:", emailError);
-      // Don't fail the booking if email fails
-      // You could log this to a monitoring service
+      // Send emails
+      try {
+        await Promise.all([
+          resend.emails.send(businessEmail),
+          resend.emails.send(customerEmail),
+        ]);
+      } catch (emailError) {
+        console.error("Email sending error:", emailError);
+        // Don't fail the booking if email fails
+      }
+    } else {
+      console.log("Resend not configured - booking saved but no emails sent");
     }
 
     return NextResponse.json(
