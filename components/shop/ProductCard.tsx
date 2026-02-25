@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { ShoppingCart } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -34,16 +35,13 @@ export function ProductCard({ product }: ProductCardProps) {
   return (
     <Card className="group overflow-hidden transition-all hover:shadow-lg">
       <Link href={`/shop/${product.slug}`}>
-        {/* Product image placeholder */}
         <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-sand-100 to-neutral-100">
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="text-center">
-              <div className="mx-auto h-16 w-16 rounded-full bg-sage-200/50 flex items-center justify-center">
-                <span className="text-sage-600 text-sm font-medium">Image</span>
-              </div>
-            </div>
-          </div>
-          <div className="absolute inset-0 bg-sage-900/0 transition-all group-hover:bg-sage-900/5"></div>
+          <Image
+            src={product.images[0]}
+            alt={product.name}
+            fill
+            className="object-cover transition-transform group-hover:scale-105"
+          />
         </div>
       </Link>
 
@@ -58,7 +56,6 @@ export function ProductCard({ product }: ProductCardProps) {
           {product.shortDescription}
         </p>
 
-        {/* Price */}
         <div className="mt-3 flex items-baseline gap-2">
           <span className="font-serif text-xl sm:text-2xl font-semibold text-sage-900">
             {formatPrice(product.price)}
@@ -66,7 +63,6 @@ export function ProductCard({ product }: ProductCardProps) {
           <span className="text-sm text-neutral-500">{product.size}</span>
         </div>
 
-        {/* Add to cart button - Larger on mobile */}
         <Button 
           onClick={handleAddToCart}
           className="mt-4 w-full bg-clay-500 hover:bg-clay-600 min-h-[44px] text-base"

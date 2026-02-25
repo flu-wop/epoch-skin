@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { CartItem as CartItemType } from "@/lib/types";
 import { formatPrice } from "@/lib/utils";
 import { Minus, Plus, X } from "lucide-react";
@@ -18,10 +19,13 @@ export function CartItem({ item, onUpdateQuantity, onRemove }: CartItemProps) {
         href={`/shop/${item.slug}`}
         className="flex-shrink-0"
       >
-        <div className="h-24 w-24 overflow-hidden rounded-lg bg-gradient-to-br from-sand-100 to-neutral-100">
-          <div className="flex h-full items-center justify-center">
-            <div className="h-12 w-12 rounded-full bg-sage-200/30"></div>
-          </div>
+        <div className="h-24 w-24 overflow-hidden rounded-lg bg-gradient-to-br from-sand-100 to-neutral-100 relative">
+          <Image
+            src={item.image}
+            alt={item.name}
+            fill
+            className="object-cover"
+          />
         </div>
       </Link>
 

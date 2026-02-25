@@ -18,7 +18,7 @@ export function ServiceSelector({
 }: ServiceSelectorProps) {
   const [activeGender, setActiveGender] = useState<"women" | "men">("women");
 
-  // Categorize services
+  // Categorize services - use exact category names from services.ts
   const bodyWaxingServices = services.filter(
     (s) => s.category === "Body Waxing" && (s.gender === activeGender || s.gender === "all")
   );
@@ -53,19 +53,19 @@ export function ServiceSelector({
           key={service.id}
           className="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-sage-50 cursor-pointer transition-colors"
         >
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 flex-1">
             <input
               type="checkbox"
               checked={selectedServices.includes(service.id)}
               onChange={() => toggleService(service.id)}
               className="w-5 h-5 text-clay-500 border-gray-300 rounded focus:ring-clay-500"
             />
-            <div>
+            <div className="flex-1">
               <p className="font-medium text-gray-900">{service.name}</p>
               <p className="text-sm text-gray-600">{service.duration}</p>
             </div>
           </div>
-          <p className="font-semibold text-gray-900">${service.price}</p>
+          <p className="font-semibold text-gray-900 ml-4">${service.price}</p>
         </label>
       ))}
     </div>
@@ -105,54 +105,60 @@ export function ServiceSelector({
 
         <div className="mt-6 space-y-4">
           {/* Body Waxing - Collapsible */}
-          <details className="group">
-            <summary className="flex items-center justify-between p-4 bg-sand-50 rounded-lg cursor-pointer hover:bg-sand-100 transition-colors">
-              <div>
-                <h3 className="font-semibold text-gray-900">Body Waxing</h3>
-                <p className="text-sm text-gray-600">{bodyWaxingServices.length} services</p>
+          {bodyWaxingServices.length > 0 && (
+            <details className="group">
+              <summary className="flex items-center justify-between p-4 bg-sand-50 rounded-lg cursor-pointer hover:bg-sand-100 transition-colors">
+                <div>
+                  <h3 className="font-semibold text-gray-900">Body Waxing</h3>
+                  <p className="text-sm text-gray-600">{bodyWaxingServices.length} services</p>
+                </div>
+                <svg
+                  className="w-5 h-5 text-gray-600 group-open:rotate-180 transition-transform"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </summary>
+              <div className="mt-3 pl-4">
+                <ServiceList serviceList={bodyWaxingServices} />
               </div>
-              <svg
-                className="w-5 h-5 text-gray-600 group-open:rotate-180 transition-transform"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </summary>
-            <div className="mt-3 pl-4">
-              <ServiceList serviceList={bodyWaxingServices} />
-            </div>
-          </details>
+            </details>
+          )}
 
           {/* Facial Waxing - Collapsible */}
-          <details className="group">
-            <summary className="flex items-center justify-between p-4 bg-sand-50 rounded-lg cursor-pointer hover:bg-sand-100 transition-colors">
-              <div>
-                <h3 className="font-semibold text-gray-900">Facial Waxing</h3>
-                <p className="text-sm text-gray-600">{facialWaxingServices.length} services</p>
+          {facialWaxingServices.length > 0 && (
+            <details className="group">
+              <summary className="flex items-center justify-between p-4 bg-sand-50 rounded-lg cursor-pointer hover:bg-sand-100 transition-colors">
+                <div>
+                  <h3 className="font-semibold text-gray-900">Facial Waxing</h3>
+                  <p className="text-sm text-gray-600">{facialWaxingServices.length} services</p>
+                </div>
+                <svg
+                  className="w-5 h-5 text-gray-600 group-open:rotate-180 transition-transform"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </summary>
+              <div className="mt-3 pl-4">
+                <ServiceList serviceList={facialWaxingServices} />
               </div>
-              <svg
-                className="w-5 h-5 text-gray-600 group-open:rotate-180 transition-transform"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </summary>
-            <div className="mt-3 pl-4">
-              <ServiceList serviceList={facialWaxingServices} />
-            </div>
-          </details>
+            </details>
+          )}
         </div>
       </div>
 
       {/* Organic Facials - No Gender Tabs */}
-      <div>
-        <h3 className="text-xl font-serif font-bold text-gray-900 mb-4">Organic Facials</h3>
-        <ServiceList serviceList={organicFacials} />
-      </div>
+      {organicFacials.length > 0 && (
+        <div>
+          <h3 className="text-xl font-serif font-bold text-gray-900 mb-4">Organic Facials</h3>
+          <ServiceList serviceList={organicFacials} />
+        </div>
+      )}
 
       {/* Selection Summary */}
       {selectedServices.length > 0 && (
