@@ -1,16 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { GenderSelector } from "./GenderSelector";
 import { ServiceSelector } from "./ServiceSelector";
 import { DateTimeSelector } from "./DateTimeSelector";
 import { ContactForm } from "./ContactForm";
 import { BookingReview } from "./BookingReview";
 import { BookingSuccess } from "./BookingSuccess";
-import { services, getServicesByGender, type ServiceGender } from "@/data/services";
+import { services } from "@/data/services";
 
 export interface BookingData {
-  gender: ServiceGender | null;
   selectedServices: string[];
   date: Date | null;
   time: string;
@@ -20,12 +18,11 @@ export interface BookingData {
   notes: string;
 }
 
-type BookingStep = "gender" | "services" | "datetime" | "contact" | "review" | "success";
+type BookingStep = "services" | "datetime" | "contact" | "review" | "success";
 
 export function BookingForm() {
-  const [currentStep, setCurrentStep] = useState<BookingStep>("gender");
+  const [currentStep, setCurrentStep] = useState<BookingStep>("services");
   const [bookingData, setBookingData] = useState<BookingData>({
-    gender: null,
     selectedServices: [],
     date: null,
     time: "",
@@ -43,15 +40,10 @@ export function BookingForm() {
     setCurrentStep(step);
   };
 
-  // Filter services based on selected gender
-  const filteredServices = bookingData.gender 
-    ? getServicesByGender(bookingData.gender)
-    : services;
-
   return (
     <div className="max-w-3xl mx-auto">
-      {/* Progress Indicator - Only show for main booking steps */}
-      {!["gender", "success"].includes(currentStep) && (
+      {/* Progress Indicator */}
+      {currentStep !== "success" && (
         <div className="mb-8">
           <div className="flex items-center justify-between">
             {["Services", "Date & Time", "Contact", "Review"].map((label, index) => {
@@ -103,19 +95,9 @@ export function BookingForm() {
 
       {/* Step Content */}
       <div className={`bg-white rounded-lg shadow-sm border border-gray-200 ${currentStep === "success" ? "p-0" : "p-6 sm:p-8"}`}>
-        {currentStep === "gender" && (
-          <GenderSelector
-            selectedGender={bookingData.gender}
-            onGenderSelect={(gender) => {
-              updateBookingData({ gender, selectedServices: [] }); // Reset services when gender changes
-            }}
-            onNext={() => goToStep("services")}
-          />
-        )}
-
         {currentStep === "services" && (
           <ServiceSelector
-            services={filteredServices}
+            services={services}
             selectedServices={bookingData.selectedServices}
             onSelectionChange={(serviceIds) =>
               updateBookingData({ selectedServices: serviceIds })
@@ -163,18 +145,6 @@ export function BookingForm() {
           <BookingSuccess bookingData={bookingData} />
         )}
       </div>
-
-      {/* Back to Gender Selection Link - Show on Services step */}
-      {currentStep === "services" && (
-        <div className="mt-4 text-center">
-          <button
-            onClick={() => goToStep("gender")}
-            className="text-sm text-gray-600 hover:text-clay-600 underline"
-          >
-            ← Change to {bookingData.gender === "men" ? "Women's" : "Men's"} Services
-          </button>
-        </div>
-      )}
     </div>
   );
 }

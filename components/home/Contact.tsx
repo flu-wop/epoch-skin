@@ -13,7 +13,7 @@ export default function Contact() {
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a 
-              href="mailto:kayla@epochskin.com"
+              href="mailto:kayla@epoch-skin.com"
               className="inline-block px-8 py-4 border-2 border-[#b87968] text-[#b87968] rounded-md hover:bg-[#b87968] hover:text-white transition-all text-lg font-medium shadow-sm"
             >
               Email Us
@@ -25,15 +25,6 @@ export default function Contact() {
             >
               Call (504) 777-4094
             </a>
-          </div>
-
-          <div className="mt-12 pt-8 border-t border-gray-200">
-            <h3 className="text-xl font-serif text-gray-900 mb-4">Business Hours</h3>
-            <div className="space-y-2 text-gray-700">
-              <p>Monday - Friday: 9:00 AM - 7:00 PM</p>
-              <p>Saturday: 10:00 AM - 6:00 PM</p>
-              <p>Sunday: Closed</p>
-            </div>
           </div>
         </div>
       </div>

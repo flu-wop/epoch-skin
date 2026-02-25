@@ -6,28 +6,36 @@ import { ShoppingCart, Menu, X } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/lib/hooks/useCart";
+import Image from "next/image";
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { itemCount } = useCart();
 
   const navLinks = [
-    { href: "/services", label: "Services" },
     { href: "/shop", label: "Shop" },
     { href: "/about", label: "About" },
     { href: "/contact", label: "Contact" },
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
+    <header className="sticky top-0 z-50 w-full border-b bg-white shadow-sm">
       <Container>
-        <div className="flex h-16 md:h-20 items-center justify-between">
-          {/* Logo */}
-          <Link href="/" className="font-serif text-2xl md:text-3xl font-bold text-sage-900 hover:text-sage-800 transition-colors">
-            Epoch Skin
+        <div className="flex h-20 md:h-24 items-center justify-between">
+          <Link href="/" className="flex items-center">
+            <div className="bg-white px-3 py-2 rounded-md">
+              <Image
+                src="/logos/horizontal-logo.png"
+                alt="Epoch Skin"
+                width={260}
+                height={65}
+                className="h-16 md:h-20 w-auto"
+                priority
+                style={{ background: "white" }}
+              />
+            </div>
           </Link>
 
-          {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
               <Link
@@ -40,9 +48,7 @@ export function Header() {
             ))}
           </nav>
 
-          {/* Right side actions */}
           <div className="flex items-center gap-3 md:gap-4">
-            {/* Book Now Button - Hidden on smallest screens */}
             <Button
               asChild
               className="hidden sm:inline-flex bg-clay-500 hover:bg-clay-600 text-sm md:text-base"
@@ -51,7 +57,6 @@ export function Header() {
               <Link href="/book">Book Now</Link>
             </Button>
 
-            {/* Cart Icon */}
             <Link
               href="/cart"
               className="relative p-2 hover:bg-sage-50 rounded-lg transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
@@ -65,7 +70,6 @@ export function Header() {
               )}
             </Link>
 
-            {/* Mobile Menu Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="md:hidden p-2 hover:bg-sage-50 rounded-lg transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
@@ -80,7 +84,6 @@ export function Header() {
           </div>
         </div>
 
-        {/* Mobile Menu */}
         {mobileMenuOpen && (
           <div className="md:hidden border-t py-4 animate-in slide-in-from-top">
             <nav className="flex flex-col space-y-1">

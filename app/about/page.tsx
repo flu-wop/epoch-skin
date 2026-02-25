@@ -18,9 +18,38 @@ export default function AboutPage() {
             </div>
           </div>
 
+          {/* Epoch Definition */}
+          <section className="mb-16 text-center">
+            <div className="bg-gradient-to-br from-sand-50 to-sage-50 rounded-2xl p-12 border border-clay-200">
+              <div className="flex items-center justify-center mb-6">
+                <svg className="w-8 h-8 text-clay-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v3.586L7.707 9.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 10.586V7z" clipRule="evenodd" />
+                </svg>
+                <h2 className="text-5xl md:text-6xl font-serif text-gray-900">
+                  epoch
+                </h2>
+                <span className="text-3xl text-clay-500 ml-2">💧</span>
+              </div>
+              
+              <p className="text-lg text-gray-600 italic mb-6">
+                /ˈepək/ · noun
+              </p>
+              
+              <div className="max-w-2xl mx-auto">
+                <p className="text-xl md:text-2xl text-gray-800 leading-relaxed mb-4">
+                  A period of time marked by distinctive character or significant events
+                </p>
+                <p className="text-base text-gray-600">
+                  At Epoch Skin, we believe skincare is more than routine—it's a transformative journey. 
+                  Each treatment, each product marks a new chapter in your skin's story.
+                </p>
+              </div>
+            </div>
+          </section>
+
           {/* Our Story */}
           <section className="mb-16">
-            <h2 className="text-3xl font-serif text-gray-900 mb-6">Our Story</h2>
+            <h2 className="text-3xl font-serif text-clay-600 mb-6 text-center">Our Story</h2>
             <div className="prose prose-lg max-w-none text-gray-700 space-y-4">
               <p>
                 Our journey began when our founder experienced firsthand the discomfort and irritation caused by harsh waxing products and synthetic skincare. Determined to create a better experience, she spent years researching organic formulations, gentle techniques, and certified organic ingredients that deliver exceptional results without compromising skin health.
@@ -33,7 +62,7 @@ export default function AboutPage() {
 
           {/* Our Values */}
           <section className="mb-16">
-            <h2 className="text-3xl font-serif text-gray-900 mb-8 text-center">Our Values</h2>
+            <h2 className="text-3xl font-serif text-clay-600 mb-8 text-center">Our Values</h2>
             
             <div className="grid md:grid-cols-2 gap-6">
               <div className="bg-white border-2 border-sage/30 rounded-lg p-6">
@@ -96,7 +125,7 @@ export default function AboutPage() {
 
           {/* Glass-Skin Layering */}
           <section className="mb-16">
-            <h2 className="text-3xl font-serif text-gray-900 mb-6">Glass-Skin Layering</h2>
+            <h2 className="text-3xl font-serif text-clay-600 mb-6 text-center">Glass-Skin Layering</h2>
             <div className="prose prose-lg max-w-none text-gray-700 space-y-4">
               <p>
                 The K-Beauty glass-skin aesthetic emphasizes hydration, radiance, and a luminous, "glass-like" complexion. Our three-step routine—cleanser, serum, moisturizer—is designed to layer seamlessly, building hydration and glow with each step.
@@ -113,7 +142,7 @@ export default function AboutPage() {
 
           {/* Transparency & Safety */}
           <section>
-            <h2 className="text-3xl font-serif text-gray-900 mb-6">Transparency & Safety</h2>
+            <h2 className="text-3xl font-serif text-clay-600 mb-6 text-center">Transparency & Safety</h2>
             <div className="prose prose-lg max-w-none text-gray-700 space-y-4">
               <p>
                 We list every ingredient in INCI format and clearly mark which are organic. We provide full usage instructions, storage recommendations, and safety warnings. Our products are for external use only, and we always recommend patch testing.
