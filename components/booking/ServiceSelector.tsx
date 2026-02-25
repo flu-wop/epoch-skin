@@ -20,12 +20,12 @@ export function ServiceSelector({
 
   // Categorize services - use exact category names from services.ts
   const bodyWaxingServices = services.filter(
-    (s) => s.category === "Body Waxing" && (s.gender === activeGender || s.gender === "all")
-  );
+  (s) => s.category === "body-waxing" && (s.gender === activeGender || s.gender === "all")
+);
   const facialWaxingServices = services.filter(
-    (s) => s.category === "Facial Waxing" && (s.gender === activeGender || s.gender === "all")
-  );
-  const organicFacials = services.filter((s) => s.category === "Specialty Treatments");
+  (s) => s.category === "facial-waxing" && (s.gender === activeGender || s.gender === "all")
+);
+  const organicFacials = services.filter((s) => s.category === "specialty-treatments");
 
   const toggleService = (serviceId: string) => {
     if (selectedServices.includes(serviceId)) {
