@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { ShoppingCart } from "lucide-react";
 import { getFeaturedProducts } from "@/data/products";
 import { useCart } from "@/lib/hooks/useCart";
@@ -24,7 +25,6 @@ export function FeaturedProducts() {
       size: product.size,
     });
 
-    // Show brief feedback
     setAddedProductId(product.id);
     setTimeout(() => setAddedProductId(null), 1000);
   };
@@ -32,7 +32,6 @@ export function FeaturedProducts() {
   return (
     <section className="bg-sage-50/30 py-16 lg:py-24">
       <Container>
-        {/* Section header */}
         <div className="text-center">
           <h2 className="font-serif text-4xl font-bold text-sage-900 sm:text-5xl">
             Featured Products
@@ -43,7 +42,6 @@ export function FeaturedProducts() {
           </p>
         </div>
 
-        {/* Products grid */}
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {products.map((product) => (
             <Card 
@@ -51,16 +49,13 @@ export function FeaturedProducts() {
               className="group overflow-hidden transition-all hover:shadow-lg"
             >
               <Link href={`/shop/${product.slug}`}>
-                {/* Product image placeholder */}
                 <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-sand-100 to-neutral-100">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-center">
-                      <div className="mx-auto h-16 w-16 rounded-full bg-sage-200/50 flex items-center justify-center">
-                        <span className="text-sage-600 text-sm font-medium">Image</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="absolute inset-0 bg-sage-900/0 transition-all group-hover:bg-sage-900/5"></div>
+                  <Image
+                    src={product.images[0]}
+                    alt={product.name}
+                    fill
+                    className="object-cover transition-transform group-hover:scale-105"
+                  />
                 </div>
               </Link>
 
@@ -75,14 +70,12 @@ export function FeaturedProducts() {
                   {product.shortDescription}
                 </p>
 
-                {/* Price */}
                 <div className="mt-3 flex items-baseline gap-2">
                   <span className="font-serif text-xl font-semibold text-sage-900">
                     {formatPrice(product.price)}
                   </span>
                 </div>
 
-                {/* Add to cart button */}
                 <Button 
                   onClick={() => handleAddToCart(product)}
                   className="mt-4 w-full bg-clay-500 hover:bg-clay-600"
@@ -96,7 +89,6 @@ export function FeaturedProducts() {
           ))}
         </div>
 
-        {/* View all products link */}
         <div className="mt-10 text-center">
           <Button asChild variant="outline" size="lg">
             <Link href="/shop">Shop All Products</Link>

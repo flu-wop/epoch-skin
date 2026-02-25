@@ -132,7 +132,7 @@ export interface Cart {
 /**
  * Data collected during appointment booking
  */
-export interface BookingFormData {
+export interface BookingData {
   serviceId: string;
   date: string;
   time: string;
@@ -140,6 +140,7 @@ export interface BookingFormData {
   lastName: string;
   email: string;
   phone: string;
+  gender: "male" | "female" | "other" | "";
   notes?: string;
 }
 

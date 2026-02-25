@@ -6,7 +6,7 @@ const serviceCategories = [
   {
     title: "Body Waxing",
     description: "Full body waxing services for smooth, long-lasting results",
-    image: "/images/services/brazilian-wax.png",
+    image: "/images/services/bikini-wax.png",
     href: "/book?category=body-wax",
   },
   {

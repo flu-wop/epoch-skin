@@ -21,19 +21,16 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-white shadow-sm">
       <Container>
-        <div className="flex h-20 md:h-24 items-center justify-between">
+        <div className="flex h-24 md:h-28 items-center justify-between">
           <Link href="/" className="flex items-center">
-            <div className="bg-white px-3 py-2 rounded-md">
-              <Image
-                src="/logos/horizontal-logo.png"
-                alt="Epoch Skin"
-                width={260}
-                height={65}
-                className="h-16 md:h-20 w-auto"
-                priority
-                style={{ background: "white" }}
-              />
-            </div>
+            <Image
+              src="/logos/main-logo.png"
+              alt="Epoch Skin"
+              width={140}
+              height={140}
+              className="h-24 md:h-28 w-auto"
+              priority
+            />
           </Link>
 
           <nav className="hidden md:flex items-center gap-8">

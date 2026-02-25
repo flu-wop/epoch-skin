@@ -41,7 +41,7 @@ export function BookingReview({
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          gender: bookingData.gender,
+          gender: bookingData.gender,  // ← now safe (type includes gender)
           services: selectedServiceData.map(s => ({
             id: s.id,
             name: s.name,
@@ -65,86 +65,81 @@ export function BookingReview({
         onSubmit();
       } else {
         alert("There was an error submitting your booking. Please try again.");
-        setIsSubmitting(false);
       }
     } catch (error) {
       console.error("Booking submission error:", error);
-      alert("There was an error submitting your booking. Please try again.");
+      alert("An error occurred. Please try again.");
+    } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
     <div className="space-y-8">
-      <div>
-        <h2 className="text-2xl font-serif font-bold text-gray-900 mb-2">
-          Review Your Booking
+      {/* Service Summary */}
+      <div className="bg-white rounded-lg shadow-md p-6">
+        <h2 className="text-2xl font-serif text-sage-900 mb-6">
+          Booking Summary
         </h2>
-        <p className="text-gray-600">
-          Please review your appointment details before confirming.
-        </p>
-      </div>
 
-      {/* Services Summary */}
-      <div>
-        <h3 className="font-semibold text-gray-900 mb-3">Selected Services</h3>
-        <div className="bg-white border border-gray-200 rounded-lg divide-y divide-gray-200">
-          {selectedServiceData.map((service) => (
-            <div key={service.id} className="p-4 flex items-center justify-between">
+        <div className="space-y-6">
+          {/* Selected Services */}
+          <div>
+            <h3 className="text-lg font-semibold text-sage-900 mb-3">
+              Selected Services
+            </h3>
+            <div className="space-y-4">
+              {selectedServiceData.map((service) => (
+                <div key={service.id} className="border-b border-sage-100 pb-4 last:border-b-0">
+                  <p className="font-medium text-gray-900">{service.name}</p>
+                  <p className="text-sm text-neutral-600">
+                    ${service.price} • {service.duration}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Totals */}
+          <div className="border-t border-sage-100 pt-4">
+            <div className="flex justify-between text-lg font-semibold text-sage-900">
+              <span>Total Price</span>
+              <span>${totalPrice.toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between text-sm text-neutral-600 mt-2">
+              <span>Estimated Duration</span>
+              <span>{totalDuration} min</span>
+            </div>
+          </div>
+
+          {/* Customer Info */}
+          <div>
+            <h3 className="text-lg font-semibold text-sage-900 mb-3">
+              Customer Information
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <p className="font-medium text-gray-900">{service.name}</p>
-                <p className="text-sm text-gray-600">{service.duration}</p>
+                <p className="text-sm text-gray-600">Name</p>
+                <p className="font-medium text-gray-900">
+                  {bookingData.firstName} {bookingData.lastName}
+                </p>
               </div>
-              <p className="font-semibold text-gray-900">${service.price}</p>
+              <div>
+                <p className="text-sm text-gray-600">Email</p>
+                <p className="font-medium text-gray-900">{bookingData.email}</p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-600">Phone</p>
+                <p className="font-medium text-gray-900">{bookingData.phone}</p>
+              </div>
+              {bookingData.notes && (
+                <div className="md:col-span-2">
+                  <p className="text-sm text-gray-600">Notes</p>
+                  <p className="font-medium text-gray-900">{bookingData.notes}</p>
+                </div>
+              )}
             </div>
-          ))}
-          <div className="p-4 bg-sand-50 flex items-center justify-between">
-            <div>
-              <p className="font-semibold text-gray-900">Total</p>
-              <p className="text-sm text-gray-600">Approx. {totalDuration} minutes</p>
-            </div>
-            <p className="text-2xl font-bold text-clay-600">${totalPrice}</p>
           </div>
-        </div>
-      </div>
-
-      {/* Date & Time */}
-      <div>
-        <h3 className="font-semibold text-gray-900 mb-3">Appointment Time</h3>
-        <div className="bg-white border border-gray-200 rounded-lg p-4">
-          {bookingData.date && (
-            <>
-              <p className="text-lg font-medium text-gray-900">
-                {format(bookingData.date, "EEEE, MMMM d, yyyy")}
-              </p>
-              <p className="text-gray-600 mt-1">at {bookingData.time}</p>
-            </>
-          )}
-        </div>
-      </div>
-
-      {/* Contact Information */}
-      <div>
-        <h3 className="font-semibold text-gray-900 mb-3">Contact Information</h3>
-        <div className="bg-white border border-gray-200 rounded-lg p-4 space-y-2">
-          <div>
-            <p className="text-sm text-gray-600">Name</p>
-            <p className="font-medium text-gray-900">{bookingData.name}</p>
-          </div>
-          <div>
-            <p className="text-sm text-gray-600">Email</p>
-            <p className="font-medium text-gray-900">{bookingData.email}</p>
-          </div>
-          <div>
-            <p className="text-sm text-gray-600">Phone</p>
-            <p className="font-medium text-gray-900">{bookingData.phone}</p>
-          </div>
-          {bookingData.notes && (
-            <div>
-              <p className="text-sm text-gray-600">Notes</p>
-              <p className="font-medium text-gray-900">{bookingData.notes}</p>
-            </div>
-          )}
         </div>
       </div>
 

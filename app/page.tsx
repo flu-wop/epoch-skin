@@ -1,7 +1,6 @@
 import { HeroSection } from "@/components/home/HeroSection";
 import { ServiceCategoryCards } from "@/components/home/ServiceCategoryCards";
 import { FeaturedProducts } from "@/components/home/FeaturedProducts";
-import { ServicesOverview } from "@/components/home/ServicesOverview";
 import About from "@/components/home/About";
 import Commitment from "@/components/home/Commitment";
 import FAQ from "@/components/home/FAQ";
@@ -15,7 +14,6 @@ export default function HomePage() {
       <HeroSection />
       <ServiceCategoryCards />
       <FeaturedProducts />
-      <ServicesOverview />
       <About />
       <Commitment />
       <FAQ />

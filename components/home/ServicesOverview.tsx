@@ -77,10 +77,10 @@ export function ServicesOverview() {
           ))}
         </div>
 
-        {/* View all services link */}
+        {/* View all services link - NOW GOES TO /book */}
         <div className="mt-10 text-center">
           <Button asChild variant="outline" size="lg">
-            <Link href="/services">View All Services</Link>
+            <Link href="/book">View All Services</Link>
           </Button>
         </div>
       </Container>

@@ -16,6 +16,7 @@ export interface BookingData {
   email: string;
   phone: string;
   notes: string;
+  gender: "male" | "female" | "other" | "";
 }
 
 type BookingStep = "services" | "datetime" | "contact" | "review" | "success";
@@ -23,14 +24,15 @@ type BookingStep = "services" | "datetime" | "contact" | "review" | "success";
 export function BookingForm() {
   const [currentStep, setCurrentStep] = useState<BookingStep>("services");
   const [bookingData, setBookingData] = useState<BookingData>({
-    selectedServices: [],
-    date: null,
-    time: "",
-    name: "",
-    email: "",
-    phone: "",
-    notes: "",
-  });
+  selectedServices: [],
+  date: null,
+  time: "",
+  name: "",                     
+  email: "",
+  phone: "",
+  gender: "",
+  notes: "",
+});
 
   const updateBookingData = (updates: Partial<BookingData>) => {
     setBookingData((prev) => ({ ...prev, ...updates }));
