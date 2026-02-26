@@ -7,39 +7,31 @@ export function HeroSection() {
     <section className="relative bg-gradient-to-br from-sage-50 via-sand-50 to-sage-50 py-16 sm:py-20 md:py-24 lg:py-32">
       <Container>
         <div className="mx-auto max-w-4xl text-center">
-          {/* Heading - Better mobile sizing */}
+          {/* Heading */}
           <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-sage-900 leading-tight">
             Premium Waxing Studio
             <br />
             <span className="text-clay-600">& Organic Skincare</span>
           </h1>
 
-          {/* Subheading - Better mobile spacing */}
+          {/* Subheading */}
           <p className="mt-6 sm:mt-8 text-base sm:text-lg md:text-xl text-neutral-600 leading-relaxed px-4 sm:px-0">
             Experience expert waxing services and curated organic skincare in New Orleans. 
             Natural, luxurious, and effective treatments for your skin.
           </p>
 
-          {/* CTA Buttons - Better mobile layout */}
-          <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row gap-4 justify-center px-4 sm:px-0">
-            <Button
-              asChild
-              size="lg"
-              className="bg-clay-500 hover:bg-clay-600 w-full sm:w-auto text-base"
-            >
-              <Link href="/book">Book Your Appointment</Link>
-            </Button>
-            <Button
-              asChild
-              variant="outline"
-              size="lg"
-              className="w-full sm:w-auto text-base"
-            >
-              <Link href="/services">View Services</Link>
-            </Button>
-          </div>
+          {/* CTA Buttons */}
+<div className="mt-8 sm:mt-10 flex flex-col sm:flex-row gap-4 justify-center px-4 sm:px-0">
+  <Button
+    asChild
+    size="lg"
+    className="bg-clay-500 hover:bg-clay-600 w-full sm:w-auto text-base"
+  >
+    <Link href="/book">Book Your Appointment</Link>
+  </Button>
+</div>
 
-          {/* Trust indicators - Better mobile spacing */}
+          {/* Trust indicators */}
           <div className="mt-12 sm:mt-16 flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-12 text-sm text-neutral-600 px-4 sm:px-0">
             <div className="flex items-center gap-2">
               <svg className="h-5 w-5 text-sage-600" fill="currentColor" viewBox="0 0 20 20">

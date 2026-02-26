@@ -14,17 +14,17 @@ function FAQItem({ question, answer }: FAQItemProps) {
     <div className="border-b border-gray-200 last:border-b-0">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full py-5 flex items-center justify-between text-center hover:text-[#b87968] transition-colors relative"
+        className="w-full py-6 flex items-center justify-between text-left hover:text-sage transition-colors"
       >
-        <span className="flex-1 text-base md:text-lg font-medium text-gray-900">
+        <span className="text-lg md:text-xl font-medium text-gray-900">
           {question}
         </span>
-        <span className="flex-shrink-0 text-xl text-[#b87968] font-bold ml-4">
+        <span className="ml-4 flex-shrink-0 text-2xl text-sage">
           {isOpen ? "−" : "+"}
         </span>
       </button>
       {isOpen && (
-        <div className="pb-5 text-center px-4">
+        <div className="pb-6 pr-8">
           <p className="text-gray-700 leading-relaxed">{answer}</p>
         </div>
       )}
@@ -54,12 +54,12 @@ export default function FAQ() {
   return (
     <section className="py-16 md:py-20 bg-white">
       <div className="container max-w-7xl mx-auto px-4">
-        <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-gray-900 mb-8 text-center">
-          Frequently Asked Questions
-        </h2>
+        <div className="max-w-3xl mx-auto">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-gray-900 mb-12 text-center">
+            Frequently Asked Questions
+          </h2>
 
-        <div className="max-w-2xl mx-auto">
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="bg-white rounded-lg shadow-sm border border-gray-100">
             {faqs.map((faq, index) => (
               <FAQItem key={index} question={faq.question} answer={faq.answer} />
             ))}

@@ -61,68 +61,67 @@ export default function AboutPage() {
           </section>
 
           {/* Our Values */}
-          <section className="mb-16">
-            <h2 className="text-3xl font-serif text-clay-600 mb-8 text-center">Our Values</h2>
-            
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="bg-white border-2 border-sage/30 rounded-lg p-6">
-                <div className="flex items-start space-x-3">
-                  <div className="w-6 h-6 bg-sage rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                    <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-900 mb-2">Organic First:</h3>
-                    <p className="text-gray-700">We use only high-quality, certified organic ingredients in every formula</p>
-                  </div>
-                </div>
-              </div>
+<section className="mb-16">
+  <h2 className="text-3xl font-serif text-clay-600 mb-8 text-center">Our Values</h2>
+  
+  <div className="grid md:grid-cols-2 gap-6">
+    <div className="bg-white border-2 border-sage/30 rounded-lg p-6">
+      <div className="flex items-start space-x-3">
+        <div className="w-6 h-6 bg-sage rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+          <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+          </svg>
+        </div>
+        <div>
+          <h3 className="font-semibold text-gray-900 mb-2">Organic First:</h3>
+          <p className="text-gray-700">We use only high-quality, certified organic ingredients in every formula</p>
+        </div>
+      </div>
+    </div>
 
-              <div className="bg-white border-2 border-sage/30 rounded-lg p-6">
-                <div className="flex items-start space-x-3">
-                  <div className="w-6 h-6 bg-sage rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                    <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-900 mb-2">Cruelty-Free:</h3>
-                    <p className="text-gray-700">We never test on animals and source ethically from suppliers who share our values</p>
-                  </div>
-                </div>
-              </div>
+    <div className="bg-white border-2 border-sage/30 rounded-lg p-6">
+      <div className="flex items-start space-x-3">
+        <div className="w-6 h-6 bg-sage rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+          <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+          </svg>
+        </div>
+        <div>
+          <h3 className="font-semibold text-gray-900 mb-2">Cruelty-Free:</h3>
+          <p className="text-gray-700">We never test on animals and source ethically from suppliers who share our values</p>
+        </div>
+      </div>
+    </div>
 
-              <div className="bg-white border-2 border-sage/30 rounded-lg p-6">
-                <div className="flex items-start space-x-3">
-                  <div className="w-6 h-6 bg-sage rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                    <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-900 mb-2">Quality Results:</h3>
-                    <p className="text-gray-700">Every product and service is designed to deliver visible, long-lasting results you can trust</p>
-                  </div>
-                </div>
-              </div>
+    <div className="bg-white border-2 border-sage/30 rounded-lg p-6">
+      <div className="flex items-start space-x-3">
+        <div className="w-6 h-6 bg-sage rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+          <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+          </svg>
+        </div>
+        <div>
+          <h3 className="font-semibold text-gray-900 mb-2">Quality Results:</h3>
+          <p className="text-gray-700">Every product and service is designed to deliver visible, long-lasting results you can trust</p>
+        </div>
+      </div>
+    </div>
 
-              <div className="bg-white border-2 border-sage/30 rounded-lg p-6">
-                <div className="flex items-start space-x-3">
-                  <div className="w-6 h-6 bg-sage rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                    <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-900 mb-2">Client-Centered:</h3>
-                    <p className="text-gray-700">Your comfort, confidence, and satisfaction are at the heart of everything we do</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-
+    <div className="bg-white border-2 border-sage/30 rounded-lg p-6">
+      <div className="flex items-start space-x-3">
+        <div className="w-6 h-6 bg-sage rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+          <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+        </div>
+        <div>
+          <h3 className="font-semibold text-gray-900 mb-2">Client-Centered:</h3>
+          <p className="text-gray-700">Your comfort, confidence, and satisfaction are at the heart of everything we do</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
           {/* Glass-Skin Layering */}
           <section className="mb-16">
             <h2 className="text-3xl font-serif text-clay-600 mb-6 text-center">Glass-Skin Layering</h2>

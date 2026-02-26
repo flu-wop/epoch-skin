@@ -1,6 +1,6 @@
 import { HeroSection } from "@/components/home/HeroSection";
-import { ServiceCategoryCards } from "@/components/home/ServiceCategoryCards";
 import { FeaturedProducts } from "@/components/home/FeaturedProducts";
+import { ServiceCategoryCards } from "@/components/home/ServiceCategoryCards";
 import About from "@/components/home/About";
 import Commitment from "@/components/home/Commitment";
 import FAQ from "@/components/home/FAQ";
