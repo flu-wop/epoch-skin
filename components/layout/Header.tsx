@@ -26,9 +26,9 @@ export function Header() {
             <Image
               src="/logos/main-logo.png"
               alt="Epoch Skin"
-              width={140}
-              height={140}
-              className="h-24 md:h-28 w-auto"
+              width={112}
+              height={112}
+              className="h-20 md:h-24 w-auto"
               priority
             />
           </Link>
