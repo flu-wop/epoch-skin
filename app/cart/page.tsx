@@ -6,10 +6,13 @@ import { useCart } from "@/lib/hooks/useCart";
 import { formatPrice } from "@/lib/utils";
 import Link from "next/link";
 import Image from "next/image";
-import { Trash2 } from "lucide-react";
 
 export default function CartPage() {
-  const { items, removeItem, updateQuantity, subtotal, tax, total } = useCart();
+  const { items, removeItem, updateQuantity } = useCart();
+
+  // Calculate totals locally
+  const subtotal = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  const total = subtotal; // Free shipping, no tax for now
 
   if (items.length === 0) {
     return (
