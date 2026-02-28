@@ -15,7 +15,7 @@ export default function AboutPage() {
             
             <div className="bg-sand/20 rounded-lg p-8 mb-8">
               <p className="text-lg text-gray-800 leading-relaxed">
-                Epoch Skin is a premium waxing studio and curated Organic skincare line founded in 2026 by Kayla Ford, a New Orleans native.
+                Epoch Skin is a premium waxing studio and curated Organic skincare line founded in 2026 by Kayla Ford.
               </p>
             </div>
           </div>
@@ -39,7 +39,7 @@ export default function AboutPage() {
               
               <div className="max-w-2xl mx-auto">
                 <p className="text-xl md:text-2xl text-gray-800 leading-relaxed mb-4">
-                  A period of time marked by distinctive character or significant events
+                  A period of time in history or a person's life, typically one marked by notable events or particular characteristics.
                 </p>
                 <p className="text-base text-gray-600">
                   At Epoch Skin, we believe skincare is more than routine—it's a transformative journey. 
@@ -70,7 +70,7 @@ export default function AboutPage() {
               <div className="bg-white border border-sage-200 rounded-lg p-8 text-center max-w-md">
                 <div className="relative w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden bg-sand-100">
                   <Image
-                    src="/images/team/kayla.jpg"
+                    src="/images/team/founder-kayla.png"
                     alt="Kayla Ford, Licensed Esthetician"
                     fill
                     className="object-cover"

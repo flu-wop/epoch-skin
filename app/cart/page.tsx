@@ -1,32 +1,26 @@
 "use client";
 
 import { Container } from "@/components/layout/Container";
+import { Button } from "@/components/ui/button";
 import { useCart } from "@/lib/hooks/useCart";
+import { formatPrice } from "@/lib/utils";
 import Link from "next/link";
 import Image from "next/image";
+import { Trash2 } from "lucide-react";
 
 export default function CartPage() {
-  const { items, removeItem, updateQuantity, total } = useCart();
+  const { items, removeItem, updateQuantity, subtotal, tax, total } = useCart();
 
   if (items.length === 0) {
     return (
-      <main className="min-h-screen py-20 bg-sand/10">
+      <main className="min-h-screen py-20">
         <Container>
           <div className="max-w-2xl mx-auto text-center">
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-12">
-              <h1 className="text-3xl font-serif font-bold text-gray-900 mb-4">
-                Your Cart is Empty
-              </h1>
-              <p className="text-lg text-gray-600 mb-8">
-                Add some of our organic products to get started.
-              </p>
-              <Link
-                href="/shop"
-                className="inline-block px-6 py-3 bg-clay-500 text-white rounded-lg font-semibold hover:bg-clay-600 transition-colors"
-              >
-                Shop Products
-              </Link>
-            </div>
+            <h1 className="text-4xl font-serif text-gray-900 mb-6">Shopping Cart</h1>
+            <p className="text-gray-600 mb-8">Your cart is empty</p>
+            <Button asChild size="lg" className="bg-clay-500 hover:bg-clay-600">
+              <Link href="/shop">Continue Shopping</Link>
+            </Button>
           </div>
         </Container>
       </main>
@@ -34,117 +28,104 @@ export default function CartPage() {
   }
 
   return (
-    <main className="min-h-screen py-20 bg-sand/10">
+    <main className="min-h-screen py-20">
       <Container>
-        <div className="max-w-4xl mx-auto">
-          <h1 className="text-4xl font-serif font-bold text-gray-900 mb-8">
-            Shopping Cart
-          </h1>
+        <h1 className="text-4xl font-serif text-gray-900 mb-8 text-center">Shopping Cart</h1>
 
-          <div className="grid lg:grid-cols-3 gap-8">
-            {/* Cart Items */}
-            <div className="lg:col-span-2 space-y-4">
-              {items.map((item) => (
-                <div
-                  key={item.id}
-                  className="bg-white rounded-lg shadow-sm border border-gray-200 p-6"
-                >
-                  <div className="flex gap-6">
-                    {/* Product Image Placeholder */}
-                    <div className="w-24 h-24 bg-sand-100 rounded-lg flex-shrink-0 flex items-center justify-center">
-                      <span className="text-sand-400 text-sm">No Image</span>
-                    </div>
+        <div className="grid lg:grid-cols-3 gap-8">
+          {/* Cart Items */}
+          <div className="lg:col-span-2 space-y-4">
+            {items.map((item) => (
+              <div
+                key={item.productId}
+                className="bg-white border border-sage-200 rounded-lg p-6 flex gap-4"
+              >
+                {/* Product Image */}
+                <div className="relative w-24 h-24 flex-shrink-0 bg-sand-50 rounded overflow-hidden">
+                  <Image
+                    src={item.image}
+                    alt={item.name}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
 
-                    {/* Product Details */}
-                    <div className="flex-1">
-                      <h3 className="font-serif text-lg font-semibold text-gray-900 mb-1">
+                {/* Product Info */}
+                <div className="flex-1">
+                  <div className="flex justify-between items-start mb-2">
+                    <div>
+                      <h3 className="font-serif text-lg font-semibold text-gray-900">
                         {item.name}
                       </h3>
-                      <p className="text-sm text-gray-600 mb-3">{item.size}</p>
-                      <p className="text-lg font-semibold text-clay-600">
-                        ${item.price.toFixed(2)}
-                      </p>
+                      <p className="text-sm text-gray-600">{item.size}</p>
                     </div>
+                    <button
+                      onClick={() => removeItem(item.productId)}
+                      className="text-clay-600 hover:text-clay-700 p-2"
+                      aria-label="Remove item"
+                    >
+                      <span className="text-sm">Remove</span>
+                    </button>
+                  </div>
 
-                    {/* Quantity Controls */}
-                    <div className="flex flex-col items-end gap-4">
+                  <div className="flex items-center justify-between mt-4">
+                    <div className="flex items-center gap-3">
                       <button
-                        onClick={() => removeItem(item.id)}
-                        className="text-sm text-gray-500 hover:text-red-600 transition-colors"
+                        onClick={() => updateQuantity(item.productId, Math.max(1, item.quantity - 1))}
+                        className="w-8 h-8 rounded border border-sage-300 flex items-center justify-center hover:bg-sage-50"
                       >
-                        Remove
+                        −
                       </button>
+                      <span className="w-8 text-center font-medium">{item.quantity}</span>
+                      <button
+                        onClick={() => updateQuantity(item.productId, item.quantity + 1)}
+                        className="w-8 h-8 rounded border border-sage-300 flex items-center justify-center hover:bg-sage-50"
+                      >
+                        +
+                      </button>
+                    </div>
 
-                      <div className="flex items-center gap-3">
-                        <button
-                          onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                          className="w-8 h-8 rounded-md border border-gray-300 flex items-center justify-center hover:bg-gray-50 transition-colors"
-                        >
-                          −
-                        </button>
-                        <span className="w-12 text-center font-medium text-gray-900">
-                          {item.quantity}
-                        </span>
-                        <button
-                          onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                          className="w-8 h-8 rounded-md border border-gray-300 flex items-center justify-center hover:bg-gray-50 transition-colors"
-                        >
-                          +
-                        </button>
-                      </div>
-
-                      <p className="font-semibold text-gray-900">
-                        ${(item.price * item.quantity).toFixed(2)}
+                    <div className="text-right">
+                      <p className="text-sm text-gray-600">{formatPrice(item.price)}</p>
+                      <p className="font-serif text-lg font-semibold text-gray-900">
+                        {formatPrice(item.price * item.quantity)}
                       </p>
                     </div>
                   </div>
                 </div>
-              ))}
-            </div>
-
-            {/* Order Summary */}
-            <div className="lg:col-span-1">
-              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 sticky top-8">
-                <h2 className="text-xl font-serif font-bold text-gray-900 mb-6">
-                  Order Summary
-                </h2>
-
-                <div className="space-y-3 mb-6">
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-600">Subtotal</span>
-                    <span className="font-medium text-gray-900">
-                      ${total.toFixed(2)}
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-600">Shipping</span>
-                    <span className="font-medium text-gray-900">Free</span>
-                  </div>
-                </div>
-
-                <div className="border-t border-gray-200 pt-4 mb-6">
-                  <div className="flex items-center justify-between">
-                    <span className="text-lg font-semibold text-gray-900">Total</span>
-                    <span className="text-2xl font-bold text-clay-600">
-                      ${total.toFixed(2)}
-                    </span>
-                  </div>
-                </div>
-
-                <Link
-                  href="/checkout"
-                  className="block w-full py-3 px-6 bg-clay-500 text-white text-center rounded-lg font-semibold hover:bg-clay-600 transition-colors mb-3"
-                >
-                  Proceed to Checkout
-                </Link>
-
-                <Link
-                  href="/shop"
-                  className="block w-full py-3 px-6 border-2 border-gray-300 text-gray-700 text-center rounded-lg font-semibold hover:bg-gray-50 transition-colors"
-                >
-                  Continue Shopping
-                </Link>
               </div>
+            ))}
+          </div>
+
+          {/* Order Summary */}
+          <div className="lg:col-span-1">
+            <div className="bg-white border border-sage-200 rounded-lg p-6 sticky top-24">
+              <h2 className="text-2xl font-serif font-semibold text-gray-900 mb-6">
+                Order Summary
+              </h2>
+
+              <div className="space-y-3 mb-6">
+                <div className="flex justify-between text-gray-700">
+                  <span>Subtotal</span>
+                  <span>{formatPrice(subtotal)}</span>
+                </div>
+                <div className="flex justify-between text-gray-700">
+                  <span>Shipping</span>
+                  <span>Free</span>
+                </div>
+                <div className="border-t border-sage-200 pt-3 flex justify-between font-serif text-xl font-semibold text-gray-900">
+                  <span>Total</span>
+                  <span className="text-clay-600">{formatPrice(total)}</span>
+                </div>
+              </div>
+
+              <Button asChild className="w-full mb-3 bg-clay-500 hover:bg-clay-600" size="lg">
+                <Link href="/checkout">Proceed to Checkout</Link>
+              </Button>
+
+              <Button asChild variant="outline" className="w-full">
+                <Link href="/shop">Continue Shopping</Link>
+              </Button>
             </div>
           </div>
         </div>
