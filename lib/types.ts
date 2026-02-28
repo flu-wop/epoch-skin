@@ -59,6 +59,7 @@ export interface Service {
   description: string;
   benefits: string[];
   image: string;                 // Main service image
+  imageAlt?: string;             // Image alt text for accessibility
 }
 
 export type ServiceCategory =
@@ -219,5 +220,6 @@ export interface Service {
   description: string;
   benefits: string[];
   image: string;
+  imageAlt?: string;     // Image alt text for accessibility
   popular?: boolean;
 }
