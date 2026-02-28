@@ -14,16 +14,16 @@ export function HeroSection() {
           
           {/* Heading with gradient */}
           <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-sage-900 leading-tight" style={{ letterSpacing: '-0.02em' }}>
-            Elevate Your Skin's
+            Premium Waxing Studio
             <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-clay-600 to-rose-500">
-              Natural Radiance
+              & Organic Skincare
             </span>
           </h1>
 
           {/* Enhanced subheading */}
           <p className="mt-8 text-lg sm:text-xl md:text-2xl text-neutral-600 leading-relaxed max-w-2xl mx-auto" style={{ letterSpacing: '0.01em', lineHeight: '1.7' }}>
-            Experience the transformative power of Organic skincare and expert waxing—where science meets nature for visible, lasting results.
+            Experience expert waxing services and curated Organic skincare in New Orleans. Natural, luxurious, and effective treatments for your skin.
           </p>
 
           {/* CTA Button with better copy */}
@@ -33,7 +33,7 @@ export function HeroSection() {
               size="lg"
               className="bg-clay-500 hover:bg-rose-500 text-lg px-10 py-6 shadow-lg hover:shadow-xl transition-all active:scale-95"
             >
-              <Link href="/book">Begin Your Journey</Link>
+              <Link href="/book">Book Your Appointment</Link>
             </Button>
           </div>
 
