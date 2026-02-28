@@ -9,8 +9,13 @@ export async function generateStaticParams() {
   }));
 }
 
-export default function BlogPostPage({ params }: { params: { slug: string } }) {
-  const post = blogPosts.find((p) => p.slug === params.slug);
+export default async function BlogPostPage({ 
+  params 
+}: { 
+  params: Promise<{ slug: string }> 
+}) {
+  const { slug } = await params;
+  const post = blogPosts.find((p) => p.slug === slug);
 
   if (!post) {
     notFound();
@@ -20,7 +25,6 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
     <main className="min-h-screen py-20">
       <Container>
         <article className="max-w-3xl mx-auto">
-          {/* Back Link */}
           <Link
             href="/blog"
             className="inline-flex items-center text-clay-600 hover:text-clay-700 mb-8"
@@ -31,7 +35,6 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
             Back to Blog
           </Link>
 
-          {/* Header */}
           <header className="mb-8">
             <div className="flex items-center gap-3 text-sm text-gray-600 mb-4">
               <span className="px-3 py-1 bg-clay-100 text-clay-700 rounded-full text-xs font-medium">
@@ -59,14 +62,12 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
             </div>
           </header>
 
-          {/* Featured Image Placeholder */}
           <div className="relative aspect-[16/9] overflow-hidden bg-sand-100 rounded-lg mb-12">
             <div className="absolute inset-0 bg-gradient-to-br from-sand-200 to-sage-100 flex items-center justify-center">
               <span className="text-gray-500">Featured Image</span>
             </div>
           </div>
 
-          {/* Content */}
           <div className="prose prose-lg max-w-none">
             <div
               className="text-gray-700 leading-relaxed space-y-6"
@@ -91,7 +92,6 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
             />
           </div>
 
-          {/* Share & CTA */}
           <div className="mt-12 pt-8 border-t border-sage-200">
             <div className="bg-sand-50 rounded-lg p-8 text-center">
               <h3 className="text-2xl font-serif text-gray-900 mb-4">
@@ -117,12 +117,11 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
             </div>
           </div>
 
-          {/* Related Posts */}
           <div className="mt-12">
             <h3 className="text-2xl font-serif text-gray-900 mb-6">Related Posts</h3>
             <div className="grid md:grid-cols-2 gap-6">
               {blogPosts
-                .filter((p) => p.slug !== post.slug)
+                .filter((p) => p.slug !== slug)
                 .slice(0, 2)
                 .map((relatedPost) => (
                   <Link
