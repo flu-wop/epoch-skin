@@ -1,12 +1,21 @@
+// types/index.ts
+
+// ──────────────────────────────────────────────
+// Product Types
+// ──────────────────────────────────────────────
+
+/**
+ * Core product representation in the shop
+ */
 export interface Product {
   id: string;
   name: string;
   slug: string;
   price: number;
-  compareAtPrice?: number;
+  compareAtPrice?: number;       // Original price (for sales/discounts)
   description: string;
   shortDescription: string;
-  images: string[];
+  images: string[];              // Array of image URLs
   imageAlt?: string;
   category: ProductCategory;
   skinType: SkinType[];
@@ -15,7 +24,7 @@ export interface Product {
   benefits: string[];
   size: string;
   inStock: boolean;
-  featured?: boolean;
+  featured?: boolean;            // Highlight on homepage/featured sections
 }
 
 export type ProductCategory =
@@ -33,18 +42,23 @@ export type SkinType =
   | "combination"
   | "sensitive";
 
+// ──────────────────────────────────────────────
+// Service Types
+// ──────────────────────────────────────────────
+
+/**
+ * Waxing service or treatment offering
+ */
 export interface Service {
   id: string;
   name: string;
   slug: string;
   category: ServiceCategory;
   price: number;
-  duration: string;
+  duration: string;              // Duration in minutes
   description: string;
   benefits: string[];
-  image: string;
-  imageAlt?: string;
-  popular?: boolean;
+  image: string;                 // Main service image
 }
 
 export type ServiceCategory =
@@ -52,16 +66,30 @@ export type ServiceCategory =
   | "facial-waxing"
   | "specialty-treatments";
 
+// ──────────────────────────────────────────────
+// Testimonial Types
+// ──────────────────────────────────────────────
+
+/**
+ * Client review / testimonial
+ */
 export interface Testimonial {
   id: string;
   name: string;
-  service?: string;
-  rating: number;
+  service?: string;              // Optional: which service they mention
+  rating: number;                // 1–5
   text: string;
   date: string;
-  image?: string;
+  image?: string;                // Optional client photo
 }
 
+// ──────────────────────────────────────────────
+// FAQ Types
+// ──────────────────────────────────────────────
+
+/**
+ * Frequently asked question entry
+ */
 export interface FAQ {
   id: string;
   question: string;
@@ -71,6 +99,13 @@ export interface FAQ {
 
 export type FAQCategory = "services" | "booking" | "products" | "policies";
 
+// ──────────────────────────────────────────────
+// Cart Types
+// ──────────────────────────────────────────────
+
+/**
+ * Single item in the shopping cart
+ */
 export interface CartItem {
   productId: string;
   name: string;
@@ -81,6 +116,9 @@ export interface CartItem {
   size: string;
 }
 
+/**
+ * Full cart state
+ */
 export interface Cart {
   items: CartItem[];
   subtotal: number;
@@ -88,6 +126,13 @@ export interface Cart {
   total: number;
 }
 
+// ──────────────────────────────────────────────
+// Booking Types
+// ──────────────────────────────────────────────
+
+/**
+ * Data collected during appointment booking
+ */
 export interface BookingData {
   serviceId: string;
   date: string;
@@ -100,6 +145,13 @@ export interface BookingData {
   notes?: string;
 }
 
+// ──────────────────────────────────────────────
+// Contact Form Types
+// ──────────────────────────────────────────────
+
+/**
+ * Data from general contact / inquiry form
+ */
 export interface ContactFormData {
   name: string;
   email: string;
@@ -108,20 +160,35 @@ export interface ContactFormData {
   message: string;
 }
 
+// ──────────────────────────────────────────────
+// Checkout & Order Types
+// ──────────────────────────────────────────────
+
+/**
+ * Full checkout form data (contact + shipping)
+ */
 export interface CheckoutFormData {
+  // Contact Info
   email: string;
   firstName: string;
   lastName: string;
   phone: string;
+
+  // Shipping / Billing Address
   address: string;
   apartment?: string;
   city: string;
   state: string;
   zipCode: string;
   country: string;
+
+  // Additional options
   saveInfo?: boolean;
 }
 
+/**
+ * Completed order record
+ */
 export interface Order {
   id: string;
   orderNumber: string;
@@ -141,3 +208,16 @@ export type OrderStatus =
   | "shipped"
   | "delivered"
   | "cancelled";
+
+export interface Service {
+  id: string;
+  name: string;
+  slug: string;
+  category: ServiceCategory;
+  price: number;
+  duration: string;      // ← change from number to string
+  description: string;
+  benefits: string[];
+  image: string;
+  popular?: boolean;
+}

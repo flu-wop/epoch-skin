@@ -38,66 +38,69 @@ export default function CartPage() {
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Cart Items */}
           <div className="lg:col-span-2 space-y-4">
-            {items.map((item) => (
-              <div
-                key={item.productId}
-                className="bg-white border border-sage-200 rounded-lg p-6 flex gap-4"
-              >
-                {/* Product Image */}
-                <div className="relative w-24 h-24 flex-shrink-0 bg-sand-50 rounded overflow-hidden">
-                  <Image
-                    src={item.image}
-                    alt={item.name}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-
-                {/* Product Info */}
-                <div className="flex-1">
-                  <div className="flex justify-between items-start mb-2">
-                    <div>
-                      <h3 className="font-serif text-lg font-semibold text-gray-900">
-                        {item.name}
-                      </h3>
-                      <p className="text-sm text-gray-600">{item.size}</p>
-                    </div>
-                    <button
-                      onClick={() => removeItem(item.productId)}
-                      className="text-clay-600 hover:text-clay-700 p-2"
-                      aria-label="Remove item"
-                    >
-                      <span className="text-sm">Remove</span>
-                    </button>
+            {items.map((item, index) => {
+              const itemId = (item as any).productId || (item as any).id || index.toString();
+              return (
+                <div
+                  key={itemId}
+                  className="bg-white border border-sage-200 rounded-lg p-6 flex gap-4"
+                >
+                  {/* Product Image */}
+                  <div className="relative w-24 h-24 flex-shrink-0 bg-sand-50 rounded overflow-hidden">
+                    <Image
+                      src={item.image}
+                      alt={item.name}
+                      fill
+                      className="object-cover"
+                    />
                   </div>
 
-                  <div className="flex items-center justify-between mt-4">
-                    <div className="flex items-center gap-3">
+                  {/* Product Info */}
+                  <div className="flex-1">
+                    <div className="flex justify-between items-start mb-2">
+                      <div>
+                        <h3 className="font-serif text-lg font-semibold text-gray-900">
+                          {item.name}
+                        </h3>
+                        <p className="text-sm text-gray-600">{item.size}</p>
+                      </div>
                       <button
-                        onClick={() => updateQuantity(item.productId, Math.max(1, item.quantity - 1))}
-                        className="w-8 h-8 rounded border border-sage-300 flex items-center justify-center hover:bg-sage-50"
+                        onClick={() => removeItem(itemId)}
+                        className="text-clay-600 hover:text-clay-700 p-2"
+                        aria-label="Remove item"
                       >
-                        −
-                      </button>
-                      <span className="w-8 text-center font-medium">{item.quantity}</span>
-                      <button
-                        onClick={() => updateQuantity(item.productId, item.quantity + 1)}
-                        className="w-8 h-8 rounded border border-sage-300 flex items-center justify-center hover:bg-sage-50"
-                      >
-                        +
+                        <span className="text-sm">Remove</span>
                       </button>
                     </div>
 
-                    <div className="text-right">
-                      <p className="text-sm text-gray-600">{formatPrice(item.price)}</p>
-                      <p className="font-serif text-lg font-semibold text-gray-900">
-                        {formatPrice(item.price * item.quantity)}
-                      </p>
+                    <div className="flex items-center justify-between mt-4">
+                      <div className="flex items-center gap-3">
+                        <button
+                          onClick={() => updateQuantity(itemId, Math.max(1, item.quantity - 1))}
+                          className="w-8 h-8 rounded border border-sage-300 flex items-center justify-center hover:bg-sage-50"
+                        >
+                          −
+                        </button>
+                        <span className="w-8 text-center font-medium">{item.quantity}</span>
+                        <button
+                          onClick={() => updateQuantity(itemId, item.quantity + 1)}
+                          className="w-8 h-8 rounded border border-sage-300 flex items-center justify-center hover:bg-sage-50"
+                        >
+                          +
+                        </button>
+                      </div>
+
+                      <div className="text-right">
+                        <p className="text-sm text-gray-600">{formatPrice(item.price)}</p>
+                        <p className="font-serif text-lg font-semibold text-gray-900">
+                          {formatPrice(item.price * item.quantity)}
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           {/* Order Summary */}
