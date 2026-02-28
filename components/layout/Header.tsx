@@ -16,6 +16,7 @@ export function Header() {
   const navigation = [
     { name: "Shop", href: "/shop" },
     { name: "About", href: "/about" },
+    { name: "Blog", href: "/blog" },
     { name: "Contact", href: "/contact" },
   ];
 
@@ -30,7 +31,8 @@ export function Header() {
               alt="Epoch Skin"
               width={240}
               height={80}
-              className="h-24 w-auto"
+              className="h-20 w-auto"
+              style={{ mixBlendMode: 'multiply' }}
               priority
             />
           </Link>

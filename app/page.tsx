@@ -2,11 +2,9 @@ import { HeroSection } from "@/components/home/HeroSection";
 import { TrustBadges } from "@/components/home/TrustBadges";
 import { FeaturedProducts } from "@/components/home/FeaturedProducts";
 import { ServiceCategoryCards } from "@/components/home/ServiceCategoryCards";
-import About from "@/components/home/About";
-import Commitment from "@/components/home/Commitment";
 import FAQ from "@/components/home/FAQ";
 import Contact from "@/components/home/Contact";
-import { InstagramGallery } from "@/components/home/InstagramGallery";
+// import { InstagramGallery } from "@/components/home/InstagramGallery";
 import { Newsletter } from "@/components/home/Newsletter";
 
 export default function HomePage() {
@@ -16,12 +14,11 @@ export default function HomePage() {
       <TrustBadges />
       <ServiceCategoryCards />
       <FeaturedProducts />
-      <About />
-      <Commitment />
       <FAQ />
       <Contact />
-      <InstagramGallery />
+      {/* <InstagramGallery /> */}
       <Newsletter />
+      {/* <InstagramGallery /> */}
     </>
   );
 }

@@ -1,93 +1,99 @@
-import { Metadata } from "next";
 import { Container } from "@/components/layout/Container";
+import { blogPosts } from "@/data/blog-posts";
 import Link from "next/link";
-
-export const metadata: Metadata = {
-  title: "Blog",
-  description: "Skincare tips, waxing advice, and beauty insights from Epoch Skin.",
-};
-
-const dummyPosts = [
-  {
-    id: 1,
-    title: "5 Tips for Post-Wax Skin Care",
-    excerpt: "Learn how to care for your skin after waxing to prevent irritation and achieve the best results.",
-    date: "February 15, 2026",
-    slug: "post-wax-skin-care-tips",
-  },
-  {
-    id: 2,
-    title: "The Benefits of Organic Skincare",
-    excerpt: "Discover why organic ingredients are better for your skin and the environment.",
-    date: "February 10, 2026",
-    slug: "benefits-organic-skincare",
-  },
-];
+import Image from "next/image";
 
 export default function BlogPage() {
   return (
-    <main className="min-h-screen py-20 bg-sand/10">
+    <main className="min-h-screen py-20">
       <Container>
-        <div className="max-w-4xl mx-auto">
-          {/* Header */}
-          <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-serif font-bold text-gray-900 mb-4">
-              Blog
-            </h1>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Skincare tips, waxing advice, and beauty insights from our experts.
-            </p>
-          </div>
+        {/* Header */}
+        <div className="text-center mb-16">
+          <h1 className="text-4xl md:text-5xl font-serif text-gray-900 mb-6">
+            Skincare & Wellness Blog
+          </h1>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            Expert tips, Organic Skincare insights, and waxing advice from our licensed estheticians
+          </p>
+        </div>
 
-          {/* Coming Soon Notice */}
-          <div className="bg-clay-50 border border-clay-200 rounded-lg p-8 text-center mb-12">
-            <h2 className="text-2xl font-serif font-bold text-gray-900 mb-3">
-              Coming Soon!
-            </h2>
-            <p className="text-gray-600">
-              We're working on bringing you valuable content about skincare, waxing, and wellness. 
-              Check back soon for our latest articles.
-            </p>
-          </div>
+        {/* Blog Posts Grid */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          {blogPosts.map((post) => (
+            <Link
+              key={post.slug}
+              href={`/blog/${post.slug}`}
+              className="group bg-white rounded-lg shadow-sm border border-sage-200 overflow-hidden hover:shadow-lg transition-all"
+            >
+              {/* Featured Image */}
+              <div className="relative aspect-[16/9] overflow-hidden bg-sand-100">
+                <div className="absolute inset-0 bg-gradient-to-br from-sand-200 to-sage-100 flex items-center justify-center">
+                  <span className="text-sm text-gray-500">Featured Image</span>
+                </div>
+              </div>
 
-          {/* Dummy Posts Preview */}
-          <div className="space-y-8">
-            <h3 className="text-2xl font-serif font-bold text-gray-900">
-              Recent Articles (Preview)
-            </h3>
-            
-            {dummyPosts.map((post) => (
-              <article
-                key={post.id}
-                className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 hover:shadow-md transition-shadow"
-              >
-                <time className="text-sm text-gray-500">{post.date}</time>
-                <h2 className="text-2xl font-serif font-bold text-gray-900 mt-2 mb-3">
+              {/* Content */}
+              <div className="p-6">
+                <div className="flex items-center gap-3 text-sm text-gray-600 mb-3">
+                  <span className="px-3 py-1 bg-clay-100 text-clay-700 rounded-full text-xs font-medium">
+                    {post.category}
+                  </span>
+                  <time dateTime={post.date}>
+                    {new Date(post.date).toLocaleDateString('en-US', {
+                      month: 'long',
+                      day: 'numeric',
+                      year: 'numeric'
+                    })}
+                  </time>
+                </div>
+
+                <h2 className="text-xl font-serif font-semibold text-gray-900 mb-3 group-hover:text-clay-600 transition-colors line-clamp-2">
                   {post.title}
                 </h2>
-                <p className="text-gray-600 mb-4">{post.excerpt}</p>
-                <span className="text-clay-600 font-medium hover:text-clay-700 cursor-not-allowed opacity-50">
-                  Read More →
-                </span>
-              </article>
-            ))}
-          </div>
 
-          {/* Newsletter CTA */}
-          <div className="mt-12 bg-sage-50 border border-sage-200 rounded-lg p-8 text-center">
-            <h3 className="text-2xl font-serif font-bold text-gray-900 mb-3">
-              Get Notified
-            </h3>
-            <p className="text-gray-600 mb-4">
-              Subscribe to our newsletter to be the first to know when we publish new articles.
-            </p>
-            <Link
-              href="/#newsletter"
-              className="inline-block px-6 py-3 bg-clay-500 text-white rounded-lg font-semibold hover:bg-clay-600 transition-colors"
-            >
-              Subscribe to Newsletter
+                <p className="text-gray-600 mb-4 line-clamp-3">
+                  {post.excerpt}
+                </p>
+
+                <span className="inline-flex items-center text-clay-600 font-medium group-hover:text-clay-700">
+                  Read More
+                  <svg
+                    className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </span>
+
+                <div className="mt-4 pt-4 border-t border-sage-100 text-sm text-gray-500">
+                  By {post.author}
+                </div>
+              </div>
             </Link>
-          </div>
+          ))}
+        </div>
+
+        {/* Newsletter CTA */}
+        <div className="mt-16 max-w-2xl mx-auto text-center bg-sand-50 rounded-lg p-8">
+          <h3 className="text-2xl font-serif text-gray-900 mb-4">
+            Get Skincare Tips Delivered
+          </h3>
+          <p className="text-gray-600 mb-6">
+            Subscribe to our newsletter for Organic Skincare advice, exclusive offers, and new product launches.
+          </p>
+          <Link
+            href="/#newsletter"
+            className="inline-block px-6 py-3 bg-clay-500 hover:bg-clay-600 text-white font-medium rounded transition-colors"
+          >
+            Subscribe Now
+          </Link>
         </div>
       </Container>
     </main>

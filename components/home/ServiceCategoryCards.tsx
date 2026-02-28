@@ -19,7 +19,7 @@ const serviceCategories = [
   },
   {
     title: "Organic Facials",
-    description: "Luxurious Organic facial treatments for radiant skin",
+    description: "Luxurious Organic facial treatments for radiant Skin Care",
     image: "/images/services/organic-facial.png",
     imageAlt: "Luxurious Organic facial treatment using glass skin layering technique at Epoch Skin",
     href: "/book?category=facials",
