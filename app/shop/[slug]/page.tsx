@@ -1,30 +1,31 @@
 import { notFound } from "next/navigation";
-import { getProductBySlug } from "@/data/products";
-import { ProductDetail } from "@/components/shop/ProductDetail";
+import { Container } from "@/components/layout/Container";
+import { ProductDetails } from "@/components/shop/ProductDetails";
+import { products } from "@/data/products";
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
-  const product = getProductBySlug(slug);
-  
-  if (!product) {
-    return {
-      title: "Product Not Found",
-    };
-  }
-
-  return {
-    title: product.name,
-    description: product.description,
-  };
+export async function generateStaticParams() {
+  return products.map((product) => ({
+    slug: product.slug,
+  }));
 }
 
-export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function ProductPage({ 
+  params 
+}: { 
+  params: Promise<{ slug: string }> 
+}) {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = products.find((p) => p.slug === slug);
 
   if (!product) {
     notFound();
   }
 
-  return <ProductDetail product={product} />;
+  return (
+    <main className="min-h-screen py-20">
+      <Container>
+        <ProductDetails product={product} />
+      </Container>
+    </main>
+  );
 }
