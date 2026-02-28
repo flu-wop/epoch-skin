@@ -7,18 +7,21 @@ const serviceCategories = [
     title: "Body Waxing",
     description: "Full body waxing services for smooth, long-lasting results",
     image: "/images/services/bikini-wax.png",
+    imageAlt: "Professional body waxing service at Epoch Skin studio - smooth, hair-free results",
     href: "/book?category=body-wax",
   },
   {
     title: "Facial Waxing",
     description: "Precision facial waxing for eyebrows, lip, and chin",
     image: "/images/services/wax.png",
+    imageAlt: "Precision facial waxing treatment - eyebrow, lip, and chin hair removal by licensed esthetician",
     href: "/book?category=facial-wax",
   },
   {
     title: "Organic Facials",
     description: "Luxurious organic facial treatments for radiant skin",
     image: "/images/services/organic-facial.png",
+    imageAlt: "Luxurious Organic facial treatment using glass skin layering technique at Epoch Skin",
     href: "/book?category=facials",
   },
 ];
@@ -47,7 +50,7 @@ export function ServiceCategoryCards() {
               <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-sand-100 to-neutral-100">
                 <Image
                   src={category.image}
-                  alt={category.title}
+                  alt={category.imageAlt}
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-300"
                 />

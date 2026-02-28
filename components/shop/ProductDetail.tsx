@@ -49,11 +49,11 @@ export function ProductDetail({ product }: ProductDetailProps) {
           {/* Product Image */}
           <div className="relative aspect-square rounded-lg overflow-hidden bg-gradient-to-br from-sand-100 to-neutral-100">
             <Image
-              src={product.images[0]}
-              alt={product.name}
-              fill
-              className="object-cover"
-              priority
+             src={product.images[0]}
+             alt={product.imageAlt || `${product.name} - Organic skincare product from Epoch Skin`}
+             fill
+             className="object-cover"
+             priority
             />
           </div>
 

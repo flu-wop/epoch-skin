@@ -38,7 +38,7 @@ export function ProductCard({ product }: ProductCardProps) {
         <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-sand-100 to-neutral-100">
           <Image
             src={product.images[0]}
-            alt={product.name}
+            alt={product.imageAlt || `${product.name} - ${product.shortDescription}`}
             fill
             className="object-cover transition-transform group-hover:scale-105"
           />

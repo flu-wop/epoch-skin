@@ -1,55 +1,41 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
-    const { items, customerEmail } = await request.json();
+    const { amount } = await request.json();
 
-    // Check if Stripe is configured
-    const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
-    
-    if (!stripeSecretKey || stripeSecretKey === "sk_test_51PlaceholderKey123") {
+    if (!amount || amount <= 0) {
       return NextResponse.json(
-        { error: "Stripe is not configured yet. Please add your Stripe API keys." },
-        { status: 500 }
+        { error: "Invalid amount" },
+        { status: 400 }
       );
     }
 
-    // Initialize Stripe with the secret key
+    const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
+    if (!stripeSecretKey) {
+      throw new Error("Stripe secret key not configured");
+    }
+
     const stripe = new Stripe(stripeSecretKey, {
-      apiVersion: "2026-01-28.clover",
+      apiVersion: "2024-06-20",
     });
 
-    // Calculate total amount
-    const amount = items.reduce((total: number, item: any) => {
-      return total + (item.price * item.quantity * 100); // Convert to cents
-    }, 0);
-
-    // Create PaymentIntent
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: Math.round(amount),
+      amount: Math.round(amount * 100),
       currency: "usd",
       automatic_payment_methods: {
         enabled: true,
-      },
-      metadata: {
-        customerEmail,
-        orderItems: JSON.stringify(items.map((item: any) => ({
-          name: item.name,
-          quantity: item.quantity,
-          price: item.price,
-        }))),
       },
     });
 
     return NextResponse.json({
       clientSecret: paymentIntent.client_secret,
-      paymentIntentId: paymentIntent.id,
     });
-  } catch (error: any) {
-    console.error("Stripe PaymentIntent error:", error);
+  } catch (error) {
+    console.error("Payment intent error:", error);
     return NextResponse.json(
-      { error: error.message || "Failed to create payment intent" },
+      { error: "Failed to create payment intent" },
       { status: 500 }
     );
   }

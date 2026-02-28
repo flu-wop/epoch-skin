@@ -1,4 +1,5 @@
 import { Container } from "@/components/layout/Container";
+import Image from "next/image";
 
 export default function AboutPage() {
   return (
@@ -59,6 +60,37 @@ export default function AboutPage() {
               </p>
             </div>
           </section>
+
+{/* Licensed Estheticians */}
+<section className="mb-16" id="credentials">
+  <h2 className="text-3xl font-serif text-clay-600 mb-8 text-center">Meet Your Estheticians</h2>
+  
+  <div className="grid md:grid-cols-2 gap-8">
+    <div className="bg-white border border-sage-200 rounded-lg p-6 text-center">
+      <div className="relative w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden">
+        <Image
+          src="/images/team/kayla.jpg"
+          alt="Kayla Ford, Licensed Esthetician"
+          fill
+          className="object-cover"
+        />
+      </div>
+      <h3 className="text-xl font-serif font-semibold text-gray-900 mb-2">Kayla Ford</h3>
+      <p className="text-sage-600 text-sm mb-3">Founder & Licensed Esthetician</p>
+      <p className="text-gray-700 text-sm leading-relaxed">
+        LA State Board Licensed • 8+ years experience • Certified in Organic facial treatments & precision waxing
+      </p>
+    </div>
+    
+    {/* Add more estheticians as needed */}
+  </div>
+  
+  <div className="mt-8 text-center">
+    <p className="text-sm text-gray-600">
+      All of our estheticians are Louisiana State Board licensed and undergo continuous education in Organic skincare and gentle waxing techniques.
+    </p>
+  </div>
+</section>
 
           {/* Our Values */}
 <section className="mb-16">

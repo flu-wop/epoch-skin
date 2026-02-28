@@ -18,21 +18,47 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://epoch-skin.vercel.app'),
   title: {
-    default: "Epoch Skin - Organic Skincare & Premium Waxing Studio",
+    default: "Epoch Skin | Organic Skincare & Premium Waxing Studio | New Orleans & Mobile",
     template: "%s | Epoch Skin",
   },
   description:
-    "Premium waxing studio and curated organic skincare in New Orleans. Expert body and facial waxing, organic facials, and K-Beauty treatments by licensed estheticians.",
+    "Experience transformative Organic skincare and expert waxing services in New Orleans and Mobile. Licensed estheticians, cruelty-free products, and Brazilian waxing specialists. Book your appointment today.",
   keywords: [
-    "organic skincare",
-    "waxing studio",
-    "New Orleans",
-    "facial waxing",
-    "body waxing",
-    "organic facial",
+    "Organic skincare New Orleans",
+    "Brazilian wax New Orleans",
+    "Organic facial treatments",
     "licensed esthetician",
+    "cruelty-free skincare",
+    "K-beauty New Orleans",
   ],
+  authors: [{ name: "Kayla Ford", url: "https://epoch-skin.com/about" }],
+  openGraph: {
+    title: "Epoch Skin | Organic Skincare & Waxing Studio",
+    description: "Transform your skin with Organic products and expert waxing in New Orleans",
+    url: "https://epoch-skin.com",
+    siteName: "Epoch Skin",
+    images: [
+      {
+        url: "/og-image.jpg", // Create a 1200x630 image
+        width: 1200,
+        height: 630,
+        alt: "Epoch Skin Organic Skincare Products",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Epoch Skin | Organic Skincare & Waxing",
+    description: "New Orleans & Mobile's premier Organic skincare and waxing studio",
+    images: ["/og-image.jpg"],
+  },
+  alternates: {
+    canonical: "https://epoch-skin.com",
+  },
 };
 
 export default function RootLayout({

@@ -4,35 +4,41 @@ import { Button } from "@/components/ui/button";
 
 export function HeroSection() {
   return (
-    <section className="relative bg-gradient-to-br from-sage-50 via-sand-50 to-sage-50 py-16 sm:py-20 md:py-24 lg:py-32">
+    <section className="relative bg-gradient-to-br from-sage-50 via-sand-50 to-rose-50 py-24 sm:py-32 md:py-40 lg:py-48">
       <Container>
-        <div className="mx-auto max-w-4xl text-center">
-          {/* Heading */}
-          <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-sage-900 leading-tight">
-            Premium Waxing Studio
+        <div className="relative mx-auto max-w-4xl text-center">
+          {/* Location badge */}
+          <p className="text-sm uppercase tracking-widest text-sage-700 mb-4 font-medium">
+            New Orleans
+          </p>
+          
+          {/* Heading with gradient */}
+          <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-sage-900 leading-tight" style={{ letterSpacing: '-0.02em' }}>
+            Elevate Your Skin's
             <br />
-            <span className="text-clay-600">& Organic Skincare</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-clay-600 to-rose-500">
+              Natural Radiance
+            </span>
           </h1>
 
-          {/* Subheading */}
-          <p className="mt-6 sm:mt-8 text-base sm:text-lg md:text-xl text-neutral-600 leading-relaxed px-4 sm:px-0">
-            Experience expert waxing services and curated organic skincare in New Orleans. 
-            Natural, luxurious, and effective treatments for your skin.
+          {/* Enhanced subheading */}
+          <p className="mt-8 text-lg sm:text-xl md:text-2xl text-neutral-600 leading-relaxed max-w-2xl mx-auto" style={{ letterSpacing: '0.01em', lineHeight: '1.7' }}>
+            Experience the transformative power of Organic skincare and expert waxing—where science meets nature for visible, lasting results.
           </p>
 
-          {/* CTA Buttons */}
-<div className="mt-8 sm:mt-10 flex flex-col sm:flex-row gap-4 justify-center px-4 sm:px-0">
-  <Button
-    asChild
-    size="lg"
-    className="bg-clay-500 hover:bg-clay-600 w-full sm:w-auto text-base"
-  >
-    <Link href="/book">Book Your Appointment</Link>
-  </Button>
-</div>
+          {/* CTA Button with better copy */}
+          <div className="mt-10 flex justify-center">
+            <Button
+              asChild
+              size="lg"
+              className="bg-clay-500 hover:bg-rose-500 text-lg px-10 py-6 shadow-lg hover:shadow-xl transition-all active:scale-95"
+            >
+              <Link href="/book">Begin Your Journey</Link>
+            </Button>
+          </div>
 
           {/* Trust indicators */}
-          <div className="mt-12 sm:mt-16 flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-12 text-sm text-neutral-600 px-4 sm:px-0">
+          <div className="mt-16 flex flex-wrap items-center justify-center gap-8 sm:gap-12 text-sm text-neutral-600">
             <div className="flex items-center gap-2">
               <svg className="h-5 w-5 text-sage-600" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />

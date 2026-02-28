@@ -1,4 +1,5 @@
 import { HeroSection } from "@/components/home/HeroSection";
+import { TrustBadges } from "@/components/home/TrustBadges";
 import { FeaturedProducts } from "@/components/home/FeaturedProducts";
 import { ServiceCategoryCards } from "@/components/home/ServiceCategoryCards";
 import About from "@/components/home/About";
@@ -12,6 +13,7 @@ export default function HomePage() {
   return (
     <>
       <HeroSection />
+      <TrustBadges />
       <ServiceCategoryCards />
       <FeaturedProducts />
       <About />

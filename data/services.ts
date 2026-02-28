@@ -16,12 +16,13 @@ export const services: ServiceWithGender[] = [
     name: "Brazilian Wax",
     price: 75,
     duration: "37 min",
-    description: "Complete Brazilian waxing with premium organic wax for smooth, long-lasting results.",
+    description: "Complete Brazilian waxing with premium Organic wax for smooth, long-lasting results.",
     category: "body-waxing" as const,
     gender: "women",
     popular: true,
-    benefits: ["Complete removal", "Premium organic wax", "Licensed estheticians"],
-    image: "/images/services/brazilian-wax.png"
+    benefits: ["Complete removal", "Premium Organic wax", "Licensed estheticians"],
+    image: "/images/services/brazilian-wax.png",
+    imageAlt: "Professional Brazilian waxing service for women at Epoch Skin - complete hair removal using premium Organic wax"
   },
   {
     id: "bikini-wax",
@@ -33,7 +34,8 @@ export const services: ServiceWithGender[] = [
     category: "body-waxing" as const,
     gender: "women",
     benefits: ["Classic style", "Quick service", "Licensed estheticians"],
-    image: "/images/services/bikini-wax.png"
+    image: "/images/services/bikini-wax.png",
+    imageAlt: "Classic bikini line waxing service - clean, smooth results by licensed esthetician"
   },
   {
     id: "french-bikini-wax",
@@ -45,7 +47,8 @@ export const services: ServiceWithGender[] = [
     category: "body-waxing" as const,
     gender: "women",
     benefits: ["Extended coverage", "Professional care", "Licensed estheticians"],
-    image: "/images/services/bikini-wax.png"
+    image: "/images/services/bikini-wax.png",
+    imageAlt: "French bikini wax service - extended coverage bikini line waxing by professional esthetician"
   },
   {
     id: "full-leg-wax-women",
@@ -58,7 +61,8 @@ export const services: ServiceWithGender[] = [
     gender: "women",
     popular: true,
     benefits: ["Full coverage", "Long-lasting smooth skin", "Licensed estheticians"],
-    image: "/images/services/full-leg-waxing.png"
+    image: "/images/services/full-leg-waxing.png",
+    imageAlt: "Full leg waxing service from ankle to thigh - silky smooth skin results at Epoch Skin"
   },
   {
     id: "half-leg-wax-women",
@@ -70,7 +74,8 @@ export const services: ServiceWithGender[] = [
     category: "body-waxing" as const,
     gender: "women",
     benefits: ["Targeted area", "Quick service", "Licensed estheticians"],
-    image: "/images/services/half-leg-wax.png"
+    image: "/images/services/half-leg-wax.png",
+    imageAlt: "Half leg waxing service - lower or upper leg hair removal for smooth skin"
   },
   {
     id: "full-arm-wax-women",
@@ -82,7 +87,8 @@ export const services: ServiceWithGender[] = [
     category: "body-waxing" as const,
     gender: "women",
     benefits: ["Complete coverage", "Smooth results", "Licensed estheticians"],
-    image: "/images/services/arm-wax.png"
+    image: "/images/services/arm-wax.png",
+    imageAlt: "Full arm waxing service from shoulder to wrist - complete hair removal by licensed professional"
   },
   {
     id: "half-arm-wax-women",
@@ -94,7 +100,8 @@ export const services: ServiceWithGender[] = [
     category: "body-waxing" as const,
     gender: "women",
     benefits: ["Targeted area", "Quick service", "Licensed estheticians"],
-    image: "/images/services/arm-wax.png"
+    image: "/images/services/arm-wax.png",
+    imageAlt: "Half arm waxing service - forearm or upper arm hair removal for women"
   },
   {
     id: "underarm-wax-women",
@@ -106,7 +113,8 @@ export const services: ServiceWithGender[] = [
     category: "body-waxing" as const,
     gender: "women",
     benefits: ["Quick service", "Effective removal", "Licensed estheticians"],
-    image: "/images/services/underarm-wax.png"
+    image: "/images/services/underarm-wax.png",
+    imageAlt: "Quick underarm waxing service - effective hair removal for smooth underarms"
   },
   {
     id: "stomach-wax-women",
@@ -118,7 +126,8 @@ export const services: ServiceWithGender[] = [
     category: "body-waxing" as const,
     gender: "women",
     benefits: ["Targeted area", "Clean results", "Licensed estheticians"],
-    image: "/images/services/stomach-wax.png"
+    image: "/images/services/stomach-wax.png",
+    imageAlt: "Stomach waxing service - happy trail and abdominal area hair removal for women"
   },
 
   // ═══════════════════════════════════════════
@@ -135,7 +144,8 @@ export const services: ServiceWithGender[] = [
     gender: "women",
     popular: true,
     benefits: ["Complete coverage", "Smooth complexion", "Licensed estheticians"],
-    image: "/images/services/wax.png"
+    image: "/images/services/wax.png",
+    imageAlt: "Full face waxing service - complete facial hair removal including lip, chin, and sideburns"
   },
   {
     id: "eyebrow-wax-women",
@@ -147,7 +157,8 @@ export const services: ServiceWithGender[] = [
     category: "facial-waxing" as const,
     gender: "women",
     benefits: ["Professional shaping", "Quick service", "Licensed estheticians"],
-    image: "/images/services/eyebrow-wax.png"
+    image: "/images/services/eyebrow-wax.png",
+    imageAlt: "Professional eyebrow waxing and shaping service - perfectly sculpted brows by expert esthetician"
   },
   {
     id: "lip-wax-women",
@@ -159,7 +170,8 @@ export const services: ServiceWithGender[] = [
     category: "facial-waxing" as const,
     gender: "women",
     benefits: ["Gentle process", "Fast results", "Licensed estheticians"],
-    image: "/images/services/wax.png"
+    image: "/images/services/wax.png",
+    imageAlt: "Gentle upper lip waxing service - quick facial hair removal for smooth skin"
   },
   {
     id: "chin-wax-women",
@@ -171,7 +183,8 @@ export const services: ServiceWithGender[] = [
     category: "facial-waxing" as const,
     gender: "women",
     benefits: ["Precise technique", "Clean results", "Licensed estheticians"],
-    image: "/images/services/wax.png"
+    image: "/images/services/wax.png",
+    imageAlt: "Precise chin waxing service - clean facial hair removal for smooth appearance"
   },
   {
     id: "nose-wax-women",
@@ -183,7 +196,8 @@ export const services: ServiceWithGender[] = [
     category: "facial-waxing" as const,
     gender: "women",
     benefits: ["Quick service", "Clean results", "Licensed estheticians"],
-    image: "/images/services/wax.png"
+    image: "/images/services/wax.png",
+    imageAlt: "Quick nose hair waxing service - effective nasal hair removal for women"
   },
 
   // ═══════════════════════════════════════════
@@ -195,12 +209,13 @@ export const services: ServiceWithGender[] = [
     name: "Brozilian Wax",
     price: 95,
     duration: "50 min",
-    description: "Complete Brazilian waxing for men with premium organic wax.",
+    description: "Complete Brazilian waxing for men with premium Organic wax.",
     category: "body-waxing" as const,
     gender: "men",
     popular: true,
     benefits: ["Full removal or shaped", "Premium care", "Licensed estheticians"],
-    image: "/images/services/brazilian-wax.png"
+    image: "/images/services/brazilian-wax.png",
+    imageAlt: "Brozilian waxing service for men - complete Brazilian hair removal using premium Organic wax"
   },
   {
     id: "boyzilian-wax",
@@ -212,7 +227,8 @@ export const services: ServiceWithGender[] = [
     category: "body-waxing" as const,
     gender: "men",
     benefits: ["Targeted area", "Professional technique", "Licensed estheticians"],
-    image: "/images/services/brazilian-wax.png"
+    image: "/images/services/brazilian-wax.png",
+    imageAlt: "Boyzilian waxing service - men's bikini area hair removal by professional esthetician"
   },
   {
     id: "back-wax",
@@ -225,7 +241,8 @@ export const services: ServiceWithGender[] = [
     gender: "men",
     popular: true,
     benefits: ["Full coverage", "Smooth results", "Licensed estheticians"],
-    image: "/images/services/back-wax.png"
+    image: "/images/services/back-wax.png",
+    imageAlt: "Complete back waxing service for men - full back hair removal for smooth skin"
   },
   {
     id: "chest-wax",
@@ -238,7 +255,8 @@ export const services: ServiceWithGender[] = [
     gender: "men",
     popular: true,
     benefits: ["Clean finish", "Professional technique", "Licensed estheticians"],
-    image: "/images/services/chest-wax.png"
+    image: "/images/services/chest-wax.png",
+    imageAlt: "Full chest waxing service for men - professional body grooming and hair removal"
   },
   {
     id: "chest-abs-wax",
@@ -250,7 +268,8 @@ export const services: ServiceWithGender[] = [
     category: "body-waxing" as const,
     gender: "men",
     benefits: ["Full upper body", "Combined service", "Licensed estheticians"],
-    image: "/images/services/chest-wax.png"
+    image: "/images/services/chest-wax.png",
+    imageAlt: "Chest and abs waxing service - complete upper body hair removal for men"
   },
   {
     id: "stomach-wax-men",
@@ -262,7 +281,8 @@ export const services: ServiceWithGender[] = [
     category: "body-waxing" as const,
     gender: "men",
     benefits: ["Targeted area", "Clean results", "Licensed estheticians"],
-    image: "/images/services/stomach-wax.png"
+    image: "/images/services/stomach-wax.png",
+    imageAlt: "Men's stomach waxing service - happy trail and abdominal area hair removal"
   },
   {
     id: "shoulders-wax",
@@ -274,7 +294,8 @@ export const services: ServiceWithGender[] = [
     category: "body-waxing" as const,
     gender: "men",
     benefits: ["Quick service", "Smooth results", "Licensed estheticians"],
-    image: "/images/services/shoulders-wax.png"
+    image: "/images/services/shoulders-wax.png",
+    imageAlt: "Shoulder waxing service for men - professional hair removal for smooth, groomed shoulders"
   },
   {
     id: "back-shoulders-wax",
@@ -287,7 +308,8 @@ export const services: ServiceWithGender[] = [
     gender: "men",
     popular: true,
     benefits: ["Full coverage", "Complete upper body", "Licensed estheticians"],
-    image: "/images/services/back-wax.png"
+    image: "/images/services/back-wax.png",
+    imageAlt: "Back and shoulders waxing service - complete upper body hair removal for men"
   },
   {
     id: "full-arm-wax-men",
@@ -299,7 +321,8 @@ export const services: ServiceWithGender[] = [
     category: "body-waxing" as const,
     gender: "men",
     benefits: ["Complete coverage", "Smooth results", "Licensed estheticians"],
-    image: "/images/services/arm-wax.png"
+    image: "/images/services/arm-wax.png",
+    imageAlt: "Full arm waxing service for men - complete hair removal from shoulder to wrist"
   },
   {
     id: "half-arm-wax-men",
@@ -311,7 +334,8 @@ export const services: ServiceWithGender[] = [
     category: "body-waxing" as const,
     gender: "men",
     benefits: ["Targeted area", "Quick service", "Licensed estheticians"],
-    image: "/images/services/arm-wax.png"
+    image: "/images/services/arm-wax.png",
+    imageAlt: "Half arm waxing service - forearm or upper arm hair removal for men"
   },
   {
     id: "full-leg-wax-men",
@@ -323,7 +347,8 @@ export const services: ServiceWithGender[] = [
     category: "body-waxing" as const,
     gender: "men",
     benefits: ["Full coverage", "Smooth results", "Licensed estheticians"],
-    image: "/images/services/full-leg-waxing.png"
+    image: "/images/services/full-leg-waxing.png",
+    imageAlt: "Full leg waxing service for men - complete hair removal from thigh to ankle"
   },
   {
     id: "underarm-wax-men",
@@ -335,7 +360,8 @@ export const services: ServiceWithGender[] = [
     category: "body-waxing" as const,
     gender: "men",
     benefits: ["Quick service", "Effective removal", "Licensed estheticians"],
-    image: "/images/services/underarm-wax.png"
+    image: "/images/services/underarm-wax.png",
+    imageAlt: "Men's underarm waxing service - quick and effective hair removal"
   },
 
   // ═══════════════════════════════════════════
@@ -351,7 +377,8 @@ export const services: ServiceWithGender[] = [
     category: "facial-waxing" as const,
     gender: "men",
     benefits: ["Full facial grooming", "Beard line shaping", "Licensed estheticians"],
-    image: "/images/services/wax.png"
+    image: "/images/services/wax.png",
+    imageAlt: "Men's full face waxing service - complete facial grooming including neck and beard line shaping"
   },
   {
     id: "eyebrow-wax-men",
@@ -363,7 +390,8 @@ export const services: ServiceWithGender[] = [
     category: "facial-waxing" as const,
     gender: "men",
     benefits: ["Clean grooming", "Professional shaping", "Licensed estheticians"],
-    image: "/images/services/eyebrow-wax.png"
+    image: "/images/services/eyebrow-wax.png",
+    imageAlt: "Men's eyebrow shaping and grooming service - professional waxing for clean, shaped brows"
   },
   {
     id: "nose-wax-men",
@@ -375,7 +403,8 @@ export const services: ServiceWithGender[] = [
     category: "facial-waxing" as const,
     gender: "men",
     benefits: ["Quick service", "Clean results", "Licensed estheticians"],
-    image: "/images/services/wax.png"
+    image: "/images/services/wax.png",
+    imageAlt: "Men's nose hair waxing service - quick and effective nasal hair removal"
   },
   {
     id: "ear-wax-men",
@@ -387,7 +416,8 @@ export const services: ServiceWithGender[] = [
     category: "facial-waxing" as const,
     gender: "men",
     benefits: ["Quick service", "Professional technique", "Licensed estheticians"],
-    image: "/images/services/wax.png"
+    image: "/images/services/wax.png",
+    imageAlt: "Professional ear hair waxing service for men - effective ear hair removal"
   },
 
   // ═══════════════════════════════════════════
@@ -399,12 +429,13 @@ export const services: ServiceWithGender[] = [
     name: "Organic Facial",
     price: 85,
     duration: "60 min",
-    description: "Custom facial using our organic products for deep hydration and radiant glow.",
+    description: "Custom facial using our Organic products for deep hydration and radiant glow.",
     category: "specialty-treatments" as const,
     gender: "all",
     popular: true,
     benefits: ["Deep hydration", "Organic products", "Custom treatment", "Licensed estheticians"],
-    image: "/images/services/organic-facial.png"
+    image: "/images/services/organic-facial.png",
+    imageAlt: "Custom Organic facial treatment - deep hydration and radiant glow using certified Organic skincare products"
   },
   {
     id: "glass-skin-treatment",
@@ -412,12 +443,13 @@ export const services: ServiceWithGender[] = [
     name: "Glass Skin Treatment",
     price: 95,
     duration: "75 min",
-    description: "K-Beauty inspired session with organic masking and massage for plump, radiant skin.",
+    description: "K-Beauty inspired session with Organic masking and massage for plump, radiant skin.",
     category: "specialty-treatments" as const,
     gender: "all",
     popular: true,
     benefits: ["K-Beauty technique", "Radiant glow", "Organic masking", "Licensed estheticians"],
-    image: "/images/services/glass-skin.png"
+    image: "/images/services/glass-skin.png",
+    imageAlt: "Glass skin facial treatment - K-Beauty inspired Organic masking for plump, dewy, radiant complexion"
   },
 ];
 
