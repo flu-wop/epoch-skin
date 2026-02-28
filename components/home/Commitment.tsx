@@ -8,7 +8,7 @@ export default function Commitment() {
           </h2>
           
           <p className="text-lg md:text-xl leading-relaxed text-gray-700">
-            At Epoch Skin, we are dedicated to sourcing only the highest-quality organic ingredients for our products, ensuring they are safe, effective, and aligned with nature. All services are performed by licensed estheticians who prioritize your comfort, skin health, and beautiful results. We believe in timeless beauty through ethical, premium, organic skincare.
+            At Epoch Skin, we are dedicated to sourcing only the highest-quality organic ingredients for our products, ensuring they are safe, effective, and aligned with nature. All services are performed by licensed estheticians who prioritize your comfort, skin health, and beautiful results. We believe in timeless beauty through ethical, premium, Organic skincare.
           </p>
         </div>
       </div>

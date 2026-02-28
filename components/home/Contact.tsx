@@ -8,7 +8,7 @@ export default function Contact() {
           </h2>
           
           <p className="text-lg md:text-xl mb-8 text-gray-700 leading-relaxed">
-            Have questions about our organic skincare or services? We'd love to hear from you.
+            Have questions about our Organic skincare or services? We'd love to hear from you.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
