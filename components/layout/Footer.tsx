@@ -11,7 +11,7 @@ export function Footer() {
           <div>
             <h3 className="font-serif text-xl mb-4">Epoch Skin</h3>
             <p className="text-sage-100 text-sm">
-              Premium waxing studio and curated Organic skincare products. Natural, luxurious, and effective treatments for your skin.
+              Premium waxing studio and curated organic skincare products. Natural, luxurious, and effective treatments for your skin.
             </p>
           </div>
 
@@ -60,7 +60,7 @@ export function Footer() {
                 kayla@epoch-skin.com
               </li>
               
-              {/* Social Media with Icons */}
+              {/* Social Media */}
               <li className="pt-2">
                 <div className="flex gap-3">
                   <a 

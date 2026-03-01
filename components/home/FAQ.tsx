@@ -5,8 +5,8 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 
 const faqs = [
   {
-    question: "Are your products certified Organic?",
-    answer: "Yes! All our skincare products use certified Organic ingredients. We're committed to clean, natural formulations that are good for your skin and the planet."
+    question: "Are your products certified organic?",
+    answer: "Yes! All our skincare products use certified organic ingredients. We're committed to clean, natural formulations that are good for your skin and the planet."
   },
   {
     question: "What is your shipping policy?",

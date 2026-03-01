@@ -21,12 +21,12 @@ export function HeroSection() {
             </span>
           </h1>
 
-          {/* Enhanced subheading */}
+          {/* Subheading */}
           <p className="mt-8 text-lg sm:text-xl md:text-2xl text-neutral-600 leading-relaxed max-w-2xl mx-auto" style={{ letterSpacing: '0.01em', lineHeight: '1.7' }}>
-            Experience expert waxing services and curated Organic skincare in New Orleans. Natural, luxurious, and effective treatments for your skin.
+            Experience expert waxing services and curated organic skincare in New Orleans. Natural, luxurious, and effective treatments for your skin.
           </p>
 
-          {/* CTA Button with better copy */}
+          {/* CTA Button */}
           <div className="mt-10 flex justify-center">
             <Button
               asChild
