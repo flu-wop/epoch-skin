@@ -17,7 +17,7 @@ export const products: Product[] = [
     category: "cleansers" as const,
     featured: true,
     skinType: ["all"],
-    size: "120ml",
+    size: "8 fl oz (236 ml)",
     inStock: true,
     ingredients: [
       "Rosa Damascena Flower Water (Organic Rose Hydrosol)",
@@ -55,7 +55,7 @@ export const products: Product[] = [
     category: "serums" as const,
     featured: true,
     skinType: ["all"],
-    size: "30ml",
+    size: "1 fl oz (30 ml)",
     inStock: true,
     ingredients: [
       "Tremella Fuciformis Extract",
@@ -87,7 +87,7 @@ export const products: Product[] = [
     category: "moisturizers" as const,
     featured: true,
     skinType: ["all"],
-    size: "50ml",
+    size: "8 oz (236 g)",
     inStock: true,
     ingredients: [
       "Aloe Barbadensis Leaf Juice (Organic Aloe Vera)",
@@ -125,7 +125,7 @@ export const products: Product[] = [
     category: "masks" as const,
     featured: true,
     skinType: ["all"],
-    size: "100ml",
+    size: "8 oz (236 g)",
     inStock: true,
     ingredients: [
       "Rosa Damascena Flower Water (Organic Rose Water)",
