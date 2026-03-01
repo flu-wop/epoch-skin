@@ -33,7 +33,11 @@ export type ProductCategory =
   | "moisturizers"
   | "masks"
   | "oils"
-  | "tools";
+  | "tools"
+  | "toners"
+  | "lip"
+  | "eye"
+  | "body";
 
 export type SkinType =
   | "all"
