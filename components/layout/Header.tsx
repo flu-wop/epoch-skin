@@ -29,9 +29,9 @@ export function Header() {
             <Image
               src="/logo.png"
               alt="Epoch Skin"
-              width={240}
-              height={80}
-              className="h-20 w-auto"
+              width={420}
+              height={140}
+              className="h-36 w-auto"
               style={{ mixBlendMode: 'multiply' }}
               priority
             />

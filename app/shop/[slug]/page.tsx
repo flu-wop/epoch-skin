@@ -11,10 +11,10 @@ export async function generateStaticParams() {
   }));
 }
 
-export default async function ProductPage({ 
-  params 
-}: { 
-  params: Promise<{ slug: string }> 
+export default async function ProductPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
   const product = products.find((p) => p.slug === slug);
@@ -32,6 +32,7 @@ export default async function ProductPage({
           </Link>
 
           <div className="grid md:grid-cols-2 gap-12">
+            {/* Product Image */}
             <div className="relative aspect-square rounded-lg overflow-hidden bg-sand-100">
               <Image
                 src={product.images[0]}
@@ -41,42 +42,53 @@ export default async function ProductPage({
               />
             </div>
 
+            {/* Product Info */}
             <div>
               <h1 className="text-4xl font-serif text-gray-900 mb-4">{product.name}</h1>
-              <p className="text-3xl font-semibold text-clay-600 mb-6">${product.price}</p>
-              
+              <p className="text-3xl font-semibold text-clay-600 mb-2">${product.price}</p>
+
+              {product.size && (
+                <p className="text-xs text-gray-400 uppercase tracking-widest mb-6">
+                  {product.size}
+                </p>
+              )}
+
               <p className="text-gray-700 mb-6">{product.description}</p>
 
-              <div className="mb-6">
-                <h3 className="font-semibold text-gray-900 mb-2">Size:</h3>
-                <p className="text-gray-700">{product.size}</p>
-              </div>
-
-              <Button className="w-full bg-clay-500 hover:bg-clay-600 mb-4" size="lg">
+              <Button className="w-full bg-clay-500 hover:bg-clay-600 mb-8" size="lg">
                 Add to Cart
               </Button>
 
-              <div className="border-t border-gray-200 pt-6 mt-6">
-                <h3 className="font-semibold text-gray-900 mb-3">Benefits:</h3>
-                <ul className="space-y-2">
-                  {product.benefits.map((benefit, index) => (
-                    <li key={index} className="flex items-start gap-2 text-gray-700">
-                      <span className="text-sage-600 mt-1">✓</span>
-                      {benefit}
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              {/* Benefits */}
+              {product.benefits && product.benefits.length > 0 && (
+                <div className="border-t border-gray-200 pt-6 mt-6">
+                  <h3 className="font-semibold text-gray-900 mb-3">Benefits:</h3>
+                  <ul className="space-y-2">
+                    {product.benefits.map((benefit, index) => (
+                      <li key={index} className="flex items-start gap-2 text-gray-700">
+                        <span className="text-sage-600 mt-1">✓</span>
+                        {benefit}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
 
-              <div className="border-t border-gray-200 pt-6 mt-6">
-                <h3 className="font-semibold text-gray-900 mb-3">How to Use:</h3>
-                <p className="text-gray-700">{product.howToUse}</p>
-              </div>
+              {/* How to Use */}
+              {product.howToUse && (
+                <div className="border-t border-gray-200 pt-6 mt-6">
+                  <h3 className="font-semibold text-gray-900 mb-3">How to Use:</h3>
+                  <p className="text-gray-700">{product.howToUse}</p>
+                </div>
+              )}
 
-              <div className="border-t border-gray-200 pt-6 mt-6">
-                <h3 className="font-semibold text-gray-900 mb-3">Ingredients:</h3>
-                <p className="text-sm text-gray-600">{product.ingredients.join(', ')}</p>
-              </div>
+              {/* Ingredients */}
+              {product.ingredients && product.ingredients.length > 0 && (
+                <div className="border-t border-gray-200 pt-6 mt-6">
+                  <h3 className="font-semibold text-gray-900 mb-3">Ingredients:</h3>
+                  <p className="text-sm text-gray-600">{product.ingredients.join(", ")}</p>
+                </div>
+              )}
             </div>
           </div>
         </div>
