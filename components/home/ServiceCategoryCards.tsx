@@ -6,7 +6,7 @@ const serviceCategories = [
   {
     title: "Body Waxing",
     description: "Full body waxing services for smooth, long-lasting results",
-    image: "/images/services/bikini-wax.png",
+    image: "/images/services/full-leg-waxing.png",
     imageAlt: "Professional body waxing service at Epoch Skin studio - smooth, hair-free results",
     href: "/book?category=body-wax",
   },
@@ -19,7 +19,7 @@ const serviceCategories = [
   },
   {
     title: "Organic Facials",
-    description: "Luxurious Organic facial treatments for radiant Skin Care",
+    description: "Luxurious organic facial treatments for radiant skincare",
     image: "/images/services/organic-facial.png",
     imageAlt: "Luxurious Organic facial treatment using glass skin layering technique at Epoch Skin",
     href: "/book?category=facials",
@@ -35,7 +35,7 @@ export function ServiceCategoryCards() {
             Our Services
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Choose from our premium waxing and Organic facial services
+            Choose from our premium waxing and organic facial services
           </p>
         </div>
 

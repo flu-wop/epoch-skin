@@ -47,7 +47,7 @@ Ready to experience the difference? Explore our collection of Organic Skincare p
     author: "Kayla Ford",
     date: "2026-02-15",
     category: "Skincare Tips",
-    image: "/images/blog/organic-skincare.jpg",
+    image: "/images/blog/botanical-lay.png",
     imageAlt: "Organic skincare products with natural ingredients",
   },
   {
@@ -87,7 +87,7 @@ Ready to achieve your best skin yet? Start your glass skin journey with our comp
     author: "Kayla Ford",
     date: "2026-02-10",
     category: "Beauty Routines",
-    image: "/images/blog/glass-skin.jpg",
+    image: "/images/blog/glass-skin.png",
     imageAlt: "Woman with glowing glass skin from Organic skincare routine",
   },
   {
@@ -132,7 +132,7 @@ Ready to book? Schedule your appointment today and experience the Epoch Skin dif
     author: "Kayla Ford",
     date: "2026-02-05",
     category: "Waxing Tips",
-    image: "/images/blog/waxing-prep.jpg",
+    image: "/images/blog/brazilian-wax.png",
     imageAlt: "Licensed esthetician performing professional waxing service",
   },
 ];
