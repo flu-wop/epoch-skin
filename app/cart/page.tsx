@@ -7,12 +7,14 @@ import { formatPrice } from "@/lib/utils";
 import Link from "next/link";
 import Image from "next/image";
 
+const TAX_RATE = 0.0945; // Louisiana state + New Orleans local
+
 export default function CartPage() {
   const { items, removeItem, updateQuantity } = useCart();
 
-  // Calculate totals locally
-  const subtotal = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-  const total = subtotal; // Free shipping, no tax for now
+  const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const tax = subtotal * TAX_RATE;
+  const total = subtotal + tax;
 
   if (items.length === 0) {
     return (
@@ -45,7 +47,6 @@ export default function CartPage() {
                   key={itemId}
                   className="bg-white border border-sage-200 rounded-lg p-6 flex gap-4"
                 >
-                  {/* Product Image */}
                   <div className="relative w-24 h-24 flex-shrink-0 bg-sand-50 rounded overflow-hidden">
                     <Image
                       src={item.image}
@@ -55,7 +56,6 @@ export default function CartPage() {
                     />
                   </div>
 
-                  {/* Product Info */}
                   <div className="flex-1">
                     <div className="flex justify-between items-start mb-2">
                       <div>
@@ -118,6 +118,10 @@ export default function CartPage() {
                 <div className="flex justify-between text-gray-700">
                   <span>Shipping</span>
                   <span>Free</span>
+                </div>
+                <div className="flex justify-between text-gray-700">
+                  <span>Tax (9.45%)</span>
+                  <span>{formatPrice(tax)}</span>
                 </div>
                 <div className="border-t border-sage-200 pt-3 flex justify-between font-serif text-xl font-semibold text-gray-900">
                   <span>Total</span>

@@ -8,15 +8,19 @@ import { StripeCheckoutForm } from "@/components/checkout/StripeCheckoutForm";
 import { useCart } from "@/lib/hooks/useCart";
 import Link from "next/link";
 
-// Initialize Stripe
+const TAX_RATE = 0.0945; // Louisiana state + New Orleans local
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || "");
 
 export default function CheckoutPage() {
-  const { items, total, clearCart } = useCart();
+  const { items, clearCart } = useCart();
   const [clientSecret, setClientSecret] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showSuccess, setShowSuccess] = useState(false);
+
+  const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const tax = subtotal * TAX_RATE;
+  const total = subtotal + tax;
 
   useEffect(() => {
     if (items.length > 0) {
@@ -24,39 +28,34 @@ export default function CheckoutPage() {
     } else {
       setIsLoading(false);
     }
-  }, [items]);
+  }, []);
 
   const createPaymentIntent = async () => {
     try {
       const response = await fetch("/api/stripe/create-payment-intent", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           items: items.map((item) => ({
-            id: item.id,
+            id: (item as any).productId || (item as any).id,
             name: item.name,
             price: item.price,
             quantity: item.quantity,
           })),
+          taxRate: TAX_RATE,
           customerEmail: "",
         }),
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to create payment intent");
-      }
+      if (!response.ok) throw new Error("Failed to create payment intent");
 
       const data = await response.json();
-
       if (data.clientSecret) {
         setClientSecret(data.clientSecret);
       } else {
         setError("Failed to initialize payment");
       }
     } catch (err: any) {
-      console.error("Payment intent error:", err);
       setError(err.message || "Failed to initialize payment");
     } finally {
       setIsLoading(false);
@@ -68,50 +67,28 @@ export default function CheckoutPage() {
     setShowSuccess(true);
   };
 
-  // Success State
   if (showSuccess) {
     return (
       <main className="min-h-screen py-20 bg-sand/10">
         <Container>
           <div className="max-w-2xl mx-auto">
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
-              {/* Success Icon */}
               <div className="flex justify-center mb-6">
                 <div className="w-20 h-20 bg-sage-100 rounded-full flex items-center justify-center">
-                  <svg
-                    className="w-12 h-12 text-sage-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M5 13l4 4L19 7"
-                    />
+                  <svg className="w-12 h-12 text-sage-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
               </div>
-
-              <h1 className="text-3xl font-serif font-bold text-gray-900 mb-4">
-                Payment Successful!
-              </h1>
+              <h1 className="text-3xl font-serif font-bold text-gray-900 mb-4">Payment Successful!</h1>
               <p className="text-lg text-gray-600 mb-8">
                 Thank you for your purchase. You'll receive an email confirmation shortly.
               </p>
-
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link
-                  href="/"
-                  className="px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition-colors"
-                >
+                <Link href="/" className="px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition-colors">
                   Return to Home
                 </Link>
-                <Link
-                  href="/shop"
-                  className="px-6 py-3 bg-clay-500 text-white rounded-lg font-semibold hover:bg-clay-600 transition-colors"
-                >
+                <Link href="/shop" className="px-6 py-3 bg-clay-500 text-white rounded-lg font-semibold hover:bg-clay-600 transition-colors">
                   Continue Shopping
                 </Link>
               </div>
@@ -122,23 +99,15 @@ export default function CheckoutPage() {
     );
   }
 
-  // Empty Cart State
   if (!isLoading && items.length === 0) {
     return (
       <main className="min-h-screen py-20 bg-sand/10">
         <Container>
           <div className="max-w-2xl mx-auto text-center">
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-12">
-              <h1 className="text-3xl font-serif font-bold text-gray-900 mb-4">
-                Your Cart is Empty
-              </h1>
-              <p className="text-lg text-gray-600 mb-8">
-                Add some products to your cart before checking out.
-              </p>
-              <Link
-                href="/shop"
-                className="inline-block px-6 py-3 bg-clay-500 text-white rounded-lg font-semibold hover:bg-clay-600 transition-colors"
-              >
+              <h1 className="text-3xl font-serif font-bold text-gray-900 mb-4">Your Cart is Empty</h1>
+              <p className="text-lg text-gray-600 mb-8">Add some products before checking out.</p>
+              <Link href="/shop" className="inline-block px-6 py-3 bg-clay-500 text-white rounded-lg font-semibold hover:bg-clay-600 transition-colors">
                 Shop Products
               </Link>
             </div>
@@ -152,9 +121,7 @@ export default function CheckoutPage() {
     <main className="min-h-screen py-20 bg-sand/10">
       <Container>
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-4xl font-serif font-bold text-gray-900 mb-8 text-center">
-            Checkout
-          </h1>
+          <h1 className="text-4xl font-serif font-bold text-gray-900 mb-8 text-center">Checkout</h1>
 
           {isLoading ? (
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-12 text-center">
@@ -164,14 +131,8 @@ export default function CheckoutPage() {
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-12">
               <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
                 <p className="text-red-600">{error}</p>
-                <p className="text-sm text-gray-600 mt-2">
-                  Note: Stripe is not fully configured yet. Add your real Stripe API keys to .env.local to enable payments.
-                </p>
               </div>
-              <Link
-                href="/cart"
-                className="inline-block px-6 py-3 bg-clay-500 text-white rounded-lg font-semibold hover:bg-clay-600 transition-colors"
-              >
+              <Link href="/cart" className="inline-block px-6 py-3 bg-clay-500 text-white rounded-lg font-semibold hover:bg-clay-600 transition-colors">
                 Return to Cart
               </Link>
             </div>
@@ -180,13 +141,11 @@ export default function CheckoutPage() {
               {/* Order Summary */}
               <div>
                 <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 sticky top-8">
-                  <h2 className="text-xl font-serif font-bold text-gray-900 mb-4">
-                    Order Summary
-                  </h2>
+                  <h2 className="text-xl font-serif font-bold text-gray-900 mb-4">Order Summary</h2>
 
                   <div className="space-y-4 mb-6">
                     {items.map((item) => (
-                      <div key={item.id} className="flex items-center gap-4">
+                      <div key={(item as any).productId || (item as any).id} className="flex items-center gap-4">
                         <div className="flex-1">
                           <p className="font-medium text-gray-900">{item.name}</p>
                           <p className="text-sm text-gray-600">Qty: {item.quantity}</p>
@@ -198,24 +157,22 @@ export default function CheckoutPage() {
                     ))}
                   </div>
 
-                  <div className="border-t border-gray-200 pt-4">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-gray-600">Subtotal</span>
-                      <span className="font-medium text-gray-900">
-                        ${total.toFixed(2)}
-                      </span>
+                  <div className="border-t border-gray-200 pt-4 space-y-2">
+                    <div className="flex justify-between text-gray-600">
+                      <span>Subtotal</span>
+                      <span>${subtotal.toFixed(2)}</span>
                     </div>
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-gray-600">Shipping</span>
-                      <span className="font-medium text-gray-900">Free</span>
+                    <div className="flex justify-between text-gray-600">
+                      <span>Shipping</span>
+                      <span>Free</span>
                     </div>
-                    <div className="border-t border-gray-200 pt-4 mt-4">
-                      <div className="flex items-center justify-between">
-                        <span className="text-lg font-semibold text-gray-900">Total</span>
-                        <span className="text-2xl font-bold text-clay-600">
-                          ${total.toFixed(2)}
-                        </span>
-                      </div>
+                    <div className="flex justify-between text-gray-600">
+                      <span>Tax (9.45%)</span>
+                      <span>${tax.toFixed(2)}</span>
+                    </div>
+                    <div className="border-t border-gray-200 pt-3 flex justify-between">
+                      <span className="text-lg font-semibold text-gray-900">Total</span>
+                      <span className="text-2xl font-bold text-clay-600">${total.toFixed(2)}</span>
                     </div>
                   </div>
                 </div>
@@ -239,14 +196,11 @@ export default function CheckoutPage() {
                       },
                     }}
                   >
-                    <StripeCheckoutForm
-                      amount={total}
-                      onSuccess={handlePaymentSuccess}
-                    />
+                    <StripeCheckoutForm amount={total} onSuccess={handlePaymentSuccess} />
                   </Elements>
                 ) : (
                   <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                    <p className="text-gray-600">Payment form will appear here when Stripe is configured.</p>
+                    <p className="text-gray-600">Initializing payment...</p>
                   </div>
                 )}
               </div>

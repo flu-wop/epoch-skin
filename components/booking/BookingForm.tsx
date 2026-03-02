@@ -5,6 +5,7 @@ import { ServiceSelector } from "./ServiceSelector";
 import { DateTimeSelector } from "./DateTimeSelector";
 import { ContactForm } from "./ContactForm";
 import { BookingReview } from "./BookingReview";
+import { BookingPayment } from "./BookingPayment";
 import { BookingSuccess } from "./BookingSuccess";
 import { services } from "@/data/services";
 
@@ -21,7 +22,7 @@ export interface BookingData {
   notes: string;
 }
 
-type BookingStep = "services" | "datetime" | "contact" | "review" | "success";
+type BookingStep = "services" | "datetime" | "contact" | "review" | "payment" | "success";
 
 export function BookingForm() {
   const [currentStep, setCurrentStep] = useState<BookingStep>("services");
@@ -30,11 +31,11 @@ export function BookingForm() {
     date: null,
     time: "",
     name: "",
-    firstName: "",          // ← added (required)
-    lastName: "",           // ← added (required)
-    email: "",              // ← added (required)
-    phone: "",              // ← added (required)
-    gender: "",             // ← added (required, default empty)
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    gender: "",
     notes: "",
   });
 
@@ -44,20 +45,21 @@ export function BookingForm() {
 
   const goToStep = (step: BookingStep) => {
     setCurrentStep(step);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+  const progressStepNames: BookingStep[] = ["services", "datetime", "contact", "review"];
+  const currentProgressIndex = progressStepNames.indexOf(currentStep);
 
   return (
     <div className="max-w-3xl mx-auto">
-      {/* Progress Indicator */}
-      {currentStep !== "success" && (
+      {/* Progress Indicator — hidden on payment and success screens */}
+      {currentStep !== "success" && currentStep !== "payment" && (
         <div className="mb-8">
           <div className="flex items-center justify-between">
             {["Services", "Date & Time", "Contact", "Review"].map((label, index) => {
-              const stepNames: BookingStep[] = ["services", "datetime", "contact", "review"];
-              const stepIndex = stepNames.indexOf(currentStep);
-              const isActive = index === stepIndex;
-              const isCompleted = index < stepIndex;
-
+              const isActive = index === currentProgressIndex;
+              const isCompleted = index < currentProgressIndex;
               return (
                 <div key={label} className="flex flex-col items-center">
                   <div
@@ -117,7 +119,16 @@ export function BookingForm() {
           bookingData={bookingData}
           services={services}
           onBack={() => goToStep("contact")}
-          onSubmit={() => goToStep("success")}
+          onSubmit={() => goToStep("payment")}
+        />
+      )}
+
+      {currentStep === "payment" && (
+        <BookingPayment
+          bookingData={bookingData}
+          services={services}
+          onSuccess={() => goToStep("success")}
+          onBack={() => goToStep("review")}
         />
       )}
 
