@@ -6,7 +6,7 @@ export const products: Product[] = [
     id: "1",
     slug: "organic-dewy-glow-oat-cleanser",
     name: "Organic Dewy Glow Oat Cleanser",
-    price: 35,
+    price: 28,
     description:
       "A mild, foaming facial cleanser crafted to gently cleanse and refresh skin while delivering glass-skin hydration with every wash. Formulated with organic rose hydrosol, aloe vera, colloidal oatmeal, hydrolyzed wheat protein, and licorice root extract for a lit-from-within glow—without a hint of tint or residue. Free from harsh sulfates, synthetic fragrances, and artificial colorants. Formulated at a skin-friendly pH of 4.5–5.5.",
     shortDescription:
@@ -76,7 +76,7 @@ export const products: Product[] = [
     id: "3",
     slug: "organic-dewy-barrier-glow-cream",
     name: "Organic Dewy Barrier Glow Cream",
-    price: 42,
+    price: 46,
     description:
       "A glass-skin moisturizer that delivers serious plumpness and barrier support in a lightweight, fast-absorbing cream. Powered by snow mushroom (tremella) extract, beta-glucan, squalane, and rosehip oil in an organic aloe base—melts into skin without heaviness, leaving a luminous, dewy finish. Formulated at pH 5–6 for optimal skin compatibility.",
     shortDescription:
@@ -189,7 +189,7 @@ export const products: Product[] = [
     id: "6",
     slug: "organic-clove-glow-even-tone-toner",
     name: "Organic Clove Glow Even Tone Toner",
-    price: 35,
+    price: 28,
     description:
       "An antioxidant-rich toner built on a clove-infused organic rose water base, with licorice root and green tea extracts for balanced, radiant skin. Formulated at pH 4.5–5.5 for optimal skin balance. Contains clove — always patch test 24–48 hours before first use.",
     shortDescription:
@@ -225,7 +225,7 @@ export const products: Product[] = [
     id: "7",
     slug: "organic-dewy-plump-hydration-serum",
     name: "Organic Dewy Plump Hydration Serum",
-    price: 40,
+    price: 48,
     description:
       "The ultimate glass-skin plumping serum—lightweight yet intensely hydrating. Tremella fuciformis (snow mushroom) takes center stage, supported by beta-glucan, licorice root, hydrolyzed wheat protein, and squalane. Cold-process formulated to preserve every active at peak potency. No synthetic fragrance, alcohol, or artificial colorants.",
     shortDescription:
@@ -295,7 +295,7 @@ export const products: Product[] = [
     id: "9",
     slug: "organic-plump-eye-renewal-treatment",
     name: "Organic Plump Eye Renewal Treatment",
-    price: 44,
+    price: 52,
     description:
       "Targeted hydration and plumping for the most delicate area of the face. Layers tremella extract, beta-glucan, hydrolyzed wheat protein, and licorice root in an aloe base to visibly smooth fine lines and restore a bright, dewy eye area. Formulated at a gentle pH of 4.5–5.5 for eye-area compatibility.",
     shortDescription:
@@ -333,7 +333,7 @@ export const products: Product[] = [
     id: "10",
     slug: "organic-willow-glow-exfoliating-serum",
     name: "Organic Willow Glow Exfoliating Serum",
-    price: 42,
+    price: 50,
     description:
       "A gentle BHA-inspired exfoliating serum powered by willow bark extract—nature's salicin source—balanced with tremella extract, beta-glucan, and rosehip oil to resurface skin without stripping. Formulated at an active pH of 3.8–4.5 for real exfoliation results. Always apply SPF the morning after use.",
     shortDescription:
