@@ -5,13 +5,13 @@ export const products: Product[] = [
   {
     id: "1",
     slug: "organic-dewy-glow-oat-cleanser",
-    name: "Organic Dewy Glow Oat Cleanser",
+    name: "Dewy Glow Turmeric Oat Cleanser",
     price: 28,
     description:
       "A mild, foaming facial cleanser crafted to gently cleanse and refresh skin while delivering glass-skin hydration with every wash. Formulated with organic rose hydrosol, aloe vera, colloidal oatmeal, hydrolyzed wheat protein, and licorice root extract for a lit-from-within glow—without a hint of tint or residue. Free from harsh sulfates, synthetic fragrances, and artificial colorants. Formulated at a skin-friendly pH of 4.5–5.5.",
     shortDescription:
       "Mild foaming cleanser with organic licorice root extract, colloidal oats, and aloe for gentle cleansing, deep hydration, and radiant glow.",
-    images: ["/images/products/dewy-cleanser.jpg"],
+    images: ["/images/products/dewy-glow-oat-cleanser.png"],
     imageAlt:
       "Epoch Skin Organic Dewy Glow Oat Cleanser - 120ml bottle with organic licorice root and colloidal oats for gentle facial cleansing",
     category: "cleansers" as const,
@@ -43,13 +43,13 @@ export const products: Product[] = [
   {
     id: "2",
     slug: "organic-snow-mushroom-hydrating-serum",
-    name: "Organic Snow Mushroom Hydrating Serum",
+    name: "Tremella Hydrating Serum",
     price: 48,
     description:
       "Lightweight hydrating serum with tremella fuciformis and hyaluronic acid for intense moisture and plump, dewy skin.",
     shortDescription:
       "Hydrating serum with snow mushroom extract for plump, radiant skin.",
-    images: ["/images/products/serum.png"],
+    images: ["/images/products/tremella-hydrating-serum.png"],
     imageAlt:
       "Epoch Skin Organic Snow Mushroom Hydrating Serum - 30ml amber glass bottle with dropper containing tremella fuciformis and hyaluronic acid",
     category: "serums" as const,
@@ -75,13 +75,13 @@ export const products: Product[] = [
   {
     id: "3",
     slug: "organic-dewy-barrier-glow-cream",
-    name: "Organic Dewy Barrier Glow Cream",
+    name: "Dewy Barrier Glow Cream",
     price: 46,
     description:
       "A glass-skin moisturizer that delivers serious plumpness and barrier support in a lightweight, fast-absorbing cream. Powered by snow mushroom (tremella) extract, beta-glucan, squalane, and rosehip oil in an organic aloe base—melts into skin without heaviness, leaving a luminous, dewy finish. Formulated at pH 5–6 for optimal skin compatibility.",
     shortDescription:
       "Lightweight moisturizer with tremella fuciformis and beta-glucan for intense hydration and barrier support.",
-    images: ["/images/products/moisturizer.png"],
+    images: ["/images/products/barrier-glow-cream.png"],
     imageAlt:
       "Epoch Skin Organic Dewy Barrier Glow Cream - 50ml jar with tremella fuciformis, beta-glucan, and organic shea butter moisturizer",
     category: "moisturizers" as const,
@@ -113,13 +113,13 @@ export const products: Product[] = [
   {
     id: "4",
     slug: "organic-dewy-rice-peel-off-glow-mask",
-    name: "Organic Dewy Rice Peel-Off Glow Mask",
+    name: "Dewy Rice Peel Off Glow Mask",
     price: 42,
     description:
       "A luxurious, glass-skin peel-off mask that blends ultra-fine rice powder, centella asiatica, and licorice root extract in a natural agar-based film. Each use gently polishes away dullness while layering on hydration for a visibly smoother, brighter, more even complexion. Vegan. No artificial colorants or synthetic film formers.",
     shortDescription:
       "Peel-off mask with organic rice powder and Centella Asiatica for polished, bright, glass skin.",
-    images: ["/images/products/peel-off-mask.png"],
+    images: ["/images/products/rice-peel-off-mask.png"],
     imageAlt:
       "Epoch Skin Organic Dewy Rice Peel-Off Glow Mask - 100ml tube with organic rice powder and Centella Asiatica for skin brightening",
     category: "masks" as const,
@@ -151,7 +151,7 @@ export const products: Product[] = [
   {
     id: "5",
     slug: "organic-aloe-glow-hydrating-mask",
-    name: "Organic Aloe Glow Hydrating Mask",
+    name: "Dewy Glow Hydrating Mask",
     price: 40,
     description:
       "A supercharged hydration mask that delivers a full glass-skin moisture surge in just 10–15 minutes. Formulated with snow mushroom extract, kakadu plum, licorice root, rosehip oil, and squalane in an organic aloe base. Cold-process made to preserve every active ingredient at peak potency. No artificial colors, synthetic fragrances, or harsh chemicals.",
@@ -188,7 +188,7 @@ export const products: Product[] = [
   {
     id: "6",
     slug: "organic-clove-glow-even-tone-toner",
-    name: "Organic Clove Glow Even Tone Toner",
+    name: "Clove Glow Toner",
     price: 28,
     description:
       "An antioxidant-rich toner built on a clove-infused organic rose water base, with licorice root and green tea extracts for balanced, radiant skin. Formulated at pH 4.5–5.5 for optimal skin balance. Contains clove — always patch test 24–48 hours before first use.",
@@ -224,13 +224,13 @@ export const products: Product[] = [
   {
     id: "7",
     slug: "organic-dewy-plump-hydration-serum",
-    name: "Organic Dewy Plump Hydration Serum",
+    name: "Dewy Plump Hydration Serum",
     price: 48,
     description:
       "The ultimate glass-skin plumping serum—lightweight yet intensely hydrating. Tremella fuciformis (snow mushroom) takes center stage, supported by beta-glucan, licorice root, hydrolyzed wheat protein, and squalane. Cold-process formulated to preserve every active at peak potency. No synthetic fragrance, alcohol, or artificial colorants.",
     shortDescription:
       "Lightweight plumping serum with snow mushroom and beta-glucan for dewy, glass-skin hydration.",
-    images: ["/images/products/dewy-plump-serum.png"],
+    images: ["/images/products/dewy-plump-hydration-serum.png"],
     imageAlt:
       "Epoch Skin Organic Dewy Plump Hydration Serum - 30ml amber dropper bottle with snow mushroom and beta-glucan",
     category: "serums" as const,
@@ -260,7 +260,7 @@ export const products: Product[] = [
   {
     id: "8",
     slug: "organic-dewy-glow-lip-balm",
-    name: "Organic Dewy Glow Lip Balm",
+    name: "Dewy Glow Lip Balm",
     price: 12,
     description:
       "Hydration meets glossy luxury in this organic lip balm built around shea butter, rosehip seed oil, and plant-derived squalane. Squalane delivers a soft, glassy shine and seals in moisture while rosehip oil nourishes with antioxidants for a naturally plumped, radiant pout. No synthetic fragrances, petroleum, or artificial colorants.",
@@ -294,13 +294,13 @@ export const products: Product[] = [
   {
     id: "9",
     slug: "organic-plump-eye-renewal-treatment",
-    name: "Organic Plump Eye Renewal Treatment",
+    name: "Dewy Eye Renewal Treatment",
     price: 52,
     description:
       "Targeted hydration and plumping for the most delicate area of the face. Layers tremella extract, beta-glucan, hydrolyzed wheat protein, and licorice root in an aloe base to visibly smooth fine lines and restore a bright, dewy eye area. Formulated at a gentle pH of 4.5–5.5 for eye-area compatibility.",
     shortDescription:
       "Lightweight eye cream with snow mushroom and beta-glucan to plump, smooth, and brighten the eye area.",
-    images: ["/images/products/plump-eye-renewal.png"],
+    images: ["/images/products/eye-renewal-treatment.png"],
     imageAlt:
       "Epoch Skin Organic Plump Eye Renewal Treatment - 1oz jar with snow mushroom and hydrolyzed wheat protein for the eye area",
     category: "eye" as const,
@@ -332,7 +332,7 @@ export const products: Product[] = [
   {
     id: "10",
     slug: "organic-willow-glow-exfoliating-serum",
-    name: "Organic Willow Glow Exfoliating Serum",
+    name: "Willow Glow Exfoliating Serum",
     price: 50,
     description:
       "A gentle BHA-inspired exfoliating serum powered by willow bark extract—nature's salicin source—balanced with tremella extract, beta-glucan, and rosehip oil to resurface skin without stripping. Formulated at an active pH of 3.8–4.5 for real exfoliation results. Always apply SPF the morning after use.",
@@ -371,13 +371,13 @@ export const products: Product[] = [
   {
     id: "11",
     slug: "organic-pineapple-papaya-enzyme-glow-powder",
-    name: "Organic Pineapple Papaya Enzyme Glow Powder",
+    name: "Pineapple Papaya Enzyme Glow Powder",
     price: 35,
     description:
       "A mix-your-own enzyme exfoliant that brings professional-grade fruit enzyme resurfacing to your home routine. Organic pineapple powder (bromelain) and papaya powder (papain) gently dissolve dead skin cells while colloidal oatmeal and ultra-fine rice powder soothe and polish. 100% powder — mix fresh each use for maximum enzyme activity.",
     shortDescription:
       "Enzyme powder exfoliant with pineapple bromelain and papaya papain for a brighter, smoother complexion.",
-    images: ["/images/products/pineapple-papaya-enzyme-powder.png"],
+    images: ["/images/products/enzyme-glow-powder.png"],
     imageAlt:
       "Epoch Skin Organic Pineapple Papaya Enzyme Glow Powder - 4oz jar with pineapple bromelain and papaya papain for enzyme exfoliation",
     category: "masks" as const,
@@ -405,7 +405,7 @@ export const products: Product[] = [
   {
     id: "12",
     slug: "organic-creamy-hybrid-wax-beads",
-    name: "Organic Creamy Hybrid Wax Beads",
+    name: "Hybrid Wax Beads",
     price: 32,
     description:
       "A rosin-free, synthetic-free hybrid wax combining the grip of hard wax with the soothing creaminess of a skin treatment. Shea butter, rosehip oil, and squalane nourish during removal while organic beeswax provides a clean 4–7 second set for minimal breakage on all hair types. Hypoallergenic. No rosin, artificial fragrance, or synthetic resins.",
@@ -439,7 +439,7 @@ export const products: Product[] = [
   {
     id: "13",
     slug: "organic-calm-hydrate-hydro-jelly-mask",
-    name: "Organic Calm & Hydrate Hydro Jelly Mask",
+    name: "Calming Hydro Jelly Mask",
     price: 40,
     description:
       "A cooling, bouncy jelly mask formulated for sensitive, reactive, or irritated skin. Centella asiatica, colloidal oatmeal, beta-glucan, and licorice root reduce redness and calm inflammation while the agar-agar jelly base delivers a deeply hydrating, soothing experience. No synthetic gelling agents or artificial fragrance.",
@@ -477,13 +477,13 @@ export const products: Product[] = [
   {
     id: "14",
     slug: "organic-calm-hydrate-hydro-jelly-powder-mask",
-    name: "Organic Calm & Hydrate Hydro Jelly Powder Mask",
+    name: "Calming Hydro Jelly Mask Powder",
     price: 36,
     description:
       "The dry powder version of our Hydro Jelly Mask for maximum freshness and a 12-month shelf life. Mix with aloe vera gel and rose water before each use to activate a fresh, bouncy jelly packed with centella asiatica, licorice root, beta-glucan, and colloidal oatmeal. No water, no preservatives — just clean, active dry ingredients.",
     shortDescription:
       "Dry powder mask that activates into a calming hydro jelly with centella asiatica and colloidal oatmeal.",
-    images: ["/images/products/hydro-jelly-powder-mask.png"],
+    images: ["/images/products/hydro-jelly-mask-powder.png"],
     imageAlt:
       "Epoch Skin Organic Calm & Hydrate Hydro Jelly Powder Mask - 4oz jar of dry powder mask with centella asiatica and agar for jelly activation",
     category: "masks" as const,
