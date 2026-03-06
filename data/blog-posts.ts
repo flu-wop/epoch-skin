@@ -47,7 +47,7 @@ Ready to experience the difference? Explore our collection of Organic Skincare p
     author: "Kayla Ford",
     date: "2026-02-15",
     category: "Skincare Tips",
-    image: "/images/blog/Skincare-tips.png",
+    image: "/images/blog/skincare-tips.png",
     imageAlt: "Organic Skincare products with natural ingredients",
   },
   {
@@ -87,7 +87,7 @@ Ready to achieve your best skin yet? Start your glass skin journey with our comp
     author: "Kayla Ford",
     date: "2026-02-10",
     category: "Beauty Routines",
-    image: "/images/blog/glass-skin.png",
+    image: "/images/blog/beauty-routines.png",
     imageAlt: "Woman with glowing glass skin from Organic Skincare routine",
   },
   {
