@@ -47,7 +47,7 @@ Ready to experience the difference? Explore our collection of Organic Skincare p
     author: "Kayla Ford",
     date: "2026-02-15",
     category: "Skincare Tips",
-    image: "/images/blog/botanical-lay.png",
+    image: "/images/blog/skincare-tips.png",
     imageAlt: "Organic skincare products with natural ingredients",
   },
   {
@@ -132,7 +132,7 @@ Ready to book? Schedule your appointment today and experience the Epoch Skin dif
     author: "Kayla Ford",
     date: "2026-02-05",
     category: "Waxing Tips",
-    image: "/images/blog/brazilian-wax.png",
+    image: "/images/blog/beauty-routines.png",
     imageAlt: "Licensed esthetician performing professional waxing service",
   },
 ];

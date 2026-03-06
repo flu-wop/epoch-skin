@@ -5,7 +5,7 @@ import { products } from "@/data/products";
 
 export const metadata: Metadata = {
   title: "Shop",
-  description: "Discover our curated collection of organic skincare products. Organic ingredients, cruelty-free formulas, and effective results.",
+  description: "Discover our curated collection of organic skincare products. Certified organic ingredients, cruelty-free formulas, and effective results.",
 };
 
 export default function ShopPage() {
@@ -19,8 +19,8 @@ export default function ShopPage() {
               Shop Skincare
             </h1>
             <p className="mt-6 text-lg text-neutral-600 leading-relaxed">
-              Discover our thoughtfully curated collection of organic skincare products. 
-              Each formula is crafted with organic ingredients to nourish and enhance your skin's natural beauty.
+              Discover our thoughtfully curated collection of organic skincare products.
+              Each formula is crafted with certified organic ingredients to nourish and enhance your skin's natural beauty.
             </p>
           </div>
         </Container>
@@ -40,7 +40,7 @@ export default function ShopPage() {
             <h2 className="text-center font-serif text-3xl font-bold text-sage-900">
               Why Choose Epoch Skin Products
             </h2>
-            
+
             <div className="mt-12 grid gap-8 md:grid-cols-3">
               <div className="text-center">
                 <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-clay-100">
@@ -49,10 +49,10 @@ export default function ShopPage() {
                   </svg>
                 </div>
                 <h3 className="mt-4 font-serif text-xl font-semibold text-sage-900">
-                  Organic Ingredients
+                  Certified Organic
                 </h3>
                 <p className="mt-2 text-sm text-neutral-600">
-                  Formulated with organic extracts and natural actives that are gentle yet effective.
+                  Formulated with certified organic extracts and natural actives that are gentle yet effective.
                 </p>
               </div>
 
