@@ -109,12 +109,11 @@ export function ProductDetail({ product }: ProductDetailProps) {
 
   const handleAddToCart = () => {
     addItem({
-      productId: product.id,
+      id: product.id,
       name: product.name,
       price: product.price,
       image: product.images[0],
       size: product.size || "",
-      quantity,
     });
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);

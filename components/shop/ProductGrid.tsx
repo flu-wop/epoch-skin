@@ -31,12 +31,11 @@ function ProductCard({ product }: { product: Product }) {
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     addItem({
-      productId: product.id,
+      id: product.id,
       name: product.name,
       price: product.price,
       image: product.images[0],
       size: product.size || "",
-      quantity: 1,
     });
     setAdded(true);
     setTimeout(() => setAdded(false), 1800);
@@ -63,18 +62,7 @@ function ProductCard({ product }: { product: Product }) {
         />
 
         {/* Badges */}
-        <div className="absolute top-3 left-3 flex flex-col gap-1.5">
-          {product.isNew && (
-            <span className="bg-clay-500 text-white text-xs font-semibold px-2.5 py-1 rounded-full">
-              New
-            </span>
-          )}
-          {product.isBestSeller && (
-            <span className="bg-sage-600 text-white text-xs font-semibold px-2.5 py-1 rounded-full">
-              Best Seller
-            </span>
-          )}
-        </div>
+        <div className="absolute top-3 left-3 flex flex-col gap-1.5"></div>
 
         {/* Trust badge */}
         <div className="absolute top-3 right-3">
