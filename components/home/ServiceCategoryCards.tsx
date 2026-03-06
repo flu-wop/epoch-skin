@@ -19,8 +19,8 @@ const serviceCategories = [
   },
   {
     title: "Organic Facials",
-    description: "Luxurious organic facial treatments for radiant skincare",
-    image: "/images/services/organic-facial.png",
+    description: "Luxurious Organic facial treatments for radiant Skincare",
+    image: "/images/services/Organic-facial.png",
     imageAlt: "Luxurious Organic facial treatment using glass skin layering technique at Epoch Skin",
     href: "/book?category=facials",
   },
@@ -35,7 +35,7 @@ export function ServiceCategoryCards() {
             Our Services
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Choose from our premium waxing and organic facial services
+            Choose from our premium waxing and Organic facial services
           </p>
         </div>
 

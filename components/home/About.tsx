@@ -8,7 +8,7 @@ export default function About() {
           </h2>
           
           <p className="text-lg md:text-xl leading-relaxed text-gray-700">
-            Founded with a passion for clean beauty, Epoch Skin blends K-Beauty inspired routines with certified organic ingredients to help you achieve glass-skin radiance. Every product is handmade with care, and every service is delivered by licensed professionals.
+            Founded with a passion for clean beauty, Epoch Skin blends K-Beauty inspired routines with certified Organic Ingredients to help you achieve glass-skin radiance. Every product is handmade with care, and every service is delivered by licensed professionals.
           </p>
         </div>
       </div>

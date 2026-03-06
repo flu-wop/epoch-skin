@@ -41,7 +41,7 @@ export function Newsletter() {
                 Join Our Newsletter
               </h2>
               <p className="mt-4 text-lg text-neutral-600">
-                Subscribe for exclusive skincare tips, special offers, and early 
+                Subscribe for exclusive Skincare tips, special offers, and early 
                 access to new products. Plus, get 15% off your first order!
               </p>
 

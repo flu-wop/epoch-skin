@@ -5,7 +5,7 @@ export function StructuredData() {
       {
         "@type": "BeautySalon",
         "name": "Epoch Skin",
-        "description": "Premium waxing studio and Organic skincare products in New Orleans and Mobile",
+        "description": "Premium waxing studio and Organic Skincare products in New Orleans and Mobile",
         "url": "https://epoch-skin.com",
         "telephone": "+1-504-777-4094",
         "email": "kayla@epoch-skin.com",

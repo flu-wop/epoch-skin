@@ -4,7 +4,7 @@ import { BookingForm } from "@/components/booking/BookingForm";
 
 export const metadata: Metadata = {
   title: "Book an Appointment",
-  description: "Schedule your waxing or organic facial appointment at Epoch Skin. Professional services by licensed estheticians.",
+  description: "Schedule your waxing or Organic facial appointment at Epoch Skin. Professional services by licensed estheticians.",
 };
 
 export default function BookPage() {

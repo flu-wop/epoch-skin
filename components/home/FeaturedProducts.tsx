@@ -37,8 +37,8 @@ export function FeaturedProducts() {
             Featured Products
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-neutral-600">
-            Discover our curated collection of Organic skincare essentials, 
-            formulated with organic ingredients for radiant, healthy skin.
+            Discover our curated collection of Organic Skincare essentials, 
+            formulated with Organic Ingredients for radiant, healthy skin.
           </p>
         </div>
 

@@ -6,14 +6,14 @@ import Image from "next/image";
 // Map blog post slugs to their images.
 // Adjust these paths if your blog-posts data uses different slugs.
 const postImages: Record<string, string> = {
-  "benefits-of-organic-skincare": "/images/blog/skincare-tips.png",
+  "benefits-of-Organic-Skincare": "/images/blog/Skincare-tips.png",
   "glass-skin-routine":           "/images/blog/glass-skin.png",
   "waxing-prep-guide":            "/images/blog/beauty-routines.png",
 };
 
 // Fallback: assign images in order if slugs don't match exactly
 const orderedImages = [
-  "/images/blog/skincare-tips.png",
+  "/images/blog/Skincare-tips.png",
   "/images/blog/glass-skin.png",
   "/images/blog/beauty-routines.png",
 ];
@@ -28,7 +28,7 @@ export default function BlogPage() {
             Skincare & Wellness Blog
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Expert tips, organic skincare insights, and waxing advice from our licensed estheticians
+            Expert tips, Organic Skincare insights, and waxing advice from our licensed estheticians
           </p>
         </div>
 
@@ -110,7 +110,7 @@ export default function BlogPage() {
             Get Skincare Tips Delivered
           </h3>
           <p className="text-gray-600 mb-6">
-            Subscribe to our newsletter for organic skincare advice, exclusive offers, and new product launches.
+            Subscribe to our newsletter for Organic Skincare advice, exclusive offers, and new product launches.
           </p>
           <Link
             href="/#newsletter"

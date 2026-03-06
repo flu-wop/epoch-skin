@@ -24,13 +24,13 @@ export const metadata: Metadata = {
     template: "%s | Epoch Skin",
   },
   description:
-    "Experience transformative Organic skincare and expert waxing services in New Orleans and Mobile. Licensed estheticians, cruelty-free products, and Brazilian waxing specialists. Book your appointment today.",
+    "Experience transformative Organic Skincare and expert waxing services in New Orleans and Mobile. Licensed estheticians, cruelty-free products, and Brazilian waxing specialists. Book your appointment today.",
   keywords: [
-    "Organic skincare New Orleans",
+    "Organic Skincare New Orleans",
     "Brazilian wax New Orleans",
     "Organic facial treatments",
     "licensed esthetician",
-    "cruelty-free skincare",
+    "cruelty-free Skincare",
     "K-beauty New Orleans",
   ],
   authors: [{ name: "Kayla Ford", url: "https://epoch-skin.com/about" }],
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Epoch Skin | Organic Skincare & Waxing",
-    description: "New Orleans & Mobile's premier Organic skincare and waxing studio",
+    description: "New Orleans & Mobile's premier Organic Skincare and waxing studio",
     images: ["/og-image.jpg"],
   },
   alternates: {

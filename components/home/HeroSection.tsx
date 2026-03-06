@@ -23,7 +23,7 @@ export function HeroSection() {
 
           {/* Subheading */}
           <p className="mt-8 text-lg sm:text-xl md:text-2xl text-neutral-600 leading-relaxed max-w-2xl mx-auto" style={{ letterSpacing: '0.01em', lineHeight: '1.7' }}>
-            Experience expert waxing services and curated organic skincare in New Orleans. Natural, luxurious, and effective treatments for your skin.
+            Experience expert waxing services and curated Organic Skincare in New Orleans. Natural, luxurious, and effective treatments for your skin.
           </p>
 
           {/* CTA Button */}

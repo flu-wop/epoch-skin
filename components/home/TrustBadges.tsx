@@ -6,7 +6,7 @@ export function TrustBadges() {
     { 
       icon: Leaf,
       name: "Organic Certified",
-      description: "USDA Organic ingredients"
+      description: "USDA Organic Ingredients"
     },
     { 
       icon: Heart,

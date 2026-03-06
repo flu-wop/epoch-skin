@@ -4,16 +4,16 @@ export const products: Product[] = [
   // ─── EXISTING PRODUCTS ───────────────────────────────────────
   {
     id: "1",
-    slug: "organic-dewy-glow-oat-cleanser",
+    slug: "Organic-dewy-glow-oat-cleanser",
     name: "Dewy Glow Turmeric Oat Cleanser",
     price: 28,
     description:
-      "A mild, foaming facial cleanser crafted to gently cleanse and refresh skin while delivering glass-skin hydration with every wash. Formulated with organic rose hydrosol, aloe vera, colloidal oatmeal, hydrolyzed wheat protein, and licorice root extract for a lit-from-within glow—without a hint of tint or residue. Free from harsh sulfates, synthetic fragrances, and artificial colorants. Formulated at a skin-friendly pH of 4.5–5.5.",
+      "A mild, foaming facial cleanser crafted to gently cleanse and refresh skin while delivering glass-skin hydration with every wash. Formulated with Organic rose hydrosol, aloe vera, colloidal oatmeal, hydrolyzed wheat protein, and licorice root extract for a lit-from-within glow—without a hint of tint or residue. Free from harsh sulfates, synthetic fragrances, and artificial colorants. Formulated at a skin-friendly pH of 4.5–5.5.",
     shortDescription:
-      "Mild foaming cleanser with organic licorice root extract, colloidal oats, and aloe for gentle cleansing, deep hydration, and radiant glow.",
+      "Mild foaming cleanser with Organic licorice root extract, colloidal oats, and aloe for gentle cleansing, deep hydration, and radiant glow.",
     images: ["/images/products/dewy-glow-oat-cleanser.png"],
     imageAlt:
-      "Epoch Skin Organic Dewy Glow Oat Cleanser - 120ml bottle with organic licorice root and colloidal oats for gentle facial cleansing",
+      "Epoch Skin Organic Dewy Glow Oat Cleanser - 120ml bottle with Organic licorice root and colloidal oats for gentle facial cleansing",
     category: "cleansers" as const,
     featured: true,
     skinType: ["all"],
@@ -35,14 +35,14 @@ export const products: Product[] = [
     benefits: [
       "Deep hydration with every wash",
       "Gentle, sulfate-free cleansing",
-      "Brightening from organic licorice root",
+      "Brightening from Organic licorice root",
       "Soothing colloidal oatmeal for calm skin",
       "Film-forming wheat protein for smoothness",
     ],
   },
   {
     id: "2",
-    slug: "organic-snow-mushroom-hydrating-serum",
+    slug: "Organic-snow-mushroom-hydrating-serum",
     name: "Tremella Hydrating Serum",
     price: 48,
     description:
@@ -74,16 +74,16 @@ export const products: Product[] = [
   },
   {
     id: "3",
-    slug: "organic-dewy-barrier-glow-cream",
+    slug: "Organic-dewy-barrier-glow-cream",
     name: "Dewy Barrier Glow Cream",
     price: 46,
     description:
-      "A glass-skin moisturizer that delivers serious plumpness and barrier support in a lightweight, fast-absorbing cream. Powered by snow mushroom (tremella) extract, beta-glucan, squalane, and rosehip oil in an organic aloe base—melts into skin without heaviness, leaving a luminous, dewy finish. Formulated at pH 5–6 for optimal skin compatibility.",
+      "A glass-skin moisturizer that delivers serious plumpness and barrier support in a lightweight, fast-absorbing cream. Powered by snow mushroom (tremella) extract, beta-glucan, squalane, and rosehip oil in an Organic aloe base—melts into skin without heaviness, leaving a luminous, dewy finish. Formulated at pH 5–6 for optimal skin compatibility.",
     shortDescription:
       "Lightweight moisturizer with tremella fuciformis and beta-glucan for intense hydration and barrier support.",
     images: ["/images/products/barrier-glow-cream.png"],
     imageAlt:
-      "Epoch Skin Organic Dewy Barrier Glow Cream - 50ml jar with tremella fuciformis, beta-glucan, and organic shea butter moisturizer",
+      "Epoch Skin Organic Dewy Barrier Glow Cream - 50ml jar with tremella fuciformis, beta-glucan, and Organic shea butter moisturizer",
     category: "moisturizers" as const,
     featured: true,
     skinType: ["all"],
@@ -112,16 +112,16 @@ export const products: Product[] = [
   },
   {
     id: "4",
-    slug: "organic-dewy-rice-peel-off-glow-mask",
+    slug: "Organic-dewy-rice-peel-off-glow-mask",
     name: "Dewy Rice Peel Off Glow Mask",
     price: 42,
     description:
       "A luxurious, glass-skin peel-off mask that blends ultra-fine rice powder, centella asiatica, and licorice root extract in a natural agar-based film. Each use gently polishes away dullness while layering on hydration for a visibly smoother, brighter, more even complexion. Vegan. No artificial colorants or synthetic film formers.",
     shortDescription:
-      "Peel-off mask with organic rice powder and Centella Asiatica for polished, bright, glass skin.",
+      "Peel-off mask with Organic rice powder and Centella Asiatica for polished, bright, glass skin.",
     images: ["/images/products/rice-peel-off-mask.png"],
     imageAlt:
-      "Epoch Skin Organic Dewy Rice Peel-Off Glow Mask - 100ml tube with organic rice powder and Centella Asiatica for skin brightening",
+      "Epoch Skin Organic Dewy Rice Peel-Off Glow Mask - 100ml tube with Organic rice powder and Centella Asiatica for skin brightening",
     category: "masks" as const,
     featured: true,
     skinType: ["all"],
@@ -150,11 +150,11 @@ export const products: Product[] = [
   // ─── NEW PRODUCTS ────────────────────────────────────────────
   {
     id: "5",
-    slug: "organic-aloe-glow-hydrating-mask",
+    slug: "Organic-aloe-glow-hydrating-mask",
     name: "Dewy Glow Hydrating Mask",
     price: 40,
     description:
-      "A supercharged hydration mask that delivers a full glass-skin moisture surge in just 10–15 minutes. Formulated with snow mushroom extract, kakadu plum, licorice root, rosehip oil, and squalane in an organic aloe base. Cold-process made to preserve every active ingredient at peak potency. No artificial colors, synthetic fragrances, or harsh chemicals.",
+      "A supercharged hydration mask that delivers a full glass-skin moisture surge in just 10–15 minutes. Formulated with snow mushroom extract, kakadu plum, licorice root, rosehip oil, and squalane in an Organic aloe base. Cold-process made to preserve every active ingredient at peak potency. No artificial colors, synthetic fragrances, or harsh chemicals.",
     shortDescription:
       "Hydrating mask with snow mushroom and kakadu plum for a dewy, plump, radiant complexion.",
     images: ["/images/products/aloe-glow-hydrating-mask.png"],
@@ -187,11 +187,11 @@ export const products: Product[] = [
   },
   {
     id: "6",
-    slug: "organic-clove-glow-even-tone-toner",
+    slug: "Organic-clove-glow-even-tone-toner",
     name: "Clove Glow Toner",
     price: 28,
     description:
-      "An antioxidant-rich toner built on a clove-infused organic rose water base, with licorice root and green tea extracts for balanced, radiant skin. Formulated at pH 4.5–5.5 for optimal skin balance. Contains clove — always patch test 24–48 hours before first use.",
+      "An antioxidant-rich toner built on a clove-infused Organic rose water base, with licorice root and green tea extracts for balanced, radiant skin. Formulated at pH 4.5–5.5 for optimal skin balance. Contains clove — always patch test 24–48 hours before first use.",
     shortDescription:
       "Antioxidant toner with clove-infused rose water and licorice root for an even, radiant complexion.",
     images: ["/images/products/clove-glow-toner.png"],
@@ -223,7 +223,7 @@ export const products: Product[] = [
   },
   {
     id: "7",
-    slug: "organic-dewy-plump-hydration-serum",
+    slug: "Organic-dewy-plump-hydration-serum",
     name: "Dewy Plump Hydration Serum",
     price: 48,
     description:
@@ -259,16 +259,16 @@ export const products: Product[] = [
   },
   {
     id: "8",
-    slug: "organic-dewy-glow-lip-balm",
+    slug: "Organic-dewy-glow-lip-balm",
     name: "Dewy Glow Lip Balm",
     price: 12,
     description:
-      "Hydration meets glossy luxury in this organic lip balm built around shea butter, rosehip seed oil, and plant-derived squalane. Squalane delivers a soft, glassy shine and seals in moisture while rosehip oil nourishes with antioxidants for a naturally plumped, radiant pout. No synthetic fragrances, petroleum, or artificial colorants.",
+      "Hydration meets glossy luxury in this Organic lip balm built around shea butter, rosehip seed oil, and plant-derived squalane. Squalane delivers a soft, glassy shine and seals in moisture while rosehip oil nourishes with antioxidants for a naturally plumped, radiant pout. No synthetic fragrances, petroleum, or artificial colorants.",
     shortDescription:
       "Nourishing lip balm with shea butter, rosehip oil, and squalane for smooth, plump, radiant lips.",
     images: ["/images/products/dewy-glow-lip-balm.png"],
     imageAlt:
-      "Epoch Skin Organic Dewy Glow Lip Balm - tube with organic shea butter, rosehip oil, and squalane",
+      "Epoch Skin Organic Dewy Glow Lip Balm - tube with Organic shea butter, rosehip oil, and squalane",
     category: "lip" as const,
     featured: false,
     skinType: ["all"],
@@ -284,16 +284,16 @@ export const products: Product[] = [
     howToUse:
       "Apply to lips as needed throughout the day. Layer over your hydration serum for an extra plump, dewy lip look.",
     benefits: [
-      "Deep hydration with organic shea butter",
+      "Deep hydration with Organic shea butter",
       "Glossy shine from plant-derived squalane",
       "Antioxidant nourishment with rosehip oil",
-      "Natural barrier from organic beeswax",
+      "Natural barrier from Organic beeswax",
       "Long-lasting softness and comfort",
     ],
   },
   {
     id: "9",
-    slug: "organic-plump-eye-renewal-treatment",
+    slug: "Organic-plump-eye-renewal-treatment",
     name: "Dewy Eye Renewal Treatment",
     price: 52,
     description:
@@ -331,7 +331,7 @@ export const products: Product[] = [
   },
   {
     id: "10",
-    slug: "organic-willow-glow-exfoliating-serum",
+    slug: "Organic-willow-glow-exfoliating-serum",
     name: "Willow Glow Exfoliating Serum",
     price: 50,
     description:
@@ -370,7 +370,7 @@ export const products: Product[] = [
   },
   {
     id: "11",
-    slug: "organic-pineapple-papaya-enzyme-glow-powder",
+    slug: "Organic-pineapple-papaya-enzyme-glow-powder",
     name: "Pineapple Papaya Enzyme Glow Powder",
     price: 35,
     description:
@@ -404,16 +404,16 @@ export const products: Product[] = [
   },
   {
     id: "12",
-    slug: "organic-creamy-hybrid-wax-beads",
+    slug: "Organic-creamy-hybrid-wax-beads",
     name: "Hybrid Wax Beads",
     price: 32,
     description:
-      "A rosin-free, synthetic-free hybrid wax combining the grip of hard wax with the soothing creaminess of a skin treatment. Shea butter, rosehip oil, and squalane nourish during removal while organic beeswax provides a clean 4–7 second set for minimal breakage on all hair types. Hypoallergenic. No rosin, artificial fragrance, or synthetic resins.",
+      "A rosin-free, synthetic-free hybrid wax combining the grip of hard wax with the soothing creaminess of a skin treatment. Shea butter, rosehip oil, and squalane nourish during removal while Organic beeswax provides a clean 4–7 second set for minimal breakage on all hair types. Hypoallergenic. No rosin, artificial fragrance, or synthetic resins.",
     shortDescription:
       "Hypoallergenic hybrid wax beads with shea and squalane for smooth, nourishing hair removal on all hair types.",
     images: ["/images/products/hybrid-wax-beads.png"],
     imageAlt:
-      "Epoch Skin Organic Creamy Hybrid Wax Beads - jar of wax beads with organic shea butter and beeswax for gentle hair removal",
+      "Epoch Skin Organic Creamy Hybrid Wax Beads - jar of wax beads with Organic shea butter and beeswax for gentle hair removal",
     category: "body" as const,
     featured: false,
     skinType: ["all"],
@@ -438,7 +438,7 @@ export const products: Product[] = [
   },
   {
     id: "13",
-    slug: "organic-calm-hydrate-hydro-jelly-mask",
+    slug: "Organic-calm-hydrate-hydro-jelly-mask",
     name: "Calming Hydro Jelly Mask",
     price: 40,
     description:
@@ -476,7 +476,7 @@ export const products: Product[] = [
   },
   {
     id: "14",
-    slug: "organic-calm-hydrate-hydro-jelly-powder-mask",
+    slug: "Organic-calm-hydrate-hydro-jelly-powder-mask",
     name: "Calming Hydro Jelly Mask Powder",
     price: 36,
     description:
@@ -500,7 +500,7 @@ export const products: Product[] = [
       "Agar (Organic Agar-Agar)",
     ],
     howToUse:
-      "Mix 1–2 teaspoons of powder with 1–2 teaspoons of organic aloe vera gel and 1–2 teaspoons of rose water or plain water. Stir quickly into a smooth, thick jelly paste. Apply a generous, even layer to clean face and neck, avoiding eyes. Relax 15–20 minutes. Peel gently from edges or rinse with lukewarm water. Use 1–2 times per week; follow with toner, serum, and moisturizer. Patch test 24 hours before first use.",
+      "Mix 1–2 teaspoons of powder with 1–2 teaspoons of Organic aloe vera gel and 1–2 teaspoons of rose water or plain water. Stir quickly into a smooth, thick jelly paste. Apply a generous, even layer to clean face and neck, avoiding eyes. Relax 15–20 minutes. Peel gently from edges or rinse with lukewarm water. Use 1–2 times per week; follow with toner, serum, and moisturizer. Patch test 24 hours before first use.",
     benefits: [
       "Activates fresh each use — maximum potency",
       "12-month shelf life dry (no preservatives needed)",

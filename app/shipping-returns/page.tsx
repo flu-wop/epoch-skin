@@ -26,7 +26,7 @@ export default function ShippingReturnsPage() {
             <section className="mb-8">
               <h2 className="text-2xl font-serif font-bold text-gray-900 mb-4">Shipping Policy</h2>
               <p className="text-gray-700 leading-relaxed mb-4">
-                We want to get your organic skincare products to you as quickly and safely as possible.
+                We want to get your Organic Skincare products to you as quickly and safely as possible.
               </p>
               
               <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">Shipping Methods</h3>
@@ -66,7 +66,7 @@ export default function ShippingReturnsPage() {
                 For health and safety reasons, the following items cannot be returned:
               </p>
               <ul className="list-disc list-inside text-gray-700 space-y-2 ml-4">
-                <li>Opened or used skincare products</li>
+                <li>Opened or used Skincare products</li>
                 <li>Products without original packaging</li>
                 <li>Sale or clearance items (unless defective)</li>
               </ul>

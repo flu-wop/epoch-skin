@@ -5,7 +5,7 @@ import { products } from "@/data/products";
 
 export const metadata: Metadata = {
   title: "Shop",
-  description: "Discover our curated collection of organic skincare products. Certified organic ingredients, cruelty-free formulas, and effective results.",
+  description: "Discover our curated collection of Organic Skincare products. Certified Organic Ingredients, cruelty-free formulas, and effective results.",
 };
 
 export default function ShopPage() {
@@ -19,8 +19,8 @@ export default function ShopPage() {
               Shop Skincare
             </h1>
             <p className="mt-6 text-lg text-neutral-600 leading-relaxed">
-              Discover our thoughtfully curated collection of organic skincare products.
-              Each formula is crafted with certified organic ingredients to nourish and enhance your skin's natural beauty.
+              Discover our thoughtfully curated collection of Organic Skincare products.
+              Each formula is crafted with certified Organic Ingredients to nourish and enhance your skin's natural beauty.
             </p>
           </div>
         </Container>
@@ -52,7 +52,7 @@ export default function ShopPage() {
                   Certified Organic
                 </h3>
                 <p className="mt-2 text-sm text-neutral-600">
-                  Formulated with certified organic extracts and natural actives that are gentle yet effective.
+                  Formulated with certified Organic extracts and natural actives that are gentle yet effective.
                 </p>
               </div>
 

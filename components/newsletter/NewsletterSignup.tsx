@@ -48,7 +48,7 @@ export function NewsletterSignup() {
     <div>
       <h3 className="text-lg font-semibold text-white mb-3">Newsletter</h3>
       <p className="text-sm text-gray-300 mb-4">
-        Subscribe for skincare tips, exclusive offers, and updates.
+        Subscribe for Skincare tips, exclusive offers, and updates.
       </p>
 
       <form onSubmit={handleSubmit} className="space-y-3">

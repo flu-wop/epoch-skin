@@ -17,11 +17,11 @@ export const services: ServiceWithGender[] = [
     name: "Brazilian Wax",
     price: 50,
     duration: "37 min",
-    description: "Complete Brazilian waxing with premium organic wax for smooth, long-lasting results.",
+    description: "Complete Brazilian waxing with premium Organic wax for smooth, long-lasting results.",
     category: "body-waxing" as const,
     gender: "women",
     popular: true,
-    benefits: ["Complete removal", "Premium organic wax", "Licensed estheticians"],
+    benefits: ["Complete removal", "Premium Organic wax", "Licensed estheticians"],
     image: "/images/services/brazilian-wax.png",
     imageAlt: "Professional Brazilian waxing service for women at Epoch Skin"
   },
@@ -210,7 +210,7 @@ export const services: ServiceWithGender[] = [
     name: "Brozilian Wax",
     price: 60,
     duration: "45 min",
-    description: "Complete Brazilian waxing for men with premium organic wax.",
+    description: "Complete Brazilian waxing for men with premium Organic wax.",
     category: "body-waxing" as const,
     gender: "men",
     popular: true,
@@ -425,18 +425,18 @@ export const services: ServiceWithGender[] = [
   // ORGANIC FACIALS
   // ═══════════════════════════════════════════
   {
-    id: "organic-facial",
-    slug: "organic-facial",
+    id: "Organic-facial",
+    slug: "Organic-facial",
     name: "Organic Facial",
     price: 80,
     duration: "60 min",
-    description: "Custom facial using our organic products for deep hydration and radiant glow.",
+    description: "Custom facial using our Organic products for deep hydration and radiant glow.",
     category: "specialty-treatments" as const,
     gender: "all",
     popular: true,
     benefits: ["Deep hydration", "Organic products", "Custom treatment", "Licensed estheticians"],
-    image: "/images/services/organic-facial.png",
-    imageAlt: "Custom organic facial treatment"
+    image: "/images/services/Organic-facial.png",
+    imageAlt: "Custom Organic facial treatment"
   },
   {
     id: "glass-skin-treatment",
@@ -444,7 +444,7 @@ export const services: ServiceWithGender[] = [
     name: "Glass Skin Treatment",
     price: 90,
     duration: "75 min",
-    description: "K-Beauty inspired session with organic masking and massage for plump, radiant skin.",
+    description: "K-Beauty inspired session with Organic masking and massage for plump, radiant skin.",
     category: "specialty-treatments" as const,
     gender: "all",
     popular: true,

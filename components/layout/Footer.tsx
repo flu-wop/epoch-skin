@@ -11,7 +11,7 @@ export function Footer() {
           <div>
             <h3 className="font-serif text-xl mb-4">Epoch Skin</h3>
             <p className="text-sage-100 text-sm">
-              Premium waxing studio and curated organic skincare products. Natural, luxurious, and effective treatments for your skin.
+              Premium waxing studio and curated Organic Skincare products. Natural, luxurious, and effective treatments for your skin.
             </p>
           </div>
 
@@ -74,7 +74,7 @@ export function Footer() {
           <div>
             <h4 className="font-semibold mb-4">Newsletter</h4>
             <p className="text-sage-100 text-sm mb-4">
-              Subscribe for skincare tips, exclusive offers, and updates.
+              Subscribe for Skincare tips, exclusive offers, and updates.
             </p>
             <form className="flex gap-2">
               <input

@@ -33,7 +33,7 @@ export default function TermsOfServicePage() {
             <section className="mb-8">
               <h2 className="text-2xl font-serif font-bold text-gray-900 mb-4">Services</h2>
               <p className="text-gray-700 leading-relaxed">
-                Epoch Skin provides waxing services, organic facial treatments, and sells organic skincare products. All services are performed by licensed estheticians. We reserve the right to refuse service to anyone for any reason at any time.
+                Epoch Skin provides waxing services, Organic facial treatments, and sells Organic Skincare products. All services are performed by licensed estheticians. We reserve the right to refuse service to anyone for any reason at any time.
               </p>
             </section>
 

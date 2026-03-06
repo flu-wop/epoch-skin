@@ -12,7 +12,7 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
-    slug: "benefits-of-organic-skincare",
+    slug: "benefits-of-Organic-Skincare",
     title: "The Benefits of Organic Skincare: Why Natural Ingredients Matter",
     excerpt: "Discover why choosing Organic Ingredients for your Skincare routine can transform your skin's health and radiance.",
     content: `
@@ -47,8 +47,8 @@ Ready to experience the difference? Explore our collection of Organic Skincare p
     author: "Kayla Ford",
     date: "2026-02-15",
     category: "Skincare Tips",
-    image: "/images/blog/skincare-tips.png",
-    imageAlt: "Organic skincare products with natural ingredients",
+    image: "/images/blog/Skincare-tips.png",
+    imageAlt: "Organic Skincare products with natural ingredients",
   },
   {
     slug: "glass-skin-routine",
@@ -88,7 +88,7 @@ Ready to achieve your best skin yet? Start your glass skin journey with our comp
     date: "2026-02-10",
     category: "Beauty Routines",
     image: "/images/blog/glass-skin.png",
-    imageAlt: "Woman with glowing glass skin from Organic skincare routine",
+    imageAlt: "Woman with glowing glass skin from Organic Skincare routine",
   },
   {
     slug: "waxing-prep-guide",
