@@ -12,7 +12,7 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
-    slug: "benefits-of-Organic-Skincare",
+    slug: "benefits-of-organic-skincare",
     title: "The Benefits of Organic Skincare: Why Natural Ingredients Matter",
     excerpt: "Discover why choosing Organic Ingredients for your Skincare routine can transform your skin's health and radiance.",
     content: `
