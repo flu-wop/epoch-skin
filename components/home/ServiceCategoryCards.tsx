@@ -6,7 +6,7 @@ const serviceCategories = [
   {
     title: "Body Waxing",
     description: "Full body waxing services for smooth, long-lasting results",
-    image: "/images/services/full-leg-waxing.png",
+    image: "/images/services/half-leg-wax.png",
     imageAlt: "Professional body waxing service at Epoch Skin studio - smooth, hair-free results",
     href: "/book?category=body-wax",
   },
