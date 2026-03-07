@@ -157,7 +157,7 @@ export default function AboutPage() {
             
             <div className="relative w-full max-w-lg mx-auto mb-6 rounded-lg overflow-hidden" style={{ aspectRatio: '512/382' }}>
               <Image
-                src="/images/blog/beauty-routines.png"
+                src="/images/blog/glass-skin.png"
                 alt="Glass skin layering technique"
                 fill
                 className="object-cover"

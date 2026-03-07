@@ -6,16 +6,16 @@ import Image from "next/image";
 // Map blog post slugs to their images.
 // Adjust these paths if your blog-posts data uses different slugs.
 const postImages: Record<string, string> = {
-  "benefits-of-Organic-Skincare": "/images/blog/Skincare-tips.png",
+  "benefits-of-organic-skincare": "/images/blog/skincare-tips.png",
   "glass-skin-routine":           "/images/blog/glass-skin.png",
-  "waxing-prep-guide":            "/images/blog/beauty-routines.png",
+  "waxing-prep-guide":            "/images/blog/waxing-tips.png",
 };
 
 // Fallback: assign images in order if slugs don't match exactly
 const orderedImages = [
-  "/images/blog/Skincare-tips.png",
+  "/images/blog/skincare-tips.png",
   "/images/blog/glass-skin.png",
-  "/images/blog/beauty-routines.png",
+  "/images/blog/waxing-tips.png",
 ];
 
 export default function BlogPage() {
