@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Container } from "@/components/layout/Container";
 import { Instagram, Facebook } from "lucide-react";
+import { NewsletterForm } from "@/components/layout/NewsletterForm";
 
 export function Footer() {
   return (
@@ -76,16 +77,7 @@ export function Footer() {
             <p className="text-sage-100 text-sm mb-4">
               Subscribe for Skincare tips, exclusive offers, and updates.
             </p>
-            <form className="flex gap-2">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="flex-1 px-3 py-2 rounded text-sm bg-sage-800 border border-sage-700 text-white placeholder-sage-400 focus:outline-none focus:border-sage-500"
-              />
-              <button type="submit" className="px-4 py-2 bg-clay-500 hover:bg-clay-600 rounded text-sm font-medium transition-colors">
-                Subscribe
-              </button>
-            </form>
+            <NewsletterForm />
           </div>
         </div>
 
