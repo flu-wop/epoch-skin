@@ -439,6 +439,19 @@ export const services: ServiceWithGender[] = [
     imageAlt: "Custom Organic facial treatment"
   },
   {
+    id: "hydrating-facial",
+    slug: "hydrating-facial",
+    name: "Hydrating Facial",
+    price: 50,
+    duration: "30 min",
+    description: "A deeply nourishing facial treatment designed to replenish moisture and restore your skin's natural glow.",
+    category: "specialty-treatments" as const,
+    gender: "all",
+    benefits: ["Deep hydration", "Restored glow", "Organic products", "Licensed estheticians"],
+    image: "/images/services/organic-facial.png",
+    imageAlt: "Hydrating facial treatment at Epoch Skin"
+  },
+  {
     id: "glass-skin-treatment",
     slug: "glass-skin-treatment",
     name: "Glass Skin Treatment",
