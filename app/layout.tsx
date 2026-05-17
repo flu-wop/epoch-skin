@@ -1,85 +1,79 @@
-import type { Metadata } from "next";
-import { Cormorant_Garamond, Inter } from "next/font/google";
-import "./globals.css";
-import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
-import { Providers } from "@/components/Providers";
-import { ScrollToTop } from "@/components/ScrollToTop";
+// app/layout.tsx
+// Updated: all OG/meta uses epoch-skin.com (not old vercel.app domain)
+
+import type { Metadata, Viewport } from 'next';
+import { Cormorant_Garamond, DM_Sans } from 'next/font/google';
+import './globals.css';
 
 const cormorant = Cormorant_Garamond({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-cormorant",
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-serif',
+  display: 'swap',
 });
 
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
+const dmSans = DM_Sans({
+  subsets: ['latin'],
+  weight: ['300', '400', '500'],
+  variable: '--font-sans',
+  display: 'swap',
 });
+
+const SITE = 'https://epoch-skin.com';
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://epoch-skin.vercel.app'),
+  metadataBase: new URL(SITE),
   title: {
-    default: "Epoch Skin | Organic Skincare & Premium Waxing Studio | New Orleans & Mobile",
-    template: "%s | Epoch Skin",
+    default: 'Epoch Skin | Organic Skincare & Premium Waxing Studio | New Orleans & Mobile',
+    template: '%s | Epoch Skin',
   },
-  description:
-    "Experience transformative Organic Skincare and expert waxing services in New Orleans and Mobile. Licensed estheticians, cruelty-free products, and Brazilian waxing specialists. Book your appointment today.",
-  keywords: [
-    "Organic Skincare New Orleans",
-    "Brazilian wax New Orleans",
-    "Organic facial treatments",
-    "licensed esthetician",
-    "cruelty-free Skincare",
-    "K-beauty New Orleans",
-  ],
-  authors: [{ name: "Kayla Ford", url: "https://epoch-skin.com/about" }],
+  description: 'Experience transformative organic skincare and expert waxing services in New Orleans and Mobile. Licensed estheticians, cruelty-free products, and Brazilian waxing specialists.',
+  keywords: ['Organic Skincare New Orleans', 'Brazilian wax New Orleans', 'Organic facial treatments', 'licensed esthetician', 'cruelty-free skincare', 'K-beauty New Orleans', 'glass skin treatment'],
+  authors: [{ name: 'Kayla Ford', url: SITE }],
+  creator: 'Kayla Ford',
   openGraph: {
-    title: "Epoch Skin | Organic Skincare & Waxing Studio",
-    description: "Transform your skin with Organic products and expert waxing in New Orleans",
-    url: "https://epoch-skin.com",
-    siteName: "Epoch Skin",
+    type: 'website',
+    locale: 'en_US',
+    url: SITE,
+    siteName: 'Epoch Skin',
+    title: 'Epoch Skin | Organic Skincare & Waxing Studio',
+    description: 'Transform your skin with organic products and expert waxing in New Orleans',
     images: [
       {
-        url: "/og-image.jpg", // Create a 1200x630 image
+        url: `${SITE}/og/og-default.jpg`,  // ← FIXED: uses epoch-skin.com not vercel.app
         width: 1200,
         height: 630,
-        alt: "Epoch Skin Organic Skincare Products",
+        alt: 'Epoch Skin Organic Skincare Products',
       },
     ],
-    locale: "en_US",
-    type: "website",
   },
   twitter: {
-    card: "summary_large_image",
-    title: "Epoch Skin | Organic Skincare & Waxing",
-    description: "New Orleans & Mobile's premier Organic Skincare and waxing studio",
-    images: ["/og-image.jpg"],
+    card: 'summary_large_image',
+    title: 'Epoch Skin | Organic Skincare & Waxing',
+    description: "New Orleans & Mobile's premier organic skincare and waxing studio",
+    images: [`${SITE}/og/og-default.jpg`],  // ← FIXED
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true },
   },
   alternates: {
-    canonical: "https://epoch-skin.com",
-  },
-  icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon.ico",
-    apple: "/favicon.ico",
+    canonical: SITE,
   },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: '#111111',
+};
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body className={`${cormorant.variable} ${inter.variable} antialiased`}>
-        <Providers>
-        <ScrollToTop />
-          <Header />
-          {children}
-          <Footer />
-        </Providers>
+    <html lang="en" className={`${cormorant.variable} ${dmSans.variable}`}>
+      <body className="bg-[#FAFAF8] text-[#111] font-sans antialiased">
+        {children}
       </body>
     </html>
   );

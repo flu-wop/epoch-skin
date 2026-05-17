@@ -1,41 +1,59 @@
-import { NextRequest, NextResponse } from "next/server";
-import nodemailer from "nodemailer";
+// app/api/newsletter/route.ts
+// Captures subscriber email to Vercel KV and sends welcome via Resend
 
-export async function POST(request: NextRequest) {
+import { NextRequest, NextResponse } from 'next/server';
+import { sendNewsletterWelcome, sendNewsletterNotification } from '@/lib/email';
+
+// We use a lightweight KV approach — Vercel KV or a simple Set stored in KV.
+// If KV is not available, we gracefully degrade (still sends email).
+async function storeSubscriber(email: string) {
   try {
-    const { email } = await request.json();
+    // Vercel KV — import dynamically so build doesn't fail if KV isn't configured
+    const { kv } = await import('@vercel/kv');
+    const key = `subscriber:${email.toLowerCase()}`;
+    const existing = await kv.get(key);
+    if (existing) return { duplicate: true };
+    await kv.set(key, { email, subscribedAt: new Date().toISOString() });
+    // Also push to a sorted set for easy export
+    await kv.zadd('subscribers', { score: Date.now(), member: email.toLowerCase() });
+    return { duplicate: false };
+  } catch {
+    // KV not configured — still proceed with email
+    console.warn('[newsletter] KV not configured — subscriber not stored');
+    return { duplicate: false };
+  }
+}
 
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      return NextResponse.json({ error: "Invalid email address" }, { status: 400 });
+export async function POST(req: NextRequest) {
+  try {
+    const body = await req.json();
+    const email = (body.email ?? '').trim().toLowerCase();
+
+    if (!email) {
+      return NextResponse.json({ error: 'Email is required.' }, { status: 400 });
     }
 
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.GMAIL_USER,
-        pass: process.env.GMAIL_APP_PASSWORD,
-      },
-    });
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return NextResponse.json({ error: 'Invalid email address.' }, { status: 400 });
+    }
 
-    await transporter.sendMail({
-      from: `"Epoch Skin Newsletter" <${process.env.GMAIL_USER}>`,
-      to: process.env.NEWSLETTER_TO,
-      subject: "New Newsletter Signup — Epoch Skin",
-      html: `
-        <div style="font-family: Georgia, serif; max-width: 480px; margin: 0 auto; padding: 32px; background: #fdfaf7; border-radius: 12px;">
-          <h2 style="color: #b87968; font-size: 24px; margin-bottom: 8px;">New Newsletter Subscriber</h2>
-          <p style="color: #555; font-size: 16px; margin-bottom: 24px;">Someone just signed up for the Epoch Skin newsletter.</p>
-          <div style="background: #fff; border: 1px solid #e8ddd5; border-radius: 8px; padding: 20px;">
-            <p style="margin: 0; color: #333; font-size: 18px;"><strong>Email:</strong> ${email}</p>
-          </div>
-          <p style="color: #999; font-size: 13px; margin-top: 24px;">Epoch Skin · epoch-skin.com</p>
-        </div>
-      `,
-    });
+    const { duplicate } = await storeSubscriber(email);
+
+    if (duplicate) {
+      // Still return success — don't reveal subscriber status
+      return NextResponse.json({ success: true, message: 'Already subscribed.' });
+    }
+
+    // Send welcome + notify Kayla in parallel
+    await Promise.all([
+      sendNewsletterWelcome(email),
+      sendNewsletterNotification(email),
+    ]);
 
     return NextResponse.json({ success: true });
-  } catch (error) {
-    console.error("Newsletter error:", error);
-    return NextResponse.json({ error: "Failed to send" }, { status: 500 });
+  } catch (err) {
+    console.error('[newsletter] Error:', err);
+    return NextResponse.json({ error: 'Something went wrong. Please try again.' }, { status: 500 });
   }
 }

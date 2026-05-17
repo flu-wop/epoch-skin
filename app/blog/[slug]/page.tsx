@@ -1,146 +1,183 @@
-import { Container } from "@/components/layout/Container";
-import { blogPosts } from "@/data/blog-posts";
-import Link from "next/link";
-import { notFound } from "next/navigation";
+// app/blog/[slug]/page.tsx
 
-export async function generateStaticParams() {
-  return blogPosts.map((post) => ({
-    slug: post.slug,
-  }));
+import { notFound } from 'next/navigation';
+import Link from 'next/link';
+import Image from 'next/image';
+import { BLOG_POSTS, getPost } from '@/lib/blog-posts';
+import type { Metadata } from 'next';
+
+interface Props {
+  params: { slug: string };
 }
 
-export default async function BlogPostPage({ 
-  params 
-}: { 
-  params: Promise<{ slug: string }> 
-}) {
-  const { slug } = await params;
-  const post = blogPosts.find((p) => p.slug === slug);
+export async function generateStaticParams() {
+  return BLOG_POSTS.map(p => ({ slug: p.slug }));
+}
 
-  if (!post) {
-    notFound();
-  }
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const post = getPost(params.slug);
+  if (!post) return {};
+  return {
+    title: `${post.title} | Epoch Skin Journal`,
+    description: post.excerpt,
+    alternates: { canonical: `https://epoch-skin.com/blog/${post.slug}` },
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      url: `https://epoch-skin.com/blog/${post.slug}`,
+      siteName: 'Epoch Skin',
+      images: [{ url: `https://epoch-skin.com${post.image}`, width: 1200, height: 630 }],
+      type: 'article',
+      publishedTime: post.date,
+    },
+  };
+}
+
+// Minimal markdown renderer (no external dep needed for this content)
+function renderContent(content: string) {
+  return content
+    .split('\n\n')
+    .map((para, i) => {
+      if (para.startsWith('## ')) {
+        return <h2 key={i} className="font-serif text-2xl text-[#111] mt-10 mb-4">{para.slice(3)}</h2>;
+      }
+      if (para.startsWith('### ')) {
+        return <h3 key={i} className="font-serif text-xl text-[#111] mt-8 mb-3">{para.slice(4)}</h3>;
+      }
+      if (para.startsWith('**') && para.endsWith('**')) {
+        return <p key={i} className="font-semibold text-[#333] mb-4">{para.slice(2, -2)}</p>;
+      }
+      // List items
+      if (para.includes('\n- ')) {
+        const lines = para.split('\n').filter(Boolean);
+        const intro = lines[0].startsWith('- ') ? null : lines[0];
+        const items = lines.filter(l => l.startsWith('- ')).map(l => l.slice(2));
+        return (
+          <div key={i} className="mb-6">
+            {intro && <p className="text-[#444] leading-relaxed mb-2">{processInline(intro)}</p>}
+            <ul className="list-disc list-inside space-y-1.5 text-[#555]">
+              {items.map((item, j) => <li key={j}>{processInline(item)}</li>)}
+            </ul>
+          </div>
+        );
+      }
+      if (para.startsWith('- ')) {
+        const items = para.split('\n').filter(l => l.startsWith('- ')).map(l => l.slice(2));
+        return (
+          <ul key={i} className="list-disc list-inside space-y-1.5 text-[#555] mb-6">
+            {items.map((item, j) => <li key={j}>{processInline(item)}</li>)}
+          </ul>
+        );
+      }
+      if (para.startsWith('*') && para.endsWith('*')) {
+        return <p key={i} className="italic text-[#888] text-sm border-l-2 border-[#D4AF77] pl-4 mb-6">{para.slice(1, -1)}</p>;
+      }
+      return <p key={i} className="text-[#444] leading-relaxed mb-5">{processInline(para)}</p>;
+    });
+}
+
+// Bold/italic inline processing
+function processInline(text: string): React.ReactNode {
+  const parts = text.split(/(\*\*.*?\*\*|\*.*?\*)/g);
+  return parts.map((part, i) => {
+    if (part.startsWith('**') && part.endsWith('**')) return <strong key={i}>{part.slice(2, -2)}</strong>;
+    if (part.startsWith('*') && part.endsWith('*')) return <em key={i}>{part.slice(1, -1)}</em>;
+    return part;
+  });
+}
+
+export default function BlogPostPage({ params }: Props) {
+  const post = getPost(params.slug);
+  if (!post) notFound();
+
+  const related = BLOG_POSTS.filter(p => p.slug !== post.slug).slice(0, 2);
 
   return (
-    <main className="min-h-screen py-20">
-      <Container>
-        <article className="max-w-3xl mx-auto">
-          <Link
-            href="/blog"
-            className="inline-flex items-center text-clay-600 hover:text-clay-700 mb-8"
-          >
-            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-            Back to Blog
-          </Link>
+    <div className="min-h-screen bg-[#FAFAF8]">
+      {/* Hero */}
+      <div className="relative h-64 md:h-96 bg-[#F5EDD8] overflow-hidden">
+        <Image
+          src={post.image}
+          alt={post.title}
+          fill
+          className="object-cover"
+          priority
+          sizes="100vw"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 px-6 pb-8 max-w-3xl mx-auto">
+          <span className="text-xs tracking-widest uppercase text-[#D4AF77]">{post.category}</span>
+        </div>
+      </div>
 
-          <header className="mb-8">
-            <div className="flex items-center gap-3 text-sm text-gray-600 mb-4">
-              <span className="px-3 py-1 bg-clay-100 text-clay-700 rounded-full text-xs font-medium">
-                {post.category}
-              </span>
-              <time dateTime={post.date}>
-                {new Date(post.date).toLocaleDateString('en-US', {
-                  month: 'long',
-                  day: 'numeric',
-                  year: 'numeric'
-                })}
-              </time>
-            </div>
+      {/* Article */}
+      <article className="max-w-2xl mx-auto px-6 py-12">
+        {/* Meta */}
+        <div className="flex items-center gap-4 text-xs text-[#AAA] mb-6">
+          <span>{post.date}</span>
+          <span>·</span>
+          <span>{post.readTime}</span>
+        </div>
 
-            <h1 className="text-4xl md:text-5xl font-serif text-gray-900 mb-4">
-              {post.title}
-            </h1>
+        <h1 className="font-serif text-3xl md:text-4xl text-[#111] mb-8 leading-tight">
+          {post.title}
+        </h1>
 
-            <p className="text-xl text-gray-600 mb-6">
-              {post.excerpt}
-            </p>
-
-            <div className="flex items-center gap-3 text-sm text-gray-600 pb-6 border-b border-sage-200">
-              <span>By {post.author}</span>
-            </div>
-          </header>
-
-          <div className="relative aspect-[16/9] overflow-hidden bg-sand-100 rounded-lg mb-12">
-            <div className="absolute inset-0 bg-gradient-to-br from-sand-200 to-sage-100 flex items-center justify-center">
-              <span className="text-gray-500">Featured Image</span>
-            </div>
+        {/* Author */}
+        <div className="flex items-center gap-3 mb-10 pb-10 border-b border-[#E8E0D0]">
+          <div className="w-10 h-10 rounded-full bg-[#D4AF77]/20 flex items-center justify-center">
+            <span className="text-[#D4AF77] font-serif text-sm">K</span>
           </div>
-
-          <div className="prose prose-lg max-w-none">
-            <div
-              className="text-gray-700 leading-relaxed space-y-6"
-              dangerouslySetInnerHTML={{
-                __html: post.content
-                  .split('\n')
-                  .map(line => {
-                    if (line.startsWith('# ')) {
-                      return `<h1 class="text-4xl font-serif text-gray-900 mb-4 mt-8">${line.slice(2)}</h1>`;
-                    } else if (line.startsWith('## ')) {
-                      return `<h2 class="text-3xl font-serif text-clay-600 mb-3 mt-6">${line.slice(3)}</h2>`;
-                    } else if (line.startsWith('### ')) {
-                      return `<h3 class="text-2xl font-serif text-gray-800 mb-2 mt-4">${line.slice(4)}</h3>`;
-                    } else if (line.trim() === '') {
-                      return '<br />';
-                    } else {
-                      return `<p>${line}</p>`;
-                    }
-                  })
-                  .join('')
-              }}
-            />
+          <div>
+            <p className="text-sm font-medium text-[#111]">Kayla Ford</p>
+            <p className="text-xs text-[#AAA]">Founder & Licensed Esthetician</p>
           </div>
+        </div>
 
-          <div className="mt-12 pt-8 border-t border-sage-200">
-            <div className="bg-sand-50 rounded-lg p-8 text-center">
-              <h3 className="text-2xl font-serif text-gray-900 mb-4">
-                Ready to Transform Your Skin?
-              </h3>
-              <p className="text-gray-600 mb-6">
-                Explore our collection of Organic Skincare products and book your waxing appointment today.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link
-                  href="/shop"
-                  className="px-6 py-3 bg-clay-500 hover:bg-clay-600 text-white font-medium rounded transition-colors"
-                >
-                  Shop Organic Skincare
-                </Link>
-                <Link
-                  href="/book"
-                  className="px-6 py-3 border-2 border-clay-500 text-clay-600 hover:bg-clay-50 font-medium rounded transition-colors"
-                >
-                  Book Appointment
-                </Link>
-              </div>
-            </div>
-          </div>
+        {/* Content */}
+        <div className="prose-custom">
+          {renderContent(post.content)}
+        </div>
 
-          <div className="mt-12">
-            <h3 className="text-2xl font-serif text-gray-900 mb-6">Related Posts</h3>
-            <div className="grid md:grid-cols-2 gap-6">
-              {blogPosts
-                .filter((p) => p.slug !== slug)
-                .slice(0, 2)
-                .map((relatedPost) => (
-                  <Link
-                    key={relatedPost.slug}
-                    href={`/blog/${relatedPost.slug}`}
-                    className="group border border-sage-200 rounded-lg p-4 hover:shadow-md transition-all"
-                  >
-                    <h4 className="font-serif text-lg font-semibold text-gray-900 mb-2 group-hover:text-clay-600">
-                      {relatedPost.title}
-                    </h4>
-                    <p className="text-sm text-gray-600 line-clamp-2">
-                      {relatedPost.excerpt}
-                    </p>
-                  </Link>
-                ))}
-            </div>
+        {/* CTA */}
+        <div className="mt-16 p-8 bg-[#F5EDD8] border border-[#D4AF77]/20 text-center">
+          <p className="font-serif text-xl text-[#111] mb-3">Ready to experience it in the studio?</p>
+          <p className="text-[#888] text-sm mb-6">Our licensed estheticians are here for you.</p>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <Link href="/book" className="px-8 py-3 bg-[#111] text-[#D4AF77] text-xs tracking-widest uppercase hover:bg-[#D4AF77] hover:text-[#111] transition-colors">
+              Book Appointment
+            </Link>
+            <Link href="/shop" className="px-8 py-3 border border-[#111] text-[#111] text-xs tracking-widest uppercase hover:border-[#D4AF77] hover:text-[#D4AF77] transition-colors">
+              Shop Skincare
+            </Link>
           </div>
-        </article>
-      </Container>
-    </main>
+        </div>
+      </article>
+
+      {/* Related */}
+      {related.length > 0 && (
+        <div className="max-w-3xl mx-auto px-6 py-12 border-t border-[#E8E0D0]">
+          <h2 className="font-serif text-2xl text-[#111] mb-8">More from the Journal</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+            {related.map(p => (
+              <Link key={p.slug} href={`/blog/${p.slug}`} className="group">
+                <div className="relative aspect-[16/9] bg-[#F5EDD8] overflow-hidden mb-4">
+                  <Image src={p.image} alt={p.title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" sizes="50vw" />
+                </div>
+                <p className="text-xs tracking-widest uppercase text-[#D4AF77] mb-2">{p.category}</p>
+                <h3 className="font-serif text-lg text-[#111] group-hover:text-[#D4AF77] transition-colors leading-snug">{p.title}</h3>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Back */}
+      <div className="text-center py-8">
+        <Link href="/blog" className="text-xs tracking-widest uppercase text-[#888] hover:text-[#D4AF77] transition-colors">
+          ← Back to Journal
+        </Link>
+      </div>
+    </div>
   );
 }

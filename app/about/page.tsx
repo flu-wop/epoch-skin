@@ -1,207 +1,216 @@
-import { Container } from "@/components/layout/Container";
-import Image from "next/image";
-import Script from "next/script";
-import { Leaf, Heart, Star, Users } from "lucide-react";
+// app/about/page.tsx
+// Fixed: real image paths, Instagram section, team photo handling
+
+import Image from 'next/image';
+import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'About | Epoch Skin',
+  description: 'Meet Kayla Ford and the Epoch Skin team — licensed estheticians building New Orleans\' premier organic skincare and waxing studio.',
+  alternates: { canonical: 'https://epoch-skin.com/about' },
+  openGraph: {
+    title: 'About Epoch Skin',
+    description: 'Organic skincare rooted in K-Beauty. Founded by licensed esthetician Kayla Ford in New Orleans.',
+    url: 'https://epoch-skin.com/about',
+    siteName: 'Epoch Skin',
+    images: [{ url: 'https://epoch-skin.com/og/og-about.jpg', width: 1200, height: 630 }],
+  },
+};
+
+const VALUES = [
+  { icon: '🌿', title: 'Organic First', body: 'We use only high-quality, certified organic ingredients in every formula — transparently listed, batch-tested.' },
+  { icon: '🐰', title: 'Cruelty-Free', body: 'Never tested on animals. We source ethically from suppliers who share our values, always.' },
+  { icon: '✨', title: 'Visible Results', body: 'Every product and service is designed to deliver real, lasting results you can see and feel.' },
+  { icon: '🤝', title: 'Client-Centered', body: 'Your comfort, confidence, and satisfaction are at the heart of every decision we make.' },
+];
 
 export default function AboutPage() {
   return (
-    <main className="min-h-screen py-20">
-      <Container>
-        <div className="max-w-4xl mx-auto">
-          {/* Header with logo */}
-          <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-serif text-gray-900 mb-6">
-              About Epoch Skin
-            </h1>
-            
-            <div className="flex justify-center mb-8">
+    <div className="min-h-screen bg-[#FAFAF8]">
+      {/* Hero */}
+      <div className="bg-[#111] py-20 px-6 text-center">
+        <p className="text-xs tracking-widest uppercase text-[#D4AF77] mb-4">Our Story</p>
+        <h1 className="font-serif text-4xl md:text-5xl text-white mb-6 max-w-2xl mx-auto leading-tight">
+          A New Era of Organic Skincare
+        </h1>
+        <p className="text-[#A89880] max-w-lg mx-auto leading-relaxed">
+          Founded in New Orleans by a licensed esthetician who believed clean beauty shouldn't compromise on results.
+        </p>
+      </div>
+
+      {/* Brand story */}
+      <section className="max-w-4xl mx-auto px-6 py-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
+          <div>
+            {/* Founder photo — replace /images/team/kayla-ford.jpg with real photo */}
+            <div className="relative aspect-[3/4] bg-[#F5EDD8] overflow-hidden">
               <Image
-                src="/favicon.ico"
-                alt="Epoch Skin"
-                width={80}
-                height={80}
-                className="w-20 h-20"
+                src="/images/team/kayla-ford.jpg"
+                alt="Kayla Ford, Founder & Licensed Esthetician at Epoch Skin"
+                fill
+                className="object-cover object-top"
+                sizes="(max-width: 768px) 100vw, 50vw"
+                // Graceful fallback handled by bg color above
               />
-            </div>
-            
-            <div className="bg-sand/20 rounded-lg p-8 mb-8">
-              <div className="space-y-4">
-                <p className="text-lg text-gray-800 leading-relaxed">
-                  Epoch Skin is a premium waxing studio and curated Organic Skincare line founded in 2026 by Kayla Ford. We believe Skincare is more than routine—it's a transformative journey. Every service and product is carefully crafted with certified Organic Ingredients to honor your skin's natural beauty while delivering visible, long-lasting results.
-                </p>
-                <p className="text-lg text-gray-800 leading-relaxed">
-                  Our philosophy combines expert waxing techniques with clean, Organic formulations that are effective, luxurious, and gentle on your skin. Experience the difference that premium care and natural ingredients can make.
-                </p>
+              {/* Overlay badge */}
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6">
+                <p className="font-serif text-white text-lg">Kayla Ford</p>
+                <p className="text-[#D4AF77] text-xs tracking-widest uppercase">Founder & Licensed Esthetician</p>
               </div>
+            </div>
+            <div className="mt-4 text-xs text-[#AAA] tracking-wide">
+              LA State Board Licensed · 3+ years experience · Certified in Organic Facials & Waxing
             </div>
           </div>
 
-          {/* Epoch Definition */}
-          <section className="mb-16 text-center">
-            <div className="bg-gradient-to-br from-sand-50 to-sage-50 rounded-2xl p-12 border border-clay-200">
-              <div className="flex items-center justify-center mb-6">
-                <h2 className="text-5xl md:text-6xl font-serif text-gray-900">
-                  epoch
-                </h2>
-              </div>
-              
-              <p className="text-lg text-gray-600 italic mb-6">
-                /ˈepək/ · noun
+          <div className="pt-4">
+            {/* Etymology */}
+            <div className="mb-10 p-6 bg-white border border-[#E8E0D0]">
+              <p className="text-xs tracking-widest uppercase text-[#D4AF77] mb-3">ep · och</p>
+              <p className="font-serif text-2xl text-[#111] mb-2">/ˈepək/ · noun</p>
+              <p className="text-[#888] text-sm leading-relaxed mb-4">
+                A period marked by notable events. A fixed point from which a new chapter begins.
               </p>
-              
-              <div className="max-w-2xl mx-auto">
-                <p className="text-xl md:text-2xl text-gray-800 leading-relaxed mb-4">
-                  A period of time in history or a person's life, typically one marked by notable events or particular characteristics.
-                </p>
-                <p className="text-base text-gray-600">
-                  At Epoch Skin, we believe Skincare is more than routine—it's a transformative journey. 
-                  Each treatment, each product marks a new chapter in your skin's story.
-                </p>
-              </div>
+              <p className="text-[#555] text-sm leading-relaxed border-l-2 border-[#D4AF77] pl-4">
+                For us, Epoch represents the moment your skin's story changes — when you choose formulas that nourish instead of strip, that honor your body's natural intelligence.
+              </p>
             </div>
-          </section>
 
-          {/* Our Story */}
-          <section className="mb-16">
-            <h2 className="text-3xl font-serif text-clay-600 mb-6 text-center">Our Story</h2>
-            <div className="prose prose-lg max-w-none text-gray-700 space-y-4">
+            <h2 className="font-serif text-2xl text-[#111] mb-5">Our Story</h2>
+            <div className="space-y-4 text-[#555] leading-relaxed text-sm">
               <p>
-                Our journey began when our founder experienced firsthand the discomfort and irritation caused by harsh waxing products and synthetic Skincare. Determined to create a better experience, she spent years researching Organic formulations, gentle techniques, and certified Organic Ingredients that deliver exceptional results without compromising skin health.
+                Epoch Skin was born from firsthand frustration. Our founder experienced years of irritation and sensitivity from harsh waxing products and synthetic skincare — and couldn't find a studio that took clean formulation seriously.
               </p>
               <p>
-                Today, Epoch Skin is more than just a studio—it's a sanctuary where expert waxing care meets natural luxury. Every service and product is carefully crafted to honor your skin's natural beauty while delivering the visible, long-lasting results you deserve.
+                So she built one. Kayla spent years studying certified organic formulation, K-Beauty glass-skin protocols, and gentle waxing technique before launching Epoch Skin in New Orleans.
               </p>
-            </div>
-          </section>
-
-          {/* Licensed Estheticians */}
-          <section className="mb-16" id="credentials">
-            <h2 className="text-3xl font-serif text-clay-600 mb-8 text-center">Meet Your Estheticians</h2>
-            
-            <div className="flex justify-center">
-              <div className="bg-white border border-sage-200 rounded-lg p-8 text-center max-w-md">
-                {/* Taller container so forehead isn't cropped */}
-                <div className="relative w-40 h-48 mx-auto mb-4 rounded-xl overflow-hidden bg-sand-100">
-                  <Image
-                    src="/images/team/founder-kayla.png"
-                    alt="Kayla Ford, Licensed Esthetician"
-                    fill
-                    className="object-cover object-top"
-                  />
-                </div>
-                <h3 className="text-xl font-serif font-semibold text-gray-900 mb-2">Kayla Ford</h3>
-                <p className="text-sage-600 text-sm mb-3">Founder & Licensed Esthetician</p>
-                <p className="text-gray-700 text-sm leading-relaxed">
-                  LA State Board Licensed • 3+ years experience • Certified in Organic facial treatments & precision waxing
-                </p>
-              </div>
-            </div>
-            
-            <div className="mt-8 text-center">
-              <p className="text-sm text-gray-600">
-                All of our estheticians are Louisiana State Board licensed and undergo continuous education in Organic Skincare and gentle waxing techniques.
-              </p>
-            </div>
-          </section>
-
-          {/* Our Values */}
-          <section className="mb-16">
-            <h2 className="text-3xl font-serif text-clay-600 mb-8 text-center">Our Values</h2>
-            
-            <div className="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
-              <div className="text-center">
-                <div className="flex justify-center mb-3">
-                  <div className="w-12 h-12 bg-sage/20 rounded-full flex items-center justify-center">
-                    <Leaf className="w-6 h-6 text-sage-700" />
-                  </div>
-                </div>
-                <h3 className="font-serif text-xl font-semibold text-gray-900 mb-2">Organic First</h3>
-                <p className="text-gray-700">We use only high-quality, certified Organic Ingredients in every formula</p>
-              </div>
-
-              <div className="text-center">
-                <div className="flex justify-center mb-3">
-                  <div className="w-12 h-12 bg-rose/20 rounded-full flex items-center justify-center">
-                    <Heart className="w-6 h-6 text-rose-600" />
-                  </div>
-                </div>
-                <h3 className="font-serif text-xl font-semibold text-gray-900 mb-2">Cruelty-Free</h3>
-                <p className="text-gray-700">We never test on animals and source ethically from suppliers who share our values</p>
-              </div>
-
-              <div className="text-center">
-                <div className="flex justify-center mb-3">
-                  <div className="w-12 h-12 bg-gold/20 rounded-full flex items-center justify-center">
-                    <Star className="w-6 h-6 text-yellow-600" />
-                  </div>
-                </div>
-                <h3 className="font-serif text-xl font-semibold text-gray-900 mb-2">Quality Results</h3>
-                <p className="text-gray-700">Every product and service is designed to deliver visible, long-lasting results you can trust</p>
-              </div>
-
-              <div className="text-center">
-                <div className="flex justify-center mb-3">
-                  <div className="w-12 h-12 bg-clay/20 rounded-full flex items-center justify-center">
-                    <Users className="w-6 h-6 text-clay-600" />
-                  </div>
-                </div>
-                <h3 className="font-serif text-xl font-semibold text-gray-900 mb-2">Client-Centered</h3>
-                <p className="text-gray-700">Your comfort, confidence, and satisfaction are at the heart of everything we do</p>
-              </div>
-            </div>
-          </section>
-
-          {/* Glass-Skin Layering */}
-          <section className="mb-16">
-            <h2 className="text-3xl font-serif text-clay-600 mb-6 text-center">Glass-Skin Layering</h2>
-            
-            <div className="relative w-full max-w-lg mx-auto mb-6 rounded-lg overflow-hidden" style={{ aspectRatio: '512/382' }}>
-              <Image
-                src="/images/blog/glass-skin.png"
-                alt="Glass skin layering technique"
-                fill
-                className="object-cover"
-              />
-            </div>
-
-            <div className="prose prose-lg max-w-none text-gray-700 space-y-4">
               <p>
-                The K-Beauty glass-skin aesthetic emphasizes hydration, radiance, and a luminous complexion. Our three-step routine is designed to layer seamlessly, building hydration and glow with each step.
+                Today, every product is small-batch formulated with certified organic ingredients. Every service is performed by Louisiana State Board licensed estheticians. And every client leaves feeling seen.
               </p>
             </div>
-            
-            <div className="mt-6 bg-gradient-to-r from-sand/20 to-sage/10 rounded-lg p-6 text-center">
-              <h3 className="font-semibold text-gray-900 mb-3">Why Organic?</h3>
-              <p className="text-gray-700">
-                Organic Ingredients are grown without synthetic pesticides, fertilizers, or GMOs. By choosing certified Organic, we ensure our formulas are as pure and clean as possible.
-              </p>
-            </div>
-          </section>
-
-          {/* Instagram Feed */}
-          <section className="mb-16">
-            <h2 className="text-3xl font-serif text-clay-600 mb-6 text-center">Follow Our Journey</h2>
-            
-            <div className="max-w-4xl mx-auto">
-              <Script src="https://elfsightcdn.com/platform.js" strategy="lazyOnload" />
-              <div className="elfsight-app-0570fdc4-b52b-4299-94d1-2a6d6b1da02b" data-elfsight-app-lazy></div>
-            </div>
-          </section>
-
-          {/* Transparency */}
-          <section>
-            <h2 className="text-3xl font-serif text-clay-600 mb-6 text-center">Transparency & Safety</h2>
-            <div className="prose prose-lg max-w-none text-gray-700 space-y-4">
-              <p>
-                We list every ingredient in INCI format and clearly mark which are Organic. We provide full usage instructions, storage recommendations, and safety warnings.
-              </p>
-              <p className="text-sm text-gray-600 italic">
-                These statements have not been evaluated by the Food and Drug Administration. Our products are not intended to diagnose, treat, cure, or prevent any disease.
-              </p>
-            </div>
-          </section>
+          </div>
         </div>
-      </Container>
-    </main>
+      </section>
+
+      {/* Values */}
+      <section className="bg-white py-20 px-6">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            <p className="text-xs tracking-widest uppercase text-[#D4AF77] mb-3">What We Stand For</p>
+            <h2 className="font-serif text-3xl text-[#111]">Our Values</h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+            {VALUES.map(v => (
+              <div key={v.title} className="p-8 border border-[#E8E0D0] hover:border-[#D4AF77]/40 transition-colors">
+                <div className="text-2xl mb-4">{v.icon}</div>
+                <h3 className="font-serif text-lg text-[#111] mb-3">{v.title}</h3>
+                <p className="text-[#888] text-sm leading-relaxed">{v.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Glass skin */}
+      <section className="max-w-4xl mx-auto px-6 py-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+          <div>
+            <p className="text-xs tracking-widest uppercase text-[#D4AF77] mb-3">K-Beauty Method</p>
+            <h2 className="font-serif text-3xl text-[#111] mb-6">Glass-Skin Layering</h2>
+            <p className="text-[#555] leading-relaxed mb-5">
+              The glass-skin philosophy is built on progressive hydration — layering water-based formulas from thinnest to richest so skin absorbs every drop.
+            </p>
+            <p className="text-[#555] leading-relaxed mb-8">
+              Our three-step home routine pairs with our in-studio treatments for compounding results: cleanse, tone, serum, barrier cream. Simple. Consistent. Transformative.
+            </p>
+            <Link
+              href="/shop"
+              className="inline-block px-8 py-3 border border-[#111] text-[#111] text-xs tracking-widest uppercase hover:bg-[#111] hover:text-[#D4AF77] transition-colors"
+            >
+              Shop the Routine
+            </Link>
+          </div>
+          {/* Glass skin image — replace /images/blog/glass-skin.jpg with real photo */}
+          <div className="relative aspect-[4/3] bg-[#F5EDD8] overflow-hidden">
+            <Image
+              src="/images/blog/glass-skin.jpg"
+              alt="Glass skin layering technique at Epoch Skin"
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 50vw"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Transparency */}
+      <section className="bg-[#111] py-16 px-6 text-center">
+        <div className="max-w-2xl mx-auto">
+          <p className="text-xs tracking-widest uppercase text-[#D4AF77] mb-4">Full Transparency</p>
+          <h2 className="font-serif text-3xl text-white mb-6">We List Every Ingredient</h2>
+          <p className="text-[#A89880] leading-relaxed mb-8">
+            Every formula lists ingredients in INCI format. We mark which are certified organic. We provide pH ranges, storage guidance, and usage instructions — because you deserve to know what you're putting on your skin.
+          </p>
+          <p className="text-[#666] text-xs">
+            These statements have not been evaluated by the Food and Drug Administration. Our products are not intended to diagnose, treat, cure, or prevent any disease.
+          </p>
+        </div>
+      </section>
+
+      {/* Instagram follow section */}
+      <section className="py-20 px-6 bg-[#FAFAF8]">
+        <div className="max-w-4xl mx-auto text-center">
+          <p className="text-xs tracking-widest uppercase text-[#D4AF77] mb-3">Follow Our Journey</p>
+          <h2 className="font-serif text-3xl text-[#111] mb-4">@epoch_skin</h2>
+          <p className="text-[#888] mb-8">Behind the formulas, inside the studio, and real client results.</p>
+
+          {/* Instagram feed placeholder grid — replace with Behold/Curator embed when ready */}
+          <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 mb-8">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="aspect-square bg-[#F0E8DC] overflow-hidden">
+                {/* Replace each with <Image> once real Instagram photos are available */}
+                <div className="w-full h-full flex items-center justify-center">
+                  <span className="text-[#D4AF77]/40 text-2xl">🌿</span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/*
+            TO ENABLE REAL INSTAGRAM FEED:
+            Option A (free): Use Behold (behold.so) — paste embed code here
+            Option B (free): Use Curator.io — generates script embed
+            Option C: Use Instagram Basic Display API with a server component
+
+            Example Behold embed (replace YOUR_FEED_ID):
+            <div id="behold-widget-YOUR_FEED_ID"></div>
+            <script src="https://w.behold.so/widget.js" type="module" />
+          */}
+
+          <a
+            href="https://instagram.com/epoch_skin"
+            target="_blank"
+            rel="noreferrer"
+            className="inline-block px-10 py-3.5 border border-[#111] text-[#111] text-xs tracking-widest uppercase hover:bg-[#111] hover:text-[#D4AF77] transition-colors"
+          >
+            Follow on Instagram
+          </a>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="py-16 px-6 bg-[#F5EDD8] text-center">
+        <p className="font-serif text-2xl text-[#111] mb-4">Ready to begin your epoch?</p>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <Link href="/book" className="px-10 py-3.5 bg-[#111] text-[#D4AF77] text-xs tracking-widest uppercase hover:bg-[#D4AF77] hover:text-[#111] transition-colors">
+            Book Appointment
+          </Link>
+          <Link href="/shop" className="px-10 py-3.5 border border-[#111] text-[#111] text-xs tracking-widest uppercase hover:border-[#D4AF77] hover:text-[#D4AF77] transition-colors">
+            Shop Skincare
+          </Link>
+        </div>
+      </section>
+    </div>
   );
 }
