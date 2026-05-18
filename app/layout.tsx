@@ -1,8 +1,8 @@
 // app/layout.tsx
-// Updated: all OG/meta uses epoch-skin.com (not old vercel.app domain)
 
 import type { Metadata, Viewport } from 'next';
 import { Cormorant_Garamond, DM_Sans } from 'next/font/google';
+import { Providers } from '@/components/Providers';
 import './globals.css';
 
 const cormorant = Cormorant_Garamond({
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     description: 'Transform your skin with organic products and expert waxing in New Orleans',
     images: [
       {
-        url: `${SITE}/og/og-default.jpg`,  // ← FIXED: uses epoch-skin.com not vercel.app
+        url: `${SITE}/og/og-default.jpg`,
         width: 1200,
         height: 630,
         alt: 'Epoch Skin Organic Skincare Products',
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Epoch Skin | Organic Skincare & Waxing',
     description: "New Orleans & Mobile's premier organic skincare and waxing studio",
-    images: [`${SITE}/og/og-default.jpg`],  // ← FIXED
+    images: [`${SITE}/og/og-default.jpg`],
   },
   robots: {
     index: true,
@@ -73,7 +73,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${cormorant.variable} ${dmSans.variable}`}>
       <body className="bg-[#FAFAF8] text-[#111] font-sans antialiased">
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
