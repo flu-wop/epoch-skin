@@ -4,48 +4,45 @@
 
 @layer base {
   :root {
-    /* ── Epoch Luxury Palette ── */
-    --cream:          #F8F4EF;
-    --cream-warm:     #F2ECE4;
-    --cream-deep:     #EAE2D8;
-    --parchment:      #E5DCCF;
-    --gold:           #C9A96E;
-    --gold-bright:    #D4AF77;
-    --gold-muted:     #E8D5A8;
-    --gold-deep:      #A8842E;
-    --gold-pale:      #F5EDD8;
-    --sage:           #4A5E48;
-    --sage-mid:       #6B7F69;
-    --sage-light:     #8FA08D;
-    --sage-pale:      #EBF0EA;
-    --ink:            #18181A;
-    --ink-soft:       #2A2A2C;
-    --charcoal:       #3C3C3E;
-    --warm-mid:       #6E6860;
-    --warm-light:     #9A9088;
-    --warm-pale:      #C8C0B8;
+    /* ── Epoch Palette (matched to mockup reference images) ── */
+    --bg:            #F5F0EB;   /* warm off-white / parchment */
+    --bg-white:      #FFFFFF;
+    --bg-cream:      #F0EBE3;   /* product card backgrounds */
+    --bg-deep:       #EAE2D8;   /* section dividers, CTA bg */
+    --gold:          #C9A96E;   /* primary gold */
+    --gold-bright:   #D4AF77;   /* lighter gold */
+    --gold-muted:    #E8D5A8;   /* pale gold */
+    --gold-deep:     #B8924A;   /* hover gold */
+    --sage:          #5C6B5A;   /* philosophy card bg */
+    --sage-dark:     #4A5E48;   /* hover sage */
+    --sage-text:     #C4CFC3;   /* text on sage bg */
+    --ink:           #1A1A18;
+    --ink-mid:       #6E6860;   /* body text */
+    --ink-light:     #9A9088;   /* captions */
+    --ink-pale:      #C8C0B8;   /* placeholders */
+    --border:        #E0D8CE;
 
-    /* ── shadcn tokens ── */
-    --background:            38 28% 96%;
-    --foreground:            240 5% 10%;
-    --card:                  38 28% 98%;
-    --card-foreground:       240 5% 10%;
-    --popover:               38 28% 98%;
-    --popover-foreground:    240 5% 10%;
-    --primary:               240 5% 10%;
-    --primary-foreground:    38 28% 96%;
-    --secondary:             38 22% 91%;
-    --secondary-foreground:  240 5% 20%;
-    --muted:                 38 15% 92%;
-    --muted-foreground:      38 8% 48%;
-    --accent:                38 55% 60%;
-    --accent-foreground:     240 5% 10%;
-    --destructive:           0 72% 51%;
-    --destructive-foreground:38 28% 96%;
-    --border:                38 22% 87%;
-    --input:                 38 22% 87%;
-    --ring:                  38 55% 60%;
-    --radius:                0rem;
+    /* shadcn */
+    --background: 36 22% 95%;
+    --foreground: 240 4% 10%;
+    --card: 36 22% 98%;
+    --card-foreground: 240 4% 10%;
+    --popover: 36 22% 98%;
+    --popover-foreground: 240 4% 10%;
+    --primary: 240 4% 10%;
+    --primary-foreground: 36 22% 95%;
+    --secondary: 36 18% 90%;
+    --secondary-foreground: 240 4% 20%;
+    --muted: 36 12% 91%;
+    --muted-foreground: 36 6% 48%;
+    --accent: 38 52% 60%;
+    --accent-foreground: 240 4% 10%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 36 22% 95%;
+    --border: 36 20% 87%;
+    --input: 36 20% 87%;
+    --ring: 38 52% 60%;
+    --radius: 0rem;
   }
 }
 
@@ -56,127 +53,101 @@
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    text-rendering: optimizeLegibility;
   }
 
   body {
-    background-color: var(--cream);
+    background-color: var(--bg);
     color: var(--ink);
     font-family: var(--font-inter), 'Inter', system-ui, sans-serif;
-    line-height: 1.6;
+    line-height: 1.65;
   }
 
-  h1, h2, h3, h4, h5 {
+  h1, h2, h3, h4 {
     font-family: var(--font-playfair), 'Playfair Display', Georgia, serif;
     font-weight: 400;
-    letter-spacing: -0.015em;
-    line-height: 1.12;
+    letter-spacing: -0.01em;
+    line-height: 1.1;
   }
 
   ::selection {
-    background-color: var(--gold-muted);
+    background: var(--gold-muted);
     color: var(--ink);
   }
 
   ::-webkit-scrollbar { width: 5px; }
-  ::-webkit-scrollbar-track { background: var(--cream); }
+  ::-webkit-scrollbar-track { background: var(--bg); }
   ::-webkit-scrollbar-thumb { background: var(--gold-muted); }
-  ::-webkit-scrollbar-thumb:hover { background: var(--gold); }
 }
 
 @layer components {
-
-  /* ── Layout wrapper ── */
-  .page-container {
-    @apply max-w-[1360px] mx-auto px-5 sm:px-8 lg:px-12;
+  /* ── Container ── */
+  .page-wrap {
+    @apply max-w-[1200px] mx-auto px-5 sm:px-8;
   }
 
-  /* ── Section rhythm ── */
-  .section-y { @apply py-20 md:py-28 lg:py-32; }
-  .section-y-sm { @apply py-14 md:py-20; }
-
-  /* ── Eyebrow label ── */
+  /* ── Eyebrow text ── */
   .eyebrow {
-    @apply text-[10px] sm:text-[11px] tracking-[0.28em] uppercase
-           text-[#C9A96E] font-sans font-medium;
+    @apply text-[10px] tracking-[0.3em] uppercase text-[#C9A96E] font-sans;
   }
 
   /* ── Gold rule ── */
-  .gold-rule { @apply w-10 h-px bg-[#C9A96E]; }
+  .gold-rule {
+    @apply w-10 h-0.5 bg-[#C9A96E];
+  }
 
-  /* ── Primary button ── */
+  /* ── Primary button (dark bg, gold text) ── */
   .btn-primary {
     @apply inline-flex items-center justify-center
-           px-8 py-3.5 bg-[#18181A] text-[#C9A96E]
-           text-[10px] sm:text-[11px] tracking-[0.22em] uppercase font-sans
-           hover:bg-[#C9A96E] hover:text-[#18181A]
-           active:scale-[0.98]
-           transition-all duration-500;
-  }
-
-  /* ── Gold outline button ── */
-  .btn-outline {
-    @apply inline-flex items-center justify-center
-           px-8 py-3.5 border border-[#C9A96E]
-           text-[#C9A96E] text-[10px] sm:text-[11px] tracking-[0.22em] uppercase font-sans
-           hover:bg-[#C9A96E] hover:text-[#18181A]
-           active:scale-[0.98]
-           transition-all duration-500;
-  }
-
-  /* ── Ghost button (dark bg) ── */
-  .btn-ghost {
-    @apply inline-flex items-center justify-center
-           px-8 py-3.5 border border-white/30
-           text-white text-[10px] sm:text-[11px] tracking-[0.22em] uppercase font-sans
-           hover:border-[#C9A96E] hover:text-[#C9A96E]
+           px-8 py-3.5 bg-[#1A1A18] text-[#C9A96E]
+           text-[11px] tracking-[0.22em] uppercase font-sans
+           hover:bg-[#C9A96E] hover:text-[#1A1A18]
            transition-all duration-400;
   }
 
-  /* ── Product card ── */
-  .product-card {
-    @apply bg-white border border-[#E8E0D5]
-           transition-all duration-500 ease-out
-           hover:-translate-y-1.5
-           hover:shadow-[0_16px_48px_rgba(201,169,110,0.13)]
-           hover:border-[#C9A96E]/40;
-  }
-
-  /* ── Value card ── */
-  .value-card {
-    @apply bg-white border border-[#E8E0D5] p-8
-           hover:border-[#C9A96E]/50 hover:bg-[#FDFAF6]
+  /* ── Gold border button ── */
+  .btn-outline-gold {
+    @apply inline-flex items-center justify-center
+           px-8 py-3.5 border border-[#C9A96E] text-[#C9A96E]
+           text-[11px] tracking-[0.22em] uppercase font-sans
+           hover:bg-[#C9A96E] hover:text-[#1A1A18]
            transition-all duration-400;
   }
 
-  /* ── Animated underline link ── */
-  .link-gold {
-    @apply relative text-[#C9A96E] font-sans text-[11px] tracking-[0.18em] uppercase;
+  /* ── "Shop Now" gold fill button (product cards) ── */
+  .btn-shop-now {
+    @apply flex items-center justify-center w-full py-3.5
+           bg-[#C9A96E] text-white
+           text-[11px] tracking-[0.18em] uppercase font-sans
+           hover:bg-[#B8924A] transition-colors duration-300;
   }
-  .link-gold::after {
-    content: '';
-    @apply absolute left-0 -bottom-0.5 w-full h-px bg-[#C9A96E] scale-x-0 origin-left
-           transition-transform duration-400;
+
+  /* ── Dark outline button ── */
+  .btn-outline-dark {
+    @apply inline-flex items-center justify-center
+           px-8 py-3.5 border border-[#1A1A18] text-[#1A1A18]
+           text-[11px] tracking-[0.22em] uppercase font-sans
+           hover:bg-[#1A1A18] hover:text-[#C9A96E]
+           transition-all duration-400;
   }
-  .link-gold:hover::after { @apply scale-x-100; }
+
+  /* ── Product card hover ── */
+  .product-card-hover {
+    @apply hover:shadow-[0_8px_40px_rgba(201,169,110,0.15)]
+           hover:-translate-y-1
+           transition-all duration-500;
+  }
 }
 
-/* ── Scroll-triggered fade utilities ── */
+/* ── Scroll fade-up ── */
 .fade-up {
   opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 0.75s ease, transform 0.75s ease;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
 }
 .fade-up.in-view {
   opacity: 1;
   transform: translateY(0);
 }
-
-/* ── Stagger delays ── */
-.delay-100 { transition-delay: 0.1s; }
-.delay-200 { transition-delay: 0.2s; }
-.delay-300 { transition-delay: 0.3s; }
-.delay-400 { transition-delay: 0.4s; }
 
 @media (prefers-reduced-motion: reduce) {
   .fade-up { opacity: 1; transform: none; transition: none; }

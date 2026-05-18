@@ -1,4 +1,10 @@
 // app/about/page.tsx
+// Matches reference mockup 3 exactly:
+// - Large circular founder portrait at top center
+// - "Our Epoch" heading, "Our Story" section
+// - Sage green "Glass Skin Philosophy" cards with icons
+// - "Spotlights" team section with circular photos
+// - "Follow Our Journey" Instagram grid
 
 import Image from "next/image";
 import Link from "next/link";
@@ -15,273 +21,247 @@ export const metadata: Metadata = {
   },
 };
 
-const VALUES = [
+const PHILOSOPHY_CARDS = [
   {
-    icon: "✦",
-    title: "Organic First",
-    body: "Only certified organic extracts and botanicals — INCI-listed, batch-tested, transparently sourced. No greenwashing.",
+    icon: (
+      <svg viewBox="0 0 32 32" fill="none" className="w-8 h-8" stroke="currentColor" strokeWidth="1.5">
+        <circle cx="16" cy="16" r="6" />
+        <path d="M16 4v4M16 24v4M4 16h4M24 16h4M7.5 7.5l2.8 2.8M21.7 21.7l2.8 2.8M7.5 24.5l2.8-2.8M21.7 10.3l2.8-2.8" />
+      </svg>
+    ),
+    title: "Glass Skin",
+    body: "Our layering protocol maximizes absorption at each step to build luminous, dewy glass skin.",
   },
   {
-    icon: "◈",
-    title: "Cruelty-Free",
-    body: "Never tested on animals. We vet every supplier and refuse any ingredient with an ethically compromised supply chain.",
+    icon: (
+      <svg viewBox="0 0 32 32" fill="none" className="w-8 h-8" stroke="currentColor" strokeWidth="1.5">
+        <circle cx="16" cy="12" r="5" />
+        <path d="M8 28c0-4.4 3.6-8 8-8s8 3.6 8 8" />
+        <circle cx="16" cy="12" r="9" strokeDasharray="2 3" />
+      </svg>
+    ),
+    title: "Glass Skin",
+    body: "Natural botanical treatments certified to maintain skin's own balanced ecosystem.",
   },
   {
-    icon: "◇",
-    title: "Visible Results",
-    body: "Every formula and service is engineered for measurable skin improvement — not just a pleasant experience.",
+    icon: (
+      <svg viewBox="0 0 32 32" fill="none" className="w-8 h-8" stroke="currentColor" strokeWidth="1.5">
+        <path d="M8 8h16v20H8z" />
+        <path d="M11 8V6a5 5 0 0 1 10 0v2" />
+        <path d="M13 17l2 2 4-4" />
+      </svg>
+    ),
+    title: "Esthetician Team",
+    body: "Louisiana State Board certified estheticians trained in organic skincare and gentle waxing.",
   },
-  {
-    icon: "○",
-    title: "Client-Centered",
-    body: "Your comfort, safety, and confidence are the non-negotiable center of every decision we make.",
-  },
-];
-
-const GLASS_STEPS = [
-  { num: "01", label: "Cleanse", desc: "Sulfate-free, pH-balanced. Remove without stripping." },
-  { num: "02", label: "Tone",    desc: "Prep the canvas. Restore balance, prime for absorption." },
-  { num: "03", label: "Serum",   desc: "Snow mushroom and beta-glucan for deep, sustained hydration." },
-  { num: "04", label: "Seal",    desc: "Barrier cream locks every layer in. Glass skin, achieved." },
 ];
 
 export default function AboutPage() {
   return (
-    <div className="bg-[#F8F4EF]">
+    <div className="bg-[#F5F0EB] min-h-screen">
 
-      {/* ── Hero Banner ── */}
-      <section className="relative bg-[#18181A] py-28 md:py-36 overflow-hidden">
-        <div className="absolute inset-0 opacity-[0.05]"
-          style={{ backgroundImage: "radial-gradient(ellipse at 30% 50%, #C9A96E 0%, transparent 65%)" }} />
-        <div className="page-container relative text-center">
-          <div className="gold-rule mx-auto mb-5" />
-          <p className="eyebrow mb-4">Our Story</p>
-          <h1 className="font-serif text-5xl md:text-6xl text-white mb-6 max-w-2xl mx-auto leading-tight">
-            Built on a Belief in
-            <em className="not-italic text-[#D4AF77]"> Better.</em>
-          </h1>
-          <p className="text-[#9A9088] font-sans text-base leading-relaxed max-w-lg mx-auto">
-            Founded in New Orleans by a licensed esthetician who couldn't find 
-            organic waxing and skincare that actually worked — so she built it.
-          </p>
+      {/* ── FOUNDER PORTRAIT — circular, top center ── matches mockup 3 ── */}
+      <section className="pt-16 pb-0 text-center px-5">
+        {/* Circular portrait */}
+        <div className="relative w-44 h-44 mx-auto mb-8">
+          <div className="w-full h-full rounded-full overflow-hidden border-4 border-white
+                           shadow-[0_8px_40px_rgba(201,169,110,0.20)] bg-[#EAE2D8]">
+            <Image
+              src="/images/team/kayla-ford.jpg"
+              alt="Kayla Ford, Founder of Epoch Skin"
+              fill
+              className="object-cover object-top"
+              sizes="176px"
+              priority
+            />
+          </div>
+          {/* Gold ring accent */}
+          <div className="absolute -inset-1.5 rounded-full border border-[#C9A96E]/30" />
         </div>
+
+        {/* "Our Epoch" heading */}
+        <h1 className="font-serif text-5xl md:text-6xl text-[#1A1A18] mb-0">Our Epoch</h1>
       </section>
 
-      {/* ── Founder Section ── */}
-      <section className="section-y">
-        <div className="page-container">
-          <div className="grid md:grid-cols-2 gap-16 lg:gap-24 items-start">
+      {/* ── OUR STORY ── matches mockup 3 layout ── */}
+      <section className="bg-white mt-0 py-14 px-5">
+        <div className="max-w-[780px] mx-auto text-center">
+          <p className="text-[10px] tracking-[0.3em] uppercase text-[#C9A96E] font-sans mb-3">OAN</p>
+          <h2 className="font-serif text-4xl text-[#1A1A18] mb-7">Our Story</h2>
 
-            {/* Portrait */}
-            <div>
-              <div className="relative aspect-[3/4] bg-[#EAE2D8] overflow-hidden">
-                <Image
-                  src="/images/team/kayla-ford.jpg"
-                  alt="Kayla Ford, Founder & Licensed Esthetician, Epoch Skin"
-                  fill
-                  className="object-cover object-top"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  priority
-                />
-                {/* Gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#18181A]/60 via-transparent to-transparent" />
-                {/* Name badge */}
-                <div className="absolute bottom-0 left-0 right-0 p-7">
-                  <p className="font-serif text-white text-xl mb-1">Kayla Ford</p>
-                  <p className="text-[#C9A96E] text-[10px] tracking-[0.22em] uppercase font-sans">
-                    Founder · Licensed Esthetician
-                  </p>
-                </div>
-                {/* Gold corner */}
-                <div className="absolute top-4 right-4 w-8 h-8 border-t border-r border-[#C9A96E]/50" />
-                <div className="absolute bottom-4 left-4 w-8 h-8 border-b border-l border-[#C9A96E]/50" />
-              </div>
-              <p className="text-[#9A9088] text-xs font-sans mt-4 tracking-wide">
-                LA State Board Licensed · 3+ Years Experience · Certified in Organic Facials & Waxing
-              </p>
-            </div>
+          <div className="text-[#6E6860] font-sans text-sm leading-relaxed space-y-4 text-left max-w-2xl mx-auto">
+            <p>
+              Kayla Ford founded Epoch Skin after experiencing firsthand the damage that harsh, synthetic 
+              products can cause — and the frustration of finding no organic-first studio in New Orleans 
+              that took clean formulation seriously enough to actually deliver results.
+            </p>
+            <p>
+              From formulating in her garage to opening Epoch Skin, the journey is guided by a belief 
+              that the beauty community deserves better — skincare rooted in transparency, certification, 
+              and the science of truly healthy skin.
+            </p>
+            <p>
+              Our studio serves New Orleans and Mobile, AL. New clients can book online or call to get 
+              the conversation started with our estheticians.
+            </p>
+          </div>
 
-            {/* Story */}
-            <div className="pt-4">
-              {/* Etymology card */}
-              <div className="border border-[#E8E0D5] bg-white p-8 mb-10">
-                <p className="eyebrow mb-2">ep · och</p>
-                <p className="font-serif text-2xl text-[#18181A] mb-3 italic">/ˈepək/ · noun</p>
-                <p className="text-[#9A9088] text-sm font-sans leading-relaxed mb-4">
-                  A fixed point in time from which a new chapter begins.
-                </p>
-                <div className="border-l-2 border-[#C9A96E] pl-5">
-                  <p className="text-[#6E6860] text-sm font-sans leading-relaxed italic">
-                    "For us, Epoch is the moment your skin's story changes — when you choose formulas 
-                    that nourish instead of strip, that honor your body's natural intelligence."
-                  </p>
-                </div>
-              </div>
-
-              <div className="gold-rule mb-6" />
-              <h2 className="font-serif text-3xl text-[#18181A] mb-7">Our Story</h2>
-              <div className="space-y-5 text-[#6E6860] font-sans text-sm leading-relaxed">
-                <p>
-                  Epoch Skin was born from firsthand frustration. Kayla experienced years of irritation 
-                  and sensitivity from harsh waxing products and synthetic skincare — and couldn't find 
-                  a studio in New Orleans that took clean formulation seriously.
-                </p>
-                <p>
-                  So she built one. Kayla spent years studying certified organic formulation, K-Beauty 
-                  glass-skin protocols, and gentle waxing techniques before launching Epoch Skin. 
-                  Every product is small-batch formulated. Every service is performed by a Louisiana 
-                  State Board licensed esthetician.
-                </p>
-                <p>
-                  Today, Epoch Skin is more than a studio — it's a commitment. To transparency, to results, 
-                  and to every client who walks through the door.
-                </p>
-              </div>
-
-              <div className="mt-10 flex flex-wrap gap-4">
-                <Link href="/book" className="btn-primary">Book a Service</Link>
-                <Link href="/shop" className="btn-outline">Shop the Collection</Link>
-              </div>
-            </div>
+          <div className="mt-8">
+            <Link href="/book"
+              className="inline-flex items-center px-8 py-3 border border-[#1A1A18] text-[#1A1A18]
+                         text-[11px] tracking-[0.2em] uppercase font-sans
+                         hover:bg-[#1A1A18] hover:text-[#C9A96E] transition-all duration-400">
+              About Page
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* ── Values ── */}
-      <section className="section-y bg-[#F2ECE4]">
-        <div className="page-container">
-          <div className="text-center mb-14">
-            <div className="gold-rule mx-auto mb-5" />
-            <p className="eyebrow mb-3">What We Stand For</p>
-            <h2 className="font-serif text-4xl text-[#18181A]">Our Values</h2>
+      {/* ── GLASS SKIN PHILOSOPHY ── sage green cards with icons ── matches mockup 3 ── */}
+      <section className="py-16 px-5">
+        <div className="max-w-[900px] mx-auto">
+          <div className="text-center mb-10">
+            <p className="text-[10px] tracking-[0.3em] uppercase text-[#C9A96E] font-sans mb-2">OUR</p>
+            <h2 className="font-serif text-4xl text-[#1A1A18]">Glass Skin Philosophy</h2>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {VALUES.map((v) => (
-              <div key={v.title} className="value-card group">
-                <span className="block text-[#C9A96E] text-xl mb-5 group-hover:scale-110
-                                  transition-transform duration-300">{v.icon}</span>
-                <h3 className="font-serif text-lg text-[#18181A] mb-3">{v.title}</h3>
-                <p className="text-[#9A9088] text-sm font-sans leading-relaxed">{v.body}</p>
+
+          <div className="grid sm:grid-cols-3 gap-4">
+            {PHILOSOPHY_CARDS.map((card) => (
+              <div
+                key={card.title}
+                className="bg-[#5C6B5A] text-white p-8 text-center group
+                           hover:bg-[#4A5E48] transition-colors duration-400"
+              >
+                <div className="text-[#C9A96E] mb-5 flex justify-center">
+                  {card.icon}
+                </div>
+                <h3 className="font-serif text-xl mb-3">{card.title}</h3>
+                <p className="text-[#C4CFC3] text-xs font-sans leading-relaxed">{card.body}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── Glass Skin Philosophy ── */}
-      <section className="section-y bg-[#F8F4EF]">
-        <div className="page-container">
-          <div className="grid md:grid-cols-2 gap-16 lg:gap-24 items-center">
-            {/* Image */}
-            <div className="relative aspect-[4/3] bg-[#EAE2D8] overflow-hidden order-2 md:order-1">
-              <Image
-                src="/images/blog/glass-skin.jpg"
-                alt="Glass skin layering technique"
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 50vw"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#18181A]/30 to-transparent" />
-              {/* Corner accent */}
-              <div className="absolute top-4 left-4 w-10 h-10 border-t border-l border-[#C9A96E]/60" />
-            </div>
+      {/* ── SPOTLIGHTS — team section ── matches mockup 3 ── */}
+      <section className="py-14 px-5 bg-white">
+        <div className="max-w-[780px] mx-auto">
+          <div className="text-center mb-10">
+            <p className="text-[10px] tracking-[0.3em] uppercase text-[#C9A96E] font-sans mb-2">ON</p>
+            <h2 className="font-serif text-4xl text-[#1A1A18]">Spotlights</h2>
+          </div>
 
-            {/* Content */}
-            <div className="order-1 md:order-2">
-              <div className="gold-rule mb-5" />
-              <p className="eyebrow mb-3">K-Beauty Method</p>
-              <h2 className="font-serif text-4xl text-[#18181A] mb-8">
-                The Glass-Skin
-                <br /><em className="not-italic text-[#C9A96E]">Layering Protocol</em>
-              </h2>
-
-              <div className="space-y-6 mb-10">
-                {GLASS_STEPS.map((step) => (
-                  <div key={step.num} className="flex gap-5 items-start group">
-                    <span className="font-serif text-[#E8D5A8] text-2xl leading-none flex-shrink-0
-                                     group-hover:text-[#C9A96E] transition-colors duration-300">
-                      {step.num}
-                    </span>
-                    <div>
-                      <p className="text-[#18181A] text-sm font-sans font-medium tracking-wide mb-1">
-                        {step.label}
-                      </p>
-                      <p className="text-[#9A9088] text-xs font-sans leading-relaxed">{step.desc}</p>
-                    </div>
+          <div className="grid sm:grid-cols-2 gap-6 max-w-xl mx-auto">
+            {[
+              { name: "Kayla Ford", role: "Founder & Lead Esthetician", img: "/images/team/kayla-ford.jpg" },
+              { name: "Esthetician Team", role: "Licensed Professionals", img: "/images/team/team-2.jpg" },
+            ].map((member) => (
+              <div key={member.name} className="flex items-center gap-4">
+                <div className="relative w-16 h-16 flex-shrink-0">
+                  <div className="w-full h-full rounded-full overflow-hidden bg-[#EAE2D8]">
+                    <Image
+                      src={member.img}
+                      alt={member.name}
+                      fill
+                      className="object-cover object-top"
+                      sizes="64px"
+                    />
                   </div>
-                ))}
+                </div>
+                <div>
+                  <p className="font-serif text-[#1A1A18] text-lg leading-tight">{member.name}</p>
+                  <p className="text-[#9A9088] text-xs font-sans mt-0.5">{member.role}</p>
+                </div>
               </div>
-
-              <Link href="/shop" className="btn-primary">Shop the Routine</Link>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* ── Transparency Banner ── */}
-      <section className="bg-[#18181A] py-20 px-6">
-        <div className="page-container text-center max-w-2xl mx-auto">
-          <div className="gold-rule mx-auto mb-5" />
-          <p className="eyebrow mb-4">Full Transparency</p>
-          <h2 className="font-serif text-4xl text-white mb-6">We List Every Ingredient</h2>
-          <p className="text-[#6E6860] font-sans text-sm leading-relaxed mb-4">
-            Every formula lists ingredients in INCI format. We mark which are certified organic, 
-            provide pH ranges, storage guidance, and usage instructions.
-          </p>
-          <p className="text-[#3C3C3E] text-xs font-sans">
-            These statements have not been evaluated by the FDA. Products are not intended to diagnose, 
-            treat, cure, or prevent any disease.
-          </p>
-        </div>
-      </section>
+      {/* ── FOLLOW OUR JOURNEY — Instagram grid ── matches mockup 3 ── */}
+      <section className="py-16 px-5">
+        <div className="max-w-[900px] mx-auto text-center">
+          <p className="text-[10px] tracking-[0.3em] uppercase text-[#C9A96E] font-sans mb-2">PTD</p>
+          <h2 className="font-serif text-4xl text-[#1A1A18] mb-10">Follow Our Journey</h2>
 
-      {/* ── Instagram Section ── */}
-      <section className="section-y bg-[#F8F4EF]">
-        <div className="page-container text-center">
-          <div className="gold-rule mx-auto mb-5" />
-          <p className="eyebrow mb-3">Follow Our Journey</p>
-          <h2 className="font-serif text-4xl text-[#18181A] mb-3">@epoch_skin</h2>
-          <p className="text-[#9A9088] font-sans text-sm mb-10">
-            Behind the formulas, inside the studio, and real client skin.
-          </p>
-
-          {/* Placeholder grid — replace with Behold/Curator embed */}
-          <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 mb-10 max-w-3xl mx-auto">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="aspect-square bg-[#EAE2D8] overflow-hidden group cursor-pointer">
-                <div className="w-full h-full flex items-center justify-center
-                                 group-hover:bg-[#18181A] transition-colors duration-400">
-                  <span className="text-[#C9A96E]/30 text-3xl group-hover:opacity-60 transition-opacity">✦</span>
-                </div>
+          {/* Instagram placeholder grid — 3 large tiles matching mockup */}
+          <div className="grid grid-cols-3 gap-3 mb-8">
+            {[
+              "/images/team/kayla-ford.jpg",
+              "/images/blog/glass-skin.jpg",
+              "/images/studio/studio-1.jpg",
+            ].map((src, i) => (
+              <div key={i} className="aspect-square overflow-hidden bg-[#EAE2D8] group cursor-pointer relative">
+                <Image
+                  src={src}
+                  alt={`Epoch Skin Instagram ${i + 1}`}
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  sizes="33vw"
+                />
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
               </div>
             ))}
           </div>
           {/*
-            INSTAGRAM FEED: Sign up at behold.so, connect @epoch_skin, paste embed below.
-            Example: <div id="behold-widget-YOURFEEDID"></div>
+            INSTAGRAM: Replace grid above with Behold embed:
+            <div id="behold-widget-YOURFEEDID" />
+            <script src="https://w.behold.so/widget.js" type="module" />
           */}
 
           <a
             href="https://instagram.com/epoch_skin"
             target="_blank"
             rel="noreferrer"
-            className="btn-outline"
+            className="inline-flex items-center px-8 py-3.5 border border-[#1A1A18] text-[#1A1A18]
+                       text-[11px] tracking-[0.2em] uppercase font-sans
+                       hover:bg-[#1A1A18] hover:text-[#C9A96E] transition-all duration-400"
           >
-            Follow on Instagram
+            @epoch_skin
           </a>
         </div>
       </section>
 
-      {/* ── Final CTA ── */}
-      <section className="section-y-sm bg-[#EAE2D8] text-center">
-        <div className="page-container">
-          <div className="gold-rule mx-auto mb-5" />
-          <p className="font-serif text-3xl md:text-4xl text-[#18181A] mb-8">
-            Ready to begin your epoch?
-          </p>
+      {/* ── VALUES ── */}
+      <section className="py-16 px-5 bg-white">
+        <div className="max-w-[900px] mx-auto">
+          <div className="text-center mb-10">
+            <h2 className="font-serif text-4xl text-[#1A1A18]">Our Values</h2>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {[
+              { icon: "✦", title: "Organic First", body: "Certified organic extracts, INCI-listed, batch-tested, transparently sourced." },
+              { icon: "◈", title: "Cruelty-Free", body: "Never tested on animals. Ethically sourced from verified suppliers." },
+              { icon: "◇", title: "Visible Results", body: "Every formula engineered for measurable skin improvement." },
+              { icon: "○", title: "Client-Centered", body: "Your comfort and confidence are at the heart of every decision." },
+            ].map((v) => (
+              <div key={v.title}
+                className="border border-[#E0D8CE] p-7 bg-white hover:border-[#C9A96E]/50
+                           hover:bg-[#FDFAF6] transition-all duration-400">
+                <span className="block text-[#C9A96E] text-xl mb-4">{v.icon}</span>
+                <h3 className="font-serif text-lg text-[#1A1A18] mb-2">{v.title}</h3>
+                <p className="text-[#9A9088] text-xs font-sans leading-relaxed">{v.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── CTA ── */}
+      <section className="py-16 px-5 bg-[#EAE2D8] text-center">
+        <div className="max-w-lg mx-auto">
+          <p className="font-serif text-3xl text-[#1A1A18] mb-8">Ready to begin your epoch?</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/book" className="btn-primary">Book Appointment</Link>
-            <Link href="/shop" className="btn-outline">Shop Skincare</Link>
+            <Link href="/book"
+              className="px-10 py-3.5 bg-[#1A1A18] text-[#C9A96E] text-[11px] tracking-[0.22em]
+                         uppercase font-sans hover:bg-[#C9A96E] hover:text-[#1A1A18] transition-all duration-400">
+              Book Appointment
+            </Link>
+            <Link href="/shop"
+              className="px-10 py-3.5 border border-[#1A1A18] text-[#1A1A18] text-[11px] tracking-[0.22em]
+                         uppercase font-sans hover:border-[#C9A96E] hover:text-[#C9A96E] transition-all duration-400">
+              Shop Skincare
+            </Link>
           </div>
         </div>
       </section>

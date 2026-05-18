@@ -1,84 +1,141 @@
+"use client";
 // app/shop/page.tsx
+// Matches mockup 2: left sidebar "By Concern" filter, 2x2 product grid with gold label bars
 
-import { Metadata } from "next";
+import { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
 import { products } from "@/data/products";
-import { ShopGrid } from "@/components/shop/ShopGrid";
 
-export const metadata: Metadata = {
-  title: "Shop Organic Skincare",
-  description: "Discover 14 certified organic skincare formulas. Cruelty-free, small-batch, glass-skin focused.",
-  alternates: { canonical: "https://epoch-skin.com/shop" },
-  openGraph: {
-    title: "Shop | Epoch Skin",
-    url: "https://epoch-skin.com/shop",
-    images: [{ url: "https://epoch-skin.com/og/og-shop.jpg", width: 1200, height: 630 }],
-  },
+const CONCERNS = [
+  "Glow",
+  "Hydration",
+  "Barrier Repair",
+  "Brightening",
+  "Anti-Aging",
+  "Sensitivity",
+  "Pore Refining",
+  "Exfoliation",
+  "Lip & Eye",
+];
+
+const CATEGORY_MAP: Record<string, string[]> = {
+  "Glow":          ["cleansers", "toners", "masks"],
+  "Hydration":     ["serums", "moisturizers"],
+  "Barrier Repair":["moisturizers", "serums"],
+  "Brightening":   ["serums", "toners", "masks"],
+  "Anti-Aging":    ["serums", "moisturizers", "eye"],
+  "Sensitivity":   ["cleansers", "masks", "moisturizers"],
+  "Pore Refining": ["toners", "masks", "serums"],
+  "Exfoliation":   ["masks", "serums"],
+  "Lip & Eye":     ["lip", "eye"],
 };
 
 export default function ShopPage() {
+  const [activeConcern, setActiveConcern] = useState<string | null>(null);
+
+  const filtered = activeConcern
+    ? products.filter((p) => (CATEGORY_MAP[activeConcern] ?? []).includes(p.category))
+    : products;
+
   return (
-    <>
-      {/* ── Hero ── */}
-      <section className="relative bg-[#18181A] py-24 md:py-32 overflow-hidden">
-        {/* Subtle gold texture */}
-        <div className="absolute inset-0 opacity-[0.04]"
-          style={{ backgroundImage: "radial-gradient(circle at 20% 50%, #C9A96E 0%, transparent 60%), radial-gradient(circle at 80% 20%, #C9A96E 0%, transparent 50%)" }} />
-        <div className="page-container relative text-center">
-          <div className="gold-rule mx-auto mb-5" />
-          <p className="eyebrow mb-4">The Collection</p>
-          <h1 className="font-serif text-5xl md:text-6xl text-white mb-5">
-            Organic Skincare
-          </h1>
-          <p className="text-[#9A9088] font-sans text-base leading-relaxed max-w-lg mx-auto">
-            14 certified organic formulas. Cold-process made, batch-tested, 
-            and transparently labeled. Glass-skin results, every time.
-          </p>
-        </div>
-      </section>
+    <div className="bg-[#F5F0EB] min-h-screen">
 
-      {/* ── Product grid ── */}
-      <section className="section-y bg-[#F8F4EF]">
-        <div className="page-container">
-          <ShopGrid products={products} />
-        </div>
-      </section>
+      {/* Page header */}
+      <div className="text-center pt-16 pb-10 px-5">
+        <h1 className="font-serif text-5xl md:text-6xl text-[#1A1A18] mb-2">
+          Epoch Skin
+        </h1>
+        <div className="w-16 h-0.5 bg-[#C9A96E] mx-auto" />
+      </div>
 
-      {/* ── Why choose ── */}
-      <section className="section-y-sm bg-[#F2ECE4]">
-        <div className="page-container">
-          <div className="text-center mb-14">
-            <div className="gold-rule mx-auto mb-5" />
-            <h2 className="font-serif text-3xl md:text-4xl text-[#18181A]">
-              The Epoch Difference
-            </h2>
-          </div>
-          <div className="grid md:grid-cols-3 gap-6">
-            {[
-              {
-                icon: "✦",
-                title: "Certified Organic",
-                body: "Every ingredient is INCI-listed. Certified organic extracts, batch-tested for pH and stability. No greenwashing.",
-              },
-              {
-                icon: "◈",
-                title: "Cruelty-Free Always",
-                body: "Never tested on animals. Ethically sourced from suppliers who share our values — no exceptions.",
-              },
-              {
-                icon: "◇",
-                title: "Glass-Skin Results",
-                body: "Every formula is designed to deliver the K-Beauty glass-skin effect: plump, luminous, barrier-strong skin.",
-              },
-            ].map((item) => (
-              <div key={item.title} className="value-card">
-                <span className="text-[#C9A96E] text-2xl mb-5 block">{item.icon}</span>
-                <h3 className="font-serif text-xl text-[#18181A] mb-3">{item.title}</h3>
-                <p className="text-[#9A9088] text-sm font-sans leading-relaxed">{item.body}</p>
+      <div className="max-w-[1200px] mx-auto px-5 sm:px-8 pb-24">
+        <div className="flex flex-col lg:flex-row gap-10">
+
+          {/* ── SIDEBAR — "By Concern" ── matches mockup 2 left column ── */}
+          <aside className="lg:w-48 flex-shrink-0">
+            <h2 className="font-serif text-xl text-[#1A1A18] mb-6">By Concern</h2>
+            <ul className="space-y-1">
+              <li>
+                <button
+                  onClick={() => setActiveConcern(null)}
+                  className={`w-full flex items-center justify-between py-2.5 text-sm font-sans
+                               border-b border-[#E0D8CE] transition-colors ${
+                    activeConcern === null
+                      ? "text-[#C9A96E] font-medium"
+                      : "text-[#6E6860] hover:text-[#1A1A18]"
+                  }`}
+                >
+                  <span>All Products</span>
+                  <span className="w-2 h-2 rounded-full bg-[#C9A96E]" />
+                </button>
+              </li>
+              {CONCERNS.map((concern) => (
+                <li key={concern}>
+                  <button
+                    onClick={() => setActiveConcern(concern)}
+                    className={`w-full flex items-center justify-between py-2.5 text-sm font-sans
+                                 border-b border-[#E0D8CE] transition-colors ${
+                      activeConcern === concern
+                        ? "text-[#C9A96E] font-medium"
+                        : "text-[#6E6860] hover:text-[#1A1A18]"
+                    }`}
+                  >
+                    <span>{concern}</span>
+                    <span className={`w-2 h-2 rounded-full transition-colors ${
+                      activeConcern === concern ? "bg-[#C9A96E]" : "bg-[#D0C8BE]"
+                    }`} />
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </aside>
+
+          {/* ── PRODUCT GRID — matches mockup 2: 2-col with gold label bars ── */}
+          <div className="flex-1">
+            {filtered.length === 0 ? (
+              <div className="text-center py-20">
+                <p className="font-serif text-2xl text-[#1A1A18] mb-3">No products found</p>
+                <button onClick={() => setActiveConcern(null)}
+                  className="text-[#C9A96E] text-sm font-sans underline">
+                  View all
+                </button>
               </div>
-            ))}
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                {filtered.map((product) => (
+                  <ShopProductCard key={product.id} product={product} />
+                ))}
+              </div>
+            )}
           </div>
         </div>
-      </section>
-    </>
+      </div>
+    </div>
+  );
+}
+
+// ── Shop product card — matches mockup 2: image with gold label bar at bottom ──
+function ShopProductCard({ product }: { product: any }) {
+  return (
+    <Link href={`/shop/${product.slug}`} className="group block overflow-hidden bg-white
+                hover:shadow-[0_8px_40px_rgba(201,169,110,0.15)] transition-all duration-500">
+      {/* Product image */}
+      <div className="relative aspect-square overflow-hidden bg-[#F0EBE3]">
+        <Image
+          src={product.images[0]}
+          alt={product.name}
+          fill
+          className="object-cover object-center group-hover:scale-[1.04] transition-transform duration-700"
+          sizes="(max-width: 640px) 100vw, 50vw"
+        />
+      </div>
+
+      {/* Gold label bar — matches mockup 2 exactly */}
+      <div className="flex items-center justify-between px-5 py-4 bg-[#C9A96E]">
+        <span className="font-serif text-white text-lg">{product.name}</span>
+        <span className="text-white text-xl">›</span>
+      </div>
+    </Link>
   );
 }
