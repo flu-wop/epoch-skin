@@ -1,88 +1,97 @@
+// components/home/ServiceCategoryCards.tsx
 import Link from "next/link";
 import Image from "next/image";
-import { Container } from "@/components/layout/Container";
 
-const serviceCategories = [
+const SERVICES = [
   {
     title: "Body Waxing",
-    description: "Full body waxing services for smooth, long-lasting results",
+    description: "Full-body waxing with our organic hybrid wax — rosin-free, formulated with shea butter and squalane.",
     image: "/images/services/half-leg-wax.png",
-    imageAlt: "Professional body waxing service at Epoch Skin studio - smooth, hair-free results",
+    imageAlt: "Body waxing service",
     href: "/book?category=body-wax",
+    label: "From $20",
   },
   {
     title: "Facial Waxing",
-    description: "Precision facial waxing for eyebrows, lip, and chin",
+    description: "Precision brow, lip, and chin waxing by licensed estheticians. Clean lines, no irritation.",
     image: "/images/services/wax.png",
-    imageAlt: "Precision facial waxing treatment - eyebrow, lip, and chin hair removal by licensed esthetician",
+    imageAlt: "Facial waxing treatment",
     href: "/book?category=facial-wax",
+    label: "From $8",
   },
   {
     title: "Organic Facials",
-    description: "Luxurious Organic facial treatments for radiant Skincare",
+    description: "The glass-skin layering protocol — certified organic actives, K-Beauty method, visible results.",
     image: "/images/services/organic-facial.png",
-    imageAlt: "Luxurious Organic facial treatment using glass skin layering technique at Epoch Skin",
+    imageAlt: "Organic facial treatment",
     href: "/book?category=facials",
+    label: "From $50",
   },
 ];
 
 export function ServiceCategoryCards() {
   return (
-    <section className="py-16 md:py-20 bg-white">
-      <Container>
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-gray-900 mb-4">
-            Our Services
-          </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Choose from our premium waxing and Organic facial services
+    <section className="py-24 md:py-32 bg-[#F0EBE3]">
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+
+        {/* Header */}
+        <div className="text-center mb-16">
+          <div className="w-8 h-px bg-[#C9A84C] mx-auto mb-5" />
+          <p className="text-[11px] tracking-[0.25em] uppercase text-[#C9A84C] font-sans mb-4">
+            Studio Services
           </p>
+          <h2 className="font-serif text-4xl md:text-5xl text-[#1A1A18]">
+            Expert Care, Every Visit
+          </h2>
         </div>
 
+        {/* Cards */}
         <div className="grid md:grid-cols-3 gap-8">
-          {serviceCategories.map((category) => (
+          {SERVICES.map((svc) => (
             <Link
-              key={category.title}
-              href={category.href}
-              className="group bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-all"
+              key={svc.title}
+              href={svc.href}
+              className="group relative block overflow-hidden bg-[#1A1A18]"
             >
               {/* Image */}
-              <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-sand-100 to-neutral-100">
+              <div className="relative aspect-[3/4] overflow-hidden">
                 <Image
-                  src={category.image}
-                  alt={category.imageAlt}
+                  src={svc.image}
+                  alt={svc.imageAlt}
                   fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-300"
+                  className="object-cover opacity-70 group-hover:opacity-50
+                             group-hover:scale-105 transition-all duration-700"
+                  sizes="(max-width: 768px) 100vw, 33vw"
                 />
+                {/* Gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#1A1A18] via-[#1A1A18]/20 to-transparent" />
               </div>
 
-              {/* Content */}
-              <div className="p-6">
-                <h3 className="text-2xl font-serif font-bold text-gray-900 mb-2 group-hover:text-clay-600 transition-colors">
-                  {category.title}
-                </h3>
-                <p className="text-gray-600 mb-4">{category.description}</p>
-                <span className="inline-flex items-center text-clay-600 font-medium group-hover:text-clay-700">
-                  Book Now
-                  <svg
-                    className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
+              {/* Content overlay */}
+              <div className="absolute bottom-0 left-0 right-0 p-8">
+                <span className="text-[#C9A84C] text-[10px] tracking-[0.2em] uppercase font-sans mb-3 block">
+                  {svc.label}
                 </span>
+                <h3 className="font-serif text-2xl text-white mb-3 group-hover:text-[#D4AF77] transition-colors duration-300">
+                  {svc.title}
+                </h3>
+                <p className="text-[#8A8580] text-sm font-sans leading-relaxed mb-6 opacity-0
+                               group-hover:opacity-100 transition-opacity duration-400 max-w-[280px]">
+                  {svc.description}
+                </p>
+                <div className="flex items-center gap-3 text-[#C9A84C] text-[10px] tracking-[0.2em] uppercase font-sans">
+                  <span>Book Now</span>
+                  <span className="group-hover:translate-x-2 transition-transform duration-300 inline-block">→</span>
+                </div>
               </div>
+
+              {/* Gold border on hover */}
+              <div className="absolute inset-0 border border-[#C9A84C]/0 group-hover:border-[#C9A84C]/30
+                               transition-all duration-500 pointer-events-none" />
             </Link>
           ))}
         </div>
-      </Container>
+      </div>
     </section>
   );
 }

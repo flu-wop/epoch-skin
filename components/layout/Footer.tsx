@@ -1,96 +1,136 @@
+// components/layout/Footer.tsx
+
 import Link from "next/link";
-import { Container } from "@/components/layout/Container";
 import { Instagram, Facebook } from "lucide-react";
 import { NewsletterForm } from "@/components/layout/NewsletterForm";
 
 export function Footer() {
   return (
-    <footer className="bg-sage-900 text-white py-12 mt-20">
-      <Container>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+    <footer className="bg-[#111110] text-white">
+      {/* Gold top line */}
+      <div className="h-px bg-gradient-to-r from-transparent via-[#C9A84C]/50 to-transparent" />
+
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-16 lg:py-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+
           {/* Brand */}
-          <div>
-            <h3 className="font-serif text-xl mb-4">Epoch Skin</h3>
-            <p className="text-sage-100 text-sm">
-              Premium waxing studio and curated Organic Skincare products. Natural, luxurious, and effective treatments for your skin.
+          <div className="lg:col-span-1">
+            <p className="font-serif text-2xl text-white mb-1">Epoch Skin</p>
+            <p className="text-[#C9A84C] text-[10px] tracking-[0.2em] uppercase font-sans mb-5">
+              New Orleans · Est. 2026
             </p>
+            <p className="text-[#5A5A58] text-sm font-sans leading-relaxed">
+              Certified organic skincare and expert waxing. Rooted in K-Beauty, formulated with intention.
+            </p>
+            <div className="flex gap-4 mt-6">
+              {[
+                { href: "https://instagram.com/epoch_skin", Icon: Instagram, label: "Instagram" },
+                { href: "https://facebook.com/EpochSkin", Icon: Facebook, label: "Facebook" },
+                {
+                  href: "https://tiktok.com/@epoch_skin",
+                  label: "TikTok",
+                  svg: (
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.4a6.33 6.33 0 0 0-.79-.05A6.34 6.34 0 0 0 3.15 15.7a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" />
+                    </svg>
+                  ),
+                },
+              ].map(({ href, Icon, svg, label }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  className="w-8 h-8 border border-[#2C2C2A] flex items-center justify-center
+                             text-[#5A5A58] hover:text-[#C9A84C] hover:border-[#C9A84C]/40
+                             transition-all duration-300"
+                >
+                  {svg ?? (Icon && <Icon className="w-4 h-4" />)}
+                </a>
+              ))}
+            </div>
           </div>
 
-          {/* Quick Links */}
+          {/* Explore */}
           <div>
-            <h4 className="font-semibold mb-4">Quick Links</h4>
-            <ul className="space-y-2 text-sm">
-              <li><Link href="/shop" className="text-sage-100 hover:text-white transition-colors">Shop</Link></li>
-              <li><Link href="/about" className="text-sage-100 hover:text-white transition-colors">About</Link></li>
-              <li><Link href="/blog" className="text-sage-100 hover:text-white transition-colors">Blog</Link></li>
-              <li><Link href="/contact" className="text-sage-100 hover:text-white transition-colors">Contact</Link></li>
+            <p className="text-[10px] tracking-[0.2em] uppercase text-[#C9A84C] font-sans mb-6">Explore</p>
+            <ul className="space-y-3">
+              {[
+                ["Shop Skincare", "/shop"],
+                ["Services", "/services"],
+                ["Book Appointment", "/book"],
+                ["About Us", "/about"],
+                ["Journal", "/blog"],
+              ].map(([label, href]) => (
+                <li key={label}>
+                  <Link
+                    href={href}
+                    className="text-[#5A5A58] text-sm font-sans hover:text-[#C9A84C] transition-colors"
+                  >
+                    {label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
           {/* Contact */}
           <div>
-            <h4 className="font-semibold mb-4">Contact</h4>
-            <ul className="space-y-3 text-sm text-sage-100">
-              <li className="flex items-center gap-2">
-                <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
-                </svg>
-                <a href="tel:+15047774094" className="hover:text-white transition-colors">
+            <p className="text-[10px] tracking-[0.2em] uppercase text-[#C9A84C] font-sans mb-6">Contact</p>
+            <ul className="space-y-4 text-sm font-sans">
+              <li>
+                <a href="tel:+15047774094" className="text-[#5A5A58] hover:text-[#C9A84C] transition-colors">
                   (504) 777-4094
                 </a>
               </li>
-              <li className="flex items-center gap-2">
-                <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-                  <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-                </svg>
-                <a href="mailto:kayla@epoch-skin.com" className="hover:text-white transition-colors">
+              <li>
+                <a href="mailto:kayla@epoch-skin.com" className="text-[#5A5A58] hover:text-[#C9A84C] transition-colors">
                   kayla@epoch-skin.com
                 </a>
               </li>
-              <li className="pt-2">
-                <div className="flex gap-3">
-                  <a href="https://instagram.com/epoch_skin" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors" aria-label="Instagram">
-                    <Instagram className="w-5 h-5" />
-                  </a>
-                  <a href="https://facebook.com/EpochSkin" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors" aria-label="Facebook">
-                    <Facebook className="w-5 h-5" />
-                  </a>
-                  <a href="https://x.com/epoch_skin" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors" aria-label="X (Twitter)">
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                    </svg>
-                  </a>
-                  <a href="https://tiktok.com/@epoch_skin" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors" aria-label="TikTok">
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
-                    </svg>
-                  </a>
-                </div>
+              <li className="text-[#5A5A58] leading-relaxed pt-2">
+                New Orleans, Louisiana<br />
+                & Mobile, Alabama
+              </li>
+              <li className="text-[#3A3A38] text-xs pt-2">
+                Mon–Fri: 10am – 7pm<br />
+                Sat: 9am – 5pm<br />
+                Sun: By appointment
               </li>
             </ul>
           </div>
 
           {/* Newsletter */}
           <div>
-            <h4 className="font-semibold mb-4">Newsletter</h4>
-            <p className="text-sage-100 text-sm mb-4">
-              Subscribe for Skincare tips, exclusive offers, and updates.
+            <p className="text-[10px] tracking-[0.2em] uppercase text-[#C9A84C] font-sans mb-6">Newsletter</p>
+            <p className="text-[#5A5A58] text-sm font-sans mb-5 leading-relaxed">
+              Skincare tips, exclusive offers, and early access to new formulas.
             </p>
             <NewsletterForm />
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="border-t border-sage-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-sage-300">
-          <p>© 2026 Epoch Skin. All rights reserved.</p>
+        {/* Bottom bar */}
+        <div className="border-t border-[#1E1E1C] pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-[#3A3A38] text-xs font-sans">© 2026 Epoch Skin. All rights reserved.</p>
           <div className="flex gap-6">
-            <Link href="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
-            <Link href="/terms-of-service" className="hover:text-white transition-colors">Terms of Service</Link>
-            <Link href="/shipping-returns" className="hover:text-white transition-colors">Shipping & Returns</Link>
+            {[
+              ["Privacy Policy", "/privacy-policy"],
+              ["Terms of Service", "/terms-of-service"],
+              ["Shipping & Returns", "/shipping-returns"],
+            ].map(([label, href]) => (
+              <Link
+                key={label}
+                href={href}
+                className="text-[#3A3A38] text-xs font-sans hover:text-[#C9A84C] transition-colors"
+              >
+                {label}
+              </Link>
+            ))}
           </div>
         </div>
-      </Container>
+      </div>
     </footer>
   );
 }

@@ -1,97 +1,90 @@
 "use client";
 
 import { useState } from "react";
-import { Container } from "@/components/layout/Container";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Mail, CheckCircle2 } from "lucide-react";
 
 export function Newsletter() {
   const [email, setEmail] = useState("");
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
-
-    // Simulate API call - Replace with actual newsletter integration
-    // TODO: Connect to Mailchimp/ConvertKit/SendGrid API
-    // See integration instructions in README.md
-    setTimeout(() => {
-      setIsSubmitted(true);
-      setIsLoading(false);
+    setStatus("loading");
+    try {
+      const res = await fetch("/api/newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      if (!res.ok) throw new Error();
+      setStatus("success");
       setEmail("");
-    }, 1000);
+    } catch {
+      setStatus("error");
+    }
   };
 
   return (
-    <section className="bg-gradient-to-br from-sage-100 via-sand-50 to-sage-50 py-16 lg:py-24">
-      <Container>
-        <div className="mx-auto max-w-2xl text-center">
-          {!isSubmitted ? (
-            <>
-              {/* Icon */}
-              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-clay-100">
-                <Mail className="h-8 w-8 text-clay-600" />
-              </div>
+    <section className="relative py-24 md:py-32 bg-[#1A1A18] overflow-hidden">
 
-              {/* Heading */}
-              <h2 className="mt-6 font-serif text-3xl font-bold text-sage-900 sm:text-4xl">
-                Join Our Newsletter
-              </h2>
-              <p className="mt-4 text-lg text-neutral-600">
-                Subscribe for exclusive Skincare tips, special offers, and early 
-                access to new products. Plus, get 15% off your first order!
-              </p>
+      {/* Subtle gold gradient top */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#C9A84C]/40 to-transparent" />
 
-              {/* Form */}
-              <form onSubmit={handleSubmit} className="mt-8">
-                <div className="flex flex-col gap-3 sm:flex-row">
-                  <Input
-                    type="email"
-                    placeholder="Enter your email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    className="flex-1 border-sage-200 bg-white focus-visible:ring-sage-500"
-                  />
-                  <Button
-                    type="submit"
-                    disabled={isLoading}
-                    className="bg-clay-500 px-8 hover:bg-clay-600"
-                  >
-                    {isLoading ? "Subscribing..." : "Subscribe"}
-                  </Button>
-                </div>
-                <p className="mt-3 text-xs text-neutral-500">
-                  We respect your privacy. Unsubscribe at any time.
-                </p>
-              </form>
-            </>
-          ) : (
-            // Success message
-            <div className="py-8">
-              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-success/10">
-                <CheckCircle2 className="h-8 w-8 text-success" />
-              </div>
-              <h3 className="mt-6 font-serif text-2xl font-bold text-sage-900">
-                Thank You for Subscribing!
-              </h3>
-              <p className="mt-3 text-neutral-600">
-                Check your inbox for your exclusive 15% discount code.
-              </p>
-              <Button
-                onClick={() => setIsSubmitted(false)}
-                variant="outline"
-                className="mt-6"
-              >
-                Subscribe Another Email
-              </Button>
-            </div>
-          )}
-        </div>
-      </Container>
+      {/* Decorative text watermark */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">
+        <span className="font-serif text-[20vw] text-white/[0.02] leading-none">Epoch</span>
+      </div>
+
+      <div className="relative max-w-[1400px] mx-auto px-6 lg:px-12 text-center">
+        <div className="w-8 h-px bg-[#C9A84C] mx-auto mb-6" />
+        <p className="text-[11px] tracking-[0.25em] uppercase text-[#C9A84C] font-sans mb-5">
+          Inner Circle
+        </p>
+        <h2 className="font-serif text-4xl md:text-5xl text-white mb-5">
+          Join Our Newsletter
+        </h2>
+        <p className="text-[#8A8580] font-sans leading-relaxed mb-10 max-w-md mx-auto">
+          Skincare guides, early access to new formulas, and exclusive offers.
+          Plus — <span className="text-[#C9A84C]">15% off</span> your first order.
+        </p>
+
+        {status === "success" ? (
+          <p className="font-serif text-xl text-[#C9A84C] italic">
+            You're in. Check your inbox. ✨
+          </p>
+        ) : (
+          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-0 max-w-md mx-auto">
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              placeholder="Your email address"
+              className="flex-1 px-5 py-4 bg-[#2C2C2A] border border-[#3A3A38] text-white
+                         placeholder-[#5A5A58] text-sm font-sans focus:outline-none
+                         focus:border-[#C9A84C] transition-colors"
+            />
+            <button
+              type="submit"
+              disabled={status === "loading"}
+              className="px-8 py-4 bg-[#C9A84C] text-[#1A1A18] text-[11px] tracking-[0.2em]
+                         uppercase font-sans font-medium hover:bg-[#D4AF77] transition-colors
+                         disabled:opacity-50 whitespace-nowrap"
+            >
+              {status === "loading" ? "..." : "Subscribe"}
+            </button>
+          </form>
+        )}
+
+        {status === "error" && (
+          <p className="text-red-400 text-xs mt-3 font-sans">Something went wrong. Please try again.</p>
+        )}
+
+        <p className="text-[#5A5A58] text-xs font-sans mt-5">
+          We respect your privacy. Unsubscribe at any time.
+        </p>
+      </div>
+
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#C9A84C]/40 to-transparent" />
     </section>
   );
 }
