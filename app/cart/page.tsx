@@ -1,8 +1,8 @@
 'use client';
 // app/cart/page.tsx
-// Full cart with quantity controls + Stripe checkout
+// Uses lib/hooks/useCart (CartProvider-based, matches Providers.tsx)
 
-import { useCart } from '@/lib/cart-store';
+import { useCart } from '@/lib/hooks/useCart';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -20,7 +20,7 @@ export default function CartPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          items: items.map(i => ({ slug: i.slug, quantity: i.quantity })),
+          items: items.map(i => ({ slug: i.id, quantity: i.quantity })),
         }),
       });
       const data = await res.json();
@@ -63,7 +63,7 @@ export default function CartPage() {
           {/* Items */}
           <div className="lg:col-span-2 space-y-6">
             {items.map((item) => (
-              <div key={item.slug} className="flex gap-5 pb-6 border-b border-[#E8E0D0]">
+              <div key={item.id} className="flex gap-5 pb-6 border-b border-[#E8E0D0]">
                 <div className="relative w-20 h-20 flex-shrink-0 bg-[#F5EDD8]">
                   <Image
                     src={item.image}
@@ -75,20 +75,21 @@ export default function CartPage() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="font-serif text-[#111] text-sm mb-1 leading-snug">{item.name}</h3>
-                  <p className="text-[#D4AF77] text-sm font-medium">${item.price}</p>
+                  <p className="text-[#D4AF77] text-sm font-medium">${item.price.toFixed(2)}</p>
+                  {item.size && <p className="text-[#AAA] text-xs mt-0.5">{item.size}</p>}
                 </div>
                 <div className="flex flex-col items-end gap-3">
                   {/* Quantity */}
                   <div className="flex items-center border border-[#E0D8CC]">
                     <button
-                      onClick={() => updateQuantity(item.slug, item.quantity - 1)}
+                      onClick={() => updateQuantity(item.id, item.quantity - 1)}
                       className="w-8 h-8 flex items-center justify-center text-[#888] hover:text-[#111] transition-colors"
                     >
                       −
                     </button>
                     <span className="w-8 text-center text-sm text-[#111]">{item.quantity}</span>
                     <button
-                      onClick={() => updateQuantity(item.slug, item.quantity + 1)}
+                      onClick={() => updateQuantity(item.id, item.quantity + 1)}
                       className="w-8 h-8 flex items-center justify-center text-[#888] hover:text-[#111] transition-colors"
                     >
                       +
@@ -98,7 +99,7 @@ export default function CartPage() {
                     ${(item.price * item.quantity).toFixed(2)}
                   </p>
                   <button
-                    onClick={() => removeItem(item.slug)}
+                    onClick={() => removeItem(item.id)}
                     className="text-xs text-[#AAA] hover:text-red-500 transition-colors"
                   >
                     Remove
@@ -116,7 +117,7 @@ export default function CartPage() {
               <div className="space-y-3 mb-6">
                 <div className="flex justify-between text-sm text-[#666]">
                   <span>Subtotal</span>
-                  <span>${total().toFixed(2)}</span>
+                  <span>${total.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-sm text-[#666]">
                   <span>Shipping</span>
@@ -124,7 +125,7 @@ export default function CartPage() {
                 </div>
                 <div className="border-t border-[#E8E0D0] pt-3 flex justify-between font-serif text-lg text-[#111]">
                   <span>Total</span>
-                  <span>${total().toFixed(2)}</span>
+                  <span>${total.toFixed(2)}</span>
                 </div>
               </div>
 
