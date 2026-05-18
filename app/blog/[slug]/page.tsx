@@ -7,7 +7,7 @@ import { BLOG_POSTS, getPost } from '@/lib/blog-posts';
 import type { Metadata } from 'next';
 
 interface Props {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 export async function generateStaticParams() {
@@ -15,16 +15,17 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const post = getPost(params.slug);
+  const { slug } = await params;
+  const post = getPost(slug);
   if (!post) return {};
   return {
     title: `${post.title} | Epoch Skin Journal`,
     description: post.excerpt,
-    alternates: { canonical: `https://epoch-skin.com/blog/${post.slug}` },
+    alternates: { canonical: `https://epoch-skin.com/blog/${slug}` },
     openGraph: {
       title: post.title,
       description: post.excerpt,
-      url: `https://epoch-skin.com/blog/${post.slug}`,
+      url: `https://epoch-skin.com/blog/${slug}`,
       siteName: 'Epoch Skin',
       images: [{ url: `https://epoch-skin.com${post.image}`, width: 1200, height: 630 }],
       type: 'article',
@@ -86,8 +87,9 @@ function processInline(text: string): React.ReactNode {
   });
 }
 
-export default function BlogPostPage({ params }: Props) {
-  const post = getPost(params.slug);
+export default async function BlogPostPage({ params }: Props) {
+  const { slug } = await params;
+  const post = getPost(slug);
   if (!post) notFound();
 
   const related = BLOG_POSTS.filter(p => p.slug !== post.slug).slice(0, 2);
