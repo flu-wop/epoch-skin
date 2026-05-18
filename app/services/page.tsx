@@ -1,87 +1,143 @@
-import { Container } from "@/components/layout/Container";
+// app/services/page.tsx
+// Restyled to match Epoch luxury design system.
+// Uses btn-gold, gold-rule, eyebrow, card-hover — no more clay/sage_legacy classes.
+
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Services",
+  description: "Expert waxing and organic facial treatments in New Orleans. Book body waxing, facial waxing, or glass-skin treatment.",
+  alternates: { canonical: "https://epoch-skin.com/services" },
+};
+
+const CATEGORIES = [
+  {
+    title: "Body Waxing",
+    desc: "Full-body waxing with our organic hybrid wax — rosin-free, formulated with shea butter and squalane for minimal irritation.",
+    services: ["Brazilian", "Bikini", "Full Legs", "Half Legs", "Full Arms", "Half Arms", "Underarm", "Stomach"],
+    from: "From $20",
+    href: "/book?category=body-wax",
+  },
+  {
+    title: "Facial Waxing",
+    desc: "Precision brow, lip, and chin waxing by Louisiana State Board licensed estheticians. Clean lines, no irritation.",
+    services: ["Full Face", "Eyebrow", "Lip", "Chin", "Nose"],
+    from: "From $8",
+    href: "/book?category=facial-wax",
+  },
+  {
+    title: "Organic Facials",
+    desc: "The glass-skin layering protocol — certified organic actives, K-Beauty method, visible results in one session.",
+    services: ["Organic Facial — $80 / 60 min", "Hydrating Facial — $50 / 30 min", "Glass Skin Treatment — $90 / 75 min"],
+    from: "From $50",
+    href: "/book?category=facials",
+  },
+];
 
 export default function ServicesPage() {
-  const serviceCategories = [
-    {
-      title: "Body Waxing",
-      description: "Full body waxing services including Brazilian, bikini, legs, arms, and more",
-      services: ["Brazilian", "Bikini", "Full Legs", "Half Legs", "Full Arms", "Half Arms", "Underarm", "Stomach"],
-      link: "/book?category=body-wax"
-    },
-    {
-      title: "Facial Waxing",
-      description: "Precision facial waxing for eyebrows, lip, chin, and more",
-      services: ["Full Face", "Eyebrow", "Lip", "Chin", "Nose"],
-      link: "/book?category=facial-wax"
-    },
-    {
-      title: "Organic Facials",
-      description: "Luxurious Organic facial treatments using glass skin layering technique",
-      services: ["Organic Facial", "Glass Skin Treatment"],
-      link: "/book?category=facials"
-    }
-  ];
-
   return (
-    <main className="min-h-screen py-20">
-      <Container>
-        {/* Header */}
-        <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-serif text-gray-900 mb-6">
+    <div className="bg-[#FAF7F2] min-h-screen">
+
+      {/* ── Hero ── */}
+      <section className="py-20 md:py-28 text-center px-5">
+        <div className="max-w-[1320px] mx-auto">
+          <div className="gold-rule mx-auto mb-5" />
+          <p className="eyebrow mb-3">New Orleans Studio</p>
+          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-[#1C1C1A] mb-5">
             Our Services
           </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Expert waxing and Organic facial treatments in New Orleans
+          <p className="text-[#5A5550] font-sans text-base leading-relaxed max-w-xl mx-auto">
+            Expert waxing and organic facial treatments in New Orleans. 
+            All services performed by licensed estheticians.
           </p>
         </div>
+      </section>
 
-        {/* Service Categories */}
-        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto mb-12">
-          {serviceCategories.map((category) => (
-            <div key={category.title} className="bg-white border border-sage-200 rounded-lg p-6 hover:shadow-lg transition-shadow">
-              <h2 className="text-2xl font-serif font-semibold text-clay-600 mb-3">
-                {category.title}
-              </h2>
-              <p className="text-gray-600 mb-4">
-                {category.description}
-              </p>
-              <ul className="space-y-2 mb-6">
-                {category.services.map((service) => (
-                  <li key={service} className="flex items-center text-sm text-gray-700">
-                    <svg className="w-4 h-4 text-sage-600 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                    {service}
-                  </li>
-                ))}
-              </ul>
-              <Button asChild className="w-full bg-clay-500 hover:bg-clay-600">
-                <Link href={category.link}>Book Now</Link>
-              </Button>
+      {/* ── Service category cards ── */}
+      <section className="pb-20 md:pb-28 px-5">
+        <div className="max-w-[1320px] mx-auto">
+          <div className="grid md:grid-cols-3 gap-6 mb-14">
+            {CATEGORIES.map((cat) => (
+              <div key={cat.title}
+                className="bg-white border border-[#E5DCCF] flex flex-col
+                           hover:-translate-y-1 hover:shadow-[0_12px_48px_rgba(201,169,110,0.14)]
+                           hover:border-[#C9A96E]/40 transition-all duration-500">
+                {/* Card header */}
+                <div className="px-7 pt-8 pb-6 border-b border-[#EDE6D8]">
+                  <p className="eyebrow mb-2">{cat.from}</p>
+                  <h2 className="font-serif text-2xl text-[#1C1C1A] mb-3">{cat.title}</h2>
+                  <p className="text-[#8C8680] text-sm font-sans leading-relaxed">{cat.desc}</p>
+                </div>
+
+                {/* Services list */}
+                <div className="px-7 py-6 flex-1">
+                  <ul className="space-y-2.5">
+                    {cat.services.map((svc) => (
+                      <li key={svc} className="flex items-start gap-3 text-sm font-sans text-[#5A5550]">
+                        <span className="text-[#C9A96E] mt-0.5 flex-shrink-0 text-xs">✦</span>
+                        {svc}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* CTA */}
+                <div className="px-7 pb-7">
+                  <Link href={cat.href}
+                    className="block text-center py-3.5 bg-[#C9A96E] text-[#1C1C1A]
+                               text-[11px] tracking-[0.22em] uppercase font-sans font-medium
+                               hover:bg-[#D4AF88] transition-colors duration-300">
+                    Book Now
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* ── CTA strip ── */}
+          <div className="bg-[#EDE6D8] px-8 py-12 text-center max-w-3xl mx-auto">
+            <h3 className="font-serif text-2xl md:text-3xl text-[#1C1C1A] mb-4">
+              Not sure which service is right for you?
+            </h3>
+            <p className="text-[#5A5550] font-sans text-sm leading-relaxed mb-8">
+              Contact us and we'll help you choose the perfect treatment for your skin.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link href="/book" className="btn-primary">Book Appointment</Link>
+              <Link href="/contact" className="btn-outline-dark">Contact Us</Link>
             </div>
-          ))}
-        </div>
-
-        {/* Call to Action */}
-        <div className="text-center bg-sage-50 rounded-lg p-8 max-w-3xl mx-auto">
-          <h3 className="text-2xl font-serif text-gray-900 mb-4">
-            Not sure which service is right for you?
-          </h3>
-          <p className="text-gray-600 mb-6">
-            Contact us and we'll help you choose the perfect treatment for your needs
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild size="lg" className="bg-clay-500 hover:bg-clay-600">
-              <Link href="/book">Book Appointment</Link>
-            </Button>
-            <Button asChild size="lg" variant="outline">
-              <Link href="/contact">Contact Us</Link>
-            </Button>
           </div>
         </div>
-      </Container>
-    </main>
+      </section>
+
+      {/* ── Why organic waxing ── */}
+      <section className="bg-white py-20 px-5">
+        <div className="max-w-[1320px] mx-auto">
+          <div className="text-center mb-12">
+            <div className="gold-rule mx-auto mb-5" />
+            <h2 className="font-serif text-3xl md:text-4xl text-[#1C1C1A]">
+              Why Our Wax Is Different
+            </h2>
+          </div>
+          <div className="grid sm:grid-cols-3 gap-5 max-w-4xl mx-auto">
+            {[
+              { icon: "✦", title: "Rosin-Free Formula",   body: "Our organic hybrid wax beads contain zero rosin — the #1 cause of post-wax irritation and allergic reactions." },
+              { icon: "◈", title: "Skin-Nourishing",      body: "Shea butter, rosehip oil, and squalane are blended into every wax bead to moisturize while removing." },
+              { icon: "◇", title: "Licensed Estheticians",body: "Every service is performed by Louisiana State Board licensed estheticians trained in sensitive-skin protocols." },
+            ].map((item) => (
+              <div key={item.title}
+                className="border border-[#E5DCCF] p-8
+                           hover:border-[#C9A96E]/40 hover:bg-[#FAF7F2]
+                           transition-all duration-400">
+                <span className="block text-[#C9A96E] text-xl mb-5">{item.icon}</span>
+                <h3 className="font-serif text-lg text-[#1C1C1A] mb-3">{item.title}</h3>
+                <p className="text-[#8C8680] text-sm font-sans leading-relaxed">{item.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    </div>
   );
 }

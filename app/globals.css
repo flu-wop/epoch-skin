@@ -1,51 +1,78 @@
+/* app/globals.css */
+/* ── EPOCH SKIN DESIGN SYSTEM ── */
+/* Every CSS value here is the single source of truth. */
+/* No page should override these with arbitrary Tailwind values. */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ── DESIGN TOKENS ───────────────────────────────────────────── */
 @layer base {
   :root {
-    /* ── Epoch Palette (matched to mockup reference images) ── */
-    --bg:            #F5F0EB;   /* warm off-white / parchment */
-    --bg-white:      #FFFFFF;
-    --bg-cream:      #F0EBE3;   /* product card backgrounds */
-    --bg-deep:       #EAE2D8;   /* section dividers, CTA bg */
-    --gold:          #C9A96E;   /* primary gold */
-    --gold-bright:   #D4AF77;   /* lighter gold */
-    --gold-muted:    #E8D5A8;   /* pale gold */
-    --gold-deep:     #B8924A;   /* hover gold */
-    --sage:          #5C6B5A;   /* philosophy card bg */
-    --sage-dark:     #4A5E48;   /* hover sage */
-    --sage-text:     #C4CFC3;   /* text on sage bg */
-    --ink:           #1A1A18;
-    --ink-mid:       #6E6860;   /* body text */
-    --ink-light:     #9A9088;   /* captions */
-    --ink-pale:      #C8C0B8;   /* placeholders */
-    --border:        #E0D8CE;
+    /* Backgrounds */
+    --bg:           #FAF7F2;   /* page default */
+    --bg-warm:      #F5F0E8;   /* alternate sections */
+    --bg-deep:      #EDE6D8;   /* deeper sections, CTA bg */
+    --bg-parchment: #E5DCCF;   /* darkest warm neutral */
+    --bg-white:     #FFFFFF;   /* cards */
 
-    /* shadcn */
-    --background: 36 22% 95%;
-    --foreground: 240 4% 10%;
-    --card: 36 22% 98%;
-    --card-foreground: 240 4% 10%;
-    --popover: 36 22% 98%;
-    --popover-foreground: 240 4% 10%;
-    --primary: 240 4% 10%;
-    --primary-foreground: 36 22% 95%;
-    --secondary: 36 18% 90%;
-    --secondary-foreground: 240 4% 20%;
-    --muted: 36 12% 91%;
-    --muted-foreground: 36 6% 48%;
-    --accent: 38 52% 60%;
-    --accent-foreground: 240 4% 10%;
-    --destructive: 0 72% 51%;
-    --destructive-foreground: 36 22% 95%;
-    --border: 36 20% 87%;
-    --input: 36 20% 87%;
-    --ring: 38 52% 60%;
-    --radius: 0rem;
+    /* Gold */
+    --gold:         #C9A96E;   /* primary gold */
+    --gold-bright:  #D4AF88;   /* hover / lighter */
+    --gold-muted:   #E8D5A8;   /* subtle bg tints */
+    --gold-deep:    #B8924A;   /* pressed states */
+    --gold-pale:    #F5EDD8;   /* very light gold bg */
+
+    /* Sage */
+    --sage:         #5F6F5A;   /* philosophy cards */
+    --sage-dark:    #4A5745;   /* hover sage */
+
+    /* Ink (text) */
+    --ink:          #1C1C1A;   /* headings, primary text */
+    --ink-soft:     #2E2E2C;   /* subheadings */
+    --ink-mid:      #5A5550;   /* nav links, body text */
+    --ink-muted:    #8C8680;   /* captions, secondary */
+    --ink-pale:     #C0BAB4;   /* placeholders */
+
+    /* Borders */
+    --border:       #E5DCCF;
+    --border-light: #EDE6D8;
+
+    /* ── Typography scale — LOCKED, use these only ── */
+    /* Hero:      text-5xl sm:text-6xl lg:text-7xl  (3–4.5rem) */
+    /* H2:        text-3xl sm:text-4xl lg:text-5xl  (1.875–3rem) */
+    /* H3:        text-xl sm:text-2xl               (1.25–1.5rem) */
+    /* Eyebrow:   text-[11px] tracking-[0.28em]     (0.6875rem) */
+    /* Body:      text-sm leading-relaxed            (0.875rem) */
+    /* Caption:   text-xs                            (0.75rem) */
+    /* Button:    text-[11px] tracking-[0.22em]      (0.6875rem) */
+
+    /* shadcn tokens */
+    --background:            36 28% 96%;
+    --foreground:            40 5% 11%;
+    --card:                  36 28% 99%;
+    --card-foreground:       40 5% 11%;
+    --popover:               36 28% 99%;
+    --popover-foreground:    40 5% 11%;
+    --primary:               40 5% 11%;
+    --primary-foreground:    36 28% 96%;
+    --secondary:             36 20% 91%;
+    --secondary-foreground:  40 5% 20%;
+    --muted:                 36 14% 93%;
+    --muted-foreground:      36 7% 48%;
+    --accent:                36 48% 60%;
+    --accent-foreground:     40 5% 11%;
+    --destructive:           0 72% 51%;
+    --destructive-foreground:36 28% 96%;
+    --border:                36 24% 87%;
+    --input:                 36 24% 87%;
+    --ring:                  36 48% 60%;
+    --radius:                0rem;   /* No border radius — luxury square aesthetic */
   }
 }
 
+/* ── BASE RESETS ─────────────────────────────────────────────── */
 @layer base {
   *, *::before, *::after { box-sizing: border-box; }
 
@@ -53,102 +80,187 @@
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
 
   body {
     background-color: var(--bg);
     color: var(--ink);
+    /* Inter for body — loaded via next/font */
     font-family: var(--font-inter), 'Inter', system-ui, sans-serif;
     line-height: 1.65;
+    font-size: 14px;   /* 14px base = 0.875rem */
   }
 
-  h1, h2, h3, h4 {
+  /* ALL headings use Playfair Display */
+  h1, h2, h3, h4, h5 {
     font-family: var(--font-playfair), 'Playfair Display', Georgia, serif;
     font-weight: 400;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.015em;
     line-height: 1.1;
-  }
-
-  ::selection {
-    background: var(--gold-muted);
     color: var(--ink);
   }
 
+  /* Anchor reset */
+  a { color: inherit; text-decoration: none; }
+
+  /* Selection */
+  ::selection { background: var(--gold-muted); color: var(--ink); }
+
+  /* Scrollbar */
   ::-webkit-scrollbar { width: 5px; }
   ::-webkit-scrollbar-track { background: var(--bg); }
-  ::-webkit-scrollbar-thumb { background: var(--gold-muted); }
+  ::-webkit-scrollbar-thumb { background: var(--gold-muted); border-radius: 2px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+
+  /* Focus */
+  :focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 }
 
+/* ── COMPONENT UTILITIES ─────────────────────────────────────── */
 @layer components {
-  /* ── Container ── */
-  .page-wrap {
-    @apply max-w-[1200px] mx-auto px-5 sm:px-8;
+
+  /* ── Layout */
+  .wrap {
+    @apply max-w-[1320px] mx-auto px-5 sm:px-8 lg:px-12;
   }
 
-  /* ── Eyebrow text ── */
+  /* ── Section spacing — USE THESE, not arbitrary py values */
+  .section-xl { @apply py-24 md:py-32 lg:py-40; }
+  .section-lg { @apply py-20 md:py-28; }
+  .section-md { @apply py-14 md:py-20; }
+  .section-sm { @apply py-10 md:py-14; }
+
+  /* ── Eyebrow label */
   .eyebrow {
-    @apply text-[10px] tracking-[0.3em] uppercase text-[#C9A96E] font-sans;
+    @apply text-[11px] tracking-[0.28em] uppercase
+           font-sans font-medium text-[#C9A96E];
   }
 
-  /* ── Gold rule ── */
-  .gold-rule {
-    @apply w-10 h-0.5 bg-[#C9A96E];
+  /* ── Gold rule */
+  .gold-rule { @apply w-10 h-px bg-[#C9A96E]; }
+
+  /* ── Gold full-width divider */
+  .gold-divider {
+    @apply w-full h-px bg-gradient-to-r from-transparent via-[#C9A96E]/30 to-transparent;
   }
 
-  /* ── Primary button (dark bg, gold text) ── */
+  /* ── BUTTONS — consistent across every page ── */
+
+  /* Primary: dark bg + gold text → gold bg + dark text on hover */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2
+           text-[11px] tracking-[0.22em] uppercase font-sans font-medium
+           transition-all duration-400 active:scale-[0.98] whitespace-nowrap;
+  }
+
   .btn-primary {
-    @apply inline-flex items-center justify-center
-           px-8 py-3.5 bg-[#1A1A18] text-[#C9A96E]
-           text-[11px] tracking-[0.22em] uppercase font-sans
-           hover:bg-[#C9A96E] hover:text-[#1A1A18]
-           transition-all duration-400;
+    @apply btn px-8 py-3.5
+           bg-[#1C1C1A] text-[#C9A96E]
+           hover:bg-[#C9A96E] hover:text-[#1C1C1A];
   }
 
-  /* ── Gold border button ── */
-  .btn-outline-gold {
-    @apply inline-flex items-center justify-center
-           px-8 py-3.5 border border-[#C9A96E] text-[#C9A96E]
-           text-[11px] tracking-[0.22em] uppercase font-sans
-           hover:bg-[#C9A96E] hover:text-[#1A1A18]
-           transition-all duration-400;
+  .btn-gold {
+    @apply btn px-8 py-3.5
+           bg-[#C9A96E] text-[#1C1C1A]
+           hover:bg-[#D4AF88] hover:shadow-[0_0_24px_rgba(201,169,110,0.35)];
   }
 
-  /* ── "Shop Now" gold fill button (product cards) ── */
-  .btn-shop-now {
-    @apply flex items-center justify-center w-full py-3.5
-           bg-[#C9A96E] text-white
-           text-[11px] tracking-[0.18em] uppercase font-sans
-           hover:bg-[#B8924A] transition-colors duration-300;
+  .btn-outline {
+    @apply btn px-8 py-3.5
+           border border-[#C9A96E] text-[#C9A96E]
+           hover:bg-[#C9A96E] hover:text-[#1C1C1A];
   }
 
-  /* ── Dark outline button ── */
   .btn-outline-dark {
-    @apply inline-flex items-center justify-center
-           px-8 py-3.5 border border-[#1A1A18] text-[#1A1A18]
-           text-[11px] tracking-[0.22em] uppercase font-sans
-           hover:bg-[#1A1A18] hover:text-[#C9A96E]
-           transition-all duration-400;
+    @apply btn px-8 py-3.5
+           border border-[#1C1C1A] text-[#1C1C1A]
+           hover:bg-[#1C1C1A] hover:text-[#C9A96E];
   }
 
-  /* ── Product card hover ── */
-  .product-card-hover {
-    @apply hover:shadow-[0_8px_40px_rgba(201,169,110,0.15)]
-           hover:-translate-y-1
-           transition-all duration-500;
+  .btn-ghost {
+    @apply btn px-8 py-3.5
+           border border-white/30 text-white
+           hover:border-[#C9A96E] hover:text-[#C9A96E];
+  }
+
+  /* ── Cards */
+  .card {
+    @apply bg-white border border-[#E5DCCF]
+           transition-all duration-500 ease-out;
+  }
+
+  .card-hover {
+    @apply card
+           hover:-translate-y-1.5
+           hover:shadow-[0_12px_48px_rgba(201,169,110,0.16)]
+           hover:border-[#C9A96E]/45;
+  }
+
+  .card-sage {
+    @apply bg-[#5F6F5A] text-white
+           hover:bg-[#4A5745] transition-colors duration-400;
+  }
+
+  /* ── Input fields — uniform across all forms */
+  .input {
+    @apply w-full px-4 py-3.5 text-sm font-sans
+           bg-white border border-[#E5DCCF] text-[#1C1C1A]
+           placeholder-[#C0BAB4]
+           focus:outline-none focus:border-[#C9A96E]
+           transition-colors duration-300;
+  }
+
+  /* ── Nav link with gold underline */
+  .nav-link {
+    @apply relative text-[11px] tracking-[0.16em] uppercase
+           font-sans text-[#5A5550] hover:text-[#1C1C1A]
+           transition-colors duration-300;
+  }
+  .nav-link::after {
+    content: "";
+    @apply absolute -bottom-0.5 left-0 h-px w-0 bg-[#C9A96E]
+           transition-all duration-400;
+  }
+  .nav-link:hover::after { @apply w-full; }
+
+  /* ── Booking service row */
+  .service-row {
+    @apply flex items-center justify-between px-5 py-4
+           border border-[#E5DCCF] bg-white
+           hover:border-[#C9A96E]/50 hover:bg-[#FAF7F2]
+           transition-all duration-300 cursor-pointer w-full text-left;
+  }
+  .service-row-selected {
+    @apply border-[#C9A96E] bg-[#F5EDD8];
   }
 }
 
-/* ── Scroll fade-up ── */
+/* ── SCROLL ANIMATIONS ───────────────────────────────────────── */
 .fade-up {
   opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
+  transform: translateY(20px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
 }
-.fade-up.in-view {
+.fade-up.visible {
   opacity: 1;
   transform: translateY(0);
 }
+.delay-1 { transition-delay: 0.08s; }
+.delay-2 { transition-delay: 0.16s; }
+.delay-3 { transition-delay: 0.24s; }
+.delay-4 { transition-delay: 0.32s; }
 
+/* ── CAL.COM EMBED OVERRIDE ──────────────────────────────────── */
+[data-cal-link] { --cal-brand: #C9A96E !important; }
+
+/* ── ACCORDION (shadcn) ─────────────────────────────────────── */
+[data-radix-accordion-item] {
+  border-bottom: 1px solid #E5DCCF !important;
+}
+
+/* ── REDUCED MOTION ─────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   .fade-up { opacity: 1; transform: none; transition: none; }
+  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
