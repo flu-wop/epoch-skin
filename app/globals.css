@@ -5,124 +5,179 @@
 @layer base {
   :root {
     /* ── Epoch Luxury Palette ── */
-    --cream:        #F8F5F0;
-    --cream-dark:   #F0EBE3;
-    --cream-deeper: #E8E0D5;
-    --gold:         #C9A84C;
-    --gold-light:   #D4AF77;
-    --gold-muted:   #E8D5A3;
-    --gold-deep:    #A8862E;
-    --sage:         #5C6B5A;
-    --sage-light:   #7A8C78;
-    --sage-dark:    #3D4A3B;
-    --ink:          #1A1A18;
-    --ink-soft:     #2C2C2A;
-    --charcoal:     #4A4A48;
-    --warm-grey:    #8A8580;
-    --warm-grey-lt: #C4BFB8;
-    --white:        #FFFFFF;
+    --cream:          #F8F4EF;
+    --cream-warm:     #F2ECE4;
+    --cream-deep:     #EAE2D8;
+    --parchment:      #E5DCCF;
+    --gold:           #C9A96E;
+    --gold-bright:    #D4AF77;
+    --gold-muted:     #E8D5A8;
+    --gold-deep:      #A8842E;
+    --gold-pale:      #F5EDD8;
+    --sage:           #4A5E48;
+    --sage-mid:       #6B7F69;
+    --sage-light:     #8FA08D;
+    --sage-pale:      #EBF0EA;
+    --ink:            #18181A;
+    --ink-soft:       #2A2A2C;
+    --charcoal:       #3C3C3E;
+    --warm-mid:       #6E6860;
+    --warm-light:     #9A9088;
+    --warm-pale:      #C8C0B8;
 
     /* ── shadcn tokens ── */
-    --background: 36 25% 97%;
-    --foreground: 60 3% 10%;
-    --card: 36 25% 99%;
-    --card-foreground: 60 3% 10%;
-    --popover: 36 25% 99%;
-    --popover-foreground: 60 3% 10%;
-    --primary: 60 3% 10%;
-    --primary-foreground: 36 25% 97%;
-    --secondary: 36 20% 92%;
-    --secondary-foreground: 60 3% 20%;
-    --muted: 36 15% 93%;
-    --muted-foreground: 36 5% 45%;
-    --accent: 40 55% 55%;
-    --accent-foreground: 60 3% 10%;
-    --destructive: 0 72% 51%;
-    --destructive-foreground: 36 25% 97%;
-    --border: 36 20% 88%;
-    --input: 36 20% 88%;
-    --ring: 40 55% 55%;
-    --radius: 0rem;
+    --background:            38 28% 96%;
+    --foreground:            240 5% 10%;
+    --card:                  38 28% 98%;
+    --card-foreground:       240 5% 10%;
+    --popover:               38 28% 98%;
+    --popover-foreground:    240 5% 10%;
+    --primary:               240 5% 10%;
+    --primary-foreground:    38 28% 96%;
+    --secondary:             38 22% 91%;
+    --secondary-foreground:  240 5% 20%;
+    --muted:                 38 15% 92%;
+    --muted-foreground:      38 8% 48%;
+    --accent:                38 55% 60%;
+    --accent-foreground:     240 5% 10%;
+    --destructive:           0 72% 51%;
+    --destructive-foreground:38 28% 96%;
+    --border:                38 22% 87%;
+    --input:                 38 22% 87%;
+    --ring:                  38 55% 60%;
+    --radius:                0rem;
   }
 }
 
 @layer base {
-  * { @apply border-border; }
+  *, *::before, *::after { box-sizing: border-box; }
 
   html {
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
 
   body {
     background-color: var(--cream);
     color: var(--ink);
-    font-family: var(--font-sans), 'Inter', sans-serif;
+    font-family: var(--font-inter), 'Inter', system-ui, sans-serif;
+    line-height: 1.6;
   }
 
-  /* ── Typography ── */
-  h1, h2, h3, h4 {
-    font-family: var(--font-playfair), 'Playfair Display', serif;
+  h1, h2, h3, h4, h5 {
+    font-family: var(--font-playfair), 'Playfair Display', Georgia, serif;
     font-weight: 400;
-    letter-spacing: -0.01em;
-    line-height: 1.15;
+    letter-spacing: -0.015em;
+    line-height: 1.12;
   }
 
-  /* ── Selection ── */
   ::selection {
-    background: var(--gold-muted);
+    background-color: var(--gold-muted);
     color: var(--ink);
   }
 
-  /* ── Scrollbar ── */
-  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar { width: 5px; }
   ::-webkit-scrollbar-track { background: var(--cream); }
-  ::-webkit-scrollbar-thumb { background: var(--gold-muted); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb { background: var(--gold-muted); }
   ::-webkit-scrollbar-thumb:hover { background: var(--gold); }
 }
 
 @layer components {
-  /* ── Gold divider line ── */
-  .gold-line {
-    @apply w-12 h-px bg-[#C9A84C] mb-6;
+
+  /* ── Layout wrapper ── */
+  .page-container {
+    @apply max-w-[1360px] mx-auto px-5 sm:px-8 lg:px-12;
   }
+
+  /* ── Section rhythm ── */
+  .section-y { @apply py-20 md:py-28 lg:py-32; }
+  .section-y-sm { @apply py-14 md:py-20; }
 
   /* ── Eyebrow label ── */
   .eyebrow {
-    @apply text-xs tracking-[0.25em] uppercase text-[#C9A84C] font-sans;
+    @apply text-[10px] sm:text-[11px] tracking-[0.28em] uppercase
+           text-[#C9A96E] font-sans font-medium;
   }
 
-  /* ── Luxury button ── */
-  .btn-gold {
-    @apply inline-flex items-center justify-center px-8 py-3.5
-           bg-[#1A1A18] text-[#C9A84C] text-xs tracking-[0.2em] uppercase
-           hover:bg-[#C9A84C] hover:text-[#1A1A18]
-           transition-all duration-500 font-sans;
+  /* ── Gold rule ── */
+  .gold-rule { @apply w-10 h-px bg-[#C9A96E]; }
+
+  /* ── Primary button ── */
+  .btn-primary {
+    @apply inline-flex items-center justify-center
+           px-8 py-3.5 bg-[#18181A] text-[#C9A96E]
+           text-[10px] sm:text-[11px] tracking-[0.22em] uppercase font-sans
+           hover:bg-[#C9A96E] hover:text-[#18181A]
+           active:scale-[0.98]
+           transition-all duration-500;
   }
 
-  .btn-outline-gold {
-    @apply inline-flex items-center justify-center px-8 py-3.5
-           border border-[#C9A84C] text-[#C9A84C] text-xs tracking-[0.2em] uppercase
-           hover:bg-[#C9A84C] hover:text-[#1A1A18]
-           transition-all duration-500 font-sans;
+  /* ── Gold outline button ── */
+  .btn-outline {
+    @apply inline-flex items-center justify-center
+           px-8 py-3.5 border border-[#C9A96E]
+           text-[#C9A96E] text-[10px] sm:text-[11px] tracking-[0.22em] uppercase font-sans
+           hover:bg-[#C9A96E] hover:text-[#18181A]
+           active:scale-[0.98]
+           transition-all duration-500;
   }
 
-  /* ── Card hover lift ── */
-  .card-luxury {
+  /* ── Ghost button (dark bg) ── */
+  .btn-ghost {
+    @apply inline-flex items-center justify-center
+           px-8 py-3.5 border border-white/30
+           text-white text-[10px] sm:text-[11px] tracking-[0.22em] uppercase font-sans
+           hover:border-[#C9A96E] hover:text-[#C9A96E]
+           transition-all duration-400;
+  }
+
+  /* ── Product card ── */
+  .product-card {
     @apply bg-white border border-[#E8E0D5]
-           transition-all duration-500
-           hover:-translate-y-1 hover:shadow-[0_8px_40px_rgba(201,168,76,0.12)]
-           hover:border-[#D4AF77]/40;
+           transition-all duration-500 ease-out
+           hover:-translate-y-1.5
+           hover:shadow-[0_16px_48px_rgba(201,169,110,0.13)]
+           hover:border-[#C9A96E]/40;
   }
 
-  /* ── Section padding ── */
-  .section-pad {
-    @apply py-20 md:py-28 lg:py-32;
+  /* ── Value card ── */
+  .value-card {
+    @apply bg-white border border-[#E8E0D5] p-8
+           hover:border-[#C9A96E]/50 hover:bg-[#FDFAF6]
+           transition-all duration-400;
   }
+
+  /* ── Animated underline link ── */
+  .link-gold {
+    @apply relative text-[#C9A96E] font-sans text-[11px] tracking-[0.18em] uppercase;
+  }
+  .link-gold::after {
+    content: '';
+    @apply absolute left-0 -bottom-0.5 w-full h-px bg-[#C9A96E] scale-x-0 origin-left
+           transition-transform duration-400;
+  }
+  .link-gold:hover::after { @apply scale-x-100; }
 }
 
-/* ── Framer motion reduced motion ── */
+/* ── Scroll-triggered fade utilities ── */
+.fade-up {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.75s ease, transform 0.75s ease;
+}
+.fade-up.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Stagger delays ── */
+.delay-100 { transition-delay: 0.1s; }
+.delay-200 { transition-delay: 0.2s; }
+.delay-300 { transition-delay: 0.3s; }
+.delay-400 { transition-delay: 0.4s; }
+
 @media (prefers-reduced-motion: reduce) {
-  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  .fade-up { opacity: 1; transform: none; transition: none; }
 }

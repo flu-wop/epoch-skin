@@ -1,91 +1,83 @@
+// app/shop/page.tsx
+
 import { Metadata } from "next";
-import { Container } from "@/components/layout/Container";
-import { ProductGrid } from "@/components/shop/ProductGrid";
 import { products } from "@/data/products";
+import { ShopGrid } from "@/components/shop/ShopGrid";
 
 export const metadata: Metadata = {
-  title: "Shop",
-  description: "Discover our curated collection of Organic Skincare products. Certified Organic Ingredients, cruelty-free formulas, and effective results.",
+  title: "Shop Organic Skincare",
+  description: "Discover 14 certified organic skincare formulas. Cruelty-free, small-batch, glass-skin focused.",
+  alternates: { canonical: "https://epoch-skin.com/shop" },
+  openGraph: {
+    title: "Shop | Epoch Skin",
+    url: "https://epoch-skin.com/shop",
+    images: [{ url: "https://epoch-skin.com/og/og-shop.jpg", width: 1200, height: 630 }],
+  },
 };
 
 export default function ShopPage() {
   return (
     <>
-      {/* Hero section */}
-      <section className="bg-gradient-to-br from-sage-50 via-sand-50 to-sage-50 py-16 lg:py-24">
-        <Container>
-          <div className="mx-auto max-w-3xl text-center">
-            <h1 className="font-serif text-5xl font-bold text-sage-900 sm:text-6xl">
-              Shop Skincare
-            </h1>
-            <p className="mt-6 text-lg text-neutral-600 leading-relaxed">
-              Discover our thoughtfully curated collection of Organic Skincare products.
-              Each formula is crafted with certified Organic Ingredients to nourish and enhance your skin's natural beauty.
-            </p>
-          </div>
-        </Container>
+      {/* ── Hero ── */}
+      <section className="relative bg-[#18181A] py-24 md:py-32 overflow-hidden">
+        {/* Subtle gold texture */}
+        <div className="absolute inset-0 opacity-[0.04]"
+          style={{ backgroundImage: "radial-gradient(circle at 20% 50%, #C9A96E 0%, transparent 60%), radial-gradient(circle at 80% 20%, #C9A96E 0%, transparent 50%)" }} />
+        <div className="page-container relative text-center">
+          <div className="gold-rule mx-auto mb-5" />
+          <p className="eyebrow mb-4">The Collection</p>
+          <h1 className="font-serif text-5xl md:text-6xl text-white mb-5">
+            Organic Skincare
+          </h1>
+          <p className="text-[#9A9088] font-sans text-base leading-relaxed max-w-lg mx-auto">
+            14 certified organic formulas. Cold-process made, batch-tested, 
+            and transparently labeled. Glass-skin results, every time.
+          </p>
+        </div>
       </section>
 
-      {/* Products section */}
-      <section className="py-16 lg:py-24">
-        <Container>
-          <ProductGrid products={products} />
-        </Container>
+      {/* ── Product grid ── */}
+      <section className="section-y bg-[#F8F4EF]">
+        <div className="page-container">
+          <ShopGrid products={products} />
+        </div>
       </section>
 
-      {/* Why choose us section */}
-      <section className="bg-sage-50/30 py-16">
-        <Container>
-          <div className="mx-auto max-w-4xl">
-            <h2 className="text-center font-serif text-3xl font-bold text-sage-900">
-              Why Choose Epoch Skin Products
+      {/* ── Why choose ── */}
+      <section className="section-y-sm bg-[#F2ECE4]">
+        <div className="page-container">
+          <div className="text-center mb-14">
+            <div className="gold-rule mx-auto mb-5" />
+            <h2 className="font-serif text-3xl md:text-4xl text-[#18181A]">
+              The Epoch Difference
             </h2>
-
-            <div className="mt-12 grid gap-8 md:grid-cols-3">
-              <div className="text-center">
-                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-clay-100">
-                  <svg className="w-8 h-8 text-clay-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-                  </svg>
-                </div>
-                <h3 className="mt-4 font-serif text-xl font-semibold text-sage-900">
-                  Certified Organic
-                </h3>
-                <p className="mt-2 text-sm text-neutral-600">
-                  Formulated with certified Organic extracts and natural actives that are gentle yet effective.
-                </p>
-              </div>
-
-              <div className="text-center">
-                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-clay-100">
-                  <svg className="w-8 h-8 text-clay-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                  </svg>
-                </div>
-                <h3 className="mt-4 font-serif text-xl font-semibold text-sage-900">
-                  Cruelty-Free
-                </h3>
-                <p className="mt-2 text-sm text-neutral-600">
-                  Never tested on animals. We're committed to ethical and sustainable practices.
-                </p>
-              </div>
-
-              <div className="text-center">
-                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-clay-100">
-                  <svg className="w-8 h-8 text-clay-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                  </svg>
-                </div>
-                <h3 className="mt-4 font-serif text-xl font-semibold text-sage-900">
-                  Proven Results
-                </h3>
-                <p className="mt-2 text-sm text-neutral-600">
-                  Trusted by thousands of clients for visible improvements in skin health.
-                </p>
-              </div>
-            </div>
           </div>
-        </Container>
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              {
+                icon: "✦",
+                title: "Certified Organic",
+                body: "Every ingredient is INCI-listed. Certified organic extracts, batch-tested for pH and stability. No greenwashing.",
+              },
+              {
+                icon: "◈",
+                title: "Cruelty-Free Always",
+                body: "Never tested on animals. Ethically sourced from suppliers who share our values — no exceptions.",
+              },
+              {
+                icon: "◇",
+                title: "Glass-Skin Results",
+                body: "Every formula is designed to deliver the K-Beauty glass-skin effect: plump, luminous, barrier-strong skin.",
+              },
+            ].map((item) => (
+              <div key={item.title} className="value-card">
+                <span className="text-[#C9A96E] text-2xl mb-5 block">{item.icon}</span>
+                <h3 className="font-serif text-xl text-[#18181A] mb-3">{item.title}</h3>
+                <p className="text-[#9A9088] text-sm font-sans leading-relaxed">{item.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
       </section>
     </>
   );

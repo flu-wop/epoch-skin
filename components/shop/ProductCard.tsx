@@ -1,24 +1,24 @@
 "use client";
+// components/shop/ProductCard.tsx
 
 import Link from "next/link";
 import Image from "next/image";
-import { ShoppingCart } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { ShoppingBag } from "lucide-react";
+import { useState } from "react";
 import { formatPrice } from "@/lib/utils";
 import type { Product } from "@/lib/types";
 import { useCart } from "@/lib/hooks/useCart";
-import { useState } from "react";
 
-interface ProductCardProps {
+interface Props {
   product: Product;
+  priority?: boolean;
 }
 
-export function ProductCard({ product }: ProductCardProps) {
+export function ProductCard({ product, priority = false }: Props) {
   const { addItem } = useCart();
-  const [addedToCart, setAddedToCart] = useState(false);
+  const [added, setAdded] = useState(false);
 
-  const handleAddToCart = (e: React.MouseEvent) => {
+  const handleAdd = (e: React.MouseEvent) => {
     e.preventDefault();
     addItem({
       id: product.id,
@@ -27,51 +27,79 @@ export function ProductCard({ product }: ProductCardProps) {
       image: product.images[0],
       size: product.size,
     });
-    
-    setAddedToCart(true);
-    setTimeout(() => setAddedToCart(false), 1500);
+    setAdded(true);
+    setTimeout(() => setAdded(false), 1400);
   };
 
   return (
-    <Card className="group overflow-hidden transition-all hover:shadow-lg">
-      <Link href={`/shop/${product.slug}`}>
-        <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-sand-100 to-neutral-100">
+    <div className="group product-card flex flex-col">
+      {/* Image wrapper */}
+      <Link href={`/shop/${product.slug}`} className="block relative overflow-hidden bg-[#F0EBE3]">
+        {/* Aspect ratio box */}
+        <div className="relative aspect-[4/5]">
           <Image
             src={product.images[0]}
-            alt={product.imageAlt || `${product.name} - ${product.shortDescription}`}
+            alt={product.imageAlt || product.name}
             fill
-            className="object-cover transition-transform group-hover:scale-105"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+            className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+            priority={priority}
           />
+        </div>
+
+        {/* Gold corner brackets on hover */}
+        <span className="absolute top-3 left-3 w-5 h-5 border-t border-l border-[#C9A96E]/0
+                          group-hover:border-[#C9A96E]/70 transition-all duration-500" />
+        <span className="absolute top-3 right-3 w-5 h-5 border-t border-r border-[#C9A96E]/0
+                          group-hover:border-[#C9A96E]/70 transition-all duration-500" />
+        <span className="absolute bottom-3 left-3 w-5 h-5 border-b border-l border-[#C9A96E]/0
+                          group-hover:border-[#C9A96E]/70 transition-all duration-500" />
+        <span className="absolute bottom-3 right-3 w-5 h-5 border-b border-r border-[#C9A96E]/0
+                          group-hover:border-[#C9A96E]/70 transition-all duration-500" />
+
+        {/* Category tag */}
+        <div className="absolute top-3 left-1/2 -translate-x-1/2
+                         opacity-0 group-hover:opacity-100 transition-opacity duration-400">
+          <span className="bg-[#18181A]/80 text-[#C9A96E] text-[8px] tracking-[0.2em] uppercase
+                            px-3 py-1.5 font-sans backdrop-blur-sm">
+            {product.category}
+          </span>
         </div>
       </Link>
 
-      <CardContent className="p-4 sm:p-5">
-        <Link href={`/shop/${product.slug}`}>
-          <h3 className="font-serif text-lg sm:text-xl font-semibold text-sage-900 transition-colors group-hover:text-clay-600">
+      {/* Card body */}
+      <div className="flex flex-col flex-1 p-5 bg-white">
+        <Link href={`/shop/${product.slug}`} className="block flex-1">
+          <h3 className="font-serif text-[#18181A] text-lg leading-snug mb-2
+                          group-hover:text-[#C9A96E] transition-colors duration-400">
             {product.name}
           </h3>
+          <p className="text-[#9A9088] text-xs font-sans leading-relaxed line-clamp-2 mb-4">
+            {product.shortDescription}
+          </p>
         </Link>
-        
-        <p className="mt-1 sm:mt-2 line-clamp-2 text-sm text-neutral-600">
-          {product.shortDescription}
-        </p>
 
-        <div className="mt-3 flex items-baseline gap-2">
-          <span className="font-serif text-xl sm:text-2xl font-semibold text-sage-900">
-            {formatPrice(product.price)}
-          </span>
-          <span className="text-sm text-neutral-500">{product.size}</span>
+        <div className="flex items-center justify-between mt-auto pt-4 border-t border-[#F0EBE3]">
+          <div>
+            <span className="font-serif text-xl text-[#18181A]">{formatPrice(product.price)}</span>
+            {product.size && (
+              <span className="text-[#C8C0B8] text-[10px] font-sans ml-2">{product.size}</span>
+            )}
+          </div>
+          <button
+            onClick={handleAdd}
+            aria-label={`Add ${product.name} to cart`}
+            className="flex items-center gap-2 px-4 py-2.5
+                       border border-[#E8E0D5] text-[#9A9088]
+                       text-[9px] tracking-[0.18em] uppercase font-sans
+                       hover:border-[#C9A96E] hover:text-[#C9A96E]
+                       transition-all duration-300"
+          >
+            <ShoppingBag className="w-3 h-3" />
+            {added ? "Added ✓" : "Add"}
+          </button>
         </div>
-
-        <Button 
-          onClick={handleAddToCart}
-          className="mt-4 w-full bg-clay-500 hover:bg-clay-600 min-h-[44px] text-base"
-          size="default"
-        >
-          <ShoppingCart className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
-          {addedToCart ? "Added!" : "Add to Cart"}
-        </Button>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }

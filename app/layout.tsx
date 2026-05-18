@@ -27,21 +27,17 @@ const SITE = 'https://epoch-skin.com';
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),
   title: {
-    default: 'Epoch Skin | Organic Skincare & Premium Waxing Studio | New Orleans',
+    default: 'Epoch Skin | Organic Skincare & Waxing Studio | New Orleans',
     template: '%s | Epoch Skin',
   },
-  description: 'Experience transformative organic skincare and expert waxing in New Orleans. Licensed estheticians, certified organic formulas, and the glass-skin treatments.',
-  keywords: ['Organic Skincare New Orleans', 'Brazilian wax New Orleans', 'glass skin treatment', 'licensed esthetician', 'cruelty-free skincare', 'K-beauty New Orleans'],
+  description: 'Certified organic skincare and expert waxing in New Orleans. Glass-skin treatments, K-Beauty protocols, and cruelty-free formulas by licensed estheticians.',
+  keywords: ['Organic Skincare New Orleans', 'Brazilian wax New Orleans', 'glass skin treatment', 'licensed esthetician', 'cruelty-free skincare'],
   authors: [{ name: 'Kayla Ford', url: SITE }],
-  creator: 'Kayla Ford',
   openGraph: {
-    type: 'website',
-    locale: 'en_US',
-    url: SITE,
-    siteName: 'Epoch Skin',
+    type: 'website', locale: 'en_US', url: SITE, siteName: 'Epoch Skin',
     title: 'Epoch Skin | Organic Skincare & Waxing Studio',
     description: 'A new era of organic skincare. Expert waxing and glass-skin treatments in New Orleans.',
-    images: [{ url: `${SITE}/og/og-default.jpg`, width: 1200, height: 630, alt: 'Epoch Skin' }],
+    images: [{ url: `${SITE}/og/og-default.jpg`, width: 1200, height: 630 }],
   },
   twitter: {
     card: 'summary_large_image',
@@ -56,13 +52,13 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: '#F8F5F0',
+  themeColor: '#F8F4EF',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
-      <body className="bg-[#F8F5F0] text-[#1A1A18] font-sans antialiased">
+      <body className="bg-[#F8F4EF] text-[#18181A] font-sans antialiased">
         <Providers>
           <Header />
           <main>{children}</main>
