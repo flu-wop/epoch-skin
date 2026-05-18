@@ -3,7 +3,7 @@
 
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const getResend = () => new Resend(process.env.RESEND_API_KEY ?? "");
 
 const FROM = process.env.RESEND_FROM_EMAIL ?? 'hello@epoch-skin.com';
 const TO_KAYLA = process.env.RESEND_TO_EMAIL ?? 'kayla@epoch-skin.com';
@@ -61,7 +61,7 @@ export async function sendContactNotification(data: {
   service?: string;
   message: string;
 }) {
-  return resend.emails.send({
+  return getResend().emails.send({
     from: FROM,
     to: TO_KAYLA,
     reply_to: data.email,
@@ -84,7 +84,7 @@ export async function sendContactNotification(data: {
 
 // ─── 2. Contact form → Client auto-reply ─────────────────────────
 export async function sendContactAutoReply(data: { name: string; email: string }) {
-  return resend.emails.send({
+  return getResend().emails.send({
     from: FROM,
     to: data.email,
     subject: `We received your message – Epoch Skin`,
@@ -107,7 +107,7 @@ export async function sendContactAutoReply(data: { name: string; email: string }
 
 // ─── 3. Newsletter welcome ────────────────────────────────────────
 export async function sendNewsletterWelcome(email: string) {
-  return resend.emails.send({
+  return getResend().emails.send({
     from: FROM,
     to: email,
     subject: `Welcome to the Epoch Skin community 🌿`,
@@ -129,7 +129,7 @@ export async function sendNewsletterWelcome(email: string) {
 
 // ─── 4. Newsletter notification to Kayla ─────────────────────────
 export async function sendNewsletterNotification(email: string) {
-  return resend.emails.send({
+  return getResend().emails.send({
     from: FROM,
     to: TO_KAYLA,
     subject: `New newsletter subscriber: ${email}`,
@@ -150,7 +150,7 @@ export async function sendBookingConfirmation(data: {
   calLink?: string;
 }) {
   const serviceList = data.services.map(s => `<li>${s}</li>`).join('');
-  return resend.emails.send({
+  return getResend().emails.send({
     from: FROM,
     to: data.email,
     subject: `Your Epoch Skin appointment is confirmed`,
@@ -182,7 +182,7 @@ export async function sendBookingNotification(data: {
   total: string;
 }) {
   const serviceList = data.services.map(s => `<li>${s}</li>`).join('');
-  return resend.emails.send({
+  return getResend().emails.send({
     from: FROM,
     to: TO_KAYLA,
     reply_to: data.email,
