@@ -41,7 +41,7 @@ export default function BlogPage() {
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-700"
                   sizes="(max-width: 768px) 100vw, 50vw"
-                  onError={() => {}} // graceful fallback handled by bg color
+                   // graceful fallback handled by bg color
                 />
               </div>
               <div>
