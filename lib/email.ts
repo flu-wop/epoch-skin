@@ -64,7 +64,7 @@ export async function sendContactNotification(data: {
   return resend.emails.send({
     from: FROM,
     to: TO_KAYLA,
-    replyTo: data.email,
+    reply_to: data.email,
     subject: `New Contact: ${data.name} – ${data.service ?? 'General Inquiry'}`,
     html: emailWrap(`
       <h2>New Contact Form Submission</h2>
@@ -185,7 +185,7 @@ export async function sendBookingNotification(data: {
   return resend.emails.send({
     from: FROM,
     to: TO_KAYLA,
-    replyTo: data.email,
+    reply_to: data.email,
     subject: `New Booking: ${data.name} – ${data.date} at ${data.time}`,
     html: emailWrap(`
       <h2>New Appointment Booked</h2>
