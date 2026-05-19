@@ -1,24 +1,21 @@
+// app/page.tsx
+// Fixed: removed old Contact component (blank section), updated service cards
 import { HomeHero } from "@/components/home/HomeHero";
 import { TrustBadges } from "@/components/home/TrustBadges";
+import { HomeServices } from "@/components/home/HomeServices";
 import { FeaturedProducts } from "@/components/home/FeaturedProducts";
-import { ServiceCategoryCards } from "@/components/home/ServiceCategoryCards";
 import FAQ from "@/components/home/FAQ";
-import Contact from "@/components/home/Contact";
-// import { InstagramGallery } from "@/components/home/InstagramGallery";
-import { Newsletter } from "@/components/home/Newsletter";
+import { HomeNewsletter } from "@/components/home/HomeNewsletter";
 
 export default function HomePage() {
   return (
     <>
       <HomeHero />
       <TrustBadges />
-      <ServiceCategoryCards />
+      <HomeServices />
       <FeaturedProducts />
       <FAQ />
-      <Contact />
-      {/* <InstagramGallery /> */}
-      <Newsletter />
-      {/* <InstagramGallery /> */}
+      <HomeNewsletter />
     </>
   );
 }
