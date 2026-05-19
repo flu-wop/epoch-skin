@@ -5,12 +5,30 @@
 import { useCart } from '@/lib/hooks/useCart';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function CartPage() {
   const { items, removeItem, updateQuantity, total, clearCart } = useCart();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  // Clear stale cart items that have broken image paths
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('cart');
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          // If any item is missing a valid image path starting with /images/, clear it
+          const hasStale = parsed.some((item: { image?: string }) =>
+            !item.image || (!item.image.startsWith('/images/') && !item.image.startsWith('/'))
+          );
+          if (hasStale) clearCart();
+        } catch { clearCart(); }
+      }
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleCheckout = async () => {
     setLoading(true);
@@ -38,7 +56,7 @@ export default function CartPage() {
         <div className="text-center max-w-sm">
           <p className="text-5xl mb-6">🌿</p>
           <h1 className="font-serif text-3xl text-[#111] mb-4">Your cart is empty</h1>
-          <p className="text-[#888] mb-8">Discover our organic skincare collection.</p>
+          <p className="text-[#888] mb-8">Discover our Organic Skincare collection.</p>
           <Link
             href="/shop"
             className="inline-block px-10 py-3.5 bg-[#111] text-[#D4AF77] text-xs tracking-widest uppercase hover:bg-[#D4AF77] hover:text-[#111] transition-colors"
@@ -64,14 +82,21 @@ export default function CartPage() {
           <div className="lg:col-span-2 space-y-6">
             {items.map((item) => (
               <div key={item.id} className="flex gap-5 pb-6 border-b border-[#E8E0D0]">
-                <div className="relative w-20 h-20 flex-shrink-0 bg-[#F5EDD8]">
-                  <Image
-                    src={item.image}
-                    alt={item.name}
-                    fill
-                    className="object-cover"
-                    sizes="80px"
-                  />
+                <div className="relative w-20 h-20 flex-shrink-0 bg-[#F5EDD8] overflow-hidden">
+                  {item.image ? (
+                    <Image
+                      src={item.image}
+                      alt={item.name}
+                      fill
+                      className="object-cover"
+                      sizes="80px"
+                      onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <span className="text-[#C9A96E]/40 text-xl">✦</span>
+                    </div>
+                  )}
                 </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="font-serif text-[#111] text-sm mb-1 leading-snug">{item.name}</h3>

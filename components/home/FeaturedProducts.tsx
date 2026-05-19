@@ -10,7 +10,7 @@ export function FeaturedProducts() {
   const products = getFeaturedProducts();
 
   return (
-    <section className="section-y bg-[#F8F4EF]">
+    <section className="section-lg bg-[#F8F4EF]">
       <div className="page-container">
 
         {/* Header */}

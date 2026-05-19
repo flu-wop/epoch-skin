@@ -31,7 +31,7 @@ export function HomeHero() {
       >
         <Image
           src="/background/botanical-lay.png"
-          alt="Organic botanicals and skincare"
+          alt="Organic botanicals and Skincare"
           fill
           className="object-cover object-center"
           priority

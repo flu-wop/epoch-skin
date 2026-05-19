@@ -22,7 +22,7 @@ export default function SuccessPage() {
           Thank you for your order.
         </h1>
         <p className="text-[#666] leading-relaxed mb-10">
-          A confirmation has been sent to your email. Your organic skincare is on its way — 
+          A confirmation has been sent to your email. Your Organic Skincare is on its way — 
           allow 5–7 business days for standard shipping.
         </p>
 

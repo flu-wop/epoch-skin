@@ -62,7 +62,7 @@ export function Footer() {
               New Orleans · Est. 2026
             </p>
             <p className="text-[#4A4A48] text-sm font-sans leading-relaxed mb-6">
-              Certified organic skincare and expert waxing, rooted in K-Beauty glass-skin philosophy.
+              Certified Organic Skincare and expert waxing, rooted in K-Beauty glass-skin philosophy.
             </p>
             {/* Social icons */}
             <div className="flex gap-3">

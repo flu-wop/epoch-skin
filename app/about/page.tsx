@@ -8,7 +8,7 @@ import { ScrollReveal } from "@/components/ScrollReveal";
 
 export const metadata: Metadata = {
   title: "About | Epoch Skin",
-  description: "Meet Kayla Ford — licensed esthetician and founder of Epoch Skin, New Orleans premier organic skincare and waxing studio.",
+  description: "Meet Kayla Ford — licensed esthetician and founder of Epoch Skin, New Orleans premier Organic Skincare and waxing studio.",
   alternates: { canonical: "https://epoch-skin.com/about" },
   openGraph: {
     title: "About | Epoch Skin",
@@ -48,7 +48,7 @@ const PHILOSOPHY = [
       </svg>
     ),
     title: "Licensed Expertise",
-    body: "Louisiana State Board certified — continuously trained in organic skincare and gentle waxing protocols.",
+    body: "Louisiana State Board certified — continuously trained in Organic Skincare and gentle waxing protocols.",
   },
 ];
 
@@ -73,11 +73,11 @@ export default function AboutPage() {
       {/* ── FOUNDER PORTRAIT — circular ── */}
       <section className="pt-16 md:pt-20 text-center px-5">
         <ScrollReveal className="inline-block mb-8">
-          <div className="relative w-44 h-44 mx-auto">
+          <div className="relative mx-auto" style={{ width: 176, height: 176 }}>
             {/* Gold ring */}
             <div className="absolute -inset-1.5 rounded-full border border-[#C9A96E]/35" />
             {/* Circle image */}
-            <div className="w-full h-full rounded-full overflow-hidden bg-[#EDE6D8]
+            <div className="relative w-full h-full rounded-full overflow-hidden bg-[#EDE6D8]
                              shadow-[0_8px_40px_rgba(201,169,110,0.22)]">
               <Image
                 src="/images/team/founder-kayla.png"
@@ -103,9 +103,9 @@ export default function AboutPage() {
             <h2 className="font-serif text-4xl text-[#1C1C1A]">Our Story</h2>
           </ScrollReveal>
           <ScrollReveal delay={100} className="space-y-5 text-[#5A5550] font-sans text-sm leading-relaxed">
-            <p>Kayla Ford founded Epoch Skin after experiencing firsthand the damage that harsh, synthetic products inflict — and the frustration of finding no organic-first studio in New Orleans that took clean formulation seriously enough to deliver real results.</p>
-            <p>From formulating in her kitchen to opening Epoch Skin, the journey is guided by a single belief: the beauty community deserves better — skincare rooted in transparency, certification, and the science of genuinely healthy skin.</p>
-            <p>Today, every product is small-batch formulated with certified organic ingredients. Every service is performed by a Louisiana State Board licensed esthetician. And every client leaves feeling seen, cared for, and radiant.</p>
+            <p>Kayla Ford founded Epoch Skin after experiencing firsthand the damage that harsh, synthetic products inflict — and the frustration of finding no Organic-first studio in New Orleans that took clean formulation seriously enough to deliver real results.</p>
+            <p>From formulating in her kitchen to opening Epoch Skin, the journey is guided by a single belief: the beauty community deserves better — Skincare rooted in transparency, certification, and the science of genuinely healthy skin.</p>
+            <p>Today, every product is small-batch formulated with certified Organic ingredients. Every service is performed by a Louisiana State Board licensed esthetician. And every client leaves feeling seen, cared for, and radiant.</p>
           </ScrollReveal>
           <ScrollReveal className="text-center mt-10" delay={150}>
             <Link href="/book" className="inline-flex items-center justify-center px-8 py-3.5
@@ -188,29 +188,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ── SPOTLIGHTS — Kayla only ── */}
-      <section className="py-16 md:py-20 px-5 bg-[#FAF7F2]">
-        <div className="max-w-[780px] mx-auto">
-          <ScrollReveal className="text-center mb-10">
-            <p className="text-[11px] tracking-[0.28em] uppercase text-[#C9A96E] font-sans mb-2">On</p>
-            <h2 className="font-serif text-4xl text-[#1C1C1A]">Spotlights</h2>
-          </ScrollReveal>
-          <div className="max-w-sm mx-auto">
-            <ScrollReveal className="flex items-center gap-4 p-5 bg-white border border-[#E5DCCF] hover:border-[#C9A96E]/40 transition-colors duration-300">
-              <div className="relative w-16 h-16 flex-shrink-0">
-                <div className="w-full h-full rounded-full overflow-hidden bg-[#EDE6D8]">
-                  <Image src="/images/team/founder-kayla.png" alt="Kayla Ford" fill
-                    className="object-cover object-top" sizes="64px" />
-                </div>
-              </div>
-              <div>
-                <p className="font-serif text-[#1C1C1A] text-lg leading-tight">Kayla Ford</p>
-                <p className="text-[#8C8680] text-xs font-sans mt-0.5">Founder & Licensed Esthetician</p>
-              </div>
-            </ScrollReveal>
-          </div>
-        </div>
-      </section>
 
       {/* ── VALUES ── */}
       <section className="py-16 md:py-20 px-5 bg-white">
@@ -239,7 +216,7 @@ export default function AboutPage() {
           <div className="w-10 h-px bg-[#C9A96E] mx-auto mb-5" />
           <p className="text-[11px] tracking-[0.28em] uppercase text-[#C9A96E] font-sans mb-4">Full Transparency</p>
           <h2 className="font-serif text-4xl text-white mb-6">We List Every Ingredient</h2>
-          <p className="text-[#6E6860] font-sans text-sm leading-relaxed mb-4">Every formula lists ingredients in INCI format — we mark which are certified organic, provide pH ranges, storage guidance, and usage instructions.</p>
+          <p className="text-[#6E6860] font-sans text-sm leading-relaxed mb-4">Every formula lists ingredients in INCI format — we mark which are certified Organic, provide pH ranges, storage guidance, and usage instructions.</p>
           <p className="text-[#3A3A38] text-xs font-sans">These statements have not been evaluated by the FDA. Products are not intended to diagnose, treat, cure, or prevent any disease.</p>
         </div>
       </section>

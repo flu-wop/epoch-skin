@@ -43,8 +43,8 @@ export function HomeServices() {
               className="group relative block overflow-hidden bg-[#1C1C1A]
                          hover:shadow-[0_12px_48px_rgba(201,169,110,0.18)]
                          transition-all duration-500">
-              {/* Tall image — 2:3 ratio shows more image, less blur */}
-              <div className="relative aspect-[2/3] overflow-hidden">
+              {/* Shorter image — 3:4 ratio instead of 2:3 */}
+              <div className="relative aspect-[3/4] overflow-hidden">
                 <Image
                   src={svc.image}
                   alt={svc.title}

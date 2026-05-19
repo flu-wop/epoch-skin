@@ -21,7 +21,7 @@ export function FadeUp({ children, delay = 0, className = "", threshold = 0.15 }
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setTimeout(() => el.classList.add("in-view"), delay);
+          setTimeout(() => el.classList.add("visible"), delay);
           observer.disconnect();
         }
       },

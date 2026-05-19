@@ -6,11 +6,11 @@ import { BLOG_POSTS } from '@/lib/blog-posts';
 
 export const metadata = {
   title: 'Journal | Epoch Skin',
-  description: 'Skincare guides, waxing tips, organic ingredient education, and studio news from Epoch Skin.',
+  description: 'Skincare guides, waxing tips, Organic ingredient education, and studio news from Epoch Skin.',
   alternates: { canonical: 'https://epoch-skin.com/blog' },
   openGraph: {
     title: 'Journal | Epoch Skin',
-    description: 'Skincare guides, waxing tips, and organic ingredient education.',
+    description: 'Skincare guides, waxing tips, and Organic ingredient education.',
     url: 'https://epoch-skin.com/blog',
     siteName: 'Epoch Skin',
     images: [{ url: 'https://epoch-skin.com/og/og-blog.jpg', width: 1200, height: 630 }],
@@ -26,7 +26,7 @@ export default function BlogPage() {
           <p className="text-xs tracking-widest uppercase text-[#D4AF77] mb-3">The Epoch Journal</p>
           <h1 className="font-serif text-4xl md:text-5xl text-[#111] mb-5">Skincare, Simplified</h1>
           <p className="text-[#888] max-w-md mx-auto leading-relaxed">
-            Honest guides, studio tips, and organic ingredient education from our licensed estheticians.
+            Honest guides, studio tips, and Organic ingredient education from our licensed estheticians.
           </p>
         </div>
 
@@ -74,7 +74,7 @@ export default function BlogPage() {
                   src={post.image}
                   alt={post.title}
                   fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-700"
+                  className={`object-cover group-hover:scale-105 transition-transform duration-700 ${post.image.includes('skincare-tips') ? 'object-top' : 'object-center'}`}
                   sizes="(max-width: 768px) 100vw, 50vw"
                 />
               </div>
