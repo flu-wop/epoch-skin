@@ -1,14 +1,10 @@
 // app/about/page.tsx
-// Matches reference mockup 3 exactly:
-// - Large circular founder portrait at top center
-// - "Our Epoch" heading, "Our Story" section
-// - Sage green "Glass Skin Philosophy" cards with icons
-// - "Spotlights" team section with circular photos
-// - "Follow Our Journey" Instagram grid
+// Fixed: correct image paths (.png), removed Mobile AL, fixed broken team-2 image
 
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
+import { ScrollReveal } from "@/components/ScrollReveal";
 
 export const metadata: Metadata = {
   title: "About | Epoch Skin",
@@ -21,248 +17,333 @@ export const metadata: Metadata = {
   },
 };
 
-const PHILOSOPHY_CARDS = [
+const PHILOSOPHY = [
   {
     icon: (
-      <svg viewBox="0 0 32 32" fill="none" className="w-8 h-8" stroke="currentColor" strokeWidth="1.5">
+      <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.4" className="w-8 h-8">
         <circle cx="16" cy="16" r="6" />
-        <path d="M16 4v4M16 24v4M4 16h4M24 16h4M7.5 7.5l2.8 2.8M21.7 21.7l2.8 2.8M7.5 24.5l2.8-2.8M21.7 10.3l2.8-2.8" />
+        <path d="M16 2v4M16 26v4M2 16h4M26 16h4M6.34 6.34l2.83 2.83M22.83 22.83l2.83 2.83M6.34 25.66l2.83-2.83M22.83 9.17l2.83-2.83" />
       </svg>
     ),
     title: "Glass Skin",
-    body: "Our layering protocol maximizes absorption at each step to build luminous, dewy glass skin.",
+    body: "Our layering protocol maximizes absorption at every step, building hydration depth organically for a luminous, glass-skin finish.",
   },
   {
     icon: (
-      <svg viewBox="0 0 32 32" fill="none" className="w-8 h-8" stroke="currentColor" strokeWidth="1.5">
-        <circle cx="16" cy="12" r="5" />
-        <path d="M8 28c0-4.4 3.6-8 8-8s8 3.6 8 8" />
-        <circle cx="16" cy="12" r="9" strokeDasharray="2 3" />
+      <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.4" className="w-8 h-8">
+        <circle cx="16" cy="11" r="5.5" />
+        <path d="M16 2C8.268 2 2 8.268 2 16s6.268 14 14 14 14-6.268 14-14S23.732 2 16 2z" strokeDasharray="3 3" />
+        <path d="M9 28c0-3.866 3.134-7 7-7s7 3.134 7 7" />
       </svg>
     ),
-    title: "Glass Skin",
-    body: "Natural botanical treatments certified to maintain skin's own balanced ecosystem.",
+    title: "Organic Actives",
+    body: "Natural botanical treatments certified to maintain skin's own balanced ecosystem — gently and effectively.",
   },
   {
     icon: (
-      <svg viewBox="0 0 32 32" fill="none" className="w-8 h-8" stroke="currentColor" strokeWidth="1.5">
-        <path d="M8 8h16v20H8z" />
-        <path d="M11 8V6a5 5 0 0 1 10 0v2" />
-        <path d="M13 17l2 2 4-4" />
+      <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.4" className="w-8 h-8">
+        <rect x="7" y="7" width="18" height="22" rx="0.5" />
+        <path d="M11 7V5a5 5 0 0 1 10 0v2" />
+        <path d="M12 17l3 3 5-5" />
       </svg>
     ),
     title: "Esthetician Team",
-    body: "Louisiana State Board certified estheticians trained in organic skincare and gentle waxing.",
+    body: "Louisiana State Board certified estheticians — continuously trained in organic skincare and gentle waxing protocols.",
   },
+];
+
+const STEPS = [
+  { num: "01", label: "Cleanse",   desc: "Sulfate-free, pH-balanced. Remove without stripping the barrier." },
+  { num: "02", label: "Tone",      desc: "Restore balance. Prime every layer for maximum absorption." },
+  { num: "03", label: "Serum",     desc: "Snow mushroom and beta-glucan for deep, sustained hydration." },
+  { num: "04", label: "Seal",      desc: "Barrier cream locks every layer in. Glass skin, achieved." },
+];
+
+const VALUES = [
+  { icon: "✦", title: "Organic First",   body: "Certified organic extracts, INCI-listed, batch-tested, transparently sourced." },
+  { icon: "◈", title: "Cruelty-Free",    body: "Never tested on animals. Every supplier vetted for ethical sourcing." },
+  { icon: "◇", title: "Visible Results", body: "Engineered for measurable skin improvement — not just a pleasant experience." },
+  { icon: "○", title: "Client-Centered", body: "Your comfort, safety, and confidence at the center of every decision." },
 ];
 
 export default function AboutPage() {
   return (
-    <div className="bg-[#F5F0EB] min-h-screen">
+    <div className="bg-[#FAF7F2] min-h-screen">
 
-      {/* ── FOUNDER PORTRAIT — circular, top center ── matches mockup 3 ── */}
-      <section className="pt-16 pb-0 text-center px-5">
-        {/* Circular portrait */}
-        <div className="relative w-44 h-44 mx-auto mb-8">
-          <div className="w-full h-full rounded-full overflow-hidden border-4 border-white
-                           shadow-[0_8px_40px_rgba(201,169,110,0.20)] bg-[#EAE2D8]">
-            <Image
-              src="/images/team/kayla-ford.jpg"
-              alt="Kayla Ford, Founder of Epoch Skin"
-              fill
-              className="object-cover object-top"
-              sizes="176px"
-              priority
-            />
+      {/* ── FOUNDER PORTRAIT — circular, top center ── */}
+      <section className="pt-16 md:pt-20 text-center px-5">
+        <ScrollReveal className="inline-block mb-8">
+          <div className="relative w-44 h-44 mx-auto">
+            <div className="absolute -inset-1.5 rounded-full border border-[#C9A96E]/35" />
+            <div className="w-full h-full rounded-full overflow-hidden bg-[#EDE6D8]
+                             shadow-[0_8px_40px_rgba(201,169,110,0.22)]">
+              <Image
+                src="/images/team/founder-kayla.png"
+                alt="Kayla Ford, Founder & Licensed Esthetician, Epoch Skin"
+                fill
+                className="object-cover object-top"
+                sizes="176px"
+                priority
+              />
+            </div>
           </div>
-          {/* Gold ring accent */}
-          <div className="absolute -inset-1.5 rounded-full border border-[#C9A96E]/30" />
-        </div>
-
-        {/* "Our Epoch" heading */}
-        <h1 className="font-serif text-5xl md:text-6xl text-[#1A1A18] mb-0">Our Epoch</h1>
+        </ScrollReveal>
+        <ScrollReveal delay={80}>
+          <h1 className="font-serif text-5xl md:text-6xl text-[#1C1C1A]">Our Epoch</h1>
+        </ScrollReveal>
       </section>
 
-      {/* ── OUR STORY ── matches mockup 3 layout ── */}
-      <section className="bg-white mt-0 py-14 px-5">
-        <div className="max-w-[780px] mx-auto text-center">
-          <p className="text-[10px] tracking-[0.3em] uppercase text-[#C9A96E] font-sans mb-3">OAN</p>
-          <h2 className="font-serif text-4xl text-[#1A1A18] mb-7">Our Story</h2>
-
-          <div className="text-[#6E6860] font-sans text-sm leading-relaxed space-y-4 text-left max-w-2xl mx-auto">
-            <p>
-              Kayla Ford founded Epoch Skin after experiencing firsthand the damage that harsh, synthetic 
-              products can cause — and the frustration of finding no organic-first studio in New Orleans 
-              that took clean formulation seriously enough to actually deliver results.
-            </p>
-            <p>
-              From formulating in her garage to opening Epoch Skin, the journey is guided by a belief 
-              that the beauty community deserves better — skincare rooted in transparency, certification, 
-              and the science of truly healthy skin.
-            </p>
-            <p>
-              Our studio serves New Orleans and Mobile, AL. New clients can book online or call to get 
-              the conversation started with our estheticians.
-            </p>
-          </div>
-
-          <div className="mt-8">
-            <Link href="/book"
-              className="inline-flex items-center px-8 py-3 border border-[#1A1A18] text-[#1A1A18]
-                         text-[11px] tracking-[0.2em] uppercase font-sans
-                         hover:bg-[#1A1A18] hover:text-[#C9A96E] transition-all duration-400">
-              About Page
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ── GLASS SKIN PHILOSOPHY ── sage green cards with icons ── matches mockup 3 ── */}
-      <section className="py-16 px-5">
-        <div className="max-w-[900px] mx-auto">
-          <div className="text-center mb-10">
-            <p className="text-[10px] tracking-[0.3em] uppercase text-[#C9A96E] font-sans mb-2">OUR</p>
-            <h2 className="font-serif text-4xl text-[#1A1A18]">Glass Skin Philosophy</h2>
-          </div>
-
-          <div className="grid sm:grid-cols-3 gap-4">
-            {PHILOSOPHY_CARDS.map((card) => (
-              <div
-                key={card.title}
-                className="bg-[#5C6B5A] text-white p-8 text-center group
-                           hover:bg-[#4A5E48] transition-colors duration-400"
-              >
-                <div className="text-[#C9A96E] mb-5 flex justify-center">
-                  {card.icon}
-                </div>
-                <h3 className="font-serif text-xl mb-3">{card.title}</h3>
-                <p className="text-[#C4CFC3] text-xs font-sans leading-relaxed">{card.body}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── SPOTLIGHTS — team section ── matches mockup 3 ── */}
-      <section className="py-14 px-5 bg-white">
+      {/* ── OUR STORY ── */}
+      <section className="bg-white mt-12 py-16 px-5">
         <div className="max-w-[780px] mx-auto">
-          <div className="text-center mb-10">
-            <p className="text-[10px] tracking-[0.3em] uppercase text-[#C9A96E] font-sans mb-2">ON</p>
-            <h2 className="font-serif text-4xl text-[#1A1A18]">Spotlights</h2>
-          </div>
+          <ScrollReveal className="text-center mb-10">
+            <p className="text-[11px] tracking-[0.28em] uppercase text-[#C9A96E] font-sans mb-2">Our Story</p>
+            <h2 className="font-serif text-4xl text-[#1C1C1A]">Our Story</h2>
+          </ScrollReveal>
+          <ScrollReveal delay={100} className="space-y-5 text-[#5A5550] font-sans text-sm leading-relaxed">
+            <p>
+              Kayla Ford founded Epoch Skin after experiencing firsthand the damage that harsh,
+              synthetic products inflict — and the frustration of finding no organic-first studio
+              in New Orleans that took clean formulation seriously enough to deliver real results.
+            </p>
+            <p>
+              From formulating in her kitchen to opening Epoch Skin, the journey is guided by a
+              single belief: the beauty community deserves better — skincare rooted in transparency,
+              certification, and the science of genuinely healthy skin.
+            </p>
+            <p>
+              Today, every product is small-batch formulated with certified organic ingredients.
+              Every service is performed by a Louisiana State Board licensed esthetician.
+              And every client leaves feeling seen, cared for, and radiant.
+            </p>
+          </ScrollReveal>
+          <ScrollReveal className="text-center mt-10" delay={150}>
+            <Link href="/book"
+              className="inline-flex items-center justify-center px-8 py-3.5
+                         border border-[#1C1C1A] text-[#1C1C1A] text-[11px] tracking-[0.22em] uppercase font-sans
+                         hover:bg-[#1C1C1A] hover:text-[#C9A96E] transition-all duration-400">
+              Book a Service
+            </Link>
+          </ScrollReveal>
+        </div>
+      </section>
 
-          <div className="grid sm:grid-cols-2 gap-6 max-w-xl mx-auto">
-            {[
-              { name: "Kayla Ford", role: "Founder & Lead Esthetician", img: "/images/team/kayla-ford.jpg" },
-              { name: "Esthetician Team", role: "Licensed Professionals", img: "/images/team/team-2.jpg" },
-            ].map((member) => (
-              <div key={member.name} className="flex items-center gap-4">
-                <div className="relative w-16 h-16 flex-shrink-0">
-                  <div className="w-full h-full rounded-full overflow-hidden bg-[#EAE2D8]">
-                    <Image
-                      src={member.img}
-                      alt={member.name}
-                      fill
-                      className="object-cover object-top"
-                      sizes="64px"
-                    />
+      {/* ── ETYMOLOGY ── */}
+      <section className="py-12 px-5 bg-[#FAF7F2]">
+        <div className="max-w-[620px] mx-auto">
+          <ScrollReveal className="border border-[#E5DCCF] bg-white p-8">
+            <p className="text-[11px] tracking-[0.28em] uppercase text-[#C9A96E] font-sans mb-2">ep · och</p>
+            <p className="font-serif text-2xl text-[#1C1C1A] mb-3 italic">/ˈepək/ · noun</p>
+            <p className="text-[#5A5550] text-sm font-sans leading-relaxed mb-4">
+              A fixed point in time from which a new chapter begins.
+            </p>
+            <div className="border-l-2 border-[#C9A96E] pl-5">
+              <p className="text-[#2E2E2C] text-sm font-sans leading-relaxed italic">
+                "For us, Epoch is the moment your skin's story changes — when you choose formulas
+                that nourish instead of strip, that honor your body's natural intelligence."
+              </p>
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      {/* ── GLASS SKIN PHILOSOPHY — sage green cards ── */}
+      <section className="py-16 md:py-20 px-5 bg-[#FAF7F2]">
+        <div className="max-w-[1320px] mx-auto">
+          <ScrollReveal className="text-center mb-10">
+            <p className="text-[11px] tracking-[0.28em] uppercase text-[#C9A96E] font-sans mb-2">Our</p>
+            <h2 className="font-serif text-4xl md:text-5xl text-[#1C1C1A]">Glass Skin Philosophy</h2>
+          </ScrollReveal>
+          <div className="grid sm:grid-cols-3 gap-5">
+            {PHILOSOPHY.map((card, i) => (
+              <ScrollReveal key={i} delay={i * 80}>
+                <div className="bg-[#5F6F5A] text-white p-8 text-center hover:bg-[#4A5745] transition-colors duration-400 group h-full">
+                  <div className="text-[#C9A96E] mb-5 flex justify-center group-hover:scale-110 transition-transform duration-300">
+                    {card.icon}
                   </div>
+                  <h3 className="font-serif text-xl mb-3">{card.title}</h3>
+                  <p className="text-[#C4D0C2] text-xs font-sans leading-relaxed">{card.body}</p>
                 </div>
-                <div>
-                  <p className="font-serif text-[#1A1A18] text-lg leading-tight">{member.name}</p>
-                  <p className="text-[#9A9088] text-xs font-sans mt-0.5">{member.role}</p>
-                </div>
-              </div>
+              </ScrollReveal>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── FOLLOW OUR JOURNEY — Instagram grid ── matches mockup 3 ── */}
-      <section className="py-16 px-5">
-        <div className="max-w-[900px] mx-auto text-center">
-          <p className="text-[10px] tracking-[0.3em] uppercase text-[#C9A96E] font-sans mb-2">PTD</p>
-          <h2 className="font-serif text-4xl text-[#1A1A18] mb-10">Follow Our Journey</h2>
-
-          {/* Instagram placeholder grid — 3 large tiles matching mockup */}
-          <div className="grid grid-cols-3 gap-3 mb-8">
-            {[
-              "/images/team/kayla-ford.jpg",
-              "/images/blog/glass-skin.jpg",
-              "/images/studio/studio-1.jpg",
-            ].map((src, i) => (
-              <div key={i} className="aspect-square overflow-hidden bg-[#EAE2D8] group cursor-pointer relative">
-                <Image
-                  src={src}
-                  alt={`Epoch Skin Instagram ${i + 1}`}
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  sizes="33vw"
-                />
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
+      {/* ── GLASS SKIN STEPS ── */}
+      <section className="py-16 md:py-20 px-5 bg-white">
+        <div className="max-w-[1320px] mx-auto">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <ScrollReveal className="relative aspect-[4/3] bg-[#EDE6D8] overflow-hidden">
+              <Image
+                src="/images/blog/glass-skin.png"
+                alt="Glass skin layering technique"
+                fill className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 50vw"
+              />
+              <div className="absolute top-4 left-4 w-10 h-10 border-t border-l border-[#C9A96E]/50" />
+            </ScrollReveal>
+            <ScrollReveal delay={100}>
+              <div className="w-10 h-px bg-[#C9A96E] mb-5" />
+              <p className="text-[11px] tracking-[0.28em] uppercase text-[#C9A96E] font-sans mb-3">K-Beauty Method</p>
+              <h2 className="font-serif text-3xl md:text-4xl text-[#1C1C1A] mb-8">The 4-Step Ritual</h2>
+              <div className="space-y-6">
+                {STEPS.map(step => (
+                  <div key={step.num} className="flex gap-5 items-start group">
+                    <span className="font-serif text-2xl text-[#E8D5A8] flex-shrink-0 leading-none group-hover:text-[#C9A96E] transition-colors duration-300">
+                      {step.num}
+                    </span>
+                    <div>
+                      <p className="text-[#1C1C1A] text-sm font-sans font-medium tracking-wide mb-1">{step.label}</p>
+                      <p className="text-[#8C8680] text-xs font-sans leading-relaxed">{step.desc}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
+              <Link href="/shop"
+                className="inline-flex items-center justify-center mt-10 px-8 py-3.5
+                           bg-[#1C1C1A] text-[#C9A96E] text-[11px] tracking-[0.22em] uppercase font-sans
+                           hover:bg-[#C9A96E] hover:text-[#1C1C1A] transition-all duration-400">
+                Shop the Ritual
+              </Link>
+            </ScrollReveal>
           </div>
-          {/*
-            INSTAGRAM: Replace grid above with Behold embed:
-            <div id="behold-widget-YOURFEEDID" />
-            <script src="https://w.behold.so/widget.js" type="module" />
-          */}
+        </div>
+      </section>
 
-          <a
-            href="https://instagram.com/epoch_skin"
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center px-8 py-3.5 border border-[#1A1A18] text-[#1A1A18]
-                       text-[11px] tracking-[0.2em] uppercase font-sans
-                       hover:bg-[#1A1A18] hover:text-[#C9A96E] transition-all duration-400"
-          >
-            @epoch_skin
-          </a>
+      {/* ── SPOTLIGHTS ── */}
+      <section className="py-16 md:py-20 px-5 bg-[#FAF7F2]">
+        <div className="max-w-[780px] mx-auto">
+          <ScrollReveal className="text-center mb-10">
+            <p className="text-[11px] tracking-[0.28em] uppercase text-[#C9A96E] font-sans mb-2">On</p>
+            <h2 className="font-serif text-4xl text-[#1C1C1A]">Spotlights</h2>
+          </ScrollReveal>
+          <div className="grid sm:grid-cols-2 gap-6 max-w-xl mx-auto">
+            {/* Kayla — real image */}
+            <ScrollReveal className="flex items-center gap-4 p-5 bg-white border border-[#E5DCCF] hover:border-[#C9A96E]/40 transition-colors duration-300">
+              <div className="relative w-16 h-16 flex-shrink-0">
+                <div className="w-full h-full rounded-full overflow-hidden bg-[#EDE6D8]">
+                  <Image src="/images/team/founder-kayla.png" alt="Kayla Ford" fill
+                    className="object-cover object-top" sizes="64px" />
+                </div>
+              </div>
+              <div>
+                <p className="font-serif text-[#1C1C1A] text-lg leading-tight">Kayla Ford</p>
+                <p className="text-[#8C8680] text-xs font-sans mt-0.5">Founder & Lead Esthetician</p>
+              </div>
+            </ScrollReveal>
+
+            {/* Esthetician Team — no broken image, use icon fallback */}
+            <ScrollReveal delay={100} className="flex items-center gap-4 p-5 bg-white border border-[#E5DCCF] hover:border-[#C9A96E]/40 transition-colors duration-300">
+              <div className="relative w-16 h-16 flex-shrink-0">
+                <div className="w-full h-full rounded-full overflow-hidden bg-[#EDE6D8] flex items-center justify-center">
+                  <span className="text-[#C9A96E] text-2xl font-serif">✦</span>
+                </div>
+              </div>
+              <div>
+                <p className="font-serif text-[#1C1C1A] text-lg leading-tight">Esthetician Team</p>
+                <p className="text-[#8C8680] text-xs font-sans mt-0.5">Licensed Professionals</p>
+              </div>
+            </ScrollReveal>
+          </div>
         </div>
       </section>
 
       {/* ── VALUES ── */}
-      <section className="py-16 px-5 bg-white">
-        <div className="max-w-[900px] mx-auto">
-          <div className="text-center mb-10">
-            <h2 className="font-serif text-4xl text-[#1A1A18]">Our Values</h2>
-          </div>
+      <section className="py-16 md:py-20 px-5 bg-white">
+        <div className="max-w-[1320px] mx-auto">
+          <ScrollReveal className="text-center mb-12">
+            <div className="w-10 h-px bg-[#C9A96E] mx-auto mb-5" />
+            <h2 className="font-serif text-4xl text-[#1C1C1A]">Our Values</h2>
+          </ScrollReveal>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {[
-              { icon: "✦", title: "Organic First", body: "Certified organic extracts, INCI-listed, batch-tested, transparently sourced." },
-              { icon: "◈", title: "Cruelty-Free", body: "Never tested on animals. Ethically sourced from verified suppliers." },
-              { icon: "◇", title: "Visible Results", body: "Every formula engineered for measurable skin improvement." },
-              { icon: "○", title: "Client-Centered", body: "Your comfort and confidence are at the heart of every decision." },
-            ].map((v) => (
-              <div key={v.title}
-                className="border border-[#E0D8CE] p-7 bg-white hover:border-[#C9A96E]/50
-                           hover:bg-[#FDFAF6] transition-all duration-400">
-                <span className="block text-[#C9A96E] text-xl mb-4">{v.icon}</span>
-                <h3 className="font-serif text-lg text-[#1A1A18] mb-2">{v.title}</h3>
-                <p className="text-[#9A9088] text-xs font-sans leading-relaxed">{v.body}</p>
-              </div>
+            {VALUES.map((v, i) => (
+              <ScrollReveal key={v.title} delay={i * 70}>
+                <div className="border border-[#E5DCCF] p-8 bg-white h-full
+                               hover:border-[#C9A96E]/50 hover:bg-[#FAF7F2] transition-all duration-400">
+                  <span className="block text-[#C9A96E] text-xl mb-5">{v.icon}</span>
+                  <h3 className="font-serif text-lg text-[#1C1C1A] mb-3">{v.title}</h3>
+                  <p className="text-[#8C8680] text-sm font-sans leading-relaxed">{v.body}</p>
+                </div>
+              </ScrollReveal>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── CTA ── */}
-      <section className="py-16 px-5 bg-[#EAE2D8] text-center">
-        <div className="max-w-lg mx-auto">
-          <p className="font-serif text-3xl text-[#1A1A18] mb-8">Ready to begin your epoch?</p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/book"
-              className="px-10 py-3.5 bg-[#1A1A18] text-[#C9A96E] text-[11px] tracking-[0.22em]
-                         uppercase font-sans hover:bg-[#C9A96E] hover:text-[#1A1A18] transition-all duration-400">
-              Book Appointment
-            </Link>
-            <Link href="/shop"
-              className="px-10 py-3.5 border border-[#1A1A18] text-[#1A1A18] text-[11px] tracking-[0.22em]
-                         uppercase font-sans hover:border-[#C9A96E] hover:text-[#C9A96E] transition-all duration-400">
-              Shop Skincare
-            </Link>
+      {/* ── TRANSPARENCY ── */}
+      <section className="bg-[#1C1C1A] py-20 px-5 text-center">
+        <div className="max-w-2xl mx-auto">
+          <div className="w-10 h-px bg-[#C9A96E] mx-auto mb-5" />
+          <p className="text-[11px] tracking-[0.28em] uppercase text-[#C9A96E] font-sans mb-4">Full Transparency</p>
+          <h2 className="font-serif text-4xl text-white mb-6">We List Every Ingredient</h2>
+          <p className="text-[#6E6860] font-sans text-sm leading-relaxed mb-4">
+            Every formula lists ingredients in INCI format — we mark which are certified organic,
+            provide pH ranges, storage guidance, and usage instructions.
+          </p>
+          <p className="text-[#3A3A38] text-xs font-sans">
+            These statements have not been evaluated by the FDA. Products are not intended to
+            diagnose, treat, cure, or prevent any disease.
+          </p>
+        </div>
+      </section>
+
+      {/* ── FOLLOW OUR JOURNEY ── */}
+      <section className="py-16 md:py-20 px-5 bg-[#FAF7F2] text-center">
+        <div className="max-w-[1320px] mx-auto">
+          <ScrollReveal className="mb-10">
+            <p className="text-[11px] tracking-[0.28em] uppercase text-[#C9A96E] font-sans mb-2">Follow Our Journey</p>
+            <h2 className="font-serif text-4xl text-[#1C1C1A] mb-2">@epoch_skin</h2>
+            <p className="text-[#8C8680] font-sans text-sm">Behind the formulas, inside the studio, and real client skin.</p>
+          </ScrollReveal>
+
+          {/* Real images from the repo */}
+          <div className="grid grid-cols-3 gap-3 mb-10 max-w-2xl mx-auto">
+            {[
+              { src: "/images/team/founder-kayla.png",   alt: "Kayla Ford, Epoch Skin founder" },
+              { src: "/images/blog/glass-skin.png",       alt: "Glass skin treatment" },
+              { src: "/images/services/organic-facial.png", alt: "Organic facial service" },
+            ].map((item, i) => (
+              <ScrollReveal key={i} delay={i * 60}
+                className="aspect-square overflow-hidden bg-[#EDE6D8] group cursor-pointer relative">
+                <Image src={item.src} alt={item.alt} fill
+                  className="object-cover group-hover:scale-[1.05] transition-transform duration-500"
+                  sizes="(max-width: 640px) 33vw, 22vw" />
+                <div className="absolute inset-0 bg-[#1C1C1A]/0 group-hover:bg-[#1C1C1A]/15 transition-colors duration-300" />
+              </ScrollReveal>
+            ))}
           </div>
+
+          <a href="https://instagram.com/epoch_skin" target="_blank" rel="noreferrer"
+            className="inline-flex items-center justify-center px-8 py-3.5
+                       border border-[#1C1C1A] text-[#1C1C1A] text-[11px] tracking-[0.22em] uppercase font-sans
+                       hover:bg-[#1C1C1A] hover:text-[#C9A96E] transition-all duration-400">
+            Follow on Instagram
+          </a>
+        </div>
+      </section>
+
+      {/* ── CTA ── */}
+      <section className="py-14 px-5 bg-[#EDE6D8] text-center">
+        <div className="max-w-[1320px] mx-auto">
+          <ScrollReveal>
+            <div className="w-10 h-px bg-[#C9A96E] mx-auto mb-6" />
+            <p className="font-serif text-3xl md:text-4xl text-[#1C1C1A] mb-8">Ready to begin your epoch?</p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link href="/book"
+                className="inline-flex items-center justify-center px-10 py-3.5
+                           bg-[#1C1C1A] text-[#C9A96E] text-[11px] tracking-[0.22em] uppercase font-sans
+                           hover:bg-[#C9A96E] hover:text-[#1C1C1A] transition-all duration-400">
+                Book Appointment
+              </Link>
+              <Link href="/shop"
+                className="inline-flex items-center justify-center px-10 py-3.5
+                           border border-[#1C1C1A] text-[#1C1C1A] text-[11px] tracking-[0.22em] uppercase font-sans
+                           hover:border-[#C9A96E] hover:text-[#C9A96E] transition-all duration-400">
+                Shop Skincare
+              </Link>
+            </div>
+          </ScrollReveal>
         </div>
       </section>
     </div>

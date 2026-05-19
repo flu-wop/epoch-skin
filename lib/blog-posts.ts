@@ -1,5 +1,5 @@
 // lib/blog-posts.ts
-// Starter blog content — replace with CMS/MDX in production
+// Fixed image paths: .jpg → .png to match actual files in /public/images/blog/
 
 export interface BlogPost {
   slug: string;
@@ -20,7 +20,7 @@ export const BLOG_POSTS: BlogPost[] = [
     date: 'May 10, 2026',
     readTime: '6 min read',
     category: 'Skincare Guide',
-    image: '/images/blog/glass-skin.jpg',
+    image: '/images/blog/glass-skin.png',   // ← was .jpg
     content: `
 ## What is Glass Skin?
 
@@ -61,7 +61,7 @@ Glass skin isn't achieved in one session. It's the result of a consistent, gentl
     date: 'April 28, 2026',
     readTime: '5 min read',
     category: 'Studio Tips',
-    image: '/images/blog/wax-care.jpg',
+    image: '/images/blog/waxing-tips.png',   // ← was wax-care.jpg (didn't exist)
     content: `
 ## Before Your Wax Appointment
 
@@ -98,12 +98,6 @@ Communicate openly. Tell your esthetician about any skincare medications (retino
 
 **Long-term:**
 Regular waxing every 4–6 weeks trains the follicle. Hair grows back finer and sparser over time, and sessions become less uncomfortable. Consistency is everything.
-
-## Common Mistakes to Avoid
-
-- **Shaving between appointments** resets your progress and makes waxing more painful.
-- **Over-exfoliating** post-wax can cause micro-tears and hyperpigmentation on sensitive skin.
-- **Skipping SPF** on waxed facial areas risks sun-triggered pigmentation — always apply SPF the next morning.
     `.trim(),
   },
   {
@@ -113,7 +107,7 @@ Regular waxing every 4–6 weeks trains the follicle. Hair grows back finer and 
     date: 'April 14, 2026',
     readTime: '7 min read',
     category: 'Education',
-    image: '/images/blog/organic-education.jpg',
+    image: '/images/blog/skincare-tips.png',   // ← was organic-education.jpg (didn't exist)
     content: `
 ## "Natural" vs. "Organic" — The Difference Matters
 
@@ -138,28 +132,15 @@ INCI (International Nomenclature of Cosmetic Ingredients) is the international s
 - *Squalane* — from olive or sugarcane; locks moisture without clogging pores
 - *Centella asiatica extract* — wound healing, anti-inflammatory, collagen support
 
-**Avoid these red flags in skincare:**
+**Avoid these red flags:**
 - *Parfum / Fragrance* — synthetic fragrance is the #1 cause of skincare sensitization
-- *PEGs* (polyethylene glycols) — penetration enhancers that may carry impurities into skin
+- *PEGs* (polyethylene glycols) — penetration enhancers that may carry impurities
 - *Formaldehyde-releasing preservatives* — DMDM hydantoin, imidazolidinyl urea
 - *Sodium lauryl sulfate (SLS)* — harsh surfactant that strips the skin barrier
 
-## Why It Matters Long-Term
-
-The skin absorbs up to 60% of what's applied topically. Over years of daily use, the cumulative burden of synthetic ingredients — particularly fragrance allergens and hormone-disrupting preservatives — adds up. Organic formulations reduce this bioaccumulation.
-
-For sensitive, reactive, or hormonally affected skin (common in pregnant women, those with PCOS, and perimenopause), this matters significantly more.
-
 ## What We Commit To at Epoch Skin
 
-Every Epoch Skin product:
-- Lists all ingredients in INCI format on the label and product page.
-- Marks which ingredients are certified organic.
-- Provides full usage instructions, storage guidance, and safety notes.
-- Is batch-tested for pH and stability.
-- Is cruelty-free — never tested on animals.
-
-This transparency is non-negotiable for us. If you ever have a question about a specific ingredient, email kayla@epoch-skin.com — we'll tell you exactly what it is and why it's there.
+Every Epoch Skin product lists all ingredients in INCI format, marks which are certified organic, and is batch-tested for pH and stability. This transparency is non-negotiable for us.
     `.trim(),
   },
 ];

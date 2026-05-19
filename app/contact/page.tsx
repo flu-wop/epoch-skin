@@ -6,7 +6,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Contact | Epoch Skin',
-  description: 'Get in touch with Epoch Skin — New Orleans & Mobile organic skincare and waxing studio.',
+  description: 'Get in touch with Epoch Skin — New Orleans' premier organic skincare and waxing studio.',
   alternates: { canonical: 'https://epoch-skin.com/contact' },
   openGraph: {
     title: 'Contact | Epoch Skin',
@@ -63,8 +63,7 @@ export default function ContactPage() {
             <div>
               <p className="text-xs tracking-widest uppercase text-[#D4AF77] mb-3">Location</p>
               <p className="text-sm text-[#555] leading-relaxed">
-                New Orleans, Louisiana<br />
-                & Mobile, Alabama
+                New Orleans, Louisiana
               </p>
             </div>
 
