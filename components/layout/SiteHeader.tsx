@@ -50,7 +50,7 @@ export function SiteHeader() {
           {/* Logo — h-10 = 40px, correct luxury scale */}
           <Link href="/" className="flex-shrink-0" aria-label="Epoch Skin">
             <Image
-              src="/logos/horizontal-logo-cropped.png"
+              src="/logos/header-logo.png"
               alt="Epoch Skin"
               width={200}
               height={52}
