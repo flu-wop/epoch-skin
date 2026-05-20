@@ -26,7 +26,7 @@ export default function ShopPage() {
   const { addItem } = useCart();
   const gridRef = useRef(null);
 
-  const concern = CONCERNS.find(c => c.label === activeConcern);
+  const concern = CONCERNS.find(c => c.label === activeConcern) ?? CONCERNS[0];
   const filtered = (() => {
     if (concern.ids === "all") return products;
     if (concern.ids === "all-except-wax") return products.filter(p => p.id !== "12");
