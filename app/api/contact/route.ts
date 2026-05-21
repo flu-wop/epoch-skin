@@ -1,6 +1,6 @@
 // app/api/contact/route.ts
 import { NextRequest, NextResponse } from 'next/server';
-import { sendContactNotification, sendContactAutoReply } from '@/lib/email';
+import { getResend } from '@/lib/email';   // Use the existing helper instead
 
 export async function POST(req: NextRequest) {
   try {
