@@ -276,7 +276,7 @@ export default function BookPage() {
   };
 
   // ── Shared service row renderer ───────────────────────────────
-  const ServiceRow = ({ svc, catLabel }: { svc: (typeof ALL_SERVICES)[0]; catLabel: string }) => (
+  const ServiceRow = ({ svc, catLabel }: { svc: { id: string; name: string; price: number; duration: number; desc?: string }; catLabel: string }) => (
     <button
       key={svc.id}
       onClick={() => selectService({ ...svc, category: catLabel })}
