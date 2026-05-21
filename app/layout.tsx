@@ -1,7 +1,7 @@
 // app/layout.tsx
 import type { Metadata } from 'next';
 import { Playfair_Display, Inter } from 'next/font/google';
-import './globals.css';  // Try this path
+import './globals.css';                    // ← Correct path
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
@@ -18,7 +18,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: 'Epoch Skin | Organic Skincare & Waxing Studio',
-  description: 'A New Era of Radiant Skin — Premium Organic Skincare & Luxurious Treatments',
+  description: 'A New Era of Radiant Skin — Premium Organic Skincare & Luxurious Treatments in New Orleans & Mobile',
 };
 
 export default function RootLayout({
