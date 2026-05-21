@@ -1,64 +1,104 @@
 "use client";
 // app/book/page.tsx
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 
-// ── Service catalog — Women, Men, Facials, Back & Body, Add-Ons ──
-const SERVICE_CATALOG = [
+// ── Types ─────────────────────────────────────────────────────────
+type Service = {
+  id: string;
+  name: string;
+  price: number;
+  duration: number;
+  desc?: string;
+};
+
+type Section = {
+  title: string;
+  services: Service[];
+};
+
+type SubGroup = {
+  groupTitle: string;
+  sections: Section[];
+};
+
+type CatalogItem = {
+  id: string;
+  label: string;
+  icon: string;
+  mode: "flat" | "sections" | "subgroups";
+  sections?: Section[];
+  subgroups?: SubGroup[];
+};
+
+// ── Service catalog ───────────────────────────────────────────────
+const SERVICE_CATALOG: CatalogItem[] = [
   {
-    id: "waxing-women",
-    label: "Women's Waxing",
+    id: "waxing",
+    label: "Waxing",
     icon: "◈",
-    sections: [
+    mode: "subgroups",
+    subgroups: [
       {
-        title: "Body Waxing",
-        services: [
-          { id: "w-brazilian",   name: "Brazilian Wax",  price: 50, duration: 45 },
-          { id: "w-bikini-line", name: "Bikini Line",    price: 30, duration: 20 },
-          { id: "w-french",      name: "French Bikini",  price: 40, duration: 30 },
-          { id: "w-full-leg",    name: "Full Leg",        price: 55, duration: 50 },
-          { id: "w-half-leg",    name: "Half Leg",        price: 35, duration: 35 },
-          { id: "w-full-arm",    name: "Full Arm",        price: 45, duration: 40 },
-          { id: "w-half-arm",    name: "Half Arm",        price: 25, duration: 25 },
-          { id: "w-underarm",    name: "Underarm",        price: 20, duration: 20 },
-          { id: "w-stomach",     name: "Stomach",         price: 35, duration: 25 },
+        groupTitle: "Women's Waxing",
+        sections: [
+          {
+            title: "Body Waxing",
+            services: [
+              { id: "w-brazilian",     name: "Brazilian Wax",       price: 50, duration: 45 },
+              { id: "w-bikini-line",   name: "Bikini Line",         price: 30, duration: 20 },
+              { id: "w-french",        name: "French Bikini",       price: 40, duration: 30 },
+              { id: "w-full-leg",      name: "Full Leg",            price: 55, duration: 50 },
+              { id: "w-half-leg",      name: "Half Leg",            price: 35, duration: 35 },
+              { id: "w-full-arm",      name: "Full Arm",            price: 45, duration: 40 },
+              { id: "w-half-arm",      name: "Half Arm",            price: 25, duration: 25 },
+              { id: "w-underarm",      name: "Underarm",            price: 20, duration: 20 },
+              { id: "w-stomach-strip", name: "Stomach Strip",       price: 15, duration: 15 },
+              { id: "w-toes",          name: "Toes",                price: 10, duration: 10 },
+              { id: "w-feet",          name: "Feet",                price: 20, duration: 15 },
+              { id: "w-back",          name: "Back",                price: 45, duration: 40 },
+              { id: "w-full-buttock",  name: "Full Buttock",        price: 25, duration: 20 },
+              { id: "w-cheeks",        name: "Between the Cheeks",  price: 15, duration: 10 },
+              { id: "w-chest",         name: "Chest",               price: 15, duration: 15 },
+            ],
+          },
+          {
+            title: "Facial Waxing",
+            services: [
+              { id: "w-eyebrow",    name: "Eyebrow",    price: 15, duration: 20 },
+              { id: "w-cheekbones", name: "Cheekbones", price: 15, duration: 15 },
+              { id: "w-sideburns",  name: "Sideburns",  price: 10, duration: 10 },
+            ],
+          },
         ],
       },
       {
-        title: "Facial Waxing",
-        services: [
-          { id: "w-full-face", name: "Full Face", price: 40, duration: 30 },
-          { id: "w-eyebrow",   name: "Eyebrow",   price: 13, duration: 20 },
-          { id: "w-lip",       name: "Lip",        price: 8,  duration: 10 },
-          { id: "w-chin",      name: "Chin",       price: 10, duration: 12 },
-          { id: "w-nose",      name: "Nose",       price: 8,  duration: 10 },
-        ],
-      },
-    ],
-  },
-  {
-    id: "waxing-men",
-    label: "Men's Waxing",
-    icon: "◈",
-    sections: [
-      {
-        title: "Body Waxing",
-        services: [
-          { id: "m-brozilian", name: "Brozilian",   price: 65, duration: 50 },
-          { id: "m-back",      name: "Back Wax",    price: 60, duration: 45 },
-          { id: "m-chest",     name: "Chest Wax",   price: 50, duration: 40 },
-          { id: "m-underarm",  name: "Underarm",    price: 25, duration: 20 },
-          { id: "m-legs",      name: "Full Legs",   price: 80, duration: 55 },
-        ],
-      },
-      {
-        title: "Facial Waxing",
-        services: [
-          { id: "m-beard",   name: "Beard Wax",   price: 60, duration: 30 },
-          { id: "m-eyebrow", name: "Eyebrow Wax", price: 15, duration: 20 },
-          { id: "m-nose",    name: "Nose Wax",    price: 8,  duration: 10 },
-          { id: "m-ear",     name: "Ear Wax",     price: 8,  duration: 10 },
+        groupTitle: "Men's Waxing",
+        sections: [
+          {
+            title: "Body Waxing",
+            services: [
+              { id: "m-full-arms",  name: "Full Arms",          price: 60, duration: 45 },
+              { id: "m-half-arm",   name: "Half Arm",           price: 40, duration: 25 },
+              { id: "m-back",       name: "Back Wax",           price: 55, duration: 45 },
+              { id: "m-brozilian",  name: "Brozilian",          price: 60, duration: 50 },
+              { id: "m-full-legs",  name: "Full Legs",          price: 70, duration: 55 },
+              { id: "m-half-legs",  name: "Half Legs",          price: 45, duration: 35 },
+              { id: "m-full-butt",  name: "Full Butt",          price: 30, duration: 20 },
+              { id: "m-cheeks",     name: "Between the Cheeks", price: 20, duration: 10 },
+              { id: "m-feet",       name: "Feet",               price: 20, duration: 15 },
+              { id: "m-toes",       name: "Toes",               price: 10, duration: 10 },
+            ],
+          },
+          {
+            title: "Facial Waxing",
+            services: [
+              { id: "m-eyebrows", name: "Eyebrows",  price: 20, duration: 20 },
+              { id: "m-beard",    name: "Beard",     price: 50, duration: 30 },
+              { id: "m-nose",     name: "Nose Wax",  price: 10, duration: 10 },
+            ],
+          },
         ],
       },
     ],
@@ -67,30 +107,31 @@ const SERVICE_CATALOG = [
     id: "facials",
     label: "Facials",
     icon: "✦",
+    mode: "flat",
     sections: [
       {
         title: "Facial Treatments",
         services: [
           {
             id: "facial-t1",
-            name: "Facial Tier 1 — Hydrating Glow",
+            name: "Tier 1 Facial",
             price: 50,
             duration: 30,
-            desc: "A 30-minute express facial designed to deeply hydrate, soothe, and restore your skin's natural radiance. Includes a customized cleanse, toning, and a lightweight moisture-lock treatment.",
+            desc: "Indulge in a moment of pure serenity with our Tier 1 Facial — a luxurious entryway into professional skincare that cleanses, nurtures, and restores your skin to its most radiant self. This soothing, results-driven treatment is thoughtfully designed for all skin types, offering a gentle yet deeply effective experience that leaves you feeling refreshed, balanced, and glowing.",
           },
           {
             id: "facial-t2",
-            name: "Facial Tier 2 — Signature Glow",
+            name: "Tier 2 Facial",
             price: 80,
             duration: 60,
-            desc: "Our signature 60-minute organic facial with double cleanse, custom masking, enzyme treatment, and barrier serum. Targets uneven tone, dehydration, and dullness.",
+            desc: "Immerse yourself in elevated skincare with our Tier 2 Facial — a luxurious, results-oriented treatment that combines deep renewal with soothing relaxation. Building upon the foundations of our Tier 1 experience, this advanced facial incorporates professional-grade technologies like diamond dermabrasion and the high frequency wand to more effectively address visible skin concerns while leaving your complexion profoundly rejuvenated, hydrated, and glowing.",
           },
           {
             id: "facial-t3",
-            name: "Facial Tier 3 — Glass Skin Treatment",
+            name: "Tier 3 Facial",
             price: 90,
             duration: 75,
-            desc: "The full K-Beauty glass-skin experience. 75 minutes of organic layering — cleanse, tone, enzyme exfoliation, hydrating mask, barrier serum, and glow cream.",
+            desc: "Elevate your skincare ritual with our Tier 3 Facial — the ultimate luxurious expression of advanced skin renewal. This premium, multi-technology treatment delivers deep therapeutic results while enveloping you in profound relaxation and indulgence. Building upon our foundational protocols, the Tier 3 combines the transformative power of HydraFacial, High Frequency, and a restorative add-on to comprehensively address your skin concerns and reveal visibly healthier, more luminous skin.",
           },
         ],
       },
@@ -100,23 +141,17 @@ const SERVICE_CATALOG = [
     id: "back-body",
     label: "Back & Body",
     icon: "◇",
+    mode: "sections",
     sections: [
       {
         title: "Bacial (Back Facial)",
         services: [
           {
             id: "bacial-t1",
-            name: "Bacial Tier 1 — Express Back Glow",
+            name: "Bacial Tier 1",
             price: 75,
             duration: 45,
-            desc: "A 45-minute back facial targeting congestion, rough texture, and uneven tone. Includes double cleanse, exfoliation, and a brightening mask.",
-          },
-          {
-            id: "bacial-t2",
-            name: "Bacial Tier 2 — Signature Back Facial",
-            price: 95,
-            duration: 60,
-            desc: "60-minute full back facial with deep cleanse, enzyme exfoliation, extraction (if needed), custom mask, and hydrating serum.",
+            desc: "A specialized treatment designed to transform the skin on your back. Just like a facial for your face, this treatment deeply cleanses, clarifies, and revitalizes the hard-to-reach area of your back, leaving it visibly clearer, smoother, and healthier.",
           },
         ],
       },
@@ -125,24 +160,24 @@ const SERVICE_CATALOG = [
         services: [
           {
             id: "vaj-t1",
-            name: "Vajacial Tier 1 — Refresh",
-            price: 55,
+            name: "Vajacial Tier 1",
+            price: 70,
             duration: 30,
-            desc: "A 30-minute soothing treatment for post-wax or bikini area skin. Gentle cleanse, calming mask, and light moisturizing to reduce redness and ingrown hairs.",
+            desc: "Indulge your skin with a deeply hydrating treatment. This luxurious vajacial features a Brazilian wax, expert extractions, and a restorative mask that calms inflammation while soothing post-wax imperfections, leaving your skin exquisitely soft, soothed, and radiant.",
           },
           {
             id: "vaj-t2",
-            name: "Vajacial Tier 2 — Renew",
-            price: 75,
+            name: "Vajacial Tier 2",
+            price: 80,
             duration: 45,
-            desc: "45-minute vajacial with exfoliation, ingrown treatment, brightening mask, and barrier moisture seal.",
+            desc: "Indulge in radiant luxury with our signature Brightening Vajacial. This exquisite treatment cultivates a luminous, even-toned complexion through a Brazilian wax, refined exfoliation, and a nourishing specialized gel mask that deeply hydrates the skin while visibly reducing the appearance of dark spots.",
           },
           {
             id: "vaj-t3",
-            name: "Vajacial Tier 3 — Glow",
+            name: "Vajacial Tier 3",
             price: 90,
             duration: 60,
-            desc: "Our most comprehensive 60-minute vajacial — full exfoliation, extraction, vitamin C brightening treatment, and collagen mask.",
+            desc: "Indulge in our signature luxurious treatment, crafted to gently soothe inflammation and diminish blemishes. Using advanced ultrasonic scrubbing and high-frequency technology, we delicately purify the skin by removing impurities and toxins, leaving your Brazilian area deeply hydrated, silky-smooth, and radiant.",
           },
         ],
       },
@@ -152,35 +187,46 @@ const SERVICE_CATALOG = [
     id: "addons",
     label: "Add-Ons",
     icon: "○",
-    // Add-ons use sub-accordions — handled separately in render
-    subAccordion: true,
+    mode: "sections",
     sections: [
       {
-        title: "Facial Add-Ons",
+        title: "Facial Treatments",
         services: [
-          { id: "add-dermaplaning",  name: "Dermaplaning",         price: 25, duration: 15 },
-          { id: "add-led",           name: "LED Light Therapy",     price: 20, duration: 15 },
-          { id: "add-eye-mask",      name: "Collagen Eye Mask",     price: 15, duration: 0  },
-          { id: "add-lip-mask",      name: "Lip Plump Mask",        price: 12, duration: 0  },
-          { id: "add-gua-sha",       name: "Gua Sha Lift",          price: 20, duration: 15 },
+          { id: "add-high-freq-f",   name: "High Frequency Wand",    price: 15, duration: 10 },
+          { id: "add-oxygen-f",      name: "Oxygen Spray",           price: 30, duration: 10 },
+          { id: "add-ultrasonic-f",  name: "Ultrasonic Vibration",   price: 15, duration: 10 },
+          { id: "add-lifting-f",     name: "Skin Lifting",           price: 10, duration: 10 },
+          { id: "add-cold-f",        name: "Cold Hammer",            price: 10, duration: 10 },
+          { id: "add-scrubber-f",    name: "Skin Scrubber",          price: 20, duration: 10 },
+          { id: "add-hydra-f",       name: "Hydra Facial",           price: 80, duration: 30 },
+          { id: "add-microderm-f",   name: "Microdermabrasion",      price: 40, duration: 20 },
+          { id: "add-dermaplane-f",  name: "Dermaplaning",           price: 45, duration: 15 },
         ],
       },
       {
-        title: "Body Add-Ons",
+        title: "Body Treatments",
         services: [
-          { id: "add-body-scrub",    name: "Organic Sugar Scrub",   price: 30, duration: 15 },
-          { id: "add-body-mask",     name: "Detox Body Mask",       price: 35, duration: 20 },
-          { id: "add-ingrown",       name: "Ingrown Treatment",     price: 20, duration: 10 },
-          { id: "add-brightening",   name: "Brightening Treatment", price: 25, duration: 10 },
+          { id: "add-high-freq-b",  name: "High Frequency Wand",    price: 35, duration: 10 },
+          { id: "add-oxygen-b",     name: "Oxygen Spray",           price: 60, duration: 10 },
+          { id: "add-ultrasonic-b", name: "Ultrasonic Vibration",   price: 30, duration: 10 },
+          { id: "add-lifting-b",    name: "Skin Lifting",           price: 45, duration: 10 },
+          { id: "add-cold-b",       name: "Cold Hammer",            price: 30, duration: 10 },
+          { id: "add-scrubber-b",   name: "Skin Scrubber",          price: 40, duration: 10 },
+          { id: "add-microderm-b",  name: "Microdermabrasion",      price: 80, duration: 20 },
+          { id: "add-hydra-b",      name: "Hydra Treatment",        price: 160, duration: 45 },
+          { id: "add-vajacial-b",   name: "Vajacial",               price: 25, duration: 30 },
         ],
       },
       {
-        title: "Massage Add-Ons",
+        title: "Massages",
         services: [
-          { id: "add-scalp",         name: "Scalp Massage (10 min)",   price: 15, duration: 10 },
-          { id: "add-hand",          name: "Hand Massage (10 min)",    price: 12, duration: 10 },
-          { id: "add-foot",          name: "Foot Massage (10 min)",    price: 15, duration: 10 },
-          { id: "add-neck-shoulder", name: "Neck & Shoulder (15 min)", price: 20, duration: 15 },
+          { id: "add-head",       name: "Head Massage",                price: 25, duration: 10 },
+          { id: "add-arms",       name: "Arms / Hands",                price: 15, duration: 10 },
+          { id: "add-decollete",  name: "Décolleté Massage / Shoulders", price: 40, duration: 15 },
+          { id: "add-back",       name: "Back Massage",                price: 60, duration: 15 },
+          { id: "add-legs",       name: "Leg Massage",                 price: 50, duration: 15 },
+          { id: "add-feet",       name: "Feet Massage",                price: 35, duration: 10 },
+          { id: "add-10min",      name: "Add 10 Minutes",              price: 25, duration: 10 },
         ],
       },
     ],
@@ -193,14 +239,10 @@ const TIME_SLOTS = [
   "3:00 PM","3:30 PM","4:00 PM","4:30 PM","5:00 PM","5:30 PM","6:00 PM",
 ];
 
-const ALL_SERVICES = SERVICE_CATALOG.flatMap(cat =>
-  cat.sections.flatMap(sec => sec.services.map(s => ({ ...s, category: cat.label })))
-);
-
-type ServiceItem = typeof ALL_SERVICES[0];
+type SelectedService = Service & { category: string };
 
 function getNextDays(n: number) {
-  const days = [];
+  const days: Date[] = [];
   const today = new Date();
   for (let i = 1; i <= n; i++) {
     const d = new Date(today);
@@ -215,25 +257,30 @@ function formatDate(d: Date) {
 }
 
 export default function BookPage() {
-  const [openCategory, setOpenCategory]   = useState<string | null>(null);
-  const [openSubSection, setOpenSubSection] = useState<string | null>(null);
-  const [selectedService, setSelectedService] = useState<ServiceItem | null>(null);
-  const [step, setStep]                   = useState<1 | 2 | 3 | 4>(1);
-  const [selectedDate, setSelectedDate]   = useState("");
-  const [selectedTime, setSelectedTime]   = useState("");
-  const [form, setForm]                   = useState({ name: "", email: "", phone: "", notes: "" });
-  const [submitting, setSubmitting]       = useState(false);
-  const [confirmed, setConfirmed]         = useState(false);
-  const [icsContent, setIcsContent]       = useState("");
-  const [error, setError]                 = useState("");
+  const [openCategory,   setOpenCategory]   = useState<string | null>(null);
+  const [openSubGroup,   setOpenSubGroup]   = useState<string | null>(null);
+  const [openSection,    setOpenSection]    = useState<string | null>(null);
+  const [selectedService, setSelectedService] = useState<SelectedService | null>(null);
+  const [step,           setStep]           = useState<1 | 2 | 3 | 4>(1);
+  const [selectedDate,   setSelectedDate]   = useState("");
+  const [selectedTime,   setSelectedTime]   = useState("");
+  const [form,           setForm]           = useState({ name: "", email: "", phone: "", notes: "" });
+  const [submitting,     setSubmitting]     = useState(false);
+  const [confirmed,      setConfirmed]      = useState(false);
+  const [icsContent,     setIcsContent]     = useState("");
+  const [error,          setError]          = useState("");
 
-  const formRef      = useRef<HTMLDivElement>(null);
+  const pageTopRef   = useRef<HTMLDivElement>(null);
   const availableDays = getNextDays(30);
 
-  const selectService = (svc: ServiceItem) => {
-    setSelectedService(svc);
+  // Scroll to top of page on every step change
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [step]);
+
+  const selectService = (svc: Service, catLabel: string) => {
+    setSelectedService({ ...svc, category: catLabel });
     setStep(2);
-    setTimeout(() => formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 100);
   };
 
   const handleSubmit = async () => {
@@ -275,11 +322,10 @@ export default function BookPage() {
     URL.revokeObjectURL(url);
   };
 
-  // ── Shared service row renderer ───────────────────────────────
-  const ServiceRow = ({ svc, catLabel }: { svc: { id: string; name: string; price: number; duration: number; desc?: string }; catLabel: string }) => (
+  // ── Shared service row ────────────────────────────────────────
+  const ServiceRow = ({ svc, catLabel }: { svc: Service; catLabel: string }) => (
     <button
-      key={svc.id}
-      onClick={() => selectService({ ...svc, category: catLabel })}
+      onClick={() => selectService(svc, catLabel)}
       className="w-full flex items-start justify-between px-6 py-4
                  border-t border-[#F0EBE0] hover:bg-[#FDF9F5]
                  transition-colors duration-200 text-left group"
@@ -288,10 +334,8 @@ export default function BookPage() {
         <p className="text-sm font-sans text-[#1C1C1A] font-medium group-hover:text-[#C9A96E] transition-colors duration-300">
           {svc.name}
         </p>
-        {"desc" in svc && svc.desc && (
-          <p className="text-xs font-sans text-[#8C8680] mt-1 leading-relaxed max-w-[380px]">
-            {(svc as typeof svc & { desc: string }).desc}
-          </p>
+        {svc.desc && (
+          <p className="text-xs font-sans text-[#8C8680] mt-1 leading-relaxed max-w-[420px]">{svc.desc}</p>
         )}
         {svc.duration > 0 && (
           <p className="text-[10px] text-[#C0BAB4] font-sans mt-1">{svc.duration} min</p>
@@ -303,6 +347,28 @@ export default function BookPage() {
       </div>
     </button>
   );
+
+  // ── Sub-accordion toggle button ──────────────────────────────
+  const SubToggle = ({ id, label, depth = 1 }: { id: string; label: string; depth?: number }) => {
+    const isOpen = depth === 1 ? openSubGroup === id : openSection === id;
+    const toggle = depth === 1
+      ? () => setOpenSubGroup(isOpen ? null : id)
+      : () => setOpenSection(isOpen ? null : id);
+    return (
+      <button onClick={toggle}
+        className={`w-full flex items-center justify-between text-left transition-colors duration-200
+          ${depth === 1
+            ? "px-6 py-4 bg-[#F5EDD8] hover:bg-[#F0E6CC] border-t border-[#E5DCCF]"
+            : "px-8 py-3 bg-[#FAF7F2] hover:bg-[#F5EDD8] border-t border-[#F0EBE0]"
+          }`}
+      >
+        <span className={`font-sans uppercase tracking-[0.22em] text-[#5A5550] ${depth === 1 ? "text-[11px]" : "text-[10px] text-[#8C8680]"}`}>
+          {label}
+        </span>
+        <span className={`text-[#C9A96E] transition-transform duration-200 ${isOpen ? "rotate-180" : ""} ${depth === 1 ? "text-base" : "text-sm"}`}>↓</span>
+      </button>
+    );
+  };
 
   // ── STEP 4 — Success ─────────────────────────────────────────
   if (confirmed) {
@@ -335,7 +401,7 @@ export default function BookPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FAF7F2]">
+    <div ref={pageTopRef} className="min-h-screen bg-[#FAF7F2]">
       <div className="max-w-[1320px] mx-auto px-5 sm:px-8 lg:px-12 py-16 md:py-20">
 
         {/* Header */}
@@ -351,7 +417,7 @@ export default function BookPage() {
         {/* Step indicator */}
         <div className="flex items-center justify-center gap-0 mb-14">
           {["Service", "Date & Time", "Your Info", "Confirm"].map((label, i) => {
-            const num    = i + 1;
+            const num = i + 1;
             const done   = step > num;
             const active = step === num;
             return (
@@ -372,15 +438,13 @@ export default function BookPage() {
         <div className={step === 1 ? "" : "hidden"}>
           <div className="max-w-2xl mx-auto space-y-3">
             {SERVICE_CATALOG.map((cat) => {
-              const isOpen = openCategory === cat.id;
-              const isAddons = cat.id === "addons";
-
+              const catOpen = openCategory === cat.id;
               return (
                 <div key={cat.id} className="border border-[#E5DCCF] bg-white overflow-hidden">
 
-                  {/* Category header */}
+                  {/* Top-level category header */}
                   <button
-                    onClick={() => setOpenCategory(isOpen ? null : cat.id)}
+                    onClick={() => setOpenCategory(catOpen ? null : cat.id)}
                     className="w-full flex items-center justify-between px-6 py-5
                                hover:bg-[#FAF7F2] transition-colors duration-300 text-left"
                   >
@@ -388,50 +452,60 @@ export default function BookPage() {
                       <span className="text-[#C9A96E] text-lg">{cat.icon}</span>
                       <span className="font-serif text-xl text-[#1C1C1A]">{cat.label}</span>
                     </div>
-                    <span className={`text-[#C9A96E] text-lg transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}>↓</span>
+                    <span className={`text-[#C9A96E] text-lg transition-transform duration-300 ${catOpen ? "rotate-180" : ""}`}>↓</span>
                   </button>
 
                   {/* Accordion body */}
-                  <div className={`transition-all duration-300 overflow-hidden ${isOpen ? "max-h-[3000px]" : "max-h-0"}`}>
+                  <div className={`overflow-hidden transition-all duration-300 ${catOpen ? "max-h-[4000px]" : "max-h-0"}`}>
                     <div className="border-t border-[#E5DCCF]">
 
-                      {isAddons ? (
-                        // ── Add-Ons: sub-accordions per section ──
-                        cat.sections.map((section) => {
-                          const subKey  = `${cat.id}-${section.title}`;
-                          const subOpen = openSubSection === subKey;
-                          return (
-                            <div key={section.title} className="border-b border-[#F0EBE0] last:border-b-0">
-                              <button
-                                onClick={() => setOpenSubSection(subOpen ? null : subKey)}
-                                className="w-full flex items-center justify-between px-6 py-4
-                                           bg-[#FAF7F2] hover:bg-[#F5EDD8] transition-colors duration-200 text-left"
-                              >
-                                <p className="text-[10px] tracking-[0.28em] uppercase text-[#8C8680] font-sans">
-                                  {section.title}
-                                </p>
-                                <span className={`text-[#C9A96E] text-sm transition-transform duration-200 ${subOpen ? "rotate-180" : ""}`}>↓</span>
-                              </button>
-                              <div className={`overflow-hidden transition-all duration-200 ${subOpen ? "max-h-[800px]" : "max-h-0"}`}>
-                                {section.services.map((svc) => (
-                                  <ServiceRow key={svc.id} svc={svc} catLabel={cat.label} />
-                                ))}
-                              </div>
+                      {/* ── WAXING: subgroups (Women / Men) each with sections ── */}
+                      {cat.mode === "subgroups" && cat.subgroups?.map((group) => {
+                        const groupKey = `${cat.id}-${group.groupTitle}`;
+                        const groupOpen = openSubGroup === groupKey;
+                        return (
+                          <div key={groupKey}>
+                            <SubToggle id={groupKey} label={group.groupTitle} depth={1} />
+                            <div className={`overflow-hidden transition-all duration-300 ${groupOpen ? "max-h-[2000px]" : "max-h-0"}`}>
+                              {group.sections.map((section) => {
+                                const secKey  = `${groupKey}-${section.title}`;
+                                const secOpen = openSection === secKey;
+                                return (
+                                  <div key={secKey}>
+                                    <SubToggle id={secKey} label={section.title} depth={2} />
+                                    <div className={`overflow-hidden transition-all duration-200 ${secOpen ? "max-h-[1500px]" : "max-h-0"}`}>
+                                      {section.services.map((svc) => (
+                                        <ServiceRow key={svc.id} svc={svc} catLabel={`${group.groupTitle} — ${section.title}`} />
+                                      ))}
+                                    </div>
+                                  </div>
+                                );
+                              })}
                             </div>
-                          );
-                        })
-                      ) : (
-                        // ── Standard: sections with label headers ──
-                        cat.sections.map((section, si) => (
-                          <div key={si}>
-                            <p className="text-[10px] tracking-[0.28em] uppercase text-[#8C8680] font-sans
-                                           px-6 pt-5 pb-2 bg-[#FAF7F2]">
-                              {section.title}
-                            </p>
-                            {section.services.map((svc) => (
-                              <ServiceRow key={svc.id} svc={svc} catLabel={cat.label} />
-                            ))}
                           </div>
+                        );
+                      })}
+
+                      {/* ── BACK & BODY / ADD-ONS: sections as sub-accordions ── */}
+                      {cat.mode === "sections" && cat.sections?.map((section) => {
+                        const secKey  = `${cat.id}-${section.title}`;
+                        const secOpen = openSection === secKey;
+                        return (
+                          <div key={secKey}>
+                            <SubToggle id={secKey} label={section.title} depth={1} />
+                            <div className={`overflow-hidden transition-all duration-200 ${secOpen ? "max-h-[1500px]" : "max-h-0"}`}>
+                              {section.services.map((svc) => (
+                                <ServiceRow key={svc.id} svc={svc} catLabel={cat.label} />
+                              ))}
+                            </div>
+                          </div>
+                        );
+                      })}
+
+                      {/* ── FACIALS: flat list, no sub-accordions ── */}
+                      {cat.mode === "flat" && cat.sections?.map((section) =>
+                        section.services.map((svc) => (
+                          <ServiceRow key={svc.id} svc={svc} catLabel={cat.label} />
                         ))
                       )}
 
@@ -444,18 +518,29 @@ export default function BookPage() {
         </div>
 
         {/* ── STEP 2: Date & Time ── */}
-        <div ref={formRef} className={step === 2 ? "max-w-2xl mx-auto" : "hidden"}>
+        <div className={step === 2 ? "max-w-2xl mx-auto" : "hidden"}>
+
+          {/* Selected service card with description */}
           {selectedService && (
-            <div className="bg-white border border-[#E5DCCF] p-5 mb-8 flex items-center justify-between">
-              <div>
-                <p className="text-[10px] tracking-[0.2em] uppercase text-[#C9A96E] font-sans mb-0.5">Selected</p>
-                <p className="font-serif text-lg text-[#1C1C1A]">{selectedService.name}</p>
-                <p className="text-[#8C8680] text-xs font-sans">{selectedService.duration} min · ${selectedService.price}</p>
+            <div className="bg-white border border-[#E5DCCF] p-6 mb-8">
+              <div className="flex items-start justify-between mb-3">
+                <div>
+                  <p className="text-[10px] tracking-[0.2em] uppercase text-[#C9A96E] font-sans mb-1">Selected Service</p>
+                  <p className="font-serif text-xl text-[#1C1C1A]">{selectedService.name}</p>
+                  <p className="text-[#8C8680] text-xs font-sans mt-0.5">
+                    {selectedService.duration > 0 ? `${selectedService.duration} min · ` : ""} ${selectedService.price}
+                  </p>
+                </div>
+                <button onClick={() => { setSelectedService(null); setStep(1); }}
+                  className="text-xs text-[#8C8680] hover:text-[#C9A96E] font-sans transition-colors flex-shrink-0 ml-4">
+                  Change
+                </button>
               </div>
-              <button onClick={() => { setSelectedService(null); setStep(1); }}
-                className="text-xs text-[#8C8680] hover:text-[#C9A96E] font-sans transition-colors">
-                Change
-              </button>
+              {selectedService.desc && (
+                <p className="text-sm font-sans text-[#5A5550] leading-relaxed border-t border-[#F0EBE0] pt-3 mt-3">
+                  {selectedService.desc}
+                </p>
+              )}
             </div>
           )}
 
@@ -484,7 +569,7 @@ export default function BookPage() {
                         {day.toLocaleDateString("en-US", { weekday: "short" })}
                       </p>
                       <p className="font-serif text-lg leading-none mt-0.5">{day.getDate()}</p>
-                      <p className="text-[9px] font-sans text-[inherit] opacity-70">
+                      <p className="text-[9px] font-sans opacity-70">
                         {day.toLocaleDateString("en-US", { month: "short" })}
                       </p>
                     </button>
