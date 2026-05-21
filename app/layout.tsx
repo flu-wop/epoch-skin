@@ -1,10 +1,8 @@
 // app/layout.tsx
 import type { Metadata } from 'next';
 import { Playfair_Display, Inter } from 'next/font/google';
-import './globals.css';
-import { CartProvider } from '@/lib/cart-store'; // Adjust path if needed
-import SiteHeader from '@/components/SiteHeader';
-import Footer from '@/components/Footer';
+import './globals.css';           // ← Make sure globals.css actually exists in /app/
+import { CartProvider } from '@/lib/cart-store'; // We'll fix this next if needed
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
@@ -16,19 +14,13 @@ const playfair = Playfair_Display({
 const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
-  weight: ['400', '500', '600'],
   display: 'swap',
 });
 
 export const metadata: Metadata = {
   title: 'Epoch Skin | Organic Skincare & Waxing Studio',
-  description: 'A New Era of Radiant Skin — Premium Organic Skincare & Luxurious Treatments in New Orleans & Mobile.',
-  icons: {
-    icon: '/favicon.ico',
-  },
-  openGraph: {
-    images: [{ url: '/og/og-default.jpg' }],
-  },
+  description: 'A New Era of Radiant Skin — Premium Organic Skincare & Luxurious Treatments',
+  icons: { icon: '/favicon.ico' },
 };
 
 export default function RootLayout({
@@ -39,10 +31,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
       <body className="bg-[#FAF7F2] text-[#1C1C1A] font-sans antialiased">
+        {/* CartProvider - we'll adjust if the export is wrong */}
         <CartProvider>
-          <SiteHeader />
-          <main className="min-h-screen">{children}</main>
-          <Footer />
+          {children}
         </CartProvider>
       </body>
     </html>
