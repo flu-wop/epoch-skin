@@ -1,7 +1,7 @@
 // app/layout.tsx
 import type { Metadata } from 'next';
 import { Playfair_Display, Inter } from 'next/font/google';
-import '../globals.css';   // Try this path
+import './globals.css';  // Try this path
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
