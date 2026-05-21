@@ -34,7 +34,7 @@ function generateICS(b: BookingPayload): string {
   const endTotal = h * 60 + m + b.duration;
   const dtEnd = `${year}${p(month)}${p(day)}T${p(Math.floor(endTotal/60)%24)}${p(endTotal%60)}00`;
   const uid = `epoch-${Date.now()}@epoch-skin.com`;
-  const now = new Date().toISOString().replace(/[-:.]/g,'').slice(0,15)+'Z';
+  const now = new Date().toISOString().replace(/[\-:.]/g,'').slice(0,15)+'Z';
   return [
     'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Epoch Skin//Booking//EN',
     'CALSCALE:GREGORIAN','METHOD:REQUEST','BEGIN:VEVENT',
