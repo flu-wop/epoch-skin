@@ -260,6 +260,7 @@ export default function BookPage() {
   const [openCategory,   setOpenCategory]   = useState<string | null>(null);
   const [openSubGroup,   setOpenSubGroup]   = useState<string | null>(null);
   const [openSection,    setOpenSection]    = useState<string | null>(null);
+  const [openSection2,   setOpenSection2]   = useState<string | null>(null);
   const [selectedService, setSelectedService] = useState<SelectedService | null>(null);
   const [step,           setStep]           = useState<1 | 2 | 3 | 4>(1);
   const [selectedDate,   setSelectedDate]   = useState("");
@@ -273,9 +274,13 @@ export default function BookPage() {
   const pageTopRef   = useRef<HTMLDivElement>(null);
   const availableDays = getNextDays(30);
 
-  // Scroll to top of page on every step change
+  // Scroll to top only when advancing to a new step (not on initial render)
+  const prevStep = useRef<number>(1);
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    if (step !== prevStep.current) {
+      prevStep.current = step;
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
   }, [step]);
 
   const selectService = (svc: Service, catLabel: string) => {
@@ -349,10 +354,12 @@ export default function BookPage() {
   );
 
   // ── Sub-accordion toggle button ──────────────────────────────
-  const SubToggle = ({ id, label, depth = 1 }: { id: string; label: string; depth?: number }) => {
-    const isOpen = depth === 1 ? openSubGroup === id : openSection === id;
+  const SubToggle = ({ id, label, depth = 1, useAlt = false }: { id: string; label: string; depth?: number; useAlt?: boolean }) => {
+    const isOpen = depth === 1
+      ? (useAlt ? openSection2 === id : openSubGroup === id)
+      : openSection === id;
     const toggle = depth === 1
-      ? () => setOpenSubGroup(isOpen ? null : id)
+      ? (useAlt ? () => setOpenSection2(isOpen ? null : id) : () => setOpenSubGroup(isOpen ? null : id))
       : () => setOpenSection(isOpen ? null : id);
     return (
       <button onClick={toggle}
@@ -489,10 +496,10 @@ export default function BookPage() {
                       {/* ── BACK & BODY / ADD-ONS: sections as sub-accordions ── */}
                       {cat.mode === "sections" && cat.sections?.map((section) => {
                         const secKey  = `${cat.id}-${section.title}`;
-                        const secOpen = openSection === secKey;
+                        const secOpen = openSection2 === secKey;
                         return (
                           <div key={secKey}>
-                            <SubToggle id={secKey} label={section.title} depth={1} />
+                            <SubToggle id={secKey} label={section.title} depth={1} useAlt={true} />
                             <div className={`overflow-hidden transition-all duration-200 ${secOpen ? "max-h-[1500px]" : "max-h-0"}`}>
                               {section.services.map((svc) => (
                                 <ServiceRow key={svc.id} svc={svc} catLabel={cat.label} />
