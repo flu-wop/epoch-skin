@@ -164,7 +164,7 @@ export default async function BlogPostPage({ params }: Props) {
             {related.map(p => (
               <Link key={p.slug} href={`/blog/${p.slug}`} className="group">
                 <div className="relative aspect-[16/9] bg-[#F5EDD8] overflow-hidden mb-4">
-                  <Image src={p.image} alt={p.title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" sizes="50vw" />
+                  <Image src={p.image} alt={p.title} fill className="object-cover object-center group-hover:scale-105 transition-transform duration-500" sizes="50vw" />
                 </div>
                 <p className="text-xs tracking-widest uppercase text-[#D4AF77] mb-2">{p.category}</p>
                 <h3 className="font-serif text-lg text-[#111] group-hover:text-[#D4AF77] transition-colors leading-snug">{p.title}</h3>

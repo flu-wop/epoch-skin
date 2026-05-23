@@ -222,42 +222,6 @@ export const products: Product[] = [
     ],
   },
   {
-    id: "7",
-    slug: "Organic-dewy-plump-hydration-serum",
-    name: "Dewy Plump Hydration Serum",
-    price: 48,
-    description:
-      "The ultimate glass-skin plumping serum—lightweight yet intensely hydrating. Tremella fuciformis (snow mushroom) takes center stage, supported by beta-glucan, licorice root, hydrolyzed wheat protein, and squalane. Cold-process formulated to preserve every active at peak potency. No synthetic fragrance, alcohol, or artificial colorants.",
-    shortDescription:
-      "Lightweight plumping serum with snow mushroom and beta-glucan for dewy, glass-skin hydration.",
-    images: ["/images/products/dewy-plump-hydration-serum.png"],
-    imageAlt:
-      "Epoch Skin Organic Dewy Plump Hydration Serum - 30ml amber dropper bottle with snow mushroom and beta-glucan",
-    category: "serums" as const,
-    featured: false,
-    skinType: ["all"],
-    size: "1 fl oz (30 ml)",
-    inStock: true,
-    ingredients: [
-      "Aloe Barbadensis Leaf Juice (Organic Aloe Vera)",
-      "Tremella Fuciformis Extract (Snow Mushroom)",
-      "Beta-Glucan",
-      "Glycyrrhiza Glabra Root Extract (Organic Licorice Root)",
-      "Hydrolyzed Wheat Protein",
-      "Squalane",
-      "Lactobacillus Ferment",
-    ],
-    howToUse:
-      "After cleansing and toning, apply 2–4 drops to face and neck. Pat gently until fully absorbed. Use morning and evening; layer under your moisturizer for maximum glass-skin plumpness.",
-    benefits: [
-      "Intense water-binding plumpness from snow mushroom",
-      "Soothing, calming beta-glucan hydration",
-      "Even tone and glow with licorice root",
-      "Smoothing film from hydrolyzed wheat protein",
-      "Lightweight — never sticky or heavy",
-    ],
-  },
-  {
     id: "8",
     slug: "Organic-dewy-glow-lip-balm",
     name: "Dewy Glow Lip Balm",

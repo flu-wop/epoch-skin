@@ -72,7 +72,7 @@ export function Footer() {
                            text-[#4A4A48] hover:text-[#C9A96E] hover:border-[#C9A96E]/40 transition-all duration-300">
                 <Instagram className="w-4 h-4" />
               </a>
-              <a href="https://facebook.com/EpochSkin" target="_blank" rel="noopener noreferrer"
+              <a href="https://www.facebook.com/people/Epoch-Skin/61586356767825/" target="_blank" rel="noopener noreferrer"
                 aria-label="Facebook"
                 className="w-9 h-9 border border-[#2E2E2C] flex items-center justify-center
                            text-[#4A4A48] hover:text-[#C9A96E] hover:border-[#C9A96E]/40 transition-all duration-300">

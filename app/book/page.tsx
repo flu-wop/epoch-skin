@@ -153,6 +153,13 @@ const SERVICE_CATALOG: CatalogItem[] = [
             duration: 45,
             desc: "A specialized treatment designed to transform the skin on your back. Just like a facial for your face, this treatment deeply cleanses, clarifies, and revitalizes the hard-to-reach area of your back, leaving it visibly clearer, smoother, and healthier.",
           },
+          {
+            id: "bacial-t2",
+            name: "Bacial Tier 2",
+            price: 95,
+            duration: 60,
+            desc: "Indulge in a deeper level of renewal with our Tier 2 Back Facial — a luxurious, results-driven treatment that elevates back care to the next level. This advanced session combines soothing relaxation with professional technologies like diamond dermabrasion and the high frequency wand to effectively target stubborn concerns while leaving the skin on your back visibly smoother, clearer, healthier, and glowing.",
+          },
         ],
       },
       {

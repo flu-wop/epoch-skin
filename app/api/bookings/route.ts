@@ -1,12 +1,39 @@
 // app/api/bookings/route.ts
-// Saves booking to Vercel KV, generates .ics, sends confirmation emails
+// Saves booking to Turso, generates .ics, sends confirmation emails via Resend
 
 import { NextRequest, NextResponse } from 'next/server';
 import { getResend } from '@/lib/email';
+import { createClient } from '@libsql/client';
 
 const SITE     = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://epoch-skin.com';
-const TO_KAYLA = process.env.RESEND_TO_EMAIL ?? 'kayla@epoch-skin.com';
-const FROM     = process.env.RESEND_FROM_EMAIL ?? 'hello@epoch-skin.com';
+const TO_KAYLA = process.env.RESEND_TO_EMAIL ?? 'kayla@epochskin.com';
+const FROM     = process.env.RESEND_FROM_EMAIL ?? 'hello@epochskin.com';
+
+function getTurso() {
+  return createClient({
+    url: process.env.TURSO_DATABASE_URL!,
+    authToken: process.env.TURSO_AUTH_TOKEN!,
+  });
+}
+
+async function initDB(db: ReturnType<typeof getTurso>) {
+  await db.execute(`
+    CREATE TABLE IF NOT EXISTS bookings (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL,
+      email TEXT NOT NULL,
+      phone TEXT,
+      service TEXT NOT NULL,
+      category TEXT,
+      price REAL,
+      date TEXT NOT NULL,
+      time TEXT NOT NULL,
+      duration INTEGER,
+      notes TEXT,
+      created_at TEXT DEFAULT (datetime('now'))
+    )
+  `);
+}
 
 export interface BookingPayload {
   name: string;
@@ -33,7 +60,7 @@ function generateICS(b: BookingPayload): string {
   const dtStart = `${year}${p(month)}${p(day)}T${p(h)}${p(m)}00`;
   const endTotal = h * 60 + m + b.duration;
   const dtEnd = `${year}${p(month)}${p(day)}T${p(Math.floor(endTotal/60)%24)}${p(endTotal%60)}00`;
-  const uid = `epoch-${Date.now()}@epoch-skin.com`;
+  const uid = `epoch-${Date.now()}@epochskin.com`;
   const now = new Date().toISOString().replace(/[\-:.]/g,'').slice(0,15)+'Z';
   return [
     'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Epoch Skin//Booking//EN',
@@ -42,7 +69,7 @@ function generateICS(b: BookingPayload): string {
     `SUMMARY:Epoch Skin – ${b.service}`,
     `DESCRIPTION:Appointment at Epoch Skin\\nService: ${b.service}\\nDate: ${b.date} at ${b.time}\\n\\nQuestions? (504) 777-4094`,
     `LOCATION:Epoch Skin Studio\\, New Orleans\\, LA`,
-    `ORGANIZER;CN=Epoch Skin:mailto:kayla@epoch-skin.com`,
+    `ORGANIZER;CN=Epoch Skin:mailto:kayla@epochskin.com`,
     `ATTENDEE;ROLE=REQ-PARTICIPANT;CN=${b.name}:mailto:${b.email}`,
     'STATUS:CONFIRMED','END:VEVENT','END:VCALENDAR',
   ].join('\r\n');
@@ -100,13 +127,30 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Missing required fields.' }, { status: 400 });
     }
 
-    // Store in KV
+    // Store in Turso
     try {
-      const { kv } = await import('@vercel/kv');
-      const id = `booking:${Date.now()}`;
-      await kv.set(id, { ...booking, createdAt: new Date().toISOString() });
-      await kv.zadd('bookings', { score: Date.now(), member: id });
-    } catch { console.warn('[bookings] KV unavailable'); }
+      const db = getTurso();
+      await initDB(db);
+      await db.execute({
+        sql: `INSERT INTO bookings (name, email, phone, service, category, price, date, time, duration, notes)
+              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        args: [
+          booking.name,
+          booking.email,
+          booking.phone ?? null,
+          booking.service,
+          booking.category ?? null,
+          booking.price ?? null,
+          booking.date,
+          booking.time,
+          booking.duration ?? null,
+          booking.notes ?? null,
+        ],
+      });
+    } catch (dbErr) {
+      console.error('[bookings] Turso error:', dbErr);
+      // Don't block email sending if DB fails
+    }
 
     // ICS
     const ics = generateICS(booking);
@@ -136,16 +180,15 @@ export async function POST(req: NextRequest) {
   }
 }
 
-// ── GET — list bookings (admin use) ─────────────────────────────
+// ── GET — list bookings (admin) ──────────────────────────────────
 export async function GET() {
   try {
-    const { kv } = await import('@vercel/kv');
-    const keys = await kv.zrange('bookings', 0, -1, { rev: true });
-    const bookings = keys.length
-      ? await Promise.all((keys as string[]).map(k => kv.get(k)))
-      : [];
-    return NextResponse.json({ bookings });
-  } catch {
-    return NextResponse.json({ bookings: [], note: 'KV not configured' });
+    const db = getTurso();
+    await initDB(db);
+    const result = await db.execute('SELECT * FROM bookings ORDER BY created_at DESC');
+    return NextResponse.json({ bookings: result.rows });
+  } catch (err) {
+    console.error('[bookings] GET error:', err);
+    return NextResponse.json({ bookings: [], note: 'DB not configured' });
   }
 }

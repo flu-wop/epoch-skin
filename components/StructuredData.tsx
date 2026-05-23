@@ -25,7 +25,7 @@ export function StructuredData() {
         "image": "https://epoch-skin.com/images/studio.jpg",
         "sameAs": [
           "https://instagram.com/epoch_skin",
-          "https://facebook.com/epochskin",
+          "https://www.facebook.com/people/Epoch-Skin/61586356767825/",
           "https://tiktok.com/@epochskin"
         ]
       },
