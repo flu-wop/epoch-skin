@@ -38,7 +38,7 @@ export default function CartPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          items: items.map(i => ({ slug: i.id, quantity: i.quantity })),
+          items: items.map(i => ({ slug: i.id, name: i.name, price: i.price, image: i.image, quantity: i.quantity })),
         }),
       });
       const data = await res.json();
