@@ -303,7 +303,7 @@ export default function BookPage() {
     setSubmitting(true);
     setError("");
     try {
-      const res = await fetch("/api/bookings", {
+      const res = await fetch("/api/booking-checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -315,12 +315,10 @@ export default function BookPage() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? "Booking failed");
-      setIcsContent(data.icsContent ?? "");
-      setConfirmed(true);
-      setStep(4);
+      // Redirect to Stripe Checkout
+      window.location.href = data.url;
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
-    } finally {
       setSubmitting(false);
     }
   };
@@ -695,7 +693,7 @@ export default function BookPage() {
               className="px-8 py-3.5 bg-[#C9A96E] text-[#1C1C1A] text-[11px] tracking-[0.22em]
                          uppercase font-sans font-medium hover:bg-[#D4AF88]
                          transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
-              {submitting ? "Booking..." : "Confirm Booking"}
+              {submitting ? "Redirecting to payment..." : `Pay $${selectedService?.price ?? ''} & Confirm`}
             </button>
           </div>
         </div>
