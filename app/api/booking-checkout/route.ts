@@ -1,39 +1,63 @@
-// app/api/checkout/route.ts
-import { NextResponse } from 'next/server';
+// app/api/booking-checkout/route.ts
+// Creates a Stripe Checkout session for a booking.
+// On success, Stripe redirects to /book/success?session_id=xxx
+// Webhook at /api/stripe/webhook saves the booking + sends emails.
+
+import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: '2025-04-30.basil',
+});
+const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://epoch-skin.com';
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
-    const { items } = await req.json(); // [{ slug, quantity, name, price }, ...]
+    const body = await req.json();
+    const { name, email, phone, notes, service, category, price, date, time, duration } = body;
 
-    const lineItems = items.map((item: any) => ({
-      price_data: {
-        currency: 'usd',
-        product_data: {
-          name: item.name,
-        },
-        unit_amount: Math.round(item.price * 100),
-      },
-      quantity: item.quantity,
-    }));
+    if (!name || !email || !service || !date || !time || !price) {
+      return NextResponse.json({ error: 'Missing required fields.' }, { status: 400 });
+    }
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
-      line_items: lineItems,
       mode: 'payment',
-      success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/cart`,
+      customer_email: email,
+      line_items: [
+        {
+          quantity: 1,
+          price_data: {
+            currency: 'usd',
+            unit_amount: Math.round(price * 100),
+            product_data: {
+              name: `Epoch Skin — ${service}`,
+              description: `${new Date(date + 'T12:00:00').toLocaleDateString('en-US', {
+                weekday: 'long', month: 'long', day: 'numeric',
+              })} at ${time} · ${duration} min`,
+            },
+          },
+        },
+      ],
+      success_url: `${SITE}/book/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url:  `${SITE}/book?cancelled=1`,
       metadata: {
-        // Optional: store cart data for webhook
-        items: JSON.stringify(items.map((i: any) => ({ slug: i.slug, qty: i.quantity }))),
+        name,
+        email,
+        phone:    phone    ?? '',
+        notes:    notes    ?? '',
+        service,
+        category: category ?? '',
+        price:    String(price),
+        date,
+        time,
+        duration: String(duration ?? 60),
       },
     });
 
     return NextResponse.json({ url: session.url });
-  } catch (error) {
-    console.error(error);
-    return NextResponse.json({ error: 'Checkout failed' }, { status: 500 });
+  } catch (err) {
+    console.error('[booking-checkout]', err);
+    return NextResponse.json({ error: 'Failed to create checkout session.' }, { status: 500 });
   }
 }
