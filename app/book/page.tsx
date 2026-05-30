@@ -350,7 +350,7 @@ export default function BookPage() {
         body: JSON.stringify({
           name: form.name, email: form.email, phone: form.phone, notes: form.notes,
           service: serviceNames,
-          category: selectedServices.map(s => s.catLabel).join(", "),
+          category: selectedServices.map(s => s.category).join(", "),
           price: totalPrice, date: selectedDate, time: selectedTime,
           duration: totalDuration,
         }),
