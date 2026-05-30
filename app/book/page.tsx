@@ -4,7 +4,6 @@
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 
-// ── Types ─────────────────────────────────────────────────────────
 type Service = {
   id: string;
   name: string;
@@ -32,7 +31,6 @@ type CatalogItem = {
   subgroups?: SubGroup[];
 };
 
-// ── Service catalog ───────────────────────────────────────────────
 const SERVICE_CATALOG: CatalogItem[] = [
   {
     id: "waxing",
@@ -46,33 +44,33 @@ const SERVICE_CATALOG: CatalogItem[] = [
           {
             title: "Body Waxing",
             services: [
-              { id: "w-brazilian",     name: "Brazilian Wax",       price: 50, duration: 45 },
-              { id: "w-bikini-line",   name: "Bikini Line",         price: 30, duration: 20 },
-              { id: "w-french",        name: "French Bikini",       price: 40, duration: 30 },
-              { id: "w-full-leg",      name: "Full Leg",            price: 55, duration: 50 },
-              { id: "w-half-leg",      name: "Half Leg",            price: 45, duration: 35 },
-              { id: "w-full-arm",      name: "Full Arm",            price: 45, duration: 40 },
-              { id: "w-half-arm",      name: "Half Arm",            price: 30, duration: 25 },
-              { id: "w-underarm",      name: "Underarm",            price: 20, duration: 20 },
-              { id: "w-stomach-strip", name: "Stomach Strip",       price: 20, duration: 15 },
-              { id: "w-full-stomach",  name: "Full Stomach",        price: 40, duration: 25 },
-              { id: "w-toes",          name: "Toes",                price: 10, duration: 10 },
-              { id: "w-feet",          name: "Feet",                price: 20, duration: 15 },
-              { id: "w-back",          name: "Back",                price: 45, duration: 40 },
-              { id: "w-full-buttock",  name: "Full Buttock",        price: 30, duration: 20 },
-              { id: "w-cheeks",        name: "Between the Cheeks",  price: 15, duration: 10 },
-              { id: "w-chest",         name: "Chest",               price: 15, duration: 15 },
+              { id: "w-brazilian",     name: "Brazilian Wax",       price: 50,  duration: 45 },
+              { id: "w-bikini-line",   name: "Bikini Line",         price: 30,  duration: 20 },
+              { id: "w-french",        name: "French Bikini",       price: 40,  duration: 30 },
+              { id: "w-full-leg",      name: "Full Leg",            price: 55,  duration: 50 },
+              { id: "w-half-leg",      name: "Half Leg",            price: 45,  duration: 35 },
+              { id: "w-full-arm",      name: "Full Arm",            price: 45,  duration: 40 },
+              { id: "w-half-arm",      name: "Half Arm",            price: 30,  duration: 25 },
+              { id: "w-underarm",      name: "Underarm",            price: 20,  duration: 20 },
+              { id: "w-stomach-strip", name: "Stomach Strip",       price: 20,  duration: 15 },
+              { id: "w-full-stomach",  name: "Full Stomach",        price: 40,  duration: 25 },
+              { id: "w-toes",          name: "Toes",                price: 10,  duration: 10 },
+              { id: "w-feet",          name: "Feet",                price: 20,  duration: 15 },
+              { id: "w-back",          name: "Back",                price: 45,  duration: 40 },
+              { id: "w-full-buttock",  name: "Full Buttock",        price: 30,  duration: 20 },
+              { id: "w-cheeks",        name: "Between the Cheeks",  price: 15,  duration: 10 },
+              { id: "w-chest",         name: "Chest",               price: 15,  duration: 15 },
               { id: "w-full-body",     name: "Full Body Wax",       price: 140, duration: 90 },
             ],
           },
           {
             title: "Facial Waxing",
             services: [
-              { id: "w-eyebrow",    name: "Eyebrow",      price: 15, duration: 20 },
-              { id: "w-upper-lip",  name: "Upper Lip",    price: 10, duration: 10 },
-              { id: "w-chin",       name: "Chin",         price: 15, duration: 12 },
-              { id: "w-cheekbones", name: "Cheekbones",   price: 12, duration: 15 },
-              { id: "w-sideburns",  name: "Sideburns",    price: 12, duration: 10 },
+              { id: "w-eyebrow",    name: "Eyebrow",    price: 15, duration: 20 },
+              { id: "w-upper-lip",  name: "Upper Lip",  price: 10, duration: 10 },
+              { id: "w-chin",       name: "Chin",       price: 15, duration: 12 },
+              { id: "w-cheekbones", name: "Cheekbones", price: 12, duration: 15 },
+              { id: "w-sideburns",  name: "Sideburns",  price: 12, duration: 10 },
             ],
           },
         ],
@@ -83,20 +81,20 @@ const SERVICE_CATALOG: CatalogItem[] = [
           {
             title: "Body Waxing",
             services: [
-              { id: "m-full-arms",     name: "Full Arms",           price: 60, duration: 45 },
-              { id: "m-half-arm",      name: "Half Arm",            price: 35, duration: 25 },
-              { id: "m-back",          name: "Back Wax",            price: 50, duration: 45 },
-              { id: "m-chest",         name: "Chest",               price: 40, duration: 32 },
-              { id: "m-underarm",      name: "Underarms",           price: 30, duration: 20 },
-              { id: "m-brozilian",     name: "Brozilian",           price: 60, duration: 50 },
-              { id: "m-full-legs",     name: "Full Legs",           price: 70, duration: 55 },
-              { id: "m-half-legs",     name: "Half Legs",           price: 45, duration: 35 },
-              { id: "m-full-butt",     name: "Full Butt",           price: 40, duration: 20 },
-              { id: "m-cheeks",        name: "Between the Cheeks",  price: 20, duration: 10 },
-              { id: "m-stomach-strip", name: "Stomach Strip",       price: 30, duration: 15 },
-              { id: "m-full-stomach",  name: "Full Stomach",        price: 60, duration: 25 },
-              { id: "m-feet",          name: "Feet",                price: 20, duration: 15 },
-              { id: "m-toes",          name: "Toes",                price: 10, duration: 10 },
+              { id: "m-full-arms",     name: "Full Arms",           price: 60,  duration: 45 },
+              { id: "m-half-arm",      name: "Half Arm",            price: 35,  duration: 25 },
+              { id: "m-back",          name: "Back Wax",            price: 50,  duration: 45 },
+              { id: "m-chest",         name: "Chest",               price: 40,  duration: 32 },
+              { id: "m-underarm",      name: "Underarms",           price: 30,  duration: 20 },
+              { id: "m-brozilian",     name: "Brozilian",           price: 60,  duration: 50 },
+              { id: "m-full-legs",     name: "Full Legs",           price: 70,  duration: 55 },
+              { id: "m-half-legs",     name: "Half Legs",           price: 45,  duration: 35 },
+              { id: "m-full-butt",     name: "Full Butt",           price: 40,  duration: 20 },
+              { id: "m-cheeks",        name: "Between the Cheeks",  price: 20,  duration: 10 },
+              { id: "m-stomach-strip", name: "Stomach Strip",       price: 30,  duration: 15 },
+              { id: "m-full-stomach",  name: "Full Stomach",        price: 60,  duration: 25 },
+              { id: "m-feet",          name: "Feet",                price: 20,  duration: 15 },
+              { id: "m-toes",          name: "Toes",                price: 10,  duration: 10 },
               { id: "m-full-body",     name: "Full Body Wax",       price: 160, duration: 90 },
             ],
           },
@@ -212,41 +210,41 @@ const SERVICE_CATALOG: CatalogItem[] = [
       {
         title: "Facial Treatments",
         services: [
-          { id: "add-high-freq-f",   name: "High Frequency Wand",    price: 15, duration: 10 },
-          { id: "add-oxygen-f",      name: "Oxygen Spray",           price: 30, duration: 10 },
-          { id: "add-ultrasonic-f",  name: "Ultrasonic Vibration",   price: 15, duration: 10 },
-          { id: "add-lifting-f",     name: "Skin Lifting",           price: 10, duration: 10 },
-          { id: "add-cold-f",        name: "Cold Hammer",            price: 10, duration: 10 },
-          { id: "add-scrubber-f",    name: "Skin Scrubber",          price: 20, duration: 10 },
-          { id: "add-hydra-f",       name: "Hydra Facial",           price: 80, duration: 30 },
-          { id: "add-microderm-f",   name: "Microdermabrasion",      price: 40, duration: 20 },
-          { id: "add-dermaplane-f",  name: "Dermaplaning",           price: 45, duration: 15 },
+          { id: "add-high-freq-f",   name: "High Frequency Wand",  price: 15,  duration: 10 },
+          { id: "add-oxygen-f",      name: "Oxygen Spray",         price: 30,  duration: 10 },
+          { id: "add-ultrasonic-f",  name: "Ultrasonic Vibration", price: 15,  duration: 10 },
+          { id: "add-lifting-f",     name: "Skin Lifting",         price: 10,  duration: 10 },
+          { id: "add-cold-f",        name: "Cold Hammer",          price: 10,  duration: 10 },
+          { id: "add-scrubber-f",    name: "Skin Scrubber",        price: 20,  duration: 10 },
+          { id: "add-hydra-f",       name: "Hydra Facial",         price: 80,  duration: 30 },
+          { id: "add-microderm-f",   name: "Microdermabrasion",    price: 40,  duration: 20 },
+          { id: "add-dermaplane-f",  name: "Dermaplaning",         price: 45,  duration: 15 },
         ],
       },
       {
         title: "Body Treatments",
         services: [
-          { id: "add-high-freq-b",  name: "High Frequency Wand",    price: 35, duration: 10 },
-          { id: "add-oxygen-b",     name: "Oxygen Spray",           price: 60, duration: 10 },
-          { id: "add-ultrasonic-b", name: "Ultrasonic Vibration",   price: 30, duration: 10 },
-          { id: "add-lifting-b",    name: "Skin Lifting",           price: 45, duration: 10 },
-          { id: "add-cold-b",       name: "Cold Hammer",            price: 30, duration: 10 },
-          { id: "add-scrubber-b",   name: "Skin Scrubber",          price: 40, duration: 10 },
-          { id: "add-microderm-b",  name: "Microdermabrasion",      price: 80, duration: 20 },
-          { id: "add-hydra-b",      name: "Hydra Treatment",        price: 160, duration: 45 },
-          { id: "add-vajacial-b",   name: "Vajacial",               price: 25, duration: 30 },
+          { id: "add-high-freq-b",  name: "High Frequency Wand",  price: 35,  duration: 10 },
+          { id: "add-oxygen-b",     name: "Oxygen Spray",         price: 60,  duration: 10 },
+          { id: "add-ultrasonic-b", name: "Ultrasonic Vibration", price: 30,  duration: 10 },
+          { id: "add-lifting-b",    name: "Skin Lifting",         price: 45,  duration: 10 },
+          { id: "add-cold-b",       name: "Cold Hammer",          price: 30,  duration: 10 },
+          { id: "add-scrubber-b",   name: "Skin Scrubber",        price: 40,  duration: 10 },
+          { id: "add-microderm-b",  name: "Microdermabrasion",    price: 80,  duration: 20 },
+          { id: "add-hydra-b",      name: "Hydra Treatment",      price: 160, duration: 45 },
+          { id: "add-vajacial-b",   name: "Vajacial",             price: 25,  duration: 30 },
         ],
       },
       {
         title: "Massages",
         services: [
-          { id: "add-head",       name: "Head Massage",                price: 25, duration: 10 },
-          { id: "add-arms",       name: "Arms / Hands",                price: 15, duration: 10 },
-          { id: "add-decollete",  name: "Décolleté Massage / Shoulders", price: 40, duration: 15 },
-          { id: "add-back",       name: "Back Massage",                price: 60, duration: 15 },
-          { id: "add-legs",       name: "Leg Massage",                 price: 50, duration: 15 },
-          { id: "add-feet",       name: "Feet Massage",                price: 35, duration: 10 },
-          { id: "add-10min",      name: "Add 10 Minutes",              price: 25, duration: 10 },
+          { id: "add-head",      name: "Head Massage",                    price: 25, duration: 10 },
+          { id: "add-arms",      name: "Arms / Hands",                    price: 15, duration: 10 },
+          { id: "add-decollete", name: "Décolleté Massage / Shoulders",   price: 40, duration: 15 },
+          { id: "add-back",      name: "Back Massage",                    price: 60, duration: 15 },
+          { id: "add-legs",      name: "Leg Massage",                     price: 50, duration: 15 },
+          { id: "add-feet",      name: "Feet Massage",                    price: 35, duration: 10 },
+          { id: "add-10min",     name: "Add 10 Minutes",                  price: 25, duration: 10 },
         ],
       },
     ],
@@ -276,25 +274,60 @@ function formatDate(d: Date) {
   return d.toISOString().split("T")[0];
 }
 
+function getAllServices(): (Service & { catLabel: string })[] {
+  const all: (Service & { catLabel: string })[] = [];
+  for (const cat of SERVICE_CATALOG) {
+    if (cat.mode === "subgroups" && cat.subgroups) {
+      for (const group of cat.subgroups) {
+        for (const section of group.sections) {
+          for (const svc of section.services) {
+            all.push({ ...svc, catLabel: `${group.groupTitle} — ${section.title}` });
+          }
+        }
+      }
+    } else if (cat.sections) {
+      for (const section of cat.sections) {
+        for (const svc of section.services) {
+          all.push({ ...svc, catLabel: cat.label });
+        }
+      }
+    }
+  }
+  return all;
+}
+
 export default function BookPage() {
-  const [openCategory,   setOpenCategory]   = useState<string | null>(null);
-  const [openSubGroup,   setOpenSubGroup]   = useState<string | null>(null);
-  const [openSection,    setOpenSection]    = useState<string | null>(null);
-  const [openSection2,   setOpenSection2]   = useState<string | null>(null);
-  const [selectedService, setSelectedService] = useState<SelectedService | null>(null);
-  const [step,           setStep]           = useState<1 | 2 | 3 | 4>(1);
-  const [selectedDate,   setSelectedDate]   = useState("");
-  const [selectedTime,   setSelectedTime]   = useState("");
-  const [form,           setForm]           = useState({ name: "", email: "", phone: "", notes: "" });
-  const [submitting,     setSubmitting]     = useState(false);
-  const [confirmed,      setConfirmed]      = useState(false);
-  const [icsContent,     setIcsContent]     = useState("");
-  const [error,          setError]          = useState("");
+  const [openCategory,  setOpenCategory]  = useState<string | null>(null);
+  const [openSubGroup,  setOpenSubGroup]  = useState<string | null>(null);
+  const [openSection,   setOpenSection]   = useState<string | null>(null);
+  const [openSection2,  setOpenSection2]  = useState<string | null>(null);
+  const [selectedIds,   setSelectedIds]   = useState<string[]>([]);
+  const [step,          setStep]          = useState<1 | 2 | 3 | 4>(1);
+  const [selectedDate,  setSelectedDate]  = useState("");
+  const [selectedTime,  setSelectedTime]  = useState("");
+  const [form,          setForm]          = useState({ name: "", email: "", phone: "", notes: "" });
+  const [submitting,    setSubmitting]    = useState(false);
+  const [confirmed,     setConfirmed]     = useState(false);
+  const [icsContent,    setIcsContent]    = useState("");
+  const [error,         setError]         = useState("");
 
-  const pageTopRef   = useRef<HTMLDivElement>(null);
   const availableDays = getNextDays(30);
+  const allServices   = getAllServices();
 
-  // Scroll to top only when advancing to a new step (not on initial render)
+  const selectedServices: SelectedService[] = selectedIds
+    .map(id => allServices.find(s => s.id === id))
+    .filter(Boolean)
+    .map(s => ({ ...s! }));
+
+  const totalPrice    = selectedServices.reduce((sum, s) => sum + s.price, 0);
+  const totalDuration = selectedServices.reduce((sum, s) => sum + s.duration, 0);
+
+  const toggleService = (svc: Service) => {
+    setSelectedIds(prev =>
+      prev.includes(svc.id) ? prev.filter(id => id !== svc.id) : [...prev, svc.id]
+    );
+  };
+
   const prevStep = useRef<number>(1);
   useEffect(() => {
     if (step !== prevStep.current) {
@@ -303,32 +336,28 @@ export default function BookPage() {
     }
   }, [step]);
 
-  const selectService = (svc: Service, catLabel: string) => {
-    setSelectedService({ ...svc, category: catLabel });
-    setStep(2);
-  };
-
   const handleSubmit = async () => {
-    if (!selectedService || !selectedDate || !selectedTime || !form.name || !form.email) {
+    if (!selectedIds.length || !selectedDate || !selectedTime || !form.name || !form.email) {
       setError("Please fill in all required fields.");
       return;
     }
     setSubmitting(true);
     setError("");
     try {
+      const serviceNames = selectedServices.map(s => s.name).join(", ");
       const res = await fetch("/api/booking-checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: form.name, email: form.email, phone: form.phone, notes: form.notes,
-          service: selectedService.name, category: selectedService.category,
-          price: selectedService.price, date: selectedDate, time: selectedTime,
-          duration: selectedService.duration,
+          service: serviceNames,
+          category: selectedServices.map(s => s.catLabel).join(", "),
+          price: totalPrice, date: selectedDate, time: selectedTime,
+          duration: totalDuration,
         }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? "Booking failed");
-      // Redirect to Stripe Checkout
       window.location.href = data.url;
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
@@ -345,33 +374,42 @@ export default function BookPage() {
     URL.revokeObjectURL(url);
   };
 
-  // ── Shared service row ────────────────────────────────────────
-  const ServiceRow = ({ svc, catLabel }: { svc: Service; catLabel: string }) => (
-    <button
-      onClick={() => selectService(svc, catLabel)}
-      className="w-full flex items-start justify-between px-6 py-4
-                 border-t border-[#F0EBE0] hover:bg-[#FDF9F5]
-                 transition-colors duration-200 text-left group"
-    >
-      <div className="flex-1">
-        <p className="text-sm font-sans text-[#1C1C1A] font-medium group-hover:text-[#C9A96E] transition-colors duration-300">
-          {svc.name}
-        </p>
-        {svc.desc && (
-          <p className="text-xs font-sans text-[#8C8680] mt-1 leading-relaxed max-w-[420px]">{svc.desc}</p>
-        )}
-        {svc.duration > 0 && (
-          <p className="text-[10px] text-[#C0BAB4] font-sans mt-1">{svc.duration} min</p>
-        )}
-      </div>
-      <div className="flex items-center gap-4 flex-shrink-0 ml-6 mt-0.5">
-        <span className="text-[#C9A96E] font-serif text-lg">${svc.price}</span>
-        <span className="text-[#C9A96E] text-sm opacity-0 group-hover:opacity-100 transition-opacity">→</span>
-      </div>
-    </button>
-  );
+  const ServiceRow = ({ svc, catLabel }: { svc: Service; catLabel: string }) => {
+    const checked = selectedIds.includes(svc.id);
+    return (
+      <button
+        onClick={() => toggleService(svc)}
+        className="w-full flex items-start justify-between px-6 py-4
+                   border-t border-[#F0EBE0] hover:bg-[#FDF9F5]
+                   transition-colors duration-200 text-left group"
+      >
+        <div className="flex items-start gap-3 flex-1">
+          <div className={`mt-0.5 w-5 h-5 rounded flex-shrink-0 flex items-center justify-center border transition-colors duration-200 ${
+            checked ? "bg-[#C9A96E] border-[#C9A96E]" : "border-[#D5CEBD]"
+          }`}>
+            {checked && (
+              <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
+                <path d="M1 4L3.5 6.5L9 1" stroke="#1C1C1A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            )}
+          </div>
+          <div className="flex-1">
+            <p className={`text-sm font-sans font-medium transition-colors duration-200 ${checked ? "text-[#C9A96E]" : "text-[#1C1C1A] group-hover:text-[#C9A96E]"}`}>
+              {svc.name}
+            </p>
+            {svc.desc && (
+              <p className="text-xs font-sans text-[#8C8680] mt-1 leading-relaxed max-w-[420px]">{svc.desc}</p>
+            )}
+            {svc.duration > 0 && (
+              <p className="text-[10px] text-[#C0BAB4] font-sans mt-1">{svc.duration} min</p>
+            )}
+          </div>
+        </div>
+        <span className="text-[#C9A96E] font-serif text-lg ml-6 mt-0.5 flex-shrink-0">${svc.price}</span>
+      </button>
+    );
+  };
 
-  // ── Sub-accordion toggle button ──────────────────────────────
   const SubToggle = ({ id, label, depth = 1, useAlt = false }: { id: string; label: string; depth?: number; useAlt?: boolean }) => {
     const isOpen = depth === 1
       ? (useAlt ? openSection2 === id : openSubGroup === id)
@@ -395,7 +433,6 @@ export default function BookPage() {
     );
   };
 
-  // ── STEP 4 — Success ─────────────────────────────────────────
   if (confirmed) {
     return (
       <div className="min-h-screen bg-[#FAF7F2] flex items-center justify-center px-5">
@@ -426,20 +463,18 @@ export default function BookPage() {
   }
 
   return (
-    <div ref={pageTopRef} className="min-h-screen bg-[#FAF7F2]">
+    <div className="min-h-screen bg-[#FAF7F2]">
       <div className="max-w-[1320px] mx-auto px-5 sm:px-8 lg:px-12 py-16 md:py-20">
 
-        {/* Header */}
         <div className="text-center mb-14">
           <div className="w-10 h-px bg-[#C9A96E] mx-auto mb-5" />
           <p className="text-[11px] tracking-[0.28em] uppercase text-[#C9A96E] font-sans mb-3">Epoch Skin Studio</p>
           <h1 className="font-serif text-4xl md:text-5xl text-[#1C1C1A]">Book Your Appointment</h1>
           <p className="text-[#8C8680] font-sans text-sm mt-4 max-w-md mx-auto">
-            Choose a service below, then select your preferred date and time.
+            Select one or more services, then choose your date and time.
           </p>
         </div>
 
-        {/* Step indicator */}
         <div className="flex items-center justify-center gap-0 mb-14">
           {["Service", "Date & Time", "Your Info", "Confirm"].map((label, i) => {
             const num = i + 1;
@@ -460,14 +495,12 @@ export default function BookPage() {
         </div>
 
         {/* ── STEP 1: Service selection ── */}
-        <div className={step === 1 ? "" : "hidden"}>
+        <div className={step === 1 ? "pb-32" : "hidden"}>
           <div className="max-w-2xl mx-auto space-y-3">
             {SERVICE_CATALOG.map((cat) => {
               const catOpen = openCategory === cat.id;
               return (
                 <div key={cat.id} className="border border-[#E5DCCF] bg-white overflow-hidden">
-
-                  {/* Top-level category header */}
                   <button
                     onClick={() => setOpenCategory(catOpen ? null : cat.id)}
                     className="w-full flex items-center justify-between px-6 py-5
@@ -480,13 +513,10 @@ export default function BookPage() {
                     <span className={`text-[#C9A96E] text-lg transition-transform duration-300 ${catOpen ? "rotate-180" : ""}`}>↓</span>
                   </button>
 
-                  {/* Accordion body */}
                   <div className={`overflow-hidden transition-all duration-300 ${catOpen ? "max-h-[4000px]" : "max-h-0"}`}>
                     <div className="border-t border-[#E5DCCF]">
-
-                      {/* ── WAXING: subgroups (Women / Men) each with sections ── */}
                       {cat.mode === "subgroups" && cat.subgroups?.map((group) => {
-                        const groupKey = `${cat.id}-${group.groupTitle}`;
+                        const groupKey  = `${cat.id}-${group.groupTitle}`;
                         const groupOpen = openSubGroup === groupKey;
                         return (
                           <div key={groupKey}>
@@ -511,7 +541,6 @@ export default function BookPage() {
                         );
                       })}
 
-                      {/* ── BACK & BODY / ADD-ONS: sections as sub-accordions ── */}
                       {cat.mode === "sections" && cat.sections?.map((section) => {
                         const secKey  = `${cat.id}-${section.title}`;
                         const secOpen = openSection2 === secKey;
@@ -527,51 +556,73 @@ export default function BookPage() {
                         );
                       })}
 
-                      {/* ── FACIALS: flat list, no sub-accordions ── */}
                       {cat.mode === "flat" && cat.sections?.map((section) =>
                         section.services.map((svc) => (
                           <ServiceRow key={svc.id} svc={svc} catLabel={cat.label} />
                         ))
                       )}
-
                     </div>
                   </div>
                 </div>
               );
             })}
           </div>
+
+          {/* Sticky cart bar */}
+          {selectedIds.length > 0 && (
+            <div className="fixed bottom-0 left-0 right-0 z-50 bg-[#1C1C1A] border-t border-[#2E2E2C]">
+              <div className="max-w-2xl mx-auto px-5 sm:px-8 py-4 flex items-center justify-between gap-4">
+                <div>
+                  <p className="text-[10px] tracking-[0.2em] uppercase text-[#C9A96E] font-sans">
+                    {selectedIds.length} service{selectedIds.length > 1 ? "s" : ""} · {totalDuration} min
+                  </p>
+                  <p className="font-serif text-xl text-[#FAF7F2] mt-0.5">${totalPrice}</p>
+                </div>
+                <button
+                  onClick={() => setStep(2)}
+                  className="flex-shrink-0 px-8 py-3 bg-[#C9A96E] text-[#1C1C1A] text-[11px]
+                             tracking-[0.22em] uppercase font-sans font-medium
+                             hover:bg-[#D4AF88] transition-colors duration-300"
+                >
+                  Continue →
+                </button>
+              </div>
+            </div>
+          )}
+
+          {selectedIds.length === 0 && (
+            <p className="text-center text-[#8C8680] font-sans text-sm mt-8">
+              Select at least one service to continue
+            </p>
+          )}
         </div>
 
         {/* ── STEP 2: Date & Time ── */}
         <div className={step === 2 ? "max-w-2xl mx-auto" : "hidden"}>
-
-          {/* Selected service card with description */}
-          {selectedService && (
+          {selectedServices.length > 0 && (
             <div className="bg-white border border-[#E5DCCF] p-6 mb-8">
               <div className="flex items-start justify-between mb-3">
                 <div>
-                  <p className="text-[10px] tracking-[0.2em] uppercase text-[#C9A96E] font-sans mb-1">Selected Service</p>
-                  <p className="font-serif text-xl text-[#1C1C1A]">{selectedService.name}</p>
-                  <p className="text-[#8C8680] text-xs font-sans mt-0.5">
-                    {selectedService.duration > 0 ? `${selectedService.duration} min · ` : ""} ${selectedService.price}
+                  <p className="text-[10px] tracking-[0.2em] uppercase text-[#C9A96E] font-sans mb-1">Selected Services</p>
+                  <div className="space-y-1">
+                    {selectedServices.map(s => (
+                      <p key={s.id} className="font-serif text-base text-[#1C1C1A]">{s.name}</p>
+                    ))}
+                  </div>
+                  <p className="text-[#8C8680] text-xs font-sans mt-2">
+                    {totalDuration} min · ${totalPrice} total
                   </p>
                 </div>
-                <button onClick={() => { setSelectedService(null); setStep(1); }}
+                <button onClick={() => setStep(1)}
                   className="text-xs text-[#8C8680] hover:text-[#C9A96E] font-sans transition-colors flex-shrink-0 ml-4">
                   Change
                 </button>
               </div>
-              {selectedService.desc && (
-                <p className="text-sm font-sans text-[#5A5550] leading-relaxed border-t border-[#F0EBE0] pt-3 mt-3">
-                  {selectedService.desc}
-                </p>
-              )}
             </div>
           )}
 
           <h2 className="font-serif text-2xl text-[#1C1C1A] mb-8">Choose Date & Time</h2>
 
-          {/* Date strip */}
           <div className="mb-8">
             <p className="text-[11px] tracking-[0.22em] uppercase text-[#C9A96E] font-sans mb-4">Select Date</p>
             <div className="overflow-x-auto pb-2">
@@ -611,7 +662,6 @@ export default function BookPage() {
             )}
           </div>
 
-          {/* Time grid */}
           {selectedDate && (
             <div className="mb-8">
               <p className="text-[11px] tracking-[0.22em] uppercase text-[#C9A96E] font-sans mb-4">Select Time</p>
@@ -647,18 +697,22 @@ export default function BookPage() {
         <div className={step === 3 ? "max-w-2xl mx-auto" : "hidden"}>
           <h2 className="font-serif text-2xl text-[#1C1C1A] mb-8">Your Information</h2>
 
-          {selectedService && selectedDate && selectedTime && (
+          {selectedServices.length > 0 && selectedDate && selectedTime && (
             <div className="bg-white border border-[#E5DCCF] p-5 mb-8">
               <div className="flex justify-between items-start">
                 <div>
-                  <p className="font-serif text-[#1C1C1A] text-lg">{selectedService.name}</p>
+                  <div className="space-y-0.5 mb-1">
+                    {selectedServices.map(s => (
+                      <p key={s.id} className="font-serif text-[#1C1C1A] text-base">{s.name}</p>
+                    ))}
+                  </div>
                   <p className="text-[#8C8680] text-xs font-sans mt-1">
                     {new Date(selectedDate + "T12:00:00").toLocaleDateString("en-US", {
                       weekday: "long", month: "long", day: "numeric",
                     })} at {selectedTime}
                   </p>
                 </div>
-                <p className="font-serif text-xl text-[#C9A96E]">${selectedService.price}</p>
+                <p className="font-serif text-xl text-[#C9A96E]">${totalPrice}</p>
               </div>
             </div>
           )}
@@ -706,7 +760,7 @@ export default function BookPage() {
               className="px-8 py-3.5 bg-[#C9A96E] text-[#1C1C1A] text-[11px] tracking-[0.22em]
                          uppercase font-sans font-medium hover:bg-[#D4AF88]
                          transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
-              {submitting ? "Redirecting to payment..." : `Pay $${selectedService?.price ?? ''} & Confirm`}
+              {submitting ? "Redirecting to payment..." : `Pay $${totalPrice} & Confirm`}
             </button>
           </div>
         </div>
