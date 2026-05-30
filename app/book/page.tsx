@@ -274,21 +274,21 @@ function formatDate(d: Date) {
   return d.toISOString().split("T")[0];
 }
 
-function getAllServices(): (Service & { catLabel: string })[] {
-  const all: (Service & { catLabel: string })[] = [];
+function getAllServices(): SelectedService[] {
+  const all: SelectedService[] = [];
   for (const cat of SERVICE_CATALOG) {
     if (cat.mode === "subgroups" && cat.subgroups) {
       for (const group of cat.subgroups) {
         for (const section of group.sections) {
           for (const svc of section.services) {
-            all.push({ ...svc, catLabel: `${group.groupTitle} — ${section.title}` });
+            all.push({ ...svc, category: `${group.groupTitle} — ${section.title}` });
           }
         }
       }
     } else if (cat.sections) {
       for (const section of cat.sections) {
         for (const svc of section.services) {
-          all.push({ ...svc, catLabel: cat.label });
+          all.push({ ...svc, category: cat.label });
         }
       }
     }
@@ -316,8 +316,7 @@ export default function BookPage() {
 
   const selectedServices: SelectedService[] = selectedIds
     .map(id => allServices.find(s => s.id === id))
-    .filter(Boolean)
-    .map(s => ({ ...s! }));
+    .filter((s): s is SelectedService => Boolean(s));
 
   const totalPrice    = selectedServices.reduce((sum, s) => sum + s.price, 0);
   const totalDuration = selectedServices.reduce((sum, s) => sum + s.duration, 0);
