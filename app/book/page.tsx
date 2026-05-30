@@ -61,6 +61,8 @@ const SERVICE_CATALOG: CatalogItem[] = [
               { id: "w-full-buttock",  name: "Full Buttock",        price: 25, duration: 20 },
               { id: "w-cheeks",        name: "Between the Cheeks",  price: 15, duration: 10 },
               { id: "w-chest",         name: "Chest",               price: 15, duration: 15 },
+              { id: "w-full-body",     name: "Full Body Wax",       price: 140, duration: 90,
+                desc: "Brazilian, underarm, and half leg waxing in one session. Rosin-free Organic hybrid formula — shea butter, rosehip oil, and squalane — nourishes skin during removal for smooth, irritation-free results every time." },
             ],
           },
           {
