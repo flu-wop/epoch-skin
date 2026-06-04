@@ -210,41 +210,41 @@ const SERVICE_CATALOG: CatalogItem[] = [
       {
         title: "Facial Treatments",
         services: [
-          { id: "add-high-freq-f",   name: "High Frequency Wand",  price: 15,  duration: 10 },
-          { id: "add-oxygen-f",      name: "Oxygen Spray",         price: 30,  duration: 10 },
-          { id: "add-ultrasonic-f",  name: "Ultrasonic Vibration", price: 15,  duration: 10 },
-          { id: "add-lifting-f",     name: "Skin Lifting",         price: 10,  duration: 10 },
-          { id: "add-cold-f",        name: "Cold Hammer",          price: 10,  duration: 10 },
-          { id: "add-scrubber-f",    name: "Skin Scrubber",        price: 20,  duration: 10 },
-          { id: "add-hydra-f",       name: "Hydra Facial",         price: 80,  duration: 30 },
-          { id: "add-microderm-f",   name: "Microdermabrasion",    price: 40,  duration: 20 },
-          { id: "add-dermaplane-f",  name: "Dermaplaning",         price: 45,  duration: 15 },
+          { id: "add-high-freq-f",  name: "High Frequency Wand",  price: 15, duration: 10, desc: "Kills acne-causing bacteria, stimulates circulation, and tightens skin using a safe electrical current. Best for active breakouts, congestion, or post-extraction recovery." },
+          { id: "add-oxygen-f",     name: "Oxygen Spray",         price: 30, duration: 10, desc: "A pressurized oxygen mist infused with hydrating actives. Instantly plumps, brightens, and calms — zero downtime, visible glow immediately after." },
+          { id: "add-ultrasonic-f", name: "Ultrasonic Vibration", price: 15, duration: 10, desc: "High-frequency sound waves loosen debris, stimulate collagen production, and push active ingredients deeper into the skin. Painless and effective on every skin type." },
+          { id: "add-lifting-f",    name: "Skin Lifting",         price: 10, duration: 10, desc: "Microcurrent technology that tones and firms facial muscles. Think of it as a workout for your face — lifted contours, tighter skin, no needles." },
+          { id: "add-cold-f",       name: "Cold Hammer",          price: 10, duration: 10, desc: "A chilled metal tool that seals pores, reduces redness, and soothes inflammation post-treatment. Especially effective after extractions or any active service." },
+          { id: "add-scrubber-f",   name: "Skin Scrubber",        price: 20, duration: 10, desc: "An ultrasonic spatula that dislodges blackheads, dead skin, and surface buildup — gently and without abrasion. Cleaner pores, smoother texture, no irritation." },
+          { id: "add-hydra-f",      name: "Hydra Facial",         price: 80, duration: 30, desc: "Multi-step hydrodermabrasion that cleanses, exfoliates, extracts, and infuses skin with serums in one pass. The gold standard for instant, visible skin improvement." },
+          { id: "add-microderm-f",  name: "Microdermabrasion",    price: 40, duration: 20, desc: "Physical exfoliation using fine crystals or a diamond tip to buff away dead skin cells. Smoother texture, reduced dullness, and better product absorption after." },
+          { id: "add-dermaplane-f", name: "Dermaplaning",         price: 45, duration: 15, desc: "A surgical blade removes dead skin and vellus hair (peach fuzz) in one pass. Instantly smoother, brighter skin — and your serums absorb better immediately after." },
         ],
       },
       {
         title: "Body Treatments",
         services: [
-          { id: "add-high-freq-b",  name: "High Frequency Wand",  price: 35,  duration: 10 },
-          { id: "add-oxygen-b",     name: "Oxygen Spray",         price: 60,  duration: 10 },
-          { id: "add-ultrasonic-b", name: "Ultrasonic Vibration", price: 30,  duration: 10 },
-          { id: "add-lifting-b",    name: "Skin Lifting",         price: 45,  duration: 10 },
-          { id: "add-cold-b",       name: "Cold Hammer",          price: 30,  duration: 10 },
-          { id: "add-scrubber-b",   name: "Skin Scrubber",        price: 40,  duration: 10 },
-          { id: "add-microderm-b",  name: "Microdermabrasion",    price: 80,  duration: 20 },
-          { id: "add-hydra-b",      name: "Hydra Treatment",      price: 160, duration: 45 },
-          { id: "add-vajacial-b",   name: "Vajacial",             price: 25,  duration: 30 },
+          { id: "add-high-freq-b",  name: "High Frequency Wand",  price: 35,  duration: 10, desc: "Same bacteria-killing, circulation-boosting benefits as the facial version — applied to body areas dealing with breakouts, ingrowns, or post-wax irritation." },
+          { id: "add-oxygen-b",     name: "Oxygen Spray",         price: 60,  duration: 10, desc: "Pressurized oxygen mist for the body. Soothes post-wax skin, reduces redness, and delivers a burst of hydration to larger treatment areas." },
+          { id: "add-ultrasonic-b", name: "Ultrasonic Vibration", price: 30,  duration: 10, desc: "Penetrates deeper on body tissue — loosens buildup, stimulates circulation, and helps active ingredients absorb more effectively across larger areas." },
+          { id: "add-lifting-b",    name: "Skin Lifting",         price: 45,  duration: 10, desc: "Microcurrent toning for the body. Firms and tightens skin on targeted areas — arms, abdomen, thighs — with zero downtime." },
+          { id: "add-cold-b",       name: "Cold Hammer",          price: 30,  duration: 10, desc: "Post-treatment cooling that closes pores, reduces redness, and calms any irritation — especially effective after body waxing on sensitive areas." },
+          { id: "add-scrubber-b",   name: "Skin Scrubber",        price: 40,  duration: 10, desc: "Ultrasonic exfoliation for the body. Clears buildup and unclogs pores on larger areas — smoother skin, reduced ingrown risk after waxing." },
+          { id: "add-microderm-b",  name: "Microdermabrasion",    price: 80,  duration: 20, desc: "Professional exfoliation for the body. Buffs away rough, uneven texture and improves skin tone on areas like the back, arms, or stomach." },
+          { id: "add-hydra-b",      name: "Hydra Treatment",      price: 160, duration: 45, desc: "Full-body hydrodermabrasion — deep cleanse, exfoliation, extraction, and serum infusion across a larger treatment area. Maximum results, zero downtime." },
+          { id: "add-vajacial-b",   name: "Vajacial",             price: 25,  duration: 30, desc: "A post-Brazilian add-on that soothes, hydrates, and treats the bikini area after waxing. Reduces inflammation, minimizes ingrowns, and leaves skin smooth and calm." },
         ],
       },
       {
         title: "Massages",
         services: [
-          { id: "add-head",      name: "Head Massage",                  price: 25, duration: 10 },
-          { id: "add-arms",      name: "Arms / Hands",                  price: 15, duration: 10 },
-          { id: "add-decollete", name: "Décolleté Massage / Shoulders", price: 40, duration: 15 },
-          { id: "add-back",      name: "Back Massage",                  price: 60, duration: 15 },
-          { id: "add-legs",      name: "Leg Massage",                   price: 50, duration: 15 },
-          { id: "add-feet",      name: "Feet Massage",                  price: 35, duration: 10 },
-          { id: "add-10min",     name: "Add 10 Minutes",                price: 25, duration: 10 },
+          { id: "add-head",      name: "Head Massage",                  price: 25, duration: 10, desc: "Scalp and temple massage that relieves tension, improves circulation, and genuinely melts stress. A small addition that makes a big difference." },
+          { id: "add-arms",      name: "Arms / Hands",                  price: 15, duration: 10, desc: "Targeted massage for the arms and hands — releases muscle tension and improves circulation in areas that carry more stress than most people realize." },
+          { id: "add-decollete", name: "Décolleté Massage / Shoulders", price: 40, duration: 15, desc: "Neck, chest, and shoulder massage targeting one of the body's highest-tension zones. Loosens tight muscles and leaves the area visibly relaxed." },
+          { id: "add-back",      name: "Back Massage",                  price: 60, duration: 15, desc: "Focused tension relief for the back. Works through muscle tightness and leaves you noticeably looser by the time your main service wraps up." },
+          { id: "add-legs",      name: "Leg Massage",                   price: 50, duration: 15, desc: "Releases tension in the legs and improves circulation — especially effective after waxing when the skin and muscles both benefit from the attention." },
+          { id: "add-feet",      name: "Feet Massage",                  price: 35, duration: 10, desc: "Targeted pressure and release for the feet. More therapeutic than it sounds — the kind of thing you don't know you needed until it's done." },
+          { id: "add-10min",     name: "Add 10 Minutes",                price: 25, duration: 10, desc: "Extend any massage service by 10 minutes. More time, more release." },
         ],
       },
     ],
@@ -491,7 +491,7 @@ export default function BookPage() {
           })}
         </div>
 
-        {/* ── STEP 1: Service selection ── */}
+        {/* ── STEP 1 ── */}
         <div className={step === 1 ? "pb-32" : "hidden"}>
           <div className="max-w-2xl mx-auto space-y-3">
             {SERVICE_CATALOG.map((cat) => {
@@ -500,8 +500,7 @@ export default function BookPage() {
                 <div key={cat.id} className="border border-[#E5DCCF] bg-white overflow-hidden">
                   <button
                     onClick={() => setOpenCategory(catOpen ? null : cat.id)}
-                    className="w-full flex items-center justify-between px-6 py-5
-                               hover:bg-[#FAF7F2] transition-colors duration-300 text-left"
+                    className="w-full flex items-center justify-between px-6 py-5 hover:bg-[#FAF7F2] transition-colors duration-300 text-left"
                   >
                     <div className="flex items-center gap-4">
                       <span className="text-[#C9A96E] text-lg">{cat.icon}</span>
@@ -509,7 +508,6 @@ export default function BookPage() {
                     </div>
                     <span className={`text-[#C9A96E] text-lg transition-transform duration-300 ${catOpen ? "rotate-180" : ""}`}>↓</span>
                   </button>
-
                   <div className={`overflow-hidden transition-all duration-300 ${catOpen ? "max-h-[4000px]" : "max-h-0"}`}>
                     <div className="border-t border-[#E5DCCF]">
                       {cat.mode === "subgroups" && cat.subgroups?.map((group) => {
@@ -526,9 +524,7 @@ export default function BookPage() {
                                   <div key={secKey}>
                                     <SubToggle id={secKey} label={section.title} depth={2} />
                                     <div className={`overflow-hidden transition-all duration-200 ${secOpen ? "max-h-[1500px]" : "max-h-0"}`}>
-                                      {section.services.map((svc) => (
-                                        <ServiceRow key={svc.id} svc={svc} />
-                                      ))}
+                                      {section.services.map((svc) => <ServiceRow key={svc.id} svc={svc} />)}
                                     </div>
                                   </div>
                                 );
@@ -537,7 +533,6 @@ export default function BookPage() {
                           </div>
                         );
                       })}
-
                       {cat.mode === "sections" && cat.sections?.map((section) => {
                         const secKey  = `${cat.id}-${section.title}`;
                         const secOpen = openSection2 === secKey;
@@ -545,18 +540,13 @@ export default function BookPage() {
                           <div key={secKey}>
                             <SubToggle id={secKey} label={section.title} depth={1} useAlt={true} />
                             <div className={`overflow-hidden transition-all duration-200 ${secOpen ? "max-h-[1500px]" : "max-h-0"}`}>
-                              {section.services.map((svc) => (
-                                <ServiceRow key={svc.id} svc={svc} />
-                              ))}
+                              {section.services.map((svc) => <ServiceRow key={svc.id} svc={svc} />)}
                             </div>
                           </div>
                         );
                       })}
-
                       {cat.mode === "flat" && cat.sections?.map((section) =>
-                        section.services.map((svc) => (
-                          <ServiceRow key={svc.id} svc={svc} />
-                        ))
+                        section.services.map((svc) => <ServiceRow key={svc.id} svc={svc} />)
                       )}
                     </div>
                   </div>
@@ -565,7 +555,6 @@ export default function BookPage() {
             })}
           </div>
 
-          {/* Sticky cart bar */}
           {selectedIds.length > 0 && (
             <div className="fixed bottom-0 left-0 right-0 z-50 bg-[#1C1C1A] border-t border-[#2E2E2C]">
               <div className="max-w-2xl mx-auto px-5 sm:px-8 py-4 flex items-center justify-between gap-4">
@@ -575,29 +564,21 @@ export default function BookPage() {
                   </p>
                   <p className="font-serif text-xl text-[#FAF7F2] mt-0.5">${totalPrice}</p>
                 </div>
-                <button
-                  onClick={() => setStep(2)}
+                <button onClick={() => setStep(2)}
                   className="flex-shrink-0 px-8 py-3 bg-[#C9A96E] text-[#1C1C1A] text-[11px]
-                             tracking-[0.22em] uppercase font-sans font-medium
-                             hover:bg-[#D4AF88] transition-colors duration-300"
-                >
+                             tracking-[0.22em] uppercase font-sans font-medium hover:bg-[#D4AF88] transition-colors duration-300">
                   Continue →
                 </button>
               </div>
             </div>
           )}
-
           {selectedIds.length === 0 && (
-            <p className="text-center text-[#8C8680] font-sans text-sm mt-8">
-              Select at least one service to continue
-            </p>
+            <p className="text-center text-[#8C8680] font-sans text-sm mt-8">Select at least one service to continue</p>
           )}
         </div>
 
-        {/* ── STEP 2: Date & Time ── */}
+        {/* ── STEP 2 ── */}
         <div className={step === 2 ? "max-w-2xl mx-auto" : "hidden"}>
-
-          {/* Selected services — collapsible desc */}
           {selectedServices.length > 0 && (
             <div className="bg-white border border-[#E5DCCF] mb-8 divide-y divide-[#F0EBE0]">
               <div className="flex items-center justify-between px-6 py-4">
@@ -648,20 +629,14 @@ export default function BookPage() {
                   return (
                     <button key={dateStr} disabled={isWeekend} onClick={() => setSelectedDate(dateStr)}
                       className={`flex-shrink-0 px-3 py-3 text-center border transition-all duration-300 min-w-[72px] ${
-                        isWeekend
-                          ? "border-[#F0EBE0] text-[#D0C8BE] cursor-not-allowed"
-                          : isSelected
-                          ? "border-[#C9A96E] bg-[#C9A96E] text-[#1C1C1A]"
-                          : "border-[#E5DCCF] text-[#1C1C1A] hover:border-[#C9A96E]"
+                        isWeekend ? "border-[#F0EBE0] text-[#D0C8BE] cursor-not-allowed"
+                        : isSelected ? "border-[#C9A96E] bg-[#C9A96E] text-[#1C1C1A]"
+                        : "border-[#E5DCCF] text-[#1C1C1A] hover:border-[#C9A96E]"
                       }`}
                     >
-                      <p className="text-[9px] uppercase tracking-wide font-sans">
-                        {day.toLocaleDateString("en-US", { weekday: "short" })}
-                      </p>
+                      <p className="text-[9px] uppercase tracking-wide font-sans">{day.toLocaleDateString("en-US", { weekday: "short" })}</p>
                       <p className="font-serif text-lg leading-none mt-0.5">{day.getDate()}</p>
-                      <p className="text-[9px] font-sans opacity-70">
-                        {day.toLocaleDateString("en-US", { month: "short" })}
-                      </p>
+                      <p className="text-[9px] font-sans opacity-70">{day.toLocaleDateString("en-US", { month: "short" })}</p>
                     </button>
                   );
                 })}
@@ -669,9 +644,7 @@ export default function BookPage() {
             </div>
             {selectedDate && (
               <p className="text-xs text-[#8C8680] font-sans mt-2">
-                {new Date(selectedDate + "T12:00:00").toLocaleDateString("en-US", {
-                  weekday: "long", month: "long", day: "numeric", year: "numeric",
-                })}
+                {new Date(selectedDate + "T12:00:00").toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" })}
               </p>
             )}
           </div>
@@ -683,9 +656,7 @@ export default function BookPage() {
                 {TIME_SLOTS.map((slot) => (
                   <button key={slot} onClick={() => setSelectedTime(slot)}
                     className={`py-3 text-center text-xs font-sans tracking-wide border transition-all duration-300 ${
-                      selectedTime === slot
-                        ? "bg-[#1C1C1A] text-[#C9A96E] border-[#1C1C1A]"
-                        : "border-[#E5DCCF] text-[#5A5550] hover:border-[#C9A96E]"
+                      selectedTime === slot ? "bg-[#1C1C1A] text-[#C9A96E] border-[#1C1C1A]" : "border-[#E5DCCF] text-[#5A5550] hover:border-[#C9A96E]"
                     }`}>
                     {slot}
                   </button>
@@ -695,9 +666,7 @@ export default function BookPage() {
           )}
 
           <div className="flex justify-between">
-            <button onClick={() => setStep(1)} className="text-sm font-sans text-[#8C8680] hover:text-[#1C1C1A] transition-colors">
-              ← Back
-            </button>
+            <button onClick={() => setStep(1)} className="text-sm font-sans text-[#8C8680] hover:text-[#1C1C1A] transition-colors">← Back</button>
             <button onClick={() => setStep(3)} disabled={!selectedDate || !selectedTime}
               className="px-8 py-3.5 bg-[#1C1C1A] text-[#C9A96E] text-[11px] tracking-[0.22em]
                          uppercase font-sans hover:bg-[#C9A96E] hover:text-[#1C1C1A]
@@ -707,7 +676,7 @@ export default function BookPage() {
           </div>
         </div>
 
-        {/* ── STEP 3: Contact info ── */}
+        {/* ── STEP 3 ── */}
         <div className={step === 3 ? "max-w-2xl mx-auto" : "hidden"}>
           <h2 className="font-serif text-2xl text-[#1C1C1A] mb-8">Your Information</h2>
 
@@ -721,9 +690,7 @@ export default function BookPage() {
                     ))}
                   </div>
                   <p className="text-[#8C8680] text-xs font-sans mt-1">
-                    {new Date(selectedDate + "T12:00:00").toLocaleDateString("en-US", {
-                      weekday: "long", month: "long", day: "numeric",
-                    })} at {selectedTime}
+                    {new Date(selectedDate + "T12:00:00").toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })} at {selectedTime}
                   </p>
                 </div>
                 <p className="font-serif text-xl text-[#C9A96E]">${totalPrice}</p>
@@ -737,39 +704,33 @@ export default function BookPage() {
                 <label className="text-[10px] tracking-[0.22em] uppercase text-[#8C8680] font-sans block mb-2">Name *</label>
                 <input type="text" value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))}
                   placeholder="Your full name"
-                  className="w-full px-4 py-3.5 border border-[#E5DCCF] bg-white text-[#1C1C1A] text-sm font-sans
-                             placeholder-[#C0BAB4] focus:outline-none focus:border-[#C9A96E] transition-colors" />
+                  className="w-full px-4 py-3.5 border border-[#E5DCCF] bg-white text-[#1C1C1A] text-sm font-sans placeholder-[#C0BAB4] focus:outline-none focus:border-[#C9A96E] transition-colors" />
               </div>
               <div>
                 <label className="text-[10px] tracking-[0.22em] uppercase text-[#8C8680] font-sans block mb-2">Email *</label>
                 <input type="email" value={form.email} onChange={e => setForm(p => ({ ...p, email: e.target.value }))}
                   placeholder="you@example.com"
-                  className="w-full px-4 py-3.5 border border-[#E5DCCF] bg-white text-[#1C1C1A] text-sm font-sans
-                             placeholder-[#C0BAB4] focus:outline-none focus:border-[#C9A96E] transition-colors" />
+                  className="w-full px-4 py-3.5 border border-[#E5DCCF] bg-white text-[#1C1C1A] text-sm font-sans placeholder-[#C0BAB4] focus:outline-none focus:border-[#C9A96E] transition-colors" />
               </div>
             </div>
             <div>
               <label className="text-[10px] tracking-[0.22em] uppercase text-[#8C8680] font-sans block mb-2">Phone</label>
               <input type="tel" value={form.phone} onChange={e => setForm(p => ({ ...p, phone: e.target.value }))}
                 placeholder="(504) 555-0000"
-                className="w-full px-4 py-3.5 border border-[#E5DCCF] bg-white text-[#1C1C1A] text-sm font-sans
-                           placeholder-[#C0BAB4] focus:outline-none focus:border-[#C9A96E] transition-colors" />
+                className="w-full px-4 py-3.5 border border-[#E5DCCF] bg-white text-[#1C1C1A] text-sm font-sans placeholder-[#C0BAB4] focus:outline-none focus:border-[#C9A96E] transition-colors" />
             </div>
             <div>
               <label className="text-[10px] tracking-[0.22em] uppercase text-[#8C8680] font-sans block mb-2">Notes (optional)</label>
               <textarea value={form.notes} onChange={e => setForm(p => ({ ...p, notes: e.target.value }))}
                 rows={3} placeholder="Skin concerns, allergies, or anything we should know..."
-                className="w-full px-4 py-3.5 border border-[#E5DCCF] bg-white text-[#1C1C1A] text-sm font-sans
-                           placeholder-[#C0BAB4] focus:outline-none focus:border-[#C9A96E] transition-colors resize-none" />
+                className="w-full px-4 py-3.5 border border-[#E5DCCF] bg-white text-[#1C1C1A] text-sm font-sans placeholder-[#C0BAB4] focus:outline-none focus:border-[#C9A96E] transition-colors resize-none" />
             </div>
           </div>
 
           {error && <p className="text-red-500 text-sm font-sans mt-4">{error}</p>}
 
           <div className="flex justify-between mt-8">
-            <button onClick={() => setStep(2)} className="text-sm font-sans text-[#8C8680] hover:text-[#1C1C1A] transition-colors">
-              ← Back
-            </button>
+            <button onClick={() => setStep(2)} className="text-sm font-sans text-[#8C8680] hover:text-[#1C1C1A] transition-colors">← Back</button>
             <button onClick={handleSubmit} disabled={submitting || !form.name || !form.email}
               className="px-8 py-3.5 bg-[#C9A96E] text-[#1C1C1A] text-[11px] tracking-[0.22em]
                          uppercase font-sans font-medium hover:bg-[#D4AF88]
