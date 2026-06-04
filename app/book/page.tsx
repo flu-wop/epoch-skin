@@ -415,7 +415,7 @@ export default function BookPage() {
       ? (useAlt ? () => setOpenSection2(isOpen ? null : id) : () => setOpenSubGroup(isOpen ? null : id))
       : () => setOpenSection(isOpen ? null : id);
     return (
-      <button onClick={toggle}
+      <button onClick={toggle} onMouseDown={e => e.preventDefault()}
         className={`w-full flex items-center justify-between text-left transition-colors duration-200
           ${depth === 1
             ? "px-6 py-4 bg-[#F5EDD8] hover:bg-[#F0E6CC] border-t border-[#E5DCCF]"
