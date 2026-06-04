@@ -44,33 +44,33 @@ const SERVICE_CATALOG: CatalogItem[] = [
           {
             title: "Body Waxing",
             services: [
-              { id: "w-brazilian",     name: "Brazilian Wax",       price: 50,  duration: 45 },
-              { id: "w-bikini-line",   name: "Bikini Line",         price: 30,  duration: 20 },
-              { id: "w-french",        name: "French Bikini",       price: 40,  duration: 30 },
-              { id: "w-full-leg",      name: "Full Leg",            price: 55,  duration: 50 },
-              { id: "w-half-leg",      name: "Half Leg",            price: 45,  duration: 35 },
-              { id: "w-full-arm",      name: "Full Arm",            price: 45,  duration: 40 },
-              { id: "w-half-arm",      name: "Half Arm",            price: 30,  duration: 25 },
-              { id: "w-underarm",      name: "Underarm",            price: 20,  duration: 20 },
-              { id: "w-stomach-strip", name: "Stomach Strip",       price: 20,  duration: 15 },
-              { id: "w-full-stomach",  name: "Full Stomach",        price: 40,  duration: 25 },
-              { id: "w-toes",          name: "Toes",                price: 10,  duration: 10 },
-              { id: "w-feet",          name: "Feet",                price: 20,  duration: 15 },
-              { id: "w-back",          name: "Back",                price: 45,  duration: 40 },
-              { id: "w-full-buttock",  name: "Full Buttock",        price: 30,  duration: 20 },
-              { id: "w-cheeks",        name: "Between the Cheeks",  price: 15,  duration: 10 },
-              { id: "w-chest",         name: "Chest",               price: 15,  duration: 15 },
-              { id: "w-full-body",     name: "Full Body Wax",       price: 140, duration: 90 },
+              { id: "w-brazilian",     name: "Brazilian Wax",       price: 50,  duration: 45, desc: "Complete removal or a clean shape. Rosin-free Organic hybrid wax with shea butter, rosehip oil, and squalane. No irritation, no breakage — just smooth skin that lasts." },
+              { id: "w-bikini-line",   name: "Bikini Line",         price: 30,  duration: 20, desc: "Clean edges, no irritation. Our rosin-free formula keeps the skin barrier intact while removing exactly what you want gone." },
+              { id: "w-french",        name: "French Bikini",       price: 40,  duration: 30, desc: "More coverage than a bikini line, less than a Brazilian. Precise, clean, and done right every time." },
+              { id: "w-full-leg",      name: "Full Leg",            price: 55,  duration: 50, desc: "Ankle to thigh. Rosin-free Organic wax grips cleanly and releases fast — smooth results without the redness." },
+              { id: "w-half-leg",      name: "Half Leg",            price: 45,  duration: 35, desc: "Upper or lower leg, your choice. Same rosin-free formula, targeted to exactly where you need it." },
+              { id: "w-full-arm",      name: "Full Arm",            price: 45,  duration: 40, desc: "Shoulder to wrist. Clean, smooth, long-lasting. Our wax nourishes skin during removal so there's no dryness or irritation after." },
+              { id: "w-half-arm",      name: "Half Arm",            price: 30,  duration: 25, desc: "Forearm or upper arm. Quick, precise, and irritation-free." },
+              { id: "w-underarm",      name: "Underarm",            price: 20,  duration: 20, desc: "Fast removal, zero rosin. One of the most sensitive areas on the body — our formula was made for it." },
+              { id: "w-stomach-strip", name: "Stomach Strip",       price: 20,  duration: 15, desc: "Clean up the happy trail. Precise removal with our nourishing Organic wax formula." },
+              { id: "w-full-stomach",  name: "Full Stomach",        price: 40,  duration: 25, desc: "Full stomach waxing for smooth, clean skin. Rosin-free formula, no post-wax irritation." },
+              { id: "w-toes",          name: "Toes",                price: 10,  duration: 10, desc: "Clean up the details. Quick, precise, and completely irritation-free." },
+              { id: "w-feet",          name: "Feet",                price: 20,  duration: 15, desc: "Top of the foot, clean and smooth. Same rosin-free Organic wax used on every service." },
+              { id: "w-back",          name: "Back",                price: 45,  duration: 40, desc: "Full back waxing with our Organic hybrid formula. Smooth results, no redness — even on coarser hair." },
+              { id: "w-full-buttock",  name: "Full Buttock",        price: 30,  duration: 20, desc: "Complete buttock waxing. Rosin-free formula handles sensitive skin without reaction." },
+              { id: "w-cheeks",        name: "Between the Cheeks",  price: 15,  duration: 10, desc: "Precise and thorough. Our rosin-free wax removes cleanly without the irritation that strips or other formulas cause." },
+              { id: "w-chest",         name: "Chest",               price: 15,  duration: 15, desc: "Clean chest waxing with our nourishing Organic hybrid formula. Fast set, clean pull, no breakage." },
+              { id: "w-full-body",     name: "Full Body Wax",       price: 140, duration: 90, desc: "Brazilian, underarm, and half leg in one session. Rosin-free Organic hybrid formula — shea butter, rosehip oil, and squalane — so every area stays smooth and irritation-free." },
             ],
           },
           {
             title: "Facial Waxing",
             services: [
-              { id: "w-eyebrow",    name: "Eyebrow",    price: 15, duration: 20 },
-              { id: "w-upper-lip",  name: "Upper Lip",  price: 10, duration: 10 },
-              { id: "w-chin",       name: "Chin",       price: 15, duration: 12 },
-              { id: "w-cheekbones", name: "Cheekbones", price: 12, duration: 15 },
-              { id: "w-sideburns",  name: "Sideburns",  price: 12, duration: 10 },
+              { id: "w-eyebrow",    name: "Eyebrow",    price: 15, duration: 20, desc: "Precision shaping by a licensed esthetician. Clean lines, no over-removal — just well-defined brows." },
+              { id: "w-upper-lip",  name: "Upper Lip",  price: 10, duration: 10, desc: "Gentle and fast. Our rosin-free formula is safe for facial skin and leaves zero redness." },
+              { id: "w-chin",       name: "Chin",       price: 15, duration: 12, desc: "Clean, precise chin waxing with our hypoallergenic Organic formula." },
+              { id: "w-cheekbones", name: "Cheekbones", price: 12, duration: 15, desc: "Defined and smooth. Removes fine facial hair cleanly without irritating delicate skin." },
+              { id: "w-sideburns",  name: "Sideburns",  price: 12, duration: 10, desc: "Clean edges without the irritation. Rosin-free wax handles fine hair on sensitive skin with no reaction." },
             ],
           },
         ],
@@ -81,33 +81,33 @@ const SERVICE_CATALOG: CatalogItem[] = [
           {
             title: "Body Waxing",
             services: [
-              { id: "m-full-arms",     name: "Full Arms",           price: 60,  duration: 45 },
-              { id: "m-half-arm",      name: "Half Arm",            price: 35,  duration: 25 },
-              { id: "m-back",          name: "Back Wax",            price: 50,  duration: 45 },
-              { id: "m-chest",         name: "Chest",               price: 40,  duration: 32 },
-              { id: "m-underarm",      name: "Underarms",           price: 30,  duration: 20 },
-              { id: "m-brozilian",     name: "Brozilian",           price: 60,  duration: 50 },
-              { id: "m-full-legs",     name: "Full Legs",           price: 70,  duration: 55 },
-              { id: "m-half-legs",     name: "Half Legs",           price: 45,  duration: 35 },
-              { id: "m-full-butt",     name: "Full Butt",           price: 40,  duration: 20 },
-              { id: "m-cheeks",        name: "Between the Cheeks",  price: 20,  duration: 10 },
-              { id: "m-stomach-strip", name: "Stomach Strip",       price: 30,  duration: 15 },
-              { id: "m-full-stomach",  name: "Full Stomach",        price: 60,  duration: 25 },
-              { id: "m-feet",          name: "Feet",                price: 20,  duration: 15 },
-              { id: "m-toes",          name: "Toes",                price: 10,  duration: 10 },
-              { id: "m-full-body",     name: "Full Body Wax",       price: 160, duration: 90 },
+              { id: "m-full-arms",     name: "Full Arms",           price: 60,  duration: 45, desc: "Shoulder to wrist. Clean, smooth, long-lasting. Our wax nourishes skin during removal so there's no dryness or irritation after." },
+              { id: "m-half-arm",      name: "Half Arm",            price: 35,  duration: 25, desc: "Forearm or upper arm. Quick, precise, and irritation-free." },
+              { id: "m-back",          name: "Back Wax",            price: 50,  duration: 45, desc: "Full back waxing with our Organic hybrid formula. Smooth results, no redness — even on coarser hair." },
+              { id: "m-chest",         name: "Chest",               price: 40,  duration: 32, desc: "Clean chest waxing with our nourishing Organic hybrid formula. Fast set, clean pull, no breakage." },
+              { id: "m-underarm",      name: "Underarms",           price: 30,  duration: 20, desc: "Fast removal, zero rosin. One of the most sensitive areas on the body — our formula was made for it." },
+              { id: "m-brozilian",     name: "Brozilian",           price: 60,  duration: 50, desc: "Complete removal or shaped — your preference. Rosin-free Organic wax handles the most sensitive area with no irritation, no breakage." },
+              { id: "m-full-legs",     name: "Full Legs",           price: 70,  duration: 55, desc: "Ankle to thigh. Rosin-free Organic wax grips cleanly and releases fast — smooth results without the redness." },
+              { id: "m-half-legs",     name: "Half Legs",           price: 45,  duration: 35, desc: "Upper or lower leg, your choice. Same rosin-free formula, targeted to exactly where you need it." },
+              { id: "m-full-butt",     name: "Full Butt",           price: 40,  duration: 20, desc: "Complete buttock waxing. Rosin-free formula handles sensitive skin without reaction." },
+              { id: "m-cheeks",        name: "Between the Cheeks",  price: 20,  duration: 10, desc: "Precise and thorough. Our rosin-free wax removes cleanly without the irritation that strips or other formulas cause." },
+              { id: "m-stomach-strip", name: "Stomach Strip",       price: 30,  duration: 15, desc: "Clean up the happy trail. Precise removal with our nourishing Organic wax formula." },
+              { id: "m-full-stomach",  name: "Full Stomach",        price: 60,  duration: 25, desc: "Full stomach waxing for smooth, clean skin. Rosin-free formula, no post-wax irritation." },
+              { id: "m-feet",          name: "Feet",                price: 20,  duration: 15, desc: "Top of the foot, clean and smooth. Same rosin-free Organic wax used on every service." },
+              { id: "m-toes",          name: "Toes",                price: 10,  duration: 10, desc: "Clean up the details. Quick, precise, and completely irritation-free." },
+              { id: "m-full-body",     name: "Full Body Wax",       price: 160, duration: 90, desc: "Brazilian, underarm, and half leg in one session. Rosin-free Organic hybrid formula — shea butter, rosehip oil, and squalane — so every area stays smooth and irritation-free." },
             ],
           },
           {
             title: "Facial Waxing",
             services: [
-              { id: "m-eyebrows",   name: "Eyebrows",   price: 20, duration: 20 },
-              { id: "m-upper-lip",  name: "Upper Lip",  price: 15, duration: 10 },
-              { id: "m-chin",       name: "Chin",       price: 20, duration: 12 },
-              { id: "m-cheekbones", name: "Cheekbones", price: 20, duration: 15 },
-              { id: "m-sideburns",  name: "Sideburns",  price: 15, duration: 10 },
-              { id: "m-beard",      name: "Beard",      price: 50, duration: 30 },
-              { id: "m-nose",       name: "Nose Wax",   price: 10, duration: 10 },
+              { id: "m-eyebrows",   name: "Eyebrows",   price: 20, duration: 20, desc: "Clean grooming and shaping. Rosin-free formula, precise removal, no redness." },
+              { id: "m-upper-lip",  name: "Upper Lip",  price: 15, duration: 10, desc: "Fast, clean, zero irritation. Our formula is gentle enough for facial skin on every skin type." },
+              { id: "m-chin",       name: "Chin",       price: 20, duration: 12, desc: "Precise chin waxing for a clean, defined look." },
+              { id: "m-cheekbones", name: "Cheekbones", price: 20, duration: 15, desc: "Removes fine facial hair cleanly without irritating sensitive skin." },
+              { id: "m-sideburns",  name: "Sideburns",  price: 15, duration: 10, desc: "Clean edges, no reaction. Rosin-free wax on delicate facial skin." },
+              { id: "m-beard",      name: "Beard",      price: 50, duration: 30, desc: "Defines the beard line or removes unwanted growth. Clean, precise, no synthetic resins." },
+              { id: "m-nose",       name: "Nose Wax",   price: 10, duration: 10, desc: "Fast and effective nose hair removal. Done in minutes, no irritation." },
             ],
           },
         ],
@@ -238,13 +238,13 @@ const SERVICE_CATALOG: CatalogItem[] = [
       {
         title: "Massages",
         services: [
-          { id: "add-head",      name: "Head Massage",                    price: 25, duration: 10 },
-          { id: "add-arms",      name: "Arms / Hands",                    price: 15, duration: 10 },
-          { id: "add-decollete", name: "Décolleté Massage / Shoulders",   price: 40, duration: 15 },
-          { id: "add-back",      name: "Back Massage",                    price: 60, duration: 15 },
-          { id: "add-legs",      name: "Leg Massage",                     price: 50, duration: 15 },
-          { id: "add-feet",      name: "Feet Massage",                    price: 35, duration: 10 },
-          { id: "add-10min",     name: "Add 10 Minutes",                  price: 25, duration: 10 },
+          { id: "add-head",      name: "Head Massage",                  price: 25, duration: 10 },
+          { id: "add-arms",      name: "Arms / Hands",                  price: 15, duration: 10 },
+          { id: "add-decollete", name: "Décolleté Massage / Shoulders", price: 40, duration: 15 },
+          { id: "add-back",      name: "Back Massage",                  price: 60, duration: 15 },
+          { id: "add-legs",      name: "Leg Massage",                   price: 50, duration: 15 },
+          { id: "add-feet",      name: "Feet Massage",                  price: 35, duration: 10 },
+          { id: "add-10min",     name: "Add 10 Minutes",                price: 25, duration: 10 },
         ],
       },
     ],
@@ -302,6 +302,7 @@ export default function BookPage() {
   const [openSection,   setOpenSection]   = useState<string | null>(null);
   const [openSection2,  setOpenSection2]  = useState<string | null>(null);
   const [selectedIds,   setSelectedIds]   = useState<string[]>([]);
+  const [expandedDesc,  setExpandedDesc]  = useState<string | null>(null);
   const [step,          setStep]          = useState<1 | 2 | 3 | 4>(1);
   const [selectedDate,  setSelectedDate]  = useState("");
   const [selectedTime,  setSelectedTime]  = useState("");
@@ -373,7 +374,7 @@ export default function BookPage() {
     URL.revokeObjectURL(url);
   };
 
-  const ServiceRow = ({ svc, catLabel }: { svc: Service; catLabel: string }) => {
+  const ServiceRow = ({ svc }: { svc: Service }) => {
     const checked = selectedIds.includes(svc.id);
     return (
       <button
@@ -396,9 +397,6 @@ export default function BookPage() {
             <p className={`text-sm font-sans font-medium transition-colors duration-200 ${checked ? "text-[#C9A96E]" : "text-[#1C1C1A] group-hover:text-[#C9A96E]"}`}>
               {svc.name}
             </p>
-            {svc.desc && (
-              <p className="text-xs font-sans text-[#8C8680] mt-1 leading-relaxed max-w-[420px]">{svc.desc}</p>
-            )}
             {svc.duration > 0 && (
               <p className="text-[10px] text-[#C0BAB4] font-sans mt-1">{svc.duration} min</p>
             )}
@@ -529,7 +527,7 @@ export default function BookPage() {
                                     <SubToggle id={secKey} label={section.title} depth={2} />
                                     <div className={`overflow-hidden transition-all duration-200 ${secOpen ? "max-h-[1500px]" : "max-h-0"}`}>
                                       {section.services.map((svc) => (
-                                        <ServiceRow key={svc.id} svc={svc} catLabel={`${group.groupTitle} — ${section.title}`} />
+                                        <ServiceRow key={svc.id} svc={svc} />
                                       ))}
                                     </div>
                                   </div>
@@ -548,7 +546,7 @@ export default function BookPage() {
                             <SubToggle id={secKey} label={section.title} depth={1} useAlt={true} />
                             <div className={`overflow-hidden transition-all duration-200 ${secOpen ? "max-h-[1500px]" : "max-h-0"}`}>
                               {section.services.map((svc) => (
-                                <ServiceRow key={svc.id} svc={svc} catLabel={cat.label} />
+                                <ServiceRow key={svc.id} svc={svc} />
                               ))}
                             </div>
                           </div>
@@ -557,7 +555,7 @@ export default function BookPage() {
 
                       {cat.mode === "flat" && cat.sections?.map((section) =>
                         section.services.map((svc) => (
-                          <ServiceRow key={svc.id} svc={svc} catLabel={cat.label} />
+                          <ServiceRow key={svc.id} svc={svc} />
                         ))
                       )}
                     </div>
@@ -598,25 +596,42 @@ export default function BookPage() {
 
         {/* ── STEP 2: Date & Time ── */}
         <div className={step === 2 ? "max-w-2xl mx-auto" : "hidden"}>
+
+          {/* Selected services — collapsible desc */}
           {selectedServices.length > 0 && (
-            <div className="bg-white border border-[#E5DCCF] p-6 mb-8">
-              <div className="flex items-start justify-between mb-3">
-                <div>
-                  <p className="text-[10px] tracking-[0.2em] uppercase text-[#C9A96E] font-sans mb-1">Selected Services</p>
-                  <div className="space-y-1">
-                    {selectedServices.map(s => (
-                      <p key={s.id} className="font-serif text-base text-[#1C1C1A]">{s.name}</p>
-                    ))}
-                  </div>
-                  <p className="text-[#8C8680] text-xs font-sans mt-2">
-                    {totalDuration} min · ${totalPrice} total
-                  </p>
-                </div>
+            <div className="bg-white border border-[#E5DCCF] mb-8 divide-y divide-[#F0EBE0]">
+              <div className="flex items-center justify-between px-6 py-4">
+                <p className="text-[10px] tracking-[0.2em] uppercase text-[#C9A96E] font-sans">
+                  {selectedServices.length} service{selectedServices.length > 1 ? "s" : ""} · {totalDuration} min · ${totalPrice}
+                </p>
                 <button onClick={() => setStep(1)}
-                  className="text-xs text-[#8C8680] hover:text-[#C9A96E] font-sans transition-colors flex-shrink-0 ml-4">
+                  className="text-xs text-[#8C8680] hover:text-[#C9A96E] font-sans transition-colors">
                   Change
                 </button>
               </div>
+              {selectedServices.map(s => (
+                <div key={s.id}>
+                  <button
+                    onClick={() => setExpandedDesc(expandedDesc === s.id ? null : s.id)}
+                    className="w-full flex items-center justify-between px-6 py-3 hover:bg-[#FDF9F5] transition-colors text-left"
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className="font-serif text-base text-[#1C1C1A]">{s.name}</span>
+                      {s.desc && (
+                        <span className="text-[10px] text-[#C9A96E] font-sans tracking-wide">
+                          {expandedDesc === s.id ? "▲" : "▼"}
+                        </span>
+                      )}
+                    </div>
+                    <span className="text-[#C9A96E] font-serif">${s.price}</span>
+                  </button>
+                  {s.desc && expandedDesc === s.id && (
+                    <div className="px-6 pb-4">
+                      <p className="text-xs font-sans text-[#8C8680] leading-relaxed">{s.desc}</p>
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
           )}
 
