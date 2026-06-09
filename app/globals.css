@@ -158,8 +158,8 @@
 
   .btn-primary {
     @apply btn px-8 py-3.5
-           bg-[#1C1C1A] text-[#C4974A]
-           hover:bg-[#C4974A] hover:text-[#1C1C1A];
+           bg-[#3E4A3C] text-[#C4974A]
+           hover:bg-[#C4974A] hover:text-white;
   }
 
   .btn-gold {
