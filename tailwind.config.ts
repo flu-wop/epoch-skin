@@ -12,11 +12,41 @@ const config: Config = {
     extend: {
       // ── Colors ───────────────────────────────────────────────
       colors: {
-        // Epoch palette
-        parchment: { 50:"#FDFBF8", 100:"#FAF7F2", 200:"#F5F0E8", 300:"#EDE6D8", 400:"#E5DCCF" },
-        gold:  { 50:"#FDF9EF", 100:"#F9EDCF", 200:"#F0D898", 300:"#E5BF62", 400:"#D4AF88", 500:"#C9A96E", 600:"#B8924A", 700:"#96762E" },
-        sage:  { 50:"#F3F5F2", 100:"#E4E9E2", 200:"#C8D3C5", 300:"#A3B39F", 400:"#7A9174", 500:"#5F6F5A", 600:"#4A5745", 700:"#3B4537" },
-        ink:   { DEFAULT:"#1C1C1A", soft:"#2E2E2C", mid:"#5A5550", muted:"#8C8680", pale:"#C0BAB4" },
+        // Epoch palette — beige, sage, gold
+        parchment: {
+          50:  "#FDFAF5",
+          100: "#F7F2EA",   // page bg
+          200: "#F2EBE0",   // alternate sections
+          300: "#EAE0D0",   // deep sections
+          400: "#E0D4C0",   // darkest warm neutral / borders
+        },
+        gold: {
+          50:  "#FBF5E6",
+          100: "#F5E6C0",
+          200: "#EDD098",
+          300: "#E0B865",
+          400: "#D4AA6A",   // hover / lighter
+          500: "#C4974A",   // primary gold
+          600: "#A87C30",   // pressed / deep
+          700: "#8A6420",
+        },
+        sage: {
+          50:  "#F0F3EE",
+          100: "#DDE5D9",
+          200: "#BBCBB4",
+          300: "#96AE8E",
+          400: "#7A9174",
+          500: "#6B7D62",   // primary sage
+          600: "#526050",   // hover sage
+          700: "#3E4A3C",
+        },
+        ink: {
+          DEFAULT: "#1C1C1A",
+          soft:    "#2E2E2C",
+          mid:     "#5A5550",
+          muted:   "#8C8680",
+          pale:    "#C0BAB4",
+        },
 
         // ── Legacy compat — keeps old pages from throwing errors ──
         clay:    { 50:"#faf6f5",100:"#f4ebe8",200:"#e8d5d0",300:"#d9b8ad",400:"#c79685",500:"#b87968",600:"#a65e4d",700:"#8a4d40" },
@@ -48,8 +78,8 @@ const config: Config = {
 
       // ── Shadows ──────────────────────────────────────────────
       boxShadow: {
-        gold:       "0 4px 24px rgba(201,169,110,0.18)",
-        "gold-lg":  "0 12px 48px rgba(201,169,110,0.24)",
+        gold:       "0 4px 24px rgba(196,151,74,0.18)",
+        "gold-lg":  "0 12px 48px rgba(196,151,74,0.24)",
         card:       "0 2px 16px rgba(28,28,26,0.06)",
         "card-lg":  "0 8px 40px rgba(28,28,26,0.10)",
         luxury:     "0 1px 3px rgba(28,28,26,0.04), 0 8px 32px rgba(28,28,26,0.08)",
