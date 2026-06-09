@@ -10,23 +10,23 @@
 /* -- DESIGN TOKENS --------------------------------------------─ */
 @layer base {
   :root {
-    /* Backgrounds */
-    --bg:           #FAF7F2;   /* page default */
-    --bg-warm:      #F5F0E8;   /* alternate sections */
-    --bg-deep:      #EDE6D8;   /* deeper sections, CTA bg */
-    --bg-parchment: #E5DCCF;   /* darkest warm neutral */
+    /* Backgrounds — warm true beige */
+    --bg:           #F7F2EA;   /* page default */
+    --bg-warm:      #F2EBE0;   /* alternate sections */
+    --bg-deep:      #EAE0D0;   /* deeper sections, CTA bg */
+    --bg-parchment: #E0D4C0;   /* darkest warm neutral */
     --bg-white:     #FFFFFF;   /* cards */
 
-    /* Gold */
-    --gold:         #C9A96E;   /* primary gold */
-    --gold-bright:  #D4AF88;   /* hover / lighter */
-    --gold-muted:   #E8D5A8;   /* subtle bg tints */
-    --gold-deep:    #B8924A;   /* pressed states */
-    --gold-pale:    #F5EDD8;   /* very light gold bg */
+    /* Gold — warm, rich */
+    --gold:         #C4974A;   /* primary gold */
+    --gold-bright:  #D4AA6A;   /* hover / lighter */
+    --gold-muted:   #E8D0A0;   /* subtle bg tints */
+    --gold-deep:    #A87C30;   /* pressed states */
+    --gold-pale:    #F2E6C8;   /* very light gold bg */
 
-    /* Sage */
-    --sage:         #5F6F5A;   /* philosophy cards */
-    --sage-dark:    #4A5745;   /* hover sage */
+    /* Sage — richer, more visible green */
+    --sage:         #6B7D62;   /* primary sage */
+    --sage-dark:    #526050;   /* hover sage */
 
     /* Ink (text) */
     --ink:          #1C1C1A;   /* headings, primary text */
@@ -36,8 +36,8 @@
     --ink-pale:     #C0BAB4;   /* placeholders */
 
     /* Borders */
-    --border:       #E5DCCF;
-    --border-light: #EDE6D8;
+    --border:       #E0D4C0;
+    --border-light: #EAE0D0;
 
     /* -- Typography scale — LOCKED, use these only -- */
     /* Hero:      text-5xl sm:text-6xl lg:text-7xl  (3–4.5rem) */
@@ -49,25 +49,25 @@
     /* Button:    text-[11px] tracking-[0.22em]      (0.6875rem) */
 
     /* shadcn tokens */
-    --background:            36 28% 96%;
+    --background:            34 32% 94%;
     --foreground:            40 5% 11%;
-    --card:                  36 28% 99%;
+    --card:                  34 32% 98%;
     --card-foreground:       40 5% 11%;
-    --popover:               36 28% 99%;
+    --popover:               34 32% 98%;
     --popover-foreground:    40 5% 11%;
     --primary:               40 5% 11%;
-    --primary-foreground:    36 28% 96%;
-    --secondary:             36 20% 91%;
+    --primary-foreground:    34 32% 94%;
+    --secondary:             34 22% 88%;
     --secondary-foreground:  40 5% 20%;
-    --muted:                 36 14% 93%;
+    --muted:                 34 16% 91%;
     --muted-foreground:      36 7% 48%;
-    --accent:                36 48% 60%;
+    --accent:                34 52% 53%;
     --accent-foreground:     40 5% 11%;
     --destructive:           0 72% 51%;
-    --destructive-foreground:36 28% 96%;
-    --border:                36 24% 87%;
-    --input:                 36 24% 87%;
-    --ring:                  36 48% 60%;
+    --destructive-foreground:34 32% 94%;
+    --border:                34 26% 83%;
+    --input:                 34 26% 83%;
+    --ring:                  34 52% 53%;
     --radius:                0rem;   /* No border radius — luxury square aesthetic */
   }
 }
@@ -136,15 +136,15 @@
   /* -- Eyebrow label */
   .eyebrow {
     @apply text-[11px] tracking-[0.28em] uppercase
-           font-sans font-medium text-[#C9A96E];
+           font-sans font-medium text-[#C4974A];
   }
 
   /* -- Gold rule */
-  .gold-rule { @apply w-10 h-px bg-[#C9A96E]; }
+  .gold-rule { @apply w-10 h-px bg-[#C4974A]; }
 
   /* -- Gold full-width divider */
   .gold-divider {
-    @apply w-full h-px bg-gradient-to-r from-transparent via-[#C9A96E]/30 to-transparent;
+    @apply w-full h-px bg-gradient-to-r from-transparent via-[#C4974A]/30 to-transparent;
   }
 
   /* -- BUTTONS — consistent across every page -- */
@@ -158,58 +158,58 @@
 
   .btn-primary {
     @apply btn px-8 py-3.5
-           bg-[#1C1C1A] text-[#C9A96E]
-           hover:bg-[#C9A96E] hover:text-[#1C1C1A];
+           bg-[#1C1C1A] text-[#C4974A]
+           hover:bg-[#C4974A] hover:text-[#1C1C1A];
   }
 
   .btn-gold {
     @apply btn px-8 py-3.5
-           bg-[#C9A96E] text-[#1C1C1A]
-           hover:bg-[#D4AF88] hover:shadow-[0_0_24px_rgba(201,169,110,0.35)];
+           bg-[#C4974A] text-[#1C1C1A]
+           hover:bg-[#D4AA6A] hover:shadow-[0_0_24px_rgba(196,151,74,0.35)];
   }
 
   .btn-outline {
     @apply btn px-8 py-3.5
-           border border-[#C9A96E] text-[#C9A96E]
-           hover:bg-[#C9A96E] hover:text-[#1C1C1A];
+           border border-[#C4974A] text-[#C4974A]
+           hover:bg-[#C4974A] hover:text-[#1C1C1A];
   }
 
   .btn-outline-dark {
     @apply btn px-8 py-3.5
            border border-[#1C1C1A] text-[#1C1C1A]
-           hover:bg-[#1C1C1A] hover:text-[#C9A96E];
+           hover:bg-[#1C1C1A] hover:text-[#C4974A];
   }
 
   .btn-ghost {
     @apply btn px-8 py-3.5
            border border-white/30 text-white
-           hover:border-[#C9A96E] hover:text-[#C9A96E];
+           hover:border-[#C4974A] hover:text-[#C4974A];
   }
 
   /* -- Cards */
   .card {
-    @apply bg-white border border-[#E5DCCF]
+    @apply bg-white border border-[#E0D4C0]
            transition-all duration-500 ease-out;
   }
 
   .card-hover {
     @apply card
            hover:-translate-y-1.5
-           hover:shadow-[0_12px_48px_rgba(201,169,110,0.16)]
-           hover:border-[#C9A96E]/45;
+           hover:shadow-[0_12px_48px_rgba(196,151,74,0.16)]
+           hover:border-[#C4974A]/45;
   }
 
   .card-sage {
-    @apply bg-[#5F6F5A] text-white
-           hover:bg-[#4A5745] transition-colors duration-400;
+    @apply bg-[#6B7D62] text-white
+           hover:bg-[#526050] transition-colors duration-400;
   }
 
   /* -- Input fields — uniform across all forms */
   .input {
     @apply w-full px-4 py-3.5 text-sm font-sans
-           bg-white border border-[#E5DCCF] text-[#1C1C1A]
+           bg-white border border-[#E0D4C0] text-[#1C1C1A]
            placeholder-[#C0BAB4]
-           focus:outline-none focus:border-[#C9A96E]
+           focus:outline-none focus:border-[#C4974A]
            transition-colors duration-300;
   }
 
@@ -221,7 +221,7 @@
   }
   .nav-link::after {
     content: "";
-    @apply absolute -bottom-0.5 left-0 h-px w-0 bg-[#C9A96E]
+    @apply absolute -bottom-0.5 left-0 h-px w-0 bg-[#C4974A]
            transition-all duration-400;
   }
   .nav-link:hover::after { @apply w-full; }
@@ -229,12 +229,12 @@
   /* -- Booking service row */
   .service-row {
     @apply flex items-center justify-between px-5 py-4
-           border border-[#E5DCCF] bg-white
-           hover:border-[#C9A96E]/50 hover:bg-[#FAF7F2]
+           border border-[#E0D4C0] bg-white
+           hover:border-[#C4974A]/50 hover:bg-[#F7F2EA]
            transition-all duration-300 cursor-pointer w-full text-left;
   }
   .service-row-selected {
-    @apply border-[#C9A96E] bg-[#F5EDD8];
+    @apply border-[#C4974A] bg-[#F2E6C8];
   }
 }
 
@@ -254,11 +254,11 @@
 .delay-4 { transition-delay: 0.32s; }
 
 /* -- CAL.COM EMBED OVERRIDE ------------------------------------ */
-[data-cal-link] { --cal-brand: #C9A96E !important; }
+[data-cal-link] { --cal-brand: #C4974A !important; }
 
 /* -- ACCORDION (shadcn) --------------------------------------─ */
 [data-radix-accordion-item] {
-  border-bottom: 1px solid #E5DCCF !important;
+  border-bottom: 1px solid #E0D4C0 !important;
 }
 
 /* -- REDUCED MOTION ------------------------------------------─ */
