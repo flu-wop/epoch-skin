@@ -130,6 +130,19 @@ export const services: ServiceWithGender[] = [
     image: "/images/services/stomach-wax.png",
     imageAlt: "Stomach waxing service"
   },
+  {
+    id: "full-body-wax",
+    slug: "full-body-wax",
+    name: "Full Body Wax",
+    price: 140,
+    duration: "1–2 hrs",
+    description: "Brazilian, underarm, and half leg waxing in one session. Epoch Skin's rosin-free Organic hybrid formula — shea butter, rosehip oil, and squalane — nourishes skin during removal for smooth, irritation-free results every time.",
+    category: "body-waxing" as const,
+    gender: "women",
+    benefits: ["Complete head-to-toe coverage", "Rosin-free Organic wax", "Licensed estheticians"],
+    image: "/images/services/full-leg-waxing.png",
+    imageAlt: "Full body waxing service at Epoch Skin"
+  },
 
   // ═══════════════════════════════════════════
   // WOMEN'S FACIAL WAXING

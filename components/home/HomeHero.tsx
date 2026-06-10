@@ -1,6 +1,5 @@
 "use client";
 // components/home/HomeHero.tsx
-// Fixed: removed duplicate nav overlay (Semite/Reouiuct), proper margins
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
@@ -22,7 +21,7 @@ export function HomeHero() {
   }, []);
 
   return (
-    <section className="relative h-[88vh] min-h-[560px] max-h-[960px] overflow-hidden bg-[#1C1C1A]">
+    <section className="relative h-[88vh] min-h-[560px] max-h-[960px] overflow-hidden bg-[#3E4A3C]">
 
       {/* Parallax background */}
       <div
@@ -41,10 +40,10 @@ export function HomeHero() {
       </div>
 
       {/* Overlays */}
-      <div className="absolute inset-0 bg-gradient-to-r from-[#1C1C1A]/80 via-[#1C1C1A]/50 to-[#1C1C1A]/20" />
-      <div className="absolute inset-0 bg-gradient-to-t from-[#1C1C1A]/60 via-transparent to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-r from-[#3E4A3C]/85 via-[#3E4A3C]/55 to-[#3E4A3C]/20" />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#3E4A3C]/65 via-transparent to-transparent" />
 
-      {/* Hero content — uses site-wrap for consistent margins */}
+      {/* Hero content */}
       <div className="relative h-full max-w-[1320px] mx-auto px-5 sm:px-8 lg:px-12
                        flex flex-col justify-end pb-16 md:pb-20">
         <div className="max-w-[600px]">
@@ -52,8 +51,8 @@ export function HomeHero() {
           {/* Eyebrow */}
           <div className="flex items-center gap-3 mb-6"
             style={{ opacity: ready ? 1 : 0, transform: ready ? "none" : "translateY(14px)", transition: "opacity 0.9s ease, transform 0.9s ease" }}>
-            <span className="w-7 h-px bg-[#D4AF88]" />
-            <span className="text-[#D4AF88] text-[10px] tracking-[0.32em] uppercase font-sans">
+            <span className="w-7 h-px bg-[#D4AA6A]" />
+            <span className="text-[#D4AA6A] text-[10px] tracking-[0.32em] uppercase font-sans">
               New Orleans · Organic Studio
             </span>
           </div>
@@ -64,11 +63,11 @@ export function HomeHero() {
             style={{ opacity: ready ? 1 : 0, transform: ready ? "none" : "translateY(24px)", transition: "opacity 1s ease 0.18s, transform 1s ease 0.18s" }}
           >
             A New Era of<br />
-            <em className="not-italic text-[#D4AF88]">Radiant Skin</em>
+            <em className="not-italic text-[#D4AA6A]">Radiant Skin</em>
           </h1>
 
           {/* Sub */}
-          <p className="text-[#D4AF88]/85 font-sans text-base sm:text-lg tracking-[0.06em] mb-10"
+          <p className="text-[#D4AA6A]/85 font-sans text-base sm:text-lg tracking-[0.06em] mb-10"
             style={{ opacity: ready ? 1 : 0, transform: ready ? "none" : "translateY(18px)", transition: "opacity 1s ease 0.32s, transform 1s ease 0.32s" }}>
             Organic · Luxurious · Transformative
           </p>
@@ -77,14 +76,14 @@ export function HomeHero() {
           <div className="flex flex-wrap gap-4"
             style={{ opacity: ready ? 1 : 0, transform: ready ? "none" : "translateY(14px)", transition: "opacity 1s ease 0.46s, transform 1s ease 0.46s" }}>
             <Link href="/book"
-              className="px-9 py-4 bg-[#C9A96E] text-[#1C1C1A] text-[10px] tracking-[0.26em]
-                         uppercase font-sans font-medium hover:bg-[#D4AF88]
+              className="px-9 py-4 bg-[#C4974A] text-white text-[10px] tracking-[0.26em]
+                         uppercase font-sans font-medium hover:bg-[#D4AA6A]
                          transition-all duration-400 active:scale-[0.98]">
               Book Appointment
             </Link>
             <Link href="/shop"
               className="px-9 py-4 border border-white/30 text-white text-[10px] tracking-[0.26em]
-                         uppercase font-sans hover:border-[#C9A96E] hover:text-[#C9A96E]
+                         uppercase font-sans hover:border-[#C4974A] hover:text-[#C4974A]
                          transition-all duration-400">
               Shop Skincare
             </Link>
