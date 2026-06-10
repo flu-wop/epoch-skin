@@ -436,7 +436,7 @@ export default function BookPage() {
               <div key={label} className="flex items-center">
                 <div className="flex flex-col items-center">
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-sans font-medium transition-all duration-300 ${
-                    done ? "bg-[#C9A96E] text-[#1C1C1A]" : active ? "bg-[#1C1C1A] text-[#C9A96E]" : "bg-[#E5DCCF] text-[#8C8680]"
+                    done ? "bg-[#C9A96E] text-[#1C1C1A]" : active ? "bg-[#3E4A3C] text-[#C4974A]" : "bg-[#E5DCCF] text-[#8C8680]"
                   }`}>{done ? "✓" : num}</div>
                   <span className={`text-[10px] mt-1.5 font-sans hidden sm:block tracking-wide ${active ? "text-[#1C1C1A]" : "text-[#8C8680]"}`}>{label}</span>
                 </div>
@@ -607,7 +607,7 @@ export default function BookPage() {
                   <button key={slot} onClick={() => setSelectedTime(slot)}
                     className={`py-3 text-center text-xs font-sans tracking-wide border transition-all duration-300 ${
                       selectedTime === slot
-                        ? "bg-[#1C1C1A] text-[#C9A96E] border-[#1C1C1A]"
+                        ? "bg-[#3E4A3C] text-[#C4974A] border-[#3E4A3C]"
                         : "border-[#E5DCCF] text-[#5A5550] hover:border-[#C9A96E]"
                     }`}>
                     {slot}
@@ -622,8 +622,8 @@ export default function BookPage() {
               ← Back
             </button>
             <button onClick={() => setStep(3)} disabled={!selectedDate || !selectedTime}
-              className="px-8 py-3.5 bg-[#1C1C1A] text-[#C9A96E] text-[11px] tracking-[0.22em]
-                         uppercase font-sans hover:bg-[#C9A96E] hover:text-[#1C1C1A]
+              className="px-8 py-3.5 bg-[#3E4A3C] text-[#C4974A] text-[11px] tracking-[0.22em]
+                         uppercase font-sans hover:bg-[#C4974A] hover:text-white
                          transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed">
               Continue →
             </button>

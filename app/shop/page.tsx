@@ -55,7 +55,7 @@ export default function ShopPage() {
     <div className="min-h-screen bg-[#FAF7F2]">
 
       {/* Hero */}
-      <section className="bg-[#1C1C1A] py-20 md:py-28 text-center px-5 relative overflow-hidden">
+      <section className="bg-[#2E3A2C] py-20 md:py-28 text-center px-5 relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none"
           style={{ background: "radial-gradient(ellipse at 30% 50%, rgba(201,169,110,0.06) 0%, transparent 60%)" }} />
         <div className="relative">

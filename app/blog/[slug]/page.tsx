@@ -146,10 +146,10 @@ export default async function BlogPostPage({ params }: Props) {
           <p className="font-serif text-xl text-[#111] mb-3">Ready to experience it in the studio?</p>
           <p className="text-[#888] text-sm mb-6">Our licensed estheticians are here for you.</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Link href="/book" className="px-8 py-3 bg-[#111] text-[#D4AF77] text-xs tracking-widest uppercase hover:bg-[#D4AF77] hover:text-[#111] transition-colors">
+            <Link href="/book" className="px-8 py-3 bg-[#3E4A3C] text-[#C4974A] text-xs tracking-widest uppercase hover:bg-[#C4974A] hover:text-white transition-colors">
               Book Appointment
             </Link>
-            <Link href="/shop" className="px-8 py-3 border border-[#111] text-[#111] text-xs tracking-widest uppercase hover:border-[#D4AF77] hover:text-[#D4AF77] transition-colors">
+            <Link href="/shop" className="px-8 py-3 border border-[#3E4A3C] text-[#3E4A3C] text-xs tracking-widest uppercase hover:border-[#D4AF77] hover:text-[#D4AF77] transition-colors">
               Shop Skincare
             </Link>
           </div>

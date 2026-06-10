@@ -78,8 +78,8 @@ export function HomeServices() {
 
         <div className="text-center mt-12">
           <Link href="/book" className="inline-flex items-center justify-center px-8 py-3.5
-                     bg-[#1C1C1A] text-[#C9A96E] text-[11px] tracking-[0.22em] uppercase font-sans
-                     hover:bg-[#C9A96E] hover:text-[#1C1C1A] transition-all duration-400">
+                     bg-[#3E4A3C] text-[#C4974A] text-[11px] tracking-[0.22em] uppercase font-sans
+                     hover:bg-[#C4974A] hover:text-white transition-all duration-400">
             Book a Service
           </Link>
         </div>

@@ -82,7 +82,7 @@ export default function NewsletterForm({ variant = 'section' }: Props) {
         <button
           type="submit"
           disabled={status === 'loading'}
-          className="px-8 py-3.5 bg-[#111] text-[#D4AF77] text-xs tracking-widest uppercase hover:bg-[#D4AF77] hover:text-[#111] transition-colors duration-300 disabled:opacity-50 whitespace-nowrap"
+          className="px-8 py-3.5 bg-[#3E4A3C] text-[#C4974A] text-xs tracking-widest uppercase hover:bg-[#C4974A] hover:text-white transition-colors duration-300 disabled:opacity-50 whitespace-nowrap"
         >
           {status === 'loading' ? 'Joining...' : 'Subscribe'}
         </button>

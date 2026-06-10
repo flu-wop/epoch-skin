@@ -60,7 +60,7 @@ export function ProductCard({ product, priority = false }: Props) {
         {/* Category tag */}
         <div className="absolute top-3 left-1/2 -translate-x-1/2
                          opacity-0 group-hover:opacity-100 transition-opacity duration-400">
-          <span className="bg-[#18181A]/80 text-[#C9A96E] text-[8px] tracking-[0.2em] uppercase
+          <span className="bg-[#2E3A2C]/80 text-[#C9A96E] text-[8px] tracking-[0.2em] uppercase
                             px-3 py-1.5 font-sans backdrop-blur-sm">
             {product.category}
           </span>

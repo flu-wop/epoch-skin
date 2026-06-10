@@ -38,7 +38,7 @@ function ImageGallery({ images, alt }: { images: string[]; alt: string }) {
           priority
         />
         {!isZoomed && (
-          <div className="absolute bottom-3 right-3 bg-[#1C1C1A]/50 text-white text-xs px-3 py-1.5 font-sans tracking-wide">
+          <div className="absolute bottom-3 right-3 bg-[#2E3A2C]/50 text-white text-xs px-3 py-1.5 font-sans tracking-wide">
             Click to zoom
           </div>
         )}

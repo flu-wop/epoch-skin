@@ -155,7 +155,7 @@ export function DateTimeSelector({
           disabled={!canProceed}
           className={`flex-1 py-4 px-6 text-xs tracking-widest uppercase transition-colors ${
             canProceed
-              ? "bg-[#111] text-[#D4AF77] hover:bg-[#D4AF77] hover:text-[#111]"
+              ? "bg-[#3E4A3C] text-[#C4974A] hover:bg-[#C4974A] hover:text-white"
               : "bg-[#E8E0D0] text-[#AAA] cursor-not-allowed"
           }`}
         >

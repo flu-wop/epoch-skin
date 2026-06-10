@@ -113,8 +113,8 @@ export default function AdminBookingsPage() {
             {error && <p className="text-red-500 text-xs font-sans">{error}</p>}
             <button
               type="submit"
-              className="w-full py-3.5 bg-[#1C1C1A] text-[#C9A96E] text-[11px] tracking-[0.2em]
-                         uppercase font-sans hover:bg-[#C9A96E] hover:text-[#1C1C1A] transition-all duration-300"
+              className="w-full py-3.5 bg-[#3E4A3C] text-[#C4974A] text-[11px] tracking-[0.2em]
+                         uppercase font-sans hover:bg-[#C4974A] hover:text-white transition-all duration-300"
             >
               Enter
             </button>

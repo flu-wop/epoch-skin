@@ -109,8 +109,8 @@ export default function AboutPage() {
           </ScrollReveal>
           <ScrollReveal className="text-center mt-10" delay={150}>
             <Link href="/book" className="inline-flex items-center justify-center px-8 py-3.5
-                       border border-[#1C1C1A] text-[#1C1C1A] text-[11px] tracking-[0.22em] uppercase font-sans
-                       hover:bg-[#1C1C1A] hover:text-[#C9A96E] transition-all duration-400">
+                       border border-[#3E4A3C] text-[#3E4A3C] text-[11px] tracking-[0.22em] uppercase font-sans
+                       hover:bg-[#3E4A3C] hover:text-[#C4974A] transition-all duration-400">
               Book a Service
             </Link>
           </ScrollReveal>
@@ -179,8 +179,8 @@ export default function AboutPage() {
                 ))}
               </div>
               <Link href="/shop" className="inline-flex items-center justify-center mt-10 px-8 py-3.5
-                         bg-[#1C1C1A] text-[#C9A96E] text-[11px] tracking-[0.22em] uppercase font-sans
-                         hover:bg-[#C9A96E] hover:text-[#1C1C1A] transition-all duration-400">
+                         bg-[#3E4A3C] text-[#C4974A] text-[11px] tracking-[0.22em] uppercase font-sans
+                         hover:bg-[#C4974A] hover:text-white transition-all duration-400">
                 Shop the Ritual
               </Link>
             </ScrollReveal>
@@ -211,7 +211,7 @@ export default function AboutPage() {
       </section>
 
       {/* ── TRANSPARENCY ── */}
-      <section className="bg-[#1C1C1A] py-20 px-5 text-center">
+      <section className="bg-[#2E3A2C] py-20 px-5 text-center">
         <div className="max-w-2xl mx-auto">
           <div className="w-10 h-px bg-[#C9A96E] mx-auto mb-5" />
           <p className="text-[11px] tracking-[0.28em] uppercase text-[#C9A96E] font-sans mb-4">Full Transparency</p>
@@ -241,8 +241,8 @@ export default function AboutPage() {
 
           <a href="https://instagram.com/epoch_skin" target="_blank" rel="noreferrer"
             className="inline-flex items-center justify-center px-8 py-3.5
-                       border border-[#1C1C1A] text-[#1C1C1A] text-[11px] tracking-[0.22em] uppercase font-sans
-                       hover:bg-[#1C1C1A] hover:text-[#C9A96E] transition-all duration-400">
+                       border border-[#3E4A3C] text-[#3E4A3C] text-[11px] tracking-[0.22em] uppercase font-sans
+                       hover:bg-[#3E4A3C] hover:text-[#C4974A] transition-all duration-400">
             Follow on Instagram
           </a>
         </div>
@@ -256,12 +256,12 @@ export default function AboutPage() {
             <p className="font-serif text-3xl md:text-4xl text-[#1C1C1A] mb-8">Ready to begin your epoch?</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/book" className="inline-flex items-center justify-center px-10 py-3.5
-                         bg-[#1C1C1A] text-[#C9A96E] text-[11px] tracking-[0.22em] uppercase font-sans
-                         hover:bg-[#C9A96E] hover:text-[#1C1C1A] transition-all duration-400">
+                         bg-[#3E4A3C] text-[#C4974A] text-[11px] tracking-[0.22em] uppercase font-sans
+                         hover:bg-[#C4974A] hover:text-white transition-all duration-400">
                 Book Appointment
               </Link>
               <Link href="/shop" className="inline-flex items-center justify-center px-10 py-3.5
-                         border border-[#1C1C1A] text-[#1C1C1A] text-[11px] tracking-[0.22em] uppercase font-sans
+                         border border-[#3E4A3C] text-[#3E4A3C] text-[11px] tracking-[0.22em] uppercase font-sans
                          hover:border-[#C9A96E] hover:text-[#C9A96E] transition-all duration-400">
                 Shop Skincare
               </Link>

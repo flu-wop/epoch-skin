@@ -59,7 +59,7 @@ export default function CartPage() {
           <p className="text-[#888] mb-8">Discover our Organic Skincare collection.</p>
           <Link
             href="/shop"
-            className="inline-block px-10 py-3.5 bg-[#111] text-[#D4AF77] text-xs tracking-widest uppercase hover:bg-[#D4AF77] hover:text-[#111] transition-colors"
+            className="inline-block px-10 py-3.5 bg-[#3E4A3C] text-[#C4974A] text-xs tracking-widest uppercase hover:bg-[#C4974A] hover:text-white transition-colors"
           >
             Shop Skincare
           </Link>
@@ -159,7 +159,7 @@ export default function CartPage() {
               <button
                 onClick={handleCheckout}
                 disabled={loading}
-                className="w-full py-4 bg-[#111] text-[#D4AF77] text-xs tracking-widest uppercase hover:bg-[#D4AF77] hover:text-[#111] transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full py-4 bg-[#3E4A3C] text-[#C4974A] text-xs tracking-widest uppercase hover:bg-[#C4974A] hover:text-white transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? 'Redirecting...' : 'Proceed to Checkout'}
               </button>

@@ -29,7 +29,7 @@ export default function SuccessPage() {
         <div className="space-y-3">
           <Link
             href="/shop"
-            className="block w-full py-3.5 bg-[#111] text-[#D4AF77] text-xs tracking-widest uppercase hover:bg-[#D4AF77] hover:text-[#111] transition-colors"
+            className="block w-full py-3.5 bg-[#3E4A3C] text-[#C4974A] text-xs tracking-widest uppercase hover:bg-[#C4974A] hover:text-white transition-colors"
           >
             Continue Shopping
           </Link>

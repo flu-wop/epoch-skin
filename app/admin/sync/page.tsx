@@ -136,8 +136,8 @@ export default function AdminSyncPage() {
                          focus:outline-none focus:border-[#C9A96E] transition-colors"
             />
             <button onClick={runSync} disabled={syncing}
-              className="px-6 py-3 bg-[#1C1C1A] text-[#C9A96E] text-[11px] tracking-[0.18em]
-                         uppercase font-sans hover:bg-[#C9A96E] hover:text-[#1C1C1A]
+              className="px-6 py-3 bg-[#3E4A3C] text-[#C4974A] text-[11px] tracking-[0.18em]
+                         uppercase font-sans hover:bg-[#C4974A] hover:text-white
                          transition-all duration-400 disabled:opacity-50 whitespace-nowrap">
               {syncing ? 'Syncing...' : 'Sync Now'}
             </button>
