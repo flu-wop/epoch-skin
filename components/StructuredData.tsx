@@ -36,7 +36,7 @@ export function StructuredData() {
         "logo": "https://epoch-skin.com/logos/main-logo.png",
         "founder": {
           "@type": "Person",
-          "name": "Kayla Ford"
+          "name": "Kayla"
         }
       }
     ]

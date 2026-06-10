@@ -131,7 +131,7 @@ export default async function BlogPostPage({ params }: Props) {
             <span className="text-[#D4AF77] font-serif text-sm">K</span>
           </div>
           <div>
-            <p className="text-sm font-medium text-[#111]">Kayla Ford</p>
+            <p className="text-sm font-medium text-[#111]">Kayla</p>
             <p className="text-xs text-[#AAA]">Founder & Licensed Esthetician</p>
           </div>
         </div>

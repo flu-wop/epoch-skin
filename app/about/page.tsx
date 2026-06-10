@@ -8,7 +8,7 @@ import { ScrollReveal } from "@/components/ScrollReveal";
 
 export const metadata: Metadata = {
   title: "About | Epoch Skin",
-  description: "Meet Kayla Ford — licensed esthetician and founder of Epoch Skin, New Orleans premier Organic Skincare and waxing studio.",
+  description: "Meet Kayla — licensed esthetician and founder of Epoch Skin, New Orleans premier Organic Skincare and waxing studio.",
   alternates: { canonical: "https://epoch-skin.com/about" },
   openGraph: {
     title: "About | Epoch Skin",
@@ -81,7 +81,7 @@ export default function AboutPage() {
                              shadow-[0_8px_40px_rgba(201,169,110,0.22)]">
               <Image
                 src="/images/team/founder-kayla.png"
-                alt="Kayla Ford, Founder & Licensed Esthetician, Epoch Skin"
+                alt="Kayla, Founder & Licensed Esthetician, Epoch Skin"
                 fill
                 className="object-cover object-top"
                 sizes="176px"
@@ -103,7 +103,7 @@ export default function AboutPage() {
             <h2 className="font-serif text-4xl text-[#1C1C1A]">Our Story</h2>
           </ScrollReveal>
           <ScrollReveal delay={100} className="space-y-5 text-[#5A5550] font-sans text-sm leading-relaxed">
-            <p>Kayla Ford founded Epoch Skin after experiencing firsthand the damage that harsh, synthetic products inflict — and the frustration of finding no Organic-first studio in New Orleans that took clean formulation seriously enough to deliver real results.</p>
+            <p>Kayla founded Epoch Skin after experiencing firsthand the damage that harsh, synthetic products inflict — and the frustration of finding no Organic-first studio in New Orleans that took clean formulation seriously enough to deliver real results.</p>
             <p>From formulating in her kitchen to opening Epoch Skin, the journey is guided by a single belief: the beauty community deserves better — Skincare rooted in transparency, certification, and the science of genuinely healthy skin.</p>
             <p>Today, every product is small-batch formulated with certified Organic ingredients. Every service is performed by a Louisiana State Board licensed esthetician. And every client leaves feeling seen, cared for, and radiant.</p>
           </ScrollReveal>

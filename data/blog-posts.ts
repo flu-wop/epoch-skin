@@ -44,7 +44,7 @@ At Epoch Skin, every product is formulated with certified Organic Ingredients. W
 
 Ready to experience the difference? Explore our collection of Organic Skincare products designed for radiant, healthy skin.
     `,
-    author: "Kayla Ford",
+    author: "Kayla",
     date: "2026-02-15",
     category: "Skincare Tips",
     image: "/images/blog/skincare-tips.png",
@@ -84,7 +84,7 @@ Our formulas use concentrated Organic Ingredients that deliver visible results w
 
 Ready to achieve your best skin yet? Start your glass skin journey with our complete Organic Skincare collection.
     `,
-    author: "Kayla Ford",
+    author: "Kayla",
     date: "2026-02-10",
     category: "Beauty Routines",
     image: "/images/blog/beauty-routines.png",
@@ -129,7 +129,7 @@ Our licensed estheticians specialize in gentle, effective waxing techniques usin
 
 Ready to book? Schedule your appointment today and experience the Epoch Skin difference.
     `,
-    author: "Kayla Ford",
+    author: "Kayla",
     date: "2026-02-05",
     category: "Waxing Tips",
     image: "/images/blog/beauty-routines.png",

@@ -21,7 +21,7 @@ export default function AboutEpochSkin() {
           </div>
 
           <p className="text-lg md:text-xl text-gray-700 leading-relaxed mb-8">
-            Epoch Skin is a premium waxing studio and curated Organic Skincare line founded in 2026 by Kayla Ford. 
+            Epoch Skin is a premium waxing studio and curated Organic Skincare line founded in 2026 by Kayla. 
             We believe Skincare is more than routine—it's a transformative journey. Every service and product is 
             carefully crafted with certified Organic Ingredients to honor your skin's natural beauty while delivering 
             visible, long-lasting results.

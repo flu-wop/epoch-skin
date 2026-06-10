@@ -102,7 +102,7 @@ export function ContactForm({
             id="name"
             value={name}
             onChange={(e) => onNameChange(e.target.value)}
-            placeholder="Kayla Ford"
+            placeholder="Kayla"
             className={`
               w-full px-4 py-3 rounded-lg border-2 transition-colors
               ${

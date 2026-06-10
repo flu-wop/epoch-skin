@@ -31,8 +31,8 @@ export const metadata: Metadata = {
   },
   description: 'Certified Organic Skincare and expert waxing in New Orleans. Glass-skin K-Beauty treatments by Louisiana State Board licensed estheticians.',
   keywords: ['Organic Skincare New Orleans', 'Brazilian wax New Orleans', 'glass skin treatment', 'licensed esthetician'],
-  authors: [{ name: 'Kayla Ford', url: SITE }],
-  creator: 'Kayla Ford',
+  authors: [{ name: 'Kayla', url: SITE }],
+  creator: 'Kayla',
   openGraph: {
     type: 'website', locale: 'en_US', url: SITE, siteName: 'Epoch Skin',
     title: 'Epoch Skin | Organic Skincare & Waxing Studio',
