@@ -52,8 +52,8 @@ export function SiteHeader() {
             <Image
               src="/logos/header-logo.png"
               alt="Epoch Skin"
-              width={1259}
-              height={237}
+              width={689}
+              height={221}
               className="h-10 w-auto"   /* 40px tall — clean, not tiny, not huge */
               priority
             />
