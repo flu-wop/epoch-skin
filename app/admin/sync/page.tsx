@@ -1,7 +1,7 @@
 "use client";
 // app/admin/sync/page.tsx
-// Simple admin page to trigger Stripe product sync.
-// Protect this route — add password check or Vercel password protection.
+// Admin page to trigger Stripe product sync.
+// Protected server-side by SYNC_SECRET (constant-time compare, rate limited).
 
 import { useState } from "react";
 
@@ -143,7 +143,7 @@ export default function AdminSyncPage() {
             </button>
           </div>
           <p className="text-[#8C8680] text-xs font-sans">
-            Default secret: <code className="bg-[#F5F0E8] px-1.5 py-0.5">epoch-sync-2026</code> — change via SYNC_SECRET in Vercel env vars.
+            Requires the SYNC_SECRET value set in Vercel env vars.
           </p>
         </div>
 

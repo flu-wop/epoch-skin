@@ -6,15 +6,32 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { products } from '@/data/products';
+import { rateLimit, clientIp } from '@/lib/rate-limit';
+import { timingSafeEqual } from 'crypto';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2024-04-10' });
 const SITE   = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://epoch-skin.com';
-const SECRET = process.env.SYNC_SECRET ?? 'epoch-sync-2026';
+
+function safeEq(a: string, b: string): boolean {
+  const A = Buffer.from(a), B = Buffer.from(b);
+  return A.length === B.length && timingSafeEqual(A, B);
+}
 
 export async function POST(req: Request) {
+  const ok = await rateLimit(`sync-products:${clientIp(req)}`, 5, 900); // 5 per 15 min
+  if (!ok) return NextResponse.json({ error: 'Too many attempts. Try again later.' }, { status: 429 });
+
+  const configuredSecret = process.env.SYNC_SECRET;
+  if (!configuredSecret) {
+    return NextResponse.json({ error: 'Sync is not configured.' }, { status: 500 });
+  }
+
   try {
     const body = await req.json().catch(() => ({}));
-    if (body.secret !== SECRET) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const providedSecret = String(body?.secret ?? '');
+    if (!safeEq(providedSecret, configuredSecret)) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
 
     const results = [];
 

@@ -2,6 +2,9 @@ import { Resend } from 'resend';
 
 export const getResend = () => new Resend(process.env.RESEND_API_KEY ?? '');
 
+const FROM = process.env.RESEND_FROM_EMAIL ?? 'hello@epoch-skin.com';
+const TO_KAYLA = process.env.RESEND_TO_EMAIL ?? 'kayla@epoch-skin.com';
+
 export async function sendBookingConfirmation({
   name, email, services, total,
 }: {
@@ -9,7 +12,7 @@ export async function sendBookingConfirmation({
 }) {
   const resend = getResend();
   return resend.emails.send({
-    from: 'Epoch Skin <bookings@epochskin.com>',
+    from: `Epoch Skin <${FROM}>`,
     to: email,
     subject: 'Your Epoch Skin appointment is confirmed',
     html: `
@@ -30,8 +33,8 @@ export async function sendBookingNotification({
 }) {
   const resend = getResend();
   return resend.emails.send({
-    from: 'Epoch Skin <bookings@epochskin.com>',
-    to: 'kayla@epochskin.com',
+    from: `Epoch Skin <${FROM}>`,
+    to: TO_KAYLA,
     subject: `New booking — ${date} at ${time}`,
     html: `
       <p><strong>New appointment:</strong></p>
@@ -56,8 +59,8 @@ export async function sendContactNotification({
 }) {
   const resend = getResend();
   return resend.emails.send({
-    from: 'Epoch Skin <contact@epochskin.com>',
-    to: 'kayla@epochskin.com',
+    from: `Epoch Skin <${FROM}>`,
+    to: TO_KAYLA,
     subject: `New contact form — ${name}`,
     html: `
       <ul>
@@ -78,7 +81,7 @@ export async function sendContactAutoReply({
 }) {
   const resend = getResend();
   return resend.emails.send({
-    from: 'Epoch Skin <contact@epochskin.com>',
+    from: `Epoch Skin <${FROM}>`,
     to: email,
     subject: "We'll be in touch soon",
     html: `

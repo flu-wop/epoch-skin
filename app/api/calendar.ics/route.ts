@@ -82,7 +82,7 @@ export async function GET() {
 
       const dtStart = toICSDate(date, time);
       const dtEnd   = addMinutes(dtStart, duration);
-      const uid     = `epoch-booking-${b.id}@epochskin.com`;
+      const uid     = `epoch-booking-${b.id}@epoch-skin.com`;
 
       const descParts = [
         `Client: ${name}`,

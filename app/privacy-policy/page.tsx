@@ -107,7 +107,7 @@ export default function PrivacyPolicyPage() {
                 If you have any questions about this Privacy Policy or our privacy practices, please contact us:
               </p>
               <div className="mt-4 text-gray-700">
-                <p>Email: <a href="mailto:kayla@epochskin.com" className="text-clay-600 hover:text-clay-700">kayla@epochskin.com</a></p>
+                <p>Email: <a href="mailto:kayla@epoch-skin.com" className="text-clay-600 hover:text-clay-700">kayla@epoch-skin.com</a></p>
                 <p>Phone: <a href="tel:5047774094" className="text-clay-600 hover:text-clay-700">(504) 777-4094</a></p>
               </div>
             </section>

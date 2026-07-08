@@ -43,7 +43,7 @@ export default function ShippingReturnsPage() {
 
               <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">Shipping Locations</h3>
               <p className="text-gray-700 leading-relaxed">
-                We currently ship within the United States. For international shipping inquiries, please contact us at <a href="mailto:kayla@epochskin.com" className="text-clay-600 hover:text-clay-700">kayla@epochskin.com</a>.
+                We currently ship within the United States. For international shipping inquiries, please contact us at <a href="mailto:kayla@epoch-skin.com" className="text-clay-600 hover:text-clay-700">kayla@epoch-skin.com</a>.
               </p>
             </section>
 
@@ -78,7 +78,7 @@ export default function ShippingReturnsPage() {
                 To initiate a return:
               </p>
               <ol className="list-decimal list-inside text-gray-700 space-y-2 ml-4">
-                <li>Contact us at <a href="mailto:kayla@epochskin.com" className="text-clay-600 hover:text-clay-700">kayla@epochskin.com</a> with your order number</li>
+                <li>Contact us at <a href="mailto:kayla@epoch-skin.com" className="text-clay-600 hover:text-clay-700">kayla@epoch-skin.com</a> with your order number</li>
                 <li>We'll provide you with return instructions and a return authorization number</li>
                 <li>Carefully package the item(s) with all original materials</li>
                 <li>Ship the return to the address provided (return shipping costs are the customer's responsibility unless the item is defective)</li>
@@ -96,7 +96,7 @@ export default function ShippingReturnsPage() {
             <section className="mb-8">
               <h2 className="text-2xl font-serif font-bold text-gray-900 mb-4">Damaged or Defective Items</h2>
               <p className="text-gray-700 leading-relaxed">
-                If you receive a damaged or defective product, please contact us immediately at <a href="mailto:kayla@epochskin.com" className="text-clay-600 hover:text-clay-700">kayla@epochskin.com</a> with photos of the damage. We'll arrange for a replacement or full refund, and we'll cover return shipping costs.
+                If you receive a damaged or defective product, please contact us immediately at <a href="mailto:kayla@epoch-skin.com" className="text-clay-600 hover:text-clay-700">kayla@epoch-skin.com</a> with photos of the damage. We'll arrange for a replacement or full refund, and we'll cover return shipping costs.
               </p>
             </section>
 
@@ -119,7 +119,7 @@ export default function ShippingReturnsPage() {
                 If you have any questions about shipping or returns, we're here to help:
               </p>
               <div className="mt-4 text-gray-700">
-                <p>Email: <a href="mailto:kayla@epochskin.com" className="text-clay-600 hover:text-clay-700">kayla@epochskin.com</a></p>
+                <p>Email: <a href="mailto:kayla@epoch-skin.com" className="text-clay-600 hover:text-clay-700">kayla@epoch-skin.com</a></p>
                 <p>Phone: <a href="tel:5047774094" className="text-clay-600 hover:text-clay-700">(504) 777-4094</a></p>
               </div>
             </section>

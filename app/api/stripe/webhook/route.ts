@@ -11,8 +11,8 @@ import { getResend } from '@/lib/email';
 
 const stripe  = new Stripe(process.env.STRIPE_SECRET_KEY!);
 const SITE    = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://epoch-skin.com';
-const TO_KAYLA = process.env.RESEND_TO_EMAIL    ?? 'kayla@epochskin.com';
-const FROM    = process.env.RESEND_FROM_EMAIL   ?? 'hello@epochskin.com';
+const TO_KAYLA = process.env.RESEND_TO_EMAIL    ?? 'kayla@epoch-skin.com';
+const FROM    = process.env.RESEND_FROM_EMAIL   ?? 'hello@epoch-skin.com';
 
 function getTurso() {
   return createClient({
@@ -40,6 +40,9 @@ async function initDB(db: ReturnType<typeof getTurso>) {
       created_at TEXT DEFAULT (datetime('now'))
     )
   `);
+  await db.execute(`
+    CREATE UNIQUE INDEX IF NOT EXISTS idx_session ON bookings(stripe_session_id)
+  `);
 }
 
 function pad(n: number) { return String(n).padStart(2, '0'); }
@@ -57,7 +60,7 @@ function generateICS(b: {
   const dtStart   = `${year}${pad(month)}${pad(day)}T${pad(h)}${pad(m)}00`;
   const endTotal  = h * 60 + m + b.duration;
   const dtEnd     = `${year}${pad(month)}${pad(day)}T${pad(Math.floor(endTotal/60)%24)}${pad(endTotal%60)}00`;
-  const uid       = `epoch-${Date.now()}@epochskin.com`;
+  const uid       = `epoch-${Date.now()}@epoch-skin.com`;
   const now       = new Date().toISOString().replace(/[\-:.]/g,'').slice(0,15)+'Z';
   return [
     'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Epoch Skin//Booking//EN',
@@ -66,7 +69,7 @@ function generateICS(b: {
     `SUMMARY:Epoch Skin – ${b.service}`,
     `DESCRIPTION:Appointment at Epoch Skin\\nService: ${b.service}\\nDate: ${b.date} at ${b.time}\\n\\nQuestions? (504) 777-4094`,
     `LOCATION:Epoch Skin Studio\\, New Orleans\\, LA`,
-    `ORGANIZER;CN=Epoch Skin:mailto:kayla@epochskin.com`,
+    `ORGANIZER;CN=Epoch Skin:mailto:kayla@epoch-skin.com`,
     `ATTENDEE;ROLE=REQ-PARTICIPANT;CN=${b.name}:mailto:${b.email}`,
     'STATUS:CONFIRMED','END:VEVENT','END:VCALENDAR',
   ].join('\r\n');
@@ -154,12 +157,13 @@ export async function POST(req: NextRequest) {
       sessionId: session.id,
     };
 
-    // Save to Turso
+    // Save to Turso — idempotent via UNIQUE(stripe_session_id)
+    let isDuplicate = false;
     try {
       const db = getTurso();
       await initDB(db);
-      await db.execute({
-        sql: `INSERT INTO bookings
+      const result = await db.execute({
+        sql: `INSERT OR IGNORE INTO bookings
               (name, email, phone, service, category, price, date, time, duration, notes, stripe_session_id, paid)
               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)`,
         args: [
@@ -169,8 +173,14 @@ export async function POST(req: NextRequest) {
           booking.notes || null, booking.sessionId,
         ],
       });
+      isDuplicate = result.rowsAffected === 0;
     } catch (dbErr) {
       console.error('[webhook] Turso error:', dbErr);
+    }
+
+    if (isDuplicate) {
+      // Stripe retry of an event we already processed — don't re-send emails.
+      return NextResponse.json({ received: true, duplicate: true });
     }
 
     // Send emails

@@ -1,7 +1,8 @@
 'use client';
 // app/admin/bookings/page.tsx
 // Admin dashboard for viewing all Epoch Skin bookings from Turso.
-// Protected by ADMIN_SECRET env var (default: epoch-admin-2026)
+// Auth: POST /api/admin/login sets an httpOnly session cookie (see lib/admin-auth.ts).
+// The password is verified server-side only — never shipped to the client.
 
 import { useState, useEffect } from 'react';
 
@@ -23,6 +24,7 @@ interface Booking {
 export default function AdminBookingsPage() {
   const [password, setPassword]     = useState('');
   const [authed, setAuthed]         = useState(false);
+  const [checkingSession, setCheckingSession] = useState(true);
   const [bookings, setBookings]     = useState<Booking[]>([]);
   const [loading, setLoading]       = useState(false);
   const [error, setError]           = useState('');
@@ -35,26 +37,43 @@ export default function AdminBookingsPage() {
     setError('');
     try {
       const res = await fetch('/api/bookings');
+      if (res.status === 401) {
+        setAuthed(false);
+        return;
+      }
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? 'Failed to load bookings');
       setBookings(data.bookings ?? []);
+      setAuthed(true);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Something went wrong');
     } finally {
       setLoading(false);
+      setCheckingSession(false);
     }
   };
 
+  // On mount: an existing session cookie (up to 8h) means no re-login needed.
   useEffect(() => {
-    if (authed) fetchBookings();
-  }, [authed]);
+    fetchBookings();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === (process.env.NEXT_PUBLIC_ADMIN_PASSWORD ?? 'epoch-admin-2026')) {
-      setAuthed(true);
-    } else {
-      setError('Incorrect password.');
+    setError('');
+    try {
+      const res = await fetch('/api/admin/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? 'Incorrect password.');
+      setPassword('');
+      await fetchBookings();
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Incorrect password.');
     }
   };
 
@@ -92,6 +111,11 @@ export default function AdminBookingsPage() {
       {sortKey === col ? (sortDir === 'asc' ? '↑' : '↓') : '↕'}
     </span>
   );
+
+  // ── Checking for existing session ───────────────────────────────
+  if (checkingSession) {
+    return <div className="min-h-screen bg-[#FAF7F2]" />;
+  }
 
   // ── Login screen ────────────────────────────────────────────────
   if (!authed) {

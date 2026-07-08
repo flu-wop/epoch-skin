@@ -2,10 +2,10 @@
 export const SITE_NAME = "Epoch Skin";
 export const SITE_DESCRIPTION =
   "Premium waxing studio and curated skincare products. Natural, luxurious, and effective treatments for your skin.";
-export const SITE_URL = "https://epochskin.com"; // Update with actual domain
+export const SITE_URL = "https://epoch-skin.com"; // Update with actual domain
 
 // Contact information
-export const CONTACT_EMAIL = "hello@epochskin.com";
+export const CONTACT_EMAIL = "hello@epoch-skin.com";
 export const CONTACT_PHONE = "(555) 123-4567";
 export const STUDIO_ADDRESS = {
   street: "123 Wellness Avenue",

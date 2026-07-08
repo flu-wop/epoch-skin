@@ -4,10 +4,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getResend } from '@/lib/email';
 import { createClient } from '@libsql/client';
+import { cookies } from 'next/headers';
+import { verifyAdminCookie, ADMIN_COOKIE_NAME } from '@/lib/admin-auth';
+import { rateLimit, clientIp } from '@/lib/rate-limit';
 
 const SITE     = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://epoch-skin.com';
-const TO_KAYLA = process.env.RESEND_TO_EMAIL ?? 'kayla@epochskin.com';
-const FROM     = process.env.RESEND_FROM_EMAIL ?? 'hello@epochskin.com';
+const TO_KAYLA = process.env.RESEND_TO_EMAIL ?? 'kayla@epoch-skin.com';
+const FROM     = process.env.RESEND_FROM_EMAIL ?? 'hello@epoch-skin.com';
 
 function getTurso() {
   return createClient({
@@ -60,7 +63,7 @@ function generateICS(b: BookingPayload): string {
   const dtStart = `${year}${p(month)}${p(day)}T${p(h)}${p(m)}00`;
   const endTotal = h * 60 + m + b.duration;
   const dtEnd = `${year}${p(month)}${p(day)}T${p(Math.floor(endTotal/60)%24)}${p(endTotal%60)}00`;
-  const uid = `epoch-${Date.now()}@epochskin.com`;
+  const uid = `epoch-${Date.now()}@epoch-skin.com`;
   const now = new Date().toISOString().replace(/[\-:.]/g,'').slice(0,15)+'Z';
   return [
     'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Epoch Skin//Booking//EN',
@@ -69,7 +72,7 @@ function generateICS(b: BookingPayload): string {
     `SUMMARY:Epoch Skin – ${b.service}`,
     `DESCRIPTION:Appointment at Epoch Skin\\nService: ${b.service}\\nDate: ${b.date} at ${b.time}\\n\\nQuestions? (504) 777-4094`,
     `LOCATION:Epoch Skin Studio\\, New Orleans\\, LA`,
-    `ORGANIZER;CN=Epoch Skin:mailto:kayla@epochskin.com`,
+    `ORGANIZER;CN=Epoch Skin:mailto:kayla@epoch-skin.com`,
     `ATTENDEE;ROLE=REQ-PARTICIPANT;CN=${b.name}:mailto:${b.email}`,
     'STATUS:CONFIRMED','END:VEVENT','END:VCALENDAR',
   ].join('\r\n');
@@ -121,6 +124,11 @@ function emailHTML(b: BookingPayload, isClient: boolean): string {
 
 // ── POST — create booking ────────────────────────────────────────
 export async function POST(req: NextRequest) {
+  const ok = await rateLimit(`bookings:${clientIp(req)}`, 10, 600); // 10 per 10 min
+  if (!ok) {
+    return NextResponse.json({ error: 'Too many requests. Please try again shortly.' }, { status: 429 });
+  }
+
   try {
     const booking: BookingPayload = await req.json();
     if (!booking.name || !booking.email || !booking.service || !booking.date || !booking.time) {
@@ -182,6 +190,12 @@ export async function POST(req: NextRequest) {
 
 // ── GET — list bookings (admin) ──────────────────────────────────
 export async function GET() {
+  const cookieStore = await cookies();
+  const authed = verifyAdminCookie(cookieStore.get(ADMIN_COOKIE_NAME)?.value);
+  if (!authed) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   try {
     const db = getTurso();
     await initDB(db);

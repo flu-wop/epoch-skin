@@ -80,8 +80,8 @@ export function BookingSuccess({ bookingData }: BookingSuccessProps) {
       <div className="text-sm text-gray-600">
         <p>Questions? Contact us at</p>
         <p className="font-medium text-gray-900 mt-1">
-          <a href="mailto:kayla@epochskin.com" className="hover:text-clay-600">
-            kayla@epochskin.com
+          <a href="mailto:kayla@epoch-skin.com" className="hover:text-clay-600">
+            kayla@epoch-skin.com
           </a>
           {" or "}
           <a href="tel:5047774094" className="hover:text-clay-600">
