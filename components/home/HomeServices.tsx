@@ -13,7 +13,7 @@ const SERVICES = [
   {
     title: "Facial Waxing",
     desc: "Precision brow, lip, and chin waxing by licensed estheticians. Clean lines, zero irritation.",
-    image: "/images/services/wax.png",
+    image: "/images/services/eyebrow-wax.png",
     href: "/book?category=facial-wax",
     from: "From $8",
   },
