@@ -201,3 +201,81 @@ export async function sendNewsletterNotification({ email }: { email: string }) {
     html: `<p>${email} just subscribed to the newsletter.</p>`,
   });
 }
+
+// ── Product orders ──────────────────────────────────────────────────────
+
+export interface OrderLineItem {
+  name: string;
+  quantity: number;
+  amountCents: number; // line total, already reflects any discount
+}
+
+export interface OrderEmailData {
+  email: string;
+  items: OrderLineItem[];
+  subtotalCents: number;
+  discountCode: string | null;
+  taxCents: number;
+  totalCents: number;
+  sessionId: string;
+}
+
+function money(cents: number) {
+  return `$${(cents / 100).toFixed(2)}`;
+}
+
+function orderEmailHTML(o: OrderEmailData, isClient: boolean): string {
+  const rows = o.items.map(
+    (i) => `<tr>
+        <td style="color:#1C1C1A;padding:7px 0;">${i.name} × ${i.quantity}</td>
+        <td style="color:#1C1C1A;padding:7px 0;text-align:right;">${money(i.amountCents)}</td>
+      </tr>`
+  ).join('');
+
+  return `<!DOCTYPE html><html><head><meta charset="utf-8"/></head>
+<body style="margin:0;padding:0;background:#FAF7F2;font-family:Georgia,serif;">
+<div style="max-width:560px;margin:0 auto;background:#fff;">
+  <div style="background:#1C1C1A;padding:28px 36px;text-align:center;">
+    <p style="color:#C9A96E;font-size:22px;margin:0;letter-spacing:0.1em;">EPOCH SKIN</p>
+    <p style="color:#8A8076;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;margin:6px 0 0;">Organic Skincare · New Orleans</p>
+  </div>
+  <div style="padding:36px;color:#2E2E2C;line-height:1.7;">
+    <h2 style="font-size:22px;margin-bottom:8px;color:#1C1C1A;">${isClient ? 'Thank you for your order' : 'New Paid Order'}</h2>
+    <p style="font-size:14px;">${isClient
+      ? "Your order is confirmed and payment received. We'll have it packed and shipped soon."
+      : `A new order has been placed and paid by ${o.email}.`}</p>
+    <hr style="border:none;border-top:1px solid #E5DCCF;margin:24px 0;"/>
+    <table style="width:100%;font-size:14px;border-collapse:collapse;">
+      ${rows}
+      <tr><td style="padding:12px 0 4px;color:#8C8680;">Subtotal</td><td style="padding:12px 0 4px;text-align:right;">${money(o.subtotalCents)}</td></tr>
+      ${o.discountCode ? `<tr><td style="padding:2px 0;color:#4A9B6F;">Discount (${o.discountCode})</td><td style="padding:2px 0;text-align:right;color:#4A9B6F;">included</td></tr>` : ''}
+      <tr><td style="padding:2px 0;color:#8C8680;">Tax</td><td style="padding:2px 0;text-align:right;">${money(o.taxCents)}</td></tr>
+      <tr><td style="padding:8px 0 0;font-weight:600;color:#1C1C1A;">Total</td><td style="padding:8px 0 0;text-align:right;font-weight:600;color:#C9A96E;">${money(o.totalCents)}</td></tr>
+    </table>
+    <hr style="border:none;border-top:1px solid #E5DCCF;margin:24px 0;"/>
+    ${isClient ? `
+    <p style="font-size:13px;color:#5A5550;">Allow 5–7 business days for standard shipping. Questions? Call or text <strong>(504) 777-4094</strong>.</p>
+    <a href="${SITE}/shop" style="display:inline-block;margin-top:16px;padding:12px 28px;background:#C9A96E;color:#1C1C1A;text-decoration:none;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;">Shop More</a>
+    ` : `<a href="mailto:${o.email}" style="display:inline-block;padding:12px 28px;background:#1C1C1A;color:#C9A96E;text-decoration:none;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;">Reply to Customer</a>`}
+  </div>
+  <div style="background:#F5F0E8;padding:18px 36px;text-align:center;color:#8C8680;font-size:11px;">
+    <p style="margin:0;">© 2026 Epoch Skin · <a href="${SITE}" style="color:#C9A96E;">epoch-skin.com</a> · (504) 777-4094</p>
+  </div>
+</div></body></html>`;
+}
+
+export async function sendPaidOrderEmails(order: OrderEmailData) {
+  const resend = getResend();
+  return Promise.all([
+    resend.emails.send({
+      from: `Epoch Skin <${FROM}>`, to: order.email, reply_to: TO_KAYLA,
+      subject: `Your Epoch Skin order is confirmed`,
+      html: orderEmailHTML(order, true),
+    }),
+    resend.emails.send({
+      from: `Epoch Skin <${FROM}>`, to: TO_KAYLA, reply_to: order.email,
+      subject: `Paid Order: ${order.email} — ${money(order.totalCents)}`,
+      html: orderEmailHTML(order, false),
+    }),
+  ]);
+}

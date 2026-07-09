@@ -7,7 +7,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { createClient } from '@libsql/client';
-import { sendPaidBookingEmails } from '@/lib/email';
+import { sendPaidBookingEmails, sendPaidOrderEmails } from '@/lib/email';
 
 const stripe  = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
@@ -40,6 +40,22 @@ async function initDB(db: ReturnType<typeof getTurso>) {
   await db.execute(`
     CREATE UNIQUE INDEX IF NOT EXISTS idx_session ON bookings(stripe_session_id)
   `);
+  await db.execute(`
+    CREATE TABLE IF NOT EXISTS orders (
+      id                 INTEGER PRIMARY KEY AUTOINCREMENT,
+      email              TEXT NOT NULL,
+      items              TEXT NOT NULL,
+      subtotal_cents     INTEGER NOT NULL,
+      discount_code      TEXT,
+      tax_cents          INTEGER NOT NULL,
+      total_cents        INTEGER NOT NULL,
+      stripe_session_id  TEXT,
+      created_at         TEXT DEFAULT (datetime('now'))
+    )
+  `);
+  await db.execute(`
+    CREATE UNIQUE INDEX IF NOT EXISTS idx_order_session ON orders(stripe_session_id)
+  `);
 }
 
 export async function POST(req: NextRequest) {
@@ -62,6 +78,19 @@ export async function POST(req: NextRequest) {
     const session  = event.data.object as Stripe.Checkout.Session;
     const meta     = session.metadata ?? {};
 
+    if (meta.type === 'product') {
+      await handleProductOrder(session);
+    } else {
+      // Default to booking for backward compatibility with any in-flight
+      // sessions created before the `type` field existed.
+      await handleBooking(session, meta);
+    }
+  }
+
+  return NextResponse.json({ received: true });
+}
+
+async function handleBooking(session: Stripe.Checkout.Session, meta: Record<string, string>) {
     const booking = {
       name:      meta.name     ?? '',
       email:     meta.email    ?? session.customer_email ?? '',
@@ -99,16 +128,69 @@ export async function POST(req: NextRequest) {
 
     if (isDuplicate) {
       // Stripe retry of an event we already processed — don't re-send emails.
-      return NextResponse.json({ received: true, duplicate: true });
+      return;
     }
 
     // Send emails
     try {
       await sendPaidBookingEmails(booking);
     } catch (emailErr) {
-      console.error('[webhook] Email error:', emailErr);
+      console.error('[webhook] Booking email error:', emailErr);
     }
+}
+
+async function handleProductOrder(session: Stripe.Checkout.Session) {
+  const email = session.customer_details?.email ?? session.customer_email ?? '';
+  const discountCode = session.metadata?.discountCode || null;
+
+  // Line items live on Stripe itself — no size limits, no need to round-trip
+  // cart contents through metadata (which is capped at 500 chars/value).
+  // Tax is added as a plain line item in /api/checkout (not Stripe's native
+  // tax feature), so pull it back out by name rather than trusting total_details.
+  let items: { name: string; quantity: number; amountCents: number }[] = [];
+  let taxCents = 0;
+  try {
+    const lineItems = await stripe.checkout.sessions.listLineItems(session.id, { limit: 100 });
+    for (const li of lineItems.data) {
+      const name = li.description ?? 'Item';
+      const amountCents = li.amount_total ?? 0;
+      if (name.startsWith('Sales Tax')) {
+        taxCents = amountCents;
+      } else {
+        items.push({ name, quantity: li.quantity ?? 1, amountCents });
+      }
+    }
+  } catch (err) {
+    console.error('[webhook] Failed to fetch line items:', err);
   }
 
-  return NextResponse.json({ received: true });
+  const totalCents = session.amount_total ?? 0;
+  const subtotalCents = totalCents - taxCents;
+
+  let isDuplicate = false;
+  try {
+    const db = getTurso();
+    await initDB(db);
+    const result = await db.execute({
+      sql: `INSERT OR IGNORE INTO orders
+            (email, items, subtotal_cents, discount_code, tax_cents, total_cents, stripe_session_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      args: [
+        email, JSON.stringify(items), subtotalCents, discountCode, taxCents, totalCents, session.id,
+      ],
+    });
+    isDuplicate = result.rowsAffected === 0;
+  } catch (dbErr) {
+    console.error('[webhook] Turso error (order):', dbErr);
+  }
+
+  if (isDuplicate) return;
+
+  try {
+    await sendPaidOrderEmails({
+      email, items, subtotalCents, discountCode, taxCents, totalCents, sessionId: session.id,
+    });
+  } catch (emailErr) {
+    console.error('[webhook] Order email error:', emailErr);
+  }
 }

@@ -42,6 +42,7 @@ export async function POST(req: NextRequest) {
       success_url: `${SITE}/book/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url:  `${SITE}/book?cancelled=1`,
       metadata: {
+        type: 'booking',
         name,
         email,
         phone:    phone    ?? '',
