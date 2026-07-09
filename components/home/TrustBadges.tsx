@@ -4,7 +4,7 @@
 import { useEffect, useRef, useState } from "react";
 
 const BADGES = [
-  { icon: "🌿", name: "Certified Organic", desc: "USDA organic ingredients" },
+  { icon: "🌿", name: "Certified Organic", desc: "USDA Organic ingredients" },
   { icon: "🐰", name: "Cruelty-Free", desc: "Never tested on animals" },
   { icon: "✦", name: "Licensed Pros", desc: "LA State Board certified" },
   { icon: "◈", name: "Small Batch", desc: "Cold-process formulated" },

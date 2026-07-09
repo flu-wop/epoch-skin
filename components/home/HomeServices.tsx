@@ -5,7 +5,7 @@ import Image from "next/image";
 const SERVICES = [
   {
     title: "Body Waxing",
-    desc: "Full-body waxing with our organic hybrid wax — rosin-free, formulated with shea butter and squalane.",
+    desc: "Full-body waxing with our Organic hybrid wax — rosin-free, formulated with shea butter and squalane.",
     image: "/images/services/half-leg-wax.png",
     href: "/book?category=body-wax",
     from: "From $20",
@@ -19,7 +19,7 @@ const SERVICES = [
   },
   {
     title: "Organic Facials",
-    desc: "The glass-skin layering protocol — certified organic actives, K-Beauty method, visible results.",
+    desc: "The glass-skin layering protocol — certified Organic actives, K-Beauty method, visible results.",
     image: "/images/services/organic-facial.png",
     href: "/book?category=facials",
     from: "From $50",

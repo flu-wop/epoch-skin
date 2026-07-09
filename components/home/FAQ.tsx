@@ -5,8 +5,8 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 
 const FAQS = [
   {
-    q: "Are your products certified organic?",
-    a: "Yes — every formula is built on certified organic extracts. We list all ingredients in INCI format on every product page and clearly mark which are certified organic. No synthetic fragrances, no artificial colorants, no parabens. Batch-tested for pH and stability.",
+    q: "Are your products certified Organic?",
+    a: "Yes — every formula is built on certified Organic extracts. We list all ingredients in INCI format on every product page and clearly mark which are certified Organic. No synthetic fragrances, no artificial colorants, no parabens. Batch-tested for pH and stability.",
   },
   {
     q: "How do I book an appointment?",
@@ -18,7 +18,7 @@ const FAQS = [
   },
   {
     q: "What is the Glass Skin Treatment?",
-    a: "Our signature 75-minute K-Beauty layering session: organic cleanse, toner, enzyme exfoliation, hydrating mask, barrier serum, and glow cream. Delivers visibly plumper, dewy, luminous skin in one visit — ideal before a special occasion.",
+    a: "Our signature 75-minute K-Beauty layering session: Organic cleanse, toner, enzyme exfoliation, hydrating mask, barrier serum, and glow cream. Delivers visibly plumper, dewy, luminous skin in one visit — ideal before a special occasion.",
   },
   {
     q: "Are your waxing services safe for sensitive skin?",

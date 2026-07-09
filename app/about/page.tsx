@@ -60,7 +60,7 @@ const STEPS = [
 ];
 
 const VALUES = [
-  { icon: "✦", title: "Organic First",   body: "Certified organic extracts, INCI-listed, batch-tested, transparently sourced." },
+  { icon: "✦", title: "Organic First",   body: "Certified Organic extracts, INCI-listed, batch-tested, transparently sourced." },
   { icon: "◈", title: "Cruelty-Free",    body: "Never tested on animals. Every supplier vetted for ethical sourcing." },
   { icon: "◇", title: "Visible Results", body: "Engineered for measurable skin improvement — not just a pleasant experience." },
   { icon: "○", title: "Client-Centered", body: "Your comfort, safety, and confidence at the center of every decision." },
@@ -217,7 +217,7 @@ export default function AboutPage() {
           <p className="text-[11px] tracking-[0.28em] uppercase text-[#C9A96E] font-sans mb-4">Full Transparency</p>
           <h2 className="font-serif text-4xl text-white mb-6">We List Every Ingredient</h2>
           <p className="text-[#6E6860] font-sans text-sm leading-relaxed mb-4">Every formula lists ingredients in INCI format — we mark which are certified Organic, provide pH ranges, storage guidance, and usage instructions.</p>
-          <p className="text-[#3A3A38] text-xs font-sans">These statements have not been evaluated by the FDA. Products are not intended to diagnose, treat, cure, or prevent any disease.</p>
+          <p className="text-red-600 text-xs font-sans font-bold">These statements have not been evaluated by the FDA. Products are not intended to diagnose, treat, cure, or prevent any disease.</p>
         </div>
       </section>
 

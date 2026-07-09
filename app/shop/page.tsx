@@ -63,7 +63,7 @@ export default function ShopPage() {
           <p className="text-[11px] tracking-[0.28em] uppercase text-[#C9A96E] font-sans mb-4">The Collection</p>
           <h1 className="font-serif text-5xl md:text-6xl text-white mb-4">Organic Skincare</h1>
           <p className="text-[#8A8076] font-sans text-sm max-w-md mx-auto">
-            14 certified organic formulas. Cold-process made, batch-tested, and transparently labeled.
+            14 certified Organic formulas. Cold-process made, batch-tested, and transparently labeled.
           </p>
         </div>
       </section>

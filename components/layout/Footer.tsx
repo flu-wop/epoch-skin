@@ -147,7 +147,7 @@ export function Footer() {
           <div>
             <p className="text-[9px] tracking-[0.24em] uppercase text-[#C4974A] font-sans mb-6">Newsletter</p>
             <p className="text-[#7A9174] text-sm font-sans mb-4 leading-relaxed">
-              Skincare tips, exclusive offers, and 15% off your first order.
+              Skincare tips, exclusive offers, and 20% off your first order.
             </p>
             <FooterNewsletter />
           </div>

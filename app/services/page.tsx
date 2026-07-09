@@ -7,14 +7,14 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Services",
-  description: "Expert waxing and organic facial treatments in New Orleans. Book body waxing, facial waxing, or glass-skin treatment.",
+  description: "Expert waxing and Organic facial treatments in New Orleans. Book body waxing, facial waxing, or glass-skin treatment.",
   alternates: { canonical: "https://epoch-skin.com/services" },
 };
 
 const CATEGORIES = [
   {
     title: "Body Waxing",
-    desc: "Full-body waxing with our organic hybrid wax — rosin-free, formulated with shea butter and squalane for minimal irritation.",
+    desc: "Full-body waxing with our Organic hybrid wax — rosin-free, formulated with shea butter and squalane for minimal irritation.",
     services: ["Brazilian", "Bikini", "Full Legs", "Half Legs", "Full Arms", "Half Arms", "Underarm", "Stomach"],
     from: "From $20",
     href: "/book?category=body-wax",
@@ -28,7 +28,7 @@ const CATEGORIES = [
   },
   {
     title: "Organic Facials",
-    desc: "The glass-skin layering protocol — certified organic actives, K-Beauty method, visible results in one session.",
+    desc: "The glass-skin layering protocol — certified Organic actives, K-Beauty method, visible results in one session.",
     services: ["Organic Facial — $80 / 60 min", "Hydrating Facial — $50 / 30 min", "Glass Skin Treatment — $90 / 75 min"],
     from: "From $50",
     href: "/book?category=facials",
@@ -48,7 +48,7 @@ export default function ServicesPage() {
             Our Services
           </h1>
           <p className="text-[#5A5550] font-sans text-base leading-relaxed max-w-xl mx-auto">
-            Expert waxing and organic facial treatments in New Orleans. 
+            Expert waxing and Organic facial treatments in New Orleans. 
             All services performed by licensed estheticians.
           </p>
         </div>
@@ -122,7 +122,7 @@ export default function ServicesPage() {
           </div>
           <div className="grid sm:grid-cols-3 gap-5 max-w-4xl mx-auto">
             {[
-              { icon: "✦", title: "Rosin-Free Formula",   body: "Our organic hybrid wax beads contain zero rosin — the #1 cause of post-wax irritation and allergic reactions." },
+              { icon: "✦", title: "Rosin-Free Formula",   body: "Our Organic hybrid wax beads contain zero rosin — the #1 cause of post-wax irritation and allergic reactions." },
               { icon: "◈", title: "Skin-Nourishing",      body: "Shea butter, rosehip oil, and squalane are blended into every wax bead to moisturize while removing." },
               { icon: "◇", title: "Licensed Estheticians",body: "Every service is performed by Louisiana State Board licensed estheticians trained in sensitive-skin protocols." },
             ].map((item) => (

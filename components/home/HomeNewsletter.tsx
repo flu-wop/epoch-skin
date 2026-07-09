@@ -32,7 +32,7 @@ export function HomeNewsletter() {
         <h2 className="font-serif text-4xl text-white mb-4">Join Our Newsletter</h2>
         <p className="text-[#9BAD8C] font-sans text-sm leading-relaxed mb-8">
           Skincare guides, early access, and exclusive offers.
-          Plus — <span className="text-[#C4974A]">15% off</span> your first order.
+          Plus — <span className="text-[#C4974A]">20% off</span> your first order.
         </p>
         {status === "success" ? (
           <p className="font-serif text-xl text-[#C4974A] italic">You're in. Check your inbox. ✨</p>

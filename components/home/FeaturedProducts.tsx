@@ -45,7 +45,7 @@ export function FeaturedProducts() {
         {/* Bottom CTA */}
         <FadeUp className="text-center mt-14" delay={200}>
           <p className="text-[#9A9088] font-sans text-sm mb-5">
-            14 certified organic formulas — crafted for every skin type
+            14 certified Organic formulas — crafted for every skin type
           </p>
           <Link href="/shop" className="btn-primary">
             Shop All Formulas
