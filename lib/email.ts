@@ -158,3 +158,46 @@ export async function sendContactAutoReply({
     `,
   });
 }
+
+// ── Newsletter ───────────────────────────────────────────────────────────
+
+const NEWSLETTER_NOTIFY = process.env.NEWSLETTER_TO ?? TO_KAYLA;
+
+export async function sendNewsletterWelcome({ email }: { email: string }) {
+  const resend = getResend();
+  return resend.emails.send({
+    from: `Epoch Skin <${FROM}>`,
+    to: email,
+    subject: "You're in — here's 15% off your first order",
+    html: `<!DOCTYPE html><html><head><meta charset="utf-8"/></head>
+<body style="margin:0;padding:0;background:#FAF7F2;font-family:Georgia,serif;">
+<div style="max-width:560px;margin:0 auto;background:#fff;">
+  <div style="background:#1C1C1A;padding:28px 36px;text-align:center;">
+    <p style="color:#C9A96E;font-size:22px;margin:0;letter-spacing:0.1em;">EPOCH SKIN</p>
+    <p style="color:#8A8076;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;margin:6px 0 0;">Organic Skincare · New Orleans</p>
+  </div>
+  <div style="padding:36px;color:#2E2E2C;line-height:1.7;">
+    <h2 style="font-size:22px;margin-bottom:8px;color:#1C1C1A;">Welcome to the inner circle</h2>
+    <p style="font-size:14px;">Thanks for subscribing. Here's your code for 15% off your first order:</p>
+    <div style="background:#F5F0E8;border:1px dashed #C9A96E;padding:18px;text-align:center;margin:24px 0;">
+      <span style="font-size:20px;letter-spacing:0.15em;color:#1C1C1A;font-weight:bold;">EPOCH10</span>
+    </div>
+    <p style="font-size:13px;color:#5A5550;">Enter it at checkout on any order. Skincare guides and early access to new formulas coming your way soon.</p>
+    <a href="${SITE}/shop" style="display:inline-block;margin-top:16px;padding:12px 28px;background:#C9A96E;color:#1C1C1A;text-decoration:none;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;">Shop Skincare</a>
+  </div>
+  <div style="background:#F5F0E8;padding:18px 36px;text-align:center;color:#8C8680;font-size:11px;">
+    <p style="margin:0;">© 2026 Epoch Skin · <a href="${SITE}" style="color:#C9A96E;">epoch-skin.com</a></p>
+  </div>
+</div></body></html>`,
+  });
+}
+
+export async function sendNewsletterNotification({ email }: { email: string }) {
+  const resend = getResend();
+  return resend.emails.send({
+    from: `Epoch Skin <${FROM}>`,
+    to: NEWSLETTER_NOTIFY,
+    subject: `New newsletter subscriber`,
+    html: `<p>${email} just subscribed to the newsletter.</p>`,
+  });
+}
