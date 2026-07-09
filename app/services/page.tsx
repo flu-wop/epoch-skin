@@ -85,9 +85,9 @@ export default function ServicesPage() {
                 {/* CTA */}
                 <div className="px-7 pb-7">
                   <Link href={cat.href}
-                    className="block text-center py-3.5 bg-[#C9A96E] text-[#1C1C1A]
+                    className="block text-center py-3.5 bg-[#3E4A3C] text-[#C4974A]
                                text-[11px] tracking-[0.22em] uppercase font-sans font-medium
-                               hover:bg-[#D4AF88] transition-colors duration-300">
+                               hover:bg-[#C4974A] hover:text-white transition-colors duration-300">
                     Book Now
                   </Link>
                 </div>

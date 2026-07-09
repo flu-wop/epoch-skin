@@ -184,18 +184,18 @@ export default function CartPage() {
                   </div>
                 ) : (
                   <div>
-                    <div className="flex gap-2">
+                    <div className="flex flex-col gap-2">
                       <input
                         type="text"
                         value={promoInput}
                         onChange={(e) => { setPromoInput(e.target.value); setPromoError(''); }}
                         onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleApplyPromo(); } }}
                         placeholder="Discount code"
-                        className="flex-1 border border-[#E0D8CC] px-3 py-2.5 text-sm text-[#111] placeholder-[#AAA] focus:outline-none focus:border-[#C4974A]"
+                        className="w-full border border-[#E0D8CC] px-3 py-2.5 text-sm text-[#111] placeholder-[#AAA] focus:outline-none focus:border-[#C4974A]"
                       />
                       <button
                         onClick={handleApplyPromo}
-                        className="px-5 py-2.5 border border-[#3E4A3C] text-[#3E4A3C] text-xs tracking-widest uppercase hover:bg-[#3E4A3C] hover:text-white transition-colors"
+                        className="w-full px-5 py-2.5 border border-[#3E4A3C] text-[#3E4A3C] text-xs tracking-widest uppercase hover:bg-[#3E4A3C] hover:text-white transition-colors"
                       >
                         Apply
                       </button>

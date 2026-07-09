@@ -221,39 +221,12 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ── FOLLOW OUR JOURNEY — blank placeholders ── */}
-      <section className="py-16 md:py-20 px-5 bg-[#FAF7F2] text-center">
-        <div className="max-w-[1320px] mx-auto">
-          <ScrollReveal className="mb-10">
-            <p className="text-[11px] tracking-[0.28em] uppercase text-[#C9A96E] font-sans mb-2">Follow Our Journey</p>
-            <h2 className="font-serif text-4xl text-[#1C1C1A] mb-2">@epoch_skin</h2>
-            <p className="text-[#8C8680] font-sans text-sm">Behind the formulas, inside the studio, and real client skin.</p>
-          </ScrollReveal>
-
-          {/* Blank placeholder grid — will be replaced with Behold embed */}
-          <div className="grid grid-cols-3 gap-3 mb-10 max-w-2xl mx-auto">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="aspect-square bg-[#EDE6D8] flex items-center justify-center">
-                <span className="text-[#C9A96E]/30 text-3xl">✦</span>
-              </div>
-            ))}
-          </div>
-
-          <a href="https://instagram.com/epoch_skin" target="_blank" rel="noreferrer"
-            className="inline-flex items-center justify-center px-8 py-3.5
-                       border border-[#3E4A3C] text-[#3E4A3C] text-[11px] tracking-[0.22em] uppercase font-sans
-                       hover:bg-[#3E4A3C] hover:text-[#C4974A] transition-all duration-400">
-            Follow on Instagram
-          </a>
-        </div>
-      </section>
-
       {/* ── CTA ── */}
       <section className="py-14 px-5 bg-[#EDE6D8] text-center">
         <div className="max-w-[1320px] mx-auto">
           <ScrollReveal>
             <div className="w-10 h-px bg-[#C9A96E] mx-auto mb-6" />
-            <p className="font-serif text-3xl md:text-4xl text-[#1C1C1A] mb-8">Ready to begin your epoch?</p>
+            <p className="font-serif text-3xl md:text-4xl text-[#1C1C1A] mb-8">Your skin's new era starts here</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/book" className="inline-flex items-center justify-center px-10 py-3.5
                          bg-[#3E4A3C] text-[#C4974A] text-[11px] tracking-[0.22em] uppercase font-sans

@@ -54,7 +54,7 @@ export function SiteHeader() {
               alt="Epoch Skin"
               width={689}
               height={221}
-              className="h-10 w-auto"   /* 40px tall — clean, not tiny, not huge */
+              className="h-11 w-auto"   /* 44px tall — slightly bigger for presence */
               priority
             />
           </Link>

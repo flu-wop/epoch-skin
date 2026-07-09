@@ -4,53 +4,120 @@ export const getResend = () => new Resend(process.env.RESEND_API_KEY ?? '');
 
 const FROM = process.env.RESEND_FROM_EMAIL ?? 'hello@epoch-skin.com';
 const TO_KAYLA = process.env.RESEND_TO_EMAIL ?? 'kayla@epoch-skin.com';
+const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://epoch-skin.com';
 
-export async function sendBookingConfirmation({
-  name, email, services, total,
-}: {
-  name: string; email: string; services: string[]; total: number;
-}) {
-  const resend = getResend();
-  return resend.emails.send({
-    from: `Epoch Skin <${FROM}>`,
-    to: email,
-    subject: 'Your Epoch Skin appointment is confirmed',
-    html: `
-      <p>Hi ${name},</p>
-      <p>Your booking is confirmed:</p>
-      <ul>${services.map(s => `<li>${s}</li>`).join('')}</ul>
-      <p><strong>Total:</strong> $${total}</p>
-      <p>See you soon,<br/>Kayla @ Epoch Skin</p>
-    `,
-  });
+// ── Booking confirmation (the ONE live path — fired from the Stripe webhook
+// after a paid booking checkout completes) ─────────────────────────────────
+
+export interface BookingEmailData {
+  name: string;
+  email: string;
+  phone: string;
+  service: string;
+  date: string;      // YYYY-MM-DD
+  time: string;       // "2:00 PM"
+  duration: number;   // minutes
+  price: number;
+  notes: string;
 }
 
-export async function sendBookingNotification({
-  name, email, phone, services, date, time, notes, total,
-}: {
-  name: string; email: string; phone: string; services: string[];
-  date: string; time: string; notes?: string; total: number;
-}) {
-  const resend = getResend();
-  return resend.emails.send({
-    from: `Epoch Skin <${FROM}>`,
-    to: TO_KAYLA,
-    subject: `New booking — ${date} at ${time}`,
-    html: `
-      <p><strong>New appointment:</strong></p>
-      <ul>
-        <li><strong>Client:</strong> ${name}</li>
-        <li><strong>Email:</strong> ${email}</li>
-        <li><strong>Phone:</strong> ${phone}</li>
-        <li><strong>Services:</strong> ${services.join(', ')}</li>
-        <li><strong>Date:</strong> ${date}</li>
-        <li><strong>Time:</strong> ${time}</li>
-        <li><strong>Total:</strong> $${total}</li>
-        ${notes ? `<li><strong>Notes:</strong> ${notes}</li>` : ''}
-      </ul>
-    `,
-  });
+function pad(n: number) { return String(n).padStart(2, '0'); }
+
+export function generateBookingICS(b: {
+  name: string; email: string; service: string;
+  date: string; time: string; duration: number;
+}): string {
+  const [year, month, day] = b.date.split('-').map(Number);
+  const [timePart, mer]    = b.time.split(' ');
+  const [hStr, mStr]       = timePart.split(':');
+  let h = parseInt(hStr); const m = parseInt(mStr || '0');
+  if (mer === 'PM' && h !== 12) h += 12;
+  if (mer === 'AM' && h === 12) h = 0;
+  const dtStart   = `${year}${pad(month)}${pad(day)}T${pad(h)}${pad(m)}00`;
+  const endTotal  = h * 60 + m + b.duration;
+  const dtEnd     = `${year}${pad(month)}${pad(day)}T${pad(Math.floor(endTotal/60)%24)}${pad(endTotal%60)}00`;
+  const uid       = `epoch-${Date.now()}@epoch-skin.com`;
+  const now       = new Date().toISOString().replace(/[\-:.]/g,'').slice(0,15)+'Z';
+  return [
+    'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Epoch Skin//Booking//EN',
+    'CALSCALE:GREGORIAN','METHOD:REQUEST','BEGIN:VEVENT',
+    `UID:${uid}`,`DTSTAMP:${now}`,`DTSTART:${dtStart}`,`DTEND:${dtEnd}`,
+    `SUMMARY:Epoch Skin – ${b.service}`,
+    `DESCRIPTION:Appointment at Epoch Skin\\nService: ${b.service}\\nDate: ${b.date} at ${b.time}\\n\\nQuestions? (504) 777-4094`,
+    `LOCATION:Epoch Skin Studio\\, New Orleans\\, LA`,
+    `ORGANIZER;CN=Epoch Skin:mailto:kayla@epoch-skin.com`,
+    `ATTENDEE;ROLE=REQ-PARTICIPANT;CN=${b.name}:mailto:${b.email}`,
+    'STATUS:CONFIRMED','END:VEVENT','END:VCALENDAR',
+  ].join('\r\n');
 }
+
+export function bookingEmailHTML(b: BookingEmailData, isClient: boolean): string {
+  const dateStr = new Date(b.date + 'T12:00:00').toLocaleDateString('en-US', {
+    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+  });
+  return `<!DOCTYPE html><html><head><meta charset="utf-8"/></head>
+<body style="margin:0;padding:0;background:#FAF7F2;font-family:Georgia,serif;">
+<div style="max-width:560px;margin:0 auto;background:#fff;">
+  <div style="background:#1C1C1A;padding:28px 36px;text-align:center;">
+    <p style="color:#C9A96E;font-size:22px;margin:0;letter-spacing:0.1em;">EPOCH SKIN</p>
+    <p style="color:#8A8076;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;margin:6px 0 0;">Organic Skincare · New Orleans</p>
+  </div>
+  <div style="padding:36px;color:#2E2E2C;line-height:1.7;">
+    <h2 style="font-size:22px;margin-bottom:8px;color:#1C1C1A;">${isClient ? `Hi ${b.name},` : `New Paid Booking: ${b.name}`}</h2>
+    <p style="font-size:14px;">${isClient
+      ? 'Your appointment at Epoch Skin is confirmed and payment received. We can\'t wait to see you!'
+      : 'A new appointment has been booked and paid.'}</p>
+    <hr style="border:none;border-top:1px solid #E5DCCF;margin:24px 0;"/>
+    <table style="width:100%;font-size:14px;border-collapse:collapse;">
+      ${[
+        ['Service',  b.service],
+        ['Date',     dateStr],
+        ['Time',     b.time],
+        ['Duration', `${b.duration} min`],
+        ['Paid',     `$${b.price}`],
+        ...(b.phone ? [['Phone', b.phone]] : []),
+        ...(b.email ? [['Email', b.email]] : []),
+        ...(b.notes ? [['Notes', b.notes]] : []),
+      ].map(([k,v]) => `<tr>
+        <td style="color:#8C8680;padding:7px 0;width:38%;vertical-align:top;">${k}</td>
+        <td style="color:${k==='Paid'?'#C9A96E':'#1C1C1A'};${k==='Paid'?'font-weight:600;':''}padding:7px 0;">${v}</td>
+      </tr>`).join('')}
+    </table>
+    <hr style="border:none;border-top:1px solid #E5DCCF;margin:24px 0;"/>
+    ${isClient ? `
+    <p style="font-size:13px;color:#5A5550;">The .ics calendar file is attached — open it to add to Apple or Google Calendar.</p>
+    <p style="font-size:13px;color:#5A5550;">Need to reschedule? Call or text <strong>(504) 777-4094</strong> at least 24 hours in advance.</p>
+    <a href="${SITE}/book" style="display:inline-block;margin-top:16px;padding:12px 28px;background:#C9A96E;color:#1C1C1A;text-decoration:none;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;">Book Another Service</a>
+    ` : `<a href="mailto:${b.email}" style="display:inline-block;padding:12px 28px;background:#1C1C1A;color:#C9A96E;text-decoration:none;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;">Reply to ${b.name}</a>`}
+  </div>
+  <div style="background:#F5F0E8;padding:18px 36px;text-align:center;color:#8C8680;font-size:11px;">
+    <p style="margin:0;">© 2026 Epoch Skin · <a href="${SITE}" style="color:#C9A96E;">epoch-skin.com</a> · (504) 777-4094</p>
+  </div>
+</div></body></html>`;
+}
+
+export async function sendPaidBookingEmails(booking: BookingEmailData) {
+  const ics    = generateBookingICS(booking);
+  const icsB64 = Buffer.from(ics).toString('base64');
+  const resend = getResend();
+
+  return Promise.all([
+    resend.emails.send({
+      from: `Epoch Skin <${FROM}>`, to: booking.email, reply_to: TO_KAYLA,
+      subject: `Your Epoch Skin appointment — ${booking.service}`,
+      html: bookingEmailHTML(booking, true),
+      attachments: [{ filename: 'epoch-skin-appointment.ics', content: icsB64 }],
+    }),
+    resend.emails.send({
+      from: `Epoch Skin <${FROM}>`, to: TO_KAYLA, reply_to: booking.email,
+      subject: `Paid Booking: ${booking.name} – ${booking.service} on ${booking.date} at ${booking.time}`,
+      html: bookingEmailHTML(booking, false),
+      attachments: [{ filename: 'appointment.ics', content: icsB64 }],
+    }),
+  ]);
+}
+
+// ── Contact form ─────────────────────────────────────────────────────────
 
 export async function sendContactNotification({
   name, email, phone, service, message,

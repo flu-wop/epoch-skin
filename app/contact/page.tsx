@@ -39,8 +39,11 @@ export default function ContactPage() {
           <div className="space-y-8">
             <div>
               <p className="text-xs tracking-widest uppercase text-[#D4AF77] mb-3">Call or Text</p>
-              <a href="tel:5047774094" className="font-serif text-xl text-[#111] hover:text-[#D4AF77] transition-colors">
-                (504) 777-4094
+              <a href="tel:5047774094"
+                className="inline-flex items-center justify-center px-6 py-3
+                           bg-[#3E4A3C] text-[#C4974A] text-[11px] tracking-[0.2em] uppercase font-sans
+                           hover:bg-[#C4974A] hover:text-white transition-colors duration-300">
+                Call Now
               </a>
             </div>
 
