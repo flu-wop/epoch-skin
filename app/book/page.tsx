@@ -344,16 +344,14 @@ export default function BookPage() {
     setSubmitting(true);
     setError("");
     try {
-      const serviceNames = selectedServices.map(s => s.name).join(", ");
       const res = await fetch("/api/booking-checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: form.name, email: form.email, phone: form.phone, notes: form.notes,
-          service: serviceNames,
+          serviceIds: selectedIds,
           category: selectedServices.map(s => s.category).join(", "),
-          price: totalPrice, date: selectedDate, time: selectedTime,
-          duration: totalDuration,
+          date: selectedDate, time: selectedTime,
         }),
       });
       const data = await res.json();

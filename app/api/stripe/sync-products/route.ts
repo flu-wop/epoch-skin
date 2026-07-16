@@ -92,7 +92,10 @@ export async function POST(req: Request) {
   }
 }
 
-export async function GET() {
+export async function GET(req: Request) {
+  const ok = await rateLimit(`sync-status:${clientIp(req)}`, 20, 900); // 20 per 15 min
+  if (!ok) return NextResponse.json({ error: 'Too many requests. Try again later.' }, { status: 429 });
+
   const status = await Promise.all(products.map(async (product) => {
     const existing = await stripe.products.search({ query: `metadata['epoch_product_id']:'${product.id}'`, limit: 1 });
     const inStripe = existing.data.length > 0;

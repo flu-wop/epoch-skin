@@ -5,6 +5,8 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
+import { rateLimit, clientIp } from '@/lib/rate-limit';
+import { BOOKING_SERVICES } from '@/lib/booking-catalog';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2024-04-10',
@@ -12,13 +14,34 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://epoch-skin.com';
 
 export async function POST(req: NextRequest) {
+  const ok = await rateLimit(`booking-checkout:${clientIp(req)}`, 10, 600); // 10 per 10 min
+  if (!ok) return NextResponse.json({ error: 'Too many requests. Please try again shortly.' }, { status: 429 });
+
   try {
     const body = await req.json();
-    const { name, email, phone, notes, service, category, price, date, time, duration } = body;
+    const { name, email, phone, notes, serviceIds, category, date, time } = body;
 
-    if (!name || !email || !service || !date || !time || !price) {
+    if (!name || !email || !date || !time || !Array.isArray(serviceIds) || serviceIds.length === 0) {
       return NextResponse.json({ error: 'Missing required fields.' }, { status: 400 });
     }
+    if (serviceIds.length > 20) {
+      return NextResponse.json({ error: 'Too many services selected.' }, { status: 400 });
+    }
+
+    // Server-side price/duration lookup — never trust amounts from the client.
+    const resolved: { id: string; name: string; price: number; duration: number }[] = [];
+    for (const rawId of serviceIds) {
+      const id = String(rawId);
+      const catalog = BOOKING_SERVICES[id];
+      if (!catalog) {
+        return NextResponse.json({ error: `Unknown service: ${id}` }, { status: 400 });
+      }
+      resolved.push({ id, ...catalog });
+    }
+
+    const service = resolved.map((s) => s.name).join(', ');
+    const price = resolved.reduce((sum, s) => sum + s.price, 0);
+    const duration = resolved.reduce((sum, s) => sum + s.duration, 0);
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
