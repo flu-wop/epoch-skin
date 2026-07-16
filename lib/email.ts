@@ -205,23 +205,26 @@ export async function sendNewsletterNotification({ email }: { email: string }) {
 export async function sendDbWriteFailureAlert({
   kind, sessionId, details,
 }: {
-  kind: 'booking' | 'order';
-  sessionId: string;
+  kind: 'booking' | 'order' | 'newsletter subscriber';
+  sessionId: string; // Stripe session id, or 'n/a' for non-payment records
   details: Record<string, string | number | null | undefined>;
 }) {
   const resend = getResend();
   const rows = Object.entries(details)
     .map(([k, v]) => `<li><strong>${k}:</strong> ${v ?? '—'}</li>`)
     .join('');
+  const isPaid = sessionId !== 'n/a';
   return resend.emails.send({
     from: `Epoch Skin Alerts <${FROM}>`,
     to: TO_KAYLA,
-    subject: `⚠️ Paid ${kind} did NOT save — needs manual entry`,
+    subject: `⚠️ ${kind} did NOT save — needs manual entry`,
     html: `
-      <p><strong>A customer paid successfully via Stripe, but the ${kind} could not be saved to the database.</strong></p>
-      <p>Stripe session: <code>${sessionId}</code> — look it up in the Stripe Dashboard to confirm payment and get full details.</p>
+      <p><strong>${isPaid
+        ? `A customer paid successfully via Stripe, but the ${kind} could not be saved to the database.`
+        : `A ${kind} came in but could not be saved to the database.`}</strong></p>
+      ${isPaid ? `<p>Stripe session: <code>${sessionId}</code> — look it up in the Stripe Dashboard to confirm payment and get full details.</p>` : ''}
       <ul>${rows}</ul>
-      <p>Please add this ${kind} manually and follow up with the customer if needed.</p>
+      <p>Please add this ${kind} manually${isPaid ? ' and follow up with the customer if needed' : ''}.</p>
     `,
   });
 }

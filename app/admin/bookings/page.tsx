@@ -169,6 +169,14 @@ export default function AdminBookingsPage() {
               Orders
             </a>
             <a
+              href="/admin/newsletter"
+              className="text-[11px] tracking-[0.18em] uppercase font-sans border border-[#E5DCCF]
+                         text-[#5A5550] px-5 py-2.5 hover:border-[#C9A96E] hover:text-[#C9A96E]
+                         transition-colors duration-300"
+            >
+              Newsletter
+            </a>
+            <a
               href="/api/calendar.ics"
               target="_blank"
               className="text-[11px] tracking-[0.18em] uppercase font-sans border border-[#E5DCCF]

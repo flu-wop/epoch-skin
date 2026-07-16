@@ -1,12 +1,15 @@
 // app/api/newsletter/route.ts
-// Saves subscribers to Turso and sends a welcome email with a discount code.
+// POST: saves subscribers to Turso and sends a welcome email with a discount code.
+// GET: admin-only listing of subscribers (mirrors /api/bookings, /api/orders).
 // Storing raw emails here (rather than an ESP) keeps this migration-friendly —
 // export the table or add a Mailchimp/Klaviyo call alongside the insert later.
 
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@libsql/client';
+import { cookies } from 'next/headers';
 import { rateLimit, clientIp } from '@/lib/rate-limit';
-import { sendNewsletterWelcome, sendNewsletterNotification } from '@/lib/email';
+import { sendNewsletterWelcome, sendNewsletterNotification, sendDbWriteFailureAlert } from '@/lib/email';
+import { verifyAdminCookie, ADMIN_COOKIE_NAME } from '@/lib/admin-auth';
 
 function getTurso() {
   return createClient({
@@ -47,6 +50,7 @@ export async function POST(req: NextRequest) {
     }
 
     let isNew = true;
+    let dbSaved = true;
     try {
       const db = getTurso();
       await initDB(db);
@@ -57,7 +61,21 @@ export async function POST(req: NextRequest) {
       isNew = result.rowsAffected > 0;
     } catch (dbErr) {
       console.error('[newsletter] Turso error:', dbErr);
-      // Don't block the welcome email just because the DB write failed
+      dbSaved = false;
+      // Don't block the welcome email just because the DB write failed —
+      // the subscriber still gets their discount code either way.
+    }
+
+    if (!dbSaved) {
+      try {
+        await sendDbWriteFailureAlert({
+          kind: 'newsletter subscriber',
+          sessionId: 'n/a',
+          details: { Email: email, Source: source },
+        });
+      } catch (alertErr) {
+        console.error('[newsletter] Failed to send DB-failure alert:', alertErr);
+      }
     }
 
     // Only send the welcome email (with discount code) to genuinely new subscribers,
@@ -75,5 +93,24 @@ export async function POST(req: NextRequest) {
   } catch (err) {
     console.error('[newsletter]', err);
     return NextResponse.json({ error: 'Something went wrong. Please try again.' }, { status: 500 });
+  }
+}
+
+// ── GET — list subscribers (admin) ──────────────────────────────
+export async function GET() {
+  const cookieStore = await cookies();
+  const authed = verifyAdminCookie(cookieStore.get(ADMIN_COOKIE_NAME)?.value);
+  if (!authed) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  try {
+    const db = getTurso();
+    await initDB(db);
+    const result = await db.execute('SELECT * FROM newsletter_subscribers ORDER BY created_at DESC');
+    return NextResponse.json({ subscribers: result.rows });
+  } catch (err) {
+    console.error('[newsletter] GET error:', err);
+    return NextResponse.json({ subscribers: [], note: 'DB not configured' });
   }
 }
