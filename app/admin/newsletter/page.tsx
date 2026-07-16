@@ -140,6 +140,14 @@ export default function AdminNewsletterPage() {
             <h1 className="font-serif text-4xl text-[#1C1C1A]">Newsletter</h1>
           </div>
           <div className="flex gap-3 items-center">
+            <a
+              href="/admin"
+              className="text-[11px] tracking-[0.18em] uppercase font-sans border border-[#E5DCCF]
+                         text-[#5A5550] px-5 py-2.5 hover:border-[#C9A96E] hover:text-[#C9A96E]
+                         transition-colors duration-300"
+            >
+              Admin Home
+            </a>
             <button
               onClick={downloadCSV}
               className="text-[11px] tracking-[0.18em] uppercase font-sans border border-[#E5DCCF]

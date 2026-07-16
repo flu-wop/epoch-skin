@@ -205,7 +205,7 @@ export async function sendNewsletterNotification({ email }: { email: string }) {
 export async function sendDbWriteFailureAlert({
   kind, sessionId, details,
 }: {
-  kind: 'booking' | 'order' | 'newsletter subscriber';
+  kind: 'booking' | 'order' | 'newsletter subscriber' | 'contact submission';
   sessionId: string; // Stripe session id, or 'n/a' for non-payment records
   details: Record<string, string | number | null | undefined>;
 }) {

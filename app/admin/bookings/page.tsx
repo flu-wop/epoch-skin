@@ -161,6 +161,14 @@ export default function AdminBookingsPage() {
           </div>
           <div className="flex gap-3 items-center">
             <a
+              href="/admin"
+              className="text-[11px] tracking-[0.18em] uppercase font-sans border border-[#E5DCCF]
+                         text-[#5A5550] px-5 py-2.5 hover:border-[#C9A96E] hover:text-[#C9A96E]
+                         transition-colors duration-300"
+            >
+              Admin Home
+            </a>
+            <a
               href="/admin/orders"
               className="text-[11px] tracking-[0.18em] uppercase font-sans border border-[#E5DCCF]
                          text-[#5A5550] px-5 py-2.5 hover:border-[#C9A96E] hover:text-[#C9A96E]

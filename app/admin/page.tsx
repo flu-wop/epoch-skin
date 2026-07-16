@@ -86,6 +86,7 @@ export default function AdminHomePage() {
     { href: '/admin/bookings', label: 'Bookings', desc: 'View and search all paid appointment bookings.' },
     { href: '/admin/orders',   label: 'Orders',   desc: 'View and search all paid shop orders.' },
     { href: '/admin/newsletter', label: 'Newsletter', desc: 'View and export newsletter subscribers.' },
+    { href: '/admin/contact', label: 'Contact Submissions', desc: 'View messages sent through the contact form.' },
     { href: '/admin/sync',     label: 'Stripe Sync', desc: 'Push the product catalog to Stripe (needs sync secret).' },
   ];
 
