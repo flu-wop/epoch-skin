@@ -1,8 +1,12 @@
 // app/api/contact/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { sendContactNotification, sendContactAutoReply } from '@/lib/email';   // Use the existing helper instead
+import { rateLimit, clientIp } from '@/lib/rate-limit';
 
 export async function POST(req: NextRequest) {
+  const ok = await rateLimit(`contact:${clientIp(req)}`, 5, 600); // 5 per 10 min
+  if (!ok) return NextResponse.json({ error: 'Too many requests. Please try again shortly.' }, { status: 429 });
+
   try {
     const body = await req.json();
     const { name, email, phone, service, message } = body;

@@ -202,6 +202,30 @@ export async function sendNewsletterNotification({ email }: { email: string }) {
   });
 }
 
+export async function sendDbWriteFailureAlert({
+  kind, sessionId, details,
+}: {
+  kind: 'booking' | 'order';
+  sessionId: string;
+  details: Record<string, string | number | null | undefined>;
+}) {
+  const resend = getResend();
+  const rows = Object.entries(details)
+    .map(([k, v]) => `<li><strong>${k}:</strong> ${v ?? '—'}</li>`)
+    .join('');
+  return resend.emails.send({
+    from: `Epoch Skin Alerts <${FROM}>`,
+    to: TO_KAYLA,
+    subject: `⚠️ Paid ${kind} did NOT save — needs manual entry`,
+    html: `
+      <p><strong>A customer paid successfully via Stripe, but the ${kind} could not be saved to the database.</strong></p>
+      <p>Stripe session: <code>${sessionId}</code> — look it up in the Stripe Dashboard to confirm payment and get full details.</p>
+      <ul>${rows}</ul>
+      <p>Please add this ${kind} manually and follow up with the customer if needed.</p>
+    `,
+  });
+}
+
 // ── Product orders ──────────────────────────────────────────────────────
 
 export interface OrderLineItem {

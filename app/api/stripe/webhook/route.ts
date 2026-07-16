@@ -7,7 +7,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { createClient } from '@libsql/client';
-import { sendPaidBookingEmails, sendPaidOrderEmails } from '@/lib/email';
+import { sendPaidBookingEmails, sendPaidOrderEmails, sendDbWriteFailureAlert } from '@/lib/email';
 
 const stripe  = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
@@ -107,6 +107,7 @@ async function handleBooking(session: Stripe.Checkout.Session, meta: Record<stri
 
     // Save to Turso — idempotent via UNIQUE(stripe_session_id)
     let isDuplicate = false;
+    let dbSaved = true;
     try {
       const db = getTurso();
       await initDB(db);
@@ -124,6 +125,25 @@ async function handleBooking(session: Stripe.Checkout.Session, meta: Record<stri
       isDuplicate = result.rowsAffected === 0;
     } catch (dbErr) {
       console.error('[webhook] Turso error:', dbErr);
+      dbSaved = false;
+    }
+
+    if (!dbSaved) {
+      // Payment succeeded but the record didn't save — get a human's eyes on
+      // it immediately instead of letting it disappear into Vercel logs.
+      try {
+        await sendDbWriteFailureAlert({
+          kind: 'booking',
+          sessionId: booking.sessionId,
+          details: {
+            Name: booking.name, Email: booking.email, Phone: booking.phone,
+            Service: booking.service, Date: booking.date, Time: booking.time,
+            Duration: booking.duration, Price: booking.price, Notes: booking.notes,
+          },
+        });
+      } catch (alertErr) {
+        console.error('[webhook] Failed to send DB-failure alert (booking):', alertErr);
+      }
     }
 
     if (isDuplicate) {
@@ -168,6 +188,7 @@ async function handleProductOrder(session: Stripe.Checkout.Session) {
   const subtotalCents = totalCents - taxCents;
 
   let isDuplicate = false;
+  let dbSaved = true;
   try {
     const db = getTurso();
     await initDB(db);
@@ -182,6 +203,26 @@ async function handleProductOrder(session: Stripe.Checkout.Session) {
     isDuplicate = result.rowsAffected === 0;
   } catch (dbErr) {
     console.error('[webhook] Turso error (order):', dbErr);
+    dbSaved = false;
+  }
+
+  if (!dbSaved) {
+    try {
+      await sendDbWriteFailureAlert({
+        kind: 'order',
+        sessionId: session.id,
+        details: {
+          Email: email,
+          Items: items.map((i) => `${i.name} × ${i.quantity}`).join(', '),
+          Subtotal: `$${(subtotalCents / 100).toFixed(2)}`,
+          Discount: discountCode,
+          Tax: `$${(taxCents / 100).toFixed(2)}`,
+          Total: `$${(totalCents / 100).toFixed(2)}`,
+        },
+      });
+    } catch (alertErr) {
+      console.error('[webhook] Failed to send DB-failure alert (order):', alertErr);
+    }
   }
 
   if (isDuplicate) return;
