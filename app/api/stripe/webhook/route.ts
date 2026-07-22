@@ -9,7 +9,9 @@ import Stripe from 'stripe';
 import { createClient } from '@libsql/client';
 import { sendPaidBookingEmails, sendPaidOrderEmails, sendDbWriteFailureAlert } from '@/lib/email';
 
-const stripe  = new Stripe(process.env.STRIPE_SECRET_KEY!);
+const stripe  = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: '2024-04-10',
+});
 
 function getTurso() {
   return createClient({
