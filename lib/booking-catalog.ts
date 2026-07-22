@@ -81,4 +81,12 @@ export const BOOKING_SERVICES: Record<string, CatalogService> = {
   "add-legs":           { name: "Leg Massage",                  price: 50,  duration: 15 },
   "add-feet":           { name: "Feet Massage",                 price: 35,  duration: 10 },
   "add-10min":          { name: "Add 10 Minutes",               price: 25,  duration: 10 },
+  "facial-t1":          { name: "Tier 1 Facial",                 price: 50,  duration: 30 },
+  "facial-t2":          { name: "Tier 2 Facial",                 price: 80,  duration: 60 },
+  "facial-t3":          { name: "Tier 3 Facial",                 price: 90,  duration: 75 },
+  "vaj-t1":             { name: "Vajacial Tier 1",                price: 70,  duration: 30 },
+  "vaj-t2":             { name: "Vajacial Tier 2",                price: 80,  duration: 45 },
+  "vaj-t3":             { name: "Vajacial Tier 3",                price: 90,  duration: 60 },
+  "bacial-t1":          { name: "Bacial Tier 1",                  price: 75,  duration: 45 },
+  "bacial-t2":          { name: "Bacial Tier 2",                  price: 95,  duration: 60 },
 };
