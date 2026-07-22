@@ -40,6 +40,19 @@ async function initDB(db: ReturnType<typeof getTurso>) {
   await db.execute(`
     CREATE UNIQUE INDEX IF NOT EXISTS idx_session ON bookings(stripe_session_id)
   `);
+  // Migration: track whether each booking included a facial-type or waxing
+  // service, so we can tell whether a new booking is a client's FIRST of
+  // that type (and therefore needs the intake form) or a repeat (already on
+  // file). ALTER TABLE ADD COLUMN errors if the column already exists on
+  // this libSQL version — that's expected on every run after the first and
+  // safely ignored.
+  for (const col of ['had_facial_service', 'had_waxing_service']) {
+    try {
+      await db.execute(`ALTER TABLE bookings ADD COLUMN ${col} INTEGER DEFAULT 0`);
+    } catch {
+      // Column already exists — fine.
+    }
+  }
   await db.execute(`
     CREATE TABLE IF NOT EXISTS orders (
       id                 INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -113,15 +126,45 @@ async function handleBooking(session: Stripe.Checkout.Session, meta: Record<stri
     try {
       const db = getTurso();
       await initDB(db);
+
+      // Intake forms only need to go out once per client per treatment type —
+      // check booking history by email before deciding whether to attach.
+      // Default to "send it" if the lookup itself fails; a duplicate form is
+      // a minor annoyance, a missing one is a liability gap.
+      if (booking.needsFacialForm) {
+        try {
+          const prior = await db.execute({
+            sql: `SELECT 1 FROM bookings WHERE email = ? AND had_facial_service = 1 AND stripe_session_id != ? LIMIT 1`,
+            args: [booking.email, booking.sessionId],
+          });
+          booking.needsFacialForm = prior.rows.length === 0;
+        } catch (lookupErr) {
+          console.error('[webhook] Facial-history lookup failed, defaulting to send:', lookupErr);
+        }
+      }
+      if (booking.needsWaxingForm) {
+        try {
+          const prior = await db.execute({
+            sql: `SELECT 1 FROM bookings WHERE email = ? AND had_waxing_service = 1 AND stripe_session_id != ? LIMIT 1`,
+            args: [booking.email, booking.sessionId],
+          });
+          booking.needsWaxingForm = prior.rows.length === 0;
+        } catch (lookupErr) {
+          console.error('[webhook] Waxing-history lookup failed, defaulting to send:', lookupErr);
+        }
+      }
+
       const result = await db.execute({
         sql: `INSERT OR IGNORE INTO bookings
-              (name, email, phone, service, category, price, date, time, duration, notes, stripe_session_id, paid)
-              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)`,
+              (name, email, phone, service, category, price, date, time, duration, notes, stripe_session_id, paid, had_facial_service, had_waxing_service)
+              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?)`,
         args: [
           booking.name, booking.email, booking.phone || null,
           booking.service, booking.category || null, booking.price,
           booking.date, booking.time, booking.duration,
           booking.notes || null, booking.sessionId,
+          meta.needsFacialForm === '1' ? 1 : 0,
+          meta.needsWaxingForm === '1' ? 1 : 0,
         ],
       });
       isDuplicate = result.rowsAffected === 0;
