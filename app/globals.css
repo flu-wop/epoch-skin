@@ -266,3 +266,17 @@
   .fade-up { opacity: 1; transform: none; transition: none; }
   * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
+
+/* -- NEWSLETTER ARCHIVE CONTENT (rendered markdown, no typography plugin) -- */
+.newsletter-content { color: #333; line-height: 1.75; }
+.newsletter-content h1, .newsletter-content h2, .newsletter-content h3 {
+  font-family: var(--font-serif, serif); color: #111; margin: 2em 0 0.6em;
+}
+.newsletter-content h1 { font-size: 1.75rem; }
+.newsletter-content h2 { font-size: 1.4rem; }
+.newsletter-content h3 { font-size: 1.15rem; }
+.newsletter-content p { margin: 1em 0; }
+.newsletter-content a { color: #D4AF77; text-decoration: underline; }
+.newsletter-content ul, .newsletter-content ol { margin: 1em 0; padding-left: 1.5em; }
+.newsletter-content li { margin: 0.4em 0; }
+.newsletter-content strong { color: #111; }
