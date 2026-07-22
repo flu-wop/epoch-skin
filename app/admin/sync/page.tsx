@@ -22,6 +22,28 @@ interface StatusItem {
   synced: boolean;
 }
 
+interface SessionCheck {
+  id: string;
+  amount: number | null;
+  email: string | null;
+  created: string;
+  type: string;
+  matched: boolean;
+}
+
+interface WebhookCheckResult {
+  endpoint: {
+    found: boolean;
+    status: string | null;
+    hasCheckoutEvent: boolean;
+    apiVersion: string | null;
+  };
+  dbReachable: boolean;
+  checkedCount: number;
+  unmatchedCount: number;
+  sessions: SessionCheck[];
+}
+
 export default function AdminSyncPage() {
   const [secret, setSecret]   = useState("");
   const [syncing, setSyncing] = useState(false);
@@ -29,6 +51,29 @@ export default function AdminSyncPage() {
   const [results, setResults] = useState<SyncResult[] | null>(null);
   const [error, setError]     = useState("");
   const [checking, setChecking] = useState(false);
+  const [webhookCheck, setWebhookCheck] = useState<WebhookCheckResult | null>(null);
+  const [checkingWebhook, setCheckingWebhook] = useState(false);
+  const [webhookError, setWebhookError] = useState("");
+
+  const checkWebhook = async () => {
+    if (!secret) { setWebhookError('Enter your sync secret first.'); return; }
+    setCheckingWebhook(true);
+    setWebhookError("");
+    try {
+      const res = await fetch('/api/stripe/webhook-check', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ secret }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      setWebhookCheck(data);
+    } catch (err: unknown) {
+      setWebhookError(err instanceof Error ? err.message : 'Webhook check failed');
+    } finally {
+      setCheckingWebhook(false);
+    }
+  };
 
   const checkStatus = async () => {
     setChecking(true);
@@ -123,6 +168,87 @@ export default function AdminSyncPage() {
           )}
         </div>
 
+        {/* Webhook health */}
+        <div className="bg-white border border-[#E5DCCF] p-7 mb-6">
+          <div className="flex items-center justify-between mb-2">
+            <h2 className="font-serif text-xl text-[#1C1C1A]">Webhook Health</h2>
+            <button onClick={checkWebhook} disabled={checkingWebhook}
+              className="text-[11px] tracking-[0.18em] uppercase font-sans border border-[#E5DCCF]
+                         text-[#5A5550] px-5 py-2 hover:border-[#C9A96E] hover:text-[#C9A96E]
+                         transition-colors duration-300 disabled:opacity-50">
+              {checkingWebhook ? 'Checking...' : 'Check Webhook'}
+            </button>
+          </div>
+          <p className="text-[#8C8680] text-xs font-sans mb-5">
+            Confirms the Stripe webhook is registered and enabled, then cross-checks the last 15 completed
+            Stripe payments against Turso to catch cases where a customer paid but nothing got recorded.
+            Uses the same sync secret below.
+          </p>
+
+          {webhookError && (
+            <div className="mb-4 p-3 border border-red-200 bg-red-50">
+              <p className="text-red-600 text-xs font-sans">{webhookError}</p>
+            </div>
+          )}
+
+          {webhookCheck && (
+            <div className="space-y-5">
+              {/* Endpoint config */}
+              <div className="flex flex-wrap gap-2">
+                <span className={`px-2.5 py-1 text-[10px] tracking-wide uppercase font-sans ${
+                  webhookCheck.endpoint.found && webhookCheck.endpoint.status === 'enabled'
+                    ? 'bg-[#EBF0EA] text-[#4A5745]' : 'bg-red-50 text-red-600'
+                }`}>
+                  {webhookCheck.endpoint.found
+                    ? `Endpoint ${webhookCheck.endpoint.status}`
+                    : 'Endpoint not found'}
+                </span>
+                <span className={`px-2.5 py-1 text-[10px] tracking-wide uppercase font-sans ${
+                  webhookCheck.endpoint.hasCheckoutEvent ? 'bg-[#EBF0EA] text-[#4A5745]' : 'bg-red-50 text-red-600'
+                }`}>
+                  {webhookCheck.endpoint.hasCheckoutEvent ? 'checkout.session.completed ✓' : 'Missing checkout.session.completed'}
+                </span>
+                {!webhookCheck.dbReachable && (
+                  <span className="px-2.5 py-1 text-[10px] tracking-wide uppercase font-sans bg-red-50 text-red-600">
+                    Turso unreachable
+                  </span>
+                )}
+              </div>
+
+              {/* Session cross-check */}
+              {webhookCheck.checkedCount === 0 ? (
+                <p className="text-xs text-[#8C8680] font-sans">No completed Stripe payments yet to cross-check.</p>
+              ) : (
+                <>
+                  <p className="text-xs font-sans text-[#5A5550]">
+                    {webhookCheck.unmatchedCount === 0
+                      ? `All ${webhookCheck.checkedCount} recent completed payments are recorded in Turso.`
+                      : `${webhookCheck.unmatchedCount} of ${webhookCheck.checkedCount} recent completed payments have NO matching record in Turso — the webhook likely isn't firing or is failing for these.`}
+                  </p>
+                  <div className="space-y-2">
+                    {webhookCheck.sessions.map((s) => (
+                      <div key={s.id} className="flex items-center justify-between py-2 border-b border-[#F0EBE0] last:border-0 text-xs font-sans">
+                        <div className="min-w-0">
+                          <p className="text-[#1C1C1A] truncate">{s.email ?? 'no email'} · {s.type}</p>
+                          <p className="text-[#8C8680] text-[10px] mt-0.5">
+                            {new Date(s.created).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })}
+                            {s.amount != null ? ` · $${(s.amount / 100).toFixed(2)}` : ''}
+                          </p>
+                        </div>
+                        <span className={`px-2 py-0.5 text-[9px] tracking-wide uppercase flex-shrink-0 ml-3 ${
+                          s.matched ? 'bg-[#EBF0EA] text-[#4A5745]' : 'bg-red-50 text-red-600'
+                        }`}>
+                          {s.matched ? 'Recorded' : 'Missing'}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+          )}
+        </div>
+
         {/* Sync trigger */}
         <div className="bg-white border border-[#E5DCCF] p-7 mb-6">
           <h2 className="font-serif text-xl text-[#1C1C1A] mb-5">Run Sync</h2>
@@ -185,6 +311,10 @@ export default function AdminSyncPage() {
           <p className="text-xs font-sans text-[#5A5550] mb-2 mt-3">Run sync:</p>
           <code className="text-xs bg-white block p-3 border border-[#E5DCCF] text-[#1C1C1A]">
             {`POST /api/stripe/sync-products\n{"secret": "your-sync-secret"}`}
+          </code>
+          <p className="text-xs font-sans text-[#5A5550] mb-2 mt-3">Check webhook health:</p>
+          <code className="text-xs bg-white block p-3 border border-[#E5DCCF] text-[#1C1C1A]">
+            {`POST /api/stripe/webhook-check\n{"secret": "your-sync-secret"}`}
           </code>
         </div>
       </div>
