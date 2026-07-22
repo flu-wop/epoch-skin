@@ -43,8 +43,12 @@ export async function POST(req: NextRequest) {
     const price = resolved.reduce((sum, s) => sum + s.price, 0);
     const duration = resolved.reduce((sum, s) => sum + s.duration, 0);
     // Facials, vajacials, and bacials involve actives/extractions close to the
-    // skin's barrier — send the client the intake form for these.
-    const needsIntakeForm = resolved.some((s) => /^(facial|vaj|bacial)-/.test(s.id));
+    // skin's barrier — send the client the facial intake form for these.
+    const needsFacialForm = resolved.some((s) => /^(facial|vaj|bacial)-/.test(s.id));
+    // Women's/men's waxing services get the waxing intake form. Note: a
+    // booking can trigger both forms if it mixes waxing with a facial-type
+    // service in the same appointment.
+    const needsWaxingForm = resolved.some((s) => /^(w|m)-/.test(s.id));
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
@@ -79,7 +83,8 @@ export async function POST(req: NextRequest) {
         date,
         time,
         duration: String(duration ?? 60),
-        needsIntakeForm: needsIntakeForm ? '1' : '',
+        needsFacialForm: needsFacialForm ? '1' : '',
+        needsWaxingForm: needsWaxingForm ? '1' : '',
       },
     });
 

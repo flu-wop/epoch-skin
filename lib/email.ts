@@ -19,7 +19,8 @@ export interface BookingEmailData {
   duration: number;   // minutes
   price: number;
   notes: string;
-  needsIntakeForm?: boolean; // true if booking includes a Facial/Vajacial/Bacial service
+  needsFacialForm?: boolean; // true if booking includes a Facial/Vajacial/Bacial service
+  needsWaxingForm?: boolean; // true if booking includes a waxing service
 }
 
 function pad(n: number) { return String(n).padStart(2, '0'); }
@@ -87,10 +88,16 @@ export function bookingEmailHTML(b: BookingEmailData, isClient: boolean): string
     <hr style="border:none;border-top:1px solid #E5DCCF;margin:24px 0;"/>
     ${isClient ? `
     <p style="font-size:13px;color:#5A5550;">The .ics calendar file is attached — open it to add to Apple or Google Calendar.</p>
-    ${b.needsIntakeForm ? `<p style="font-size:13px;color:#5A5550;">Your appointment includes a facial/skin treatment — we've attached a short intake form. Please fill it out and bring it (or email it back) before your visit so we can tailor the treatment to your skin.</p>` : ''}
+    ${(b.needsFacialForm || b.needsWaxingForm) ? `<p style="font-size:13px;color:#5A5550;">${
+      b.needsFacialForm && b.needsWaxingForm
+        ? 'Your appointment includes a facial/skin treatment and waxing — we\'ve attached two short intake forms.'
+        : b.needsFacialForm
+          ? 'Your appointment includes a facial/skin treatment — we\'ve attached a short intake form.'
+          : 'Your appointment includes waxing — we\'ve attached a short intake form.'
+    } Please fill it out and bring it (or email it back) before your visit so we can tailor the treatment to your skin.</p>` : ''}
     <p style="font-size:13px;color:#5A5550;">Need to reschedule? Call or text <strong>(504) 777-4094</strong> at least 24 hours in advance.</p>
     <a href="${SITE}/book" style="display:inline-block;margin-top:16px;padding:12px 28px;background:#C9A96E;color:#1C1C1A;text-decoration:none;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;">Book Another Service</a>
-    ` : `${b.needsIntakeForm ? `<p style="font-size:13px;color:#5A5550;">This booking includes a facial/skin treatment — the client was emailed the intake form to fill out before their visit.</p>` : ''}<a href="mailto:${b.email}" style="display:inline-block;padding:12px 28px;background:#1C1C1A;color:#C9A96E;text-decoration:none;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;">Reply to ${b.name}</a>`}
+    ` : `${(b.needsFacialForm || b.needsWaxingForm) ? `<p style="font-size:13px;color:#5A5550;">This booking includes ${b.needsFacialForm && b.needsWaxingForm ? 'a facial/skin treatment and waxing' : b.needsFacialForm ? 'a facial/skin treatment' : 'waxing'} — the client was emailed the intake form(s) to fill out before their visit.</p>` : ''}<a href="mailto:${b.email}" style="display:inline-block;padding:12px 28px;background:#1C1C1A;color:#C9A96E;text-decoration:none;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;">Reply to ${b.name}</a>`}
   </div>
   <div style="background:#F5F0E8;padding:18px 36px;text-align:center;color:#8C8680;font-size:11px;">
     <p style="margin:0;">© 2026 Epoch Skin · <a href="${SITE}" style="color:#C9A96E;">epoch-skin.com</a> · (504) 777-4094</p>
@@ -103,27 +110,33 @@ export async function sendPaidBookingEmails(booking: BookingEmailData) {
   const icsB64 = Buffer.from(ics).toString('base64');
   const resend = getResend();
 
-  // Fetch the intake form from our own public/forms/ folder (not embedded in
-  // the bundle — it's a multi-MB PDF) and attach it to the client's copy only.
-  let intakeFormB64: string | null = null;
-  if (booking.needsIntakeForm) {
+  // Fetch whichever intake form(s) apply from our own public/forms/ folder
+  // (not embedded in the bundle — they're multi-MB PDFs) and attach to the
+  // client's copy only.
+  async function fetchFormB64(filename: string): Promise<string | null> {
     try {
-      const res = await fetch(`${SITE}/forms/epoch-skin-intake-facials.pdf`);
+      const res = await fetch(`${SITE}/forms/${filename}`);
       if (res.ok) {
         const buf = await res.arrayBuffer();
-        intakeFormB64 = Buffer.from(buf).toString('base64');
-      } else {
-        console.error('[email] Intake form fetch failed:', res.status);
+        return Buffer.from(buf).toString('base64');
       }
+      console.error('[email] Intake form fetch failed:', filename, res.status);
     } catch (err) {
-      console.error('[email] Intake form fetch error:', err);
+      console.error('[email] Intake form fetch error:', filename, err);
       // Don't block the booking confirmation just because the form fetch failed.
     }
+    return null;
   }
+
+  const [facialFormB64, waxingFormB64] = await Promise.all([
+    booking.needsFacialForm ? fetchFormB64('epoch-skin-intake-facials.pdf') : Promise.resolve(null),
+    booking.needsWaxingForm ? fetchFormB64('epoch-skin-intake-waxing.pdf')  : Promise.resolve(null),
+  ]);
 
   const clientAttachments = [
     { filename: 'epoch-skin-appointment.ics', content: icsB64 },
-    ...(intakeFormB64 ? [{ filename: 'epoch-skin-intake-form.pdf', content: intakeFormB64 }] : []),
+    ...(facialFormB64 ? [{ filename: 'epoch-skin-facial-intake-form.pdf', content: facialFormB64 }] : []),
+    ...(waxingFormB64 ? [{ filename: 'epoch-skin-waxing-intake-form.pdf', content: waxingFormB64 }] : []),
   ];
 
   return Promise.all([
