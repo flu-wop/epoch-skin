@@ -19,6 +19,7 @@ export interface BookingEmailData {
   duration: number;   // minutes
   price: number;
   notes: string;
+  needsIntakeForm?: boolean; // true if booking includes a Facial/Vajacial/Bacial service
 }
 
 function pad(n: number) { return String(n).padStart(2, '0'); }
@@ -86,9 +87,10 @@ export function bookingEmailHTML(b: BookingEmailData, isClient: boolean): string
     <hr style="border:none;border-top:1px solid #E5DCCF;margin:24px 0;"/>
     ${isClient ? `
     <p style="font-size:13px;color:#5A5550;">The .ics calendar file is attached — open it to add to Apple or Google Calendar.</p>
+    ${b.needsIntakeForm ? `<p style="font-size:13px;color:#5A5550;">Your appointment includes a facial/skin treatment — we've attached a short intake form. Please fill it out and bring it (or email it back) before your visit so we can tailor the treatment to your skin.</p>` : ''}
     <p style="font-size:13px;color:#5A5550;">Need to reschedule? Call or text <strong>(504) 777-4094</strong> at least 24 hours in advance.</p>
     <a href="${SITE}/book" style="display:inline-block;margin-top:16px;padding:12px 28px;background:#C9A96E;color:#1C1C1A;text-decoration:none;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;">Book Another Service</a>
-    ` : `<a href="mailto:${b.email}" style="display:inline-block;padding:12px 28px;background:#1C1C1A;color:#C9A96E;text-decoration:none;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;">Reply to ${b.name}</a>`}
+    ` : `${b.needsIntakeForm ? `<p style="font-size:13px;color:#5A5550;">This booking includes a facial/skin treatment — the client was emailed the intake form to fill out before their visit.</p>` : ''}<a href="mailto:${b.email}" style="display:inline-block;padding:12px 28px;background:#1C1C1A;color:#C9A96E;text-decoration:none;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;">Reply to ${b.name}</a>`}
   </div>
   <div style="background:#F5F0E8;padding:18px 36px;text-align:center;color:#8C8680;font-size:11px;">
     <p style="margin:0;">© 2026 Epoch Skin · <a href="${SITE}" style="color:#C9A96E;">epoch-skin.com</a> · (504) 777-4094</p>
@@ -101,12 +103,35 @@ export async function sendPaidBookingEmails(booking: BookingEmailData) {
   const icsB64 = Buffer.from(ics).toString('base64');
   const resend = getResend();
 
+  // Fetch the intake form from our own public/forms/ folder (not embedded in
+  // the bundle — it's a multi-MB PDF) and attach it to the client's copy only.
+  let intakeFormB64: string | null = null;
+  if (booking.needsIntakeForm) {
+    try {
+      const res = await fetch(`${SITE}/forms/epoch-skin-intake-facials.pdf`);
+      if (res.ok) {
+        const buf = await res.arrayBuffer();
+        intakeFormB64 = Buffer.from(buf).toString('base64');
+      } else {
+        console.error('[email] Intake form fetch failed:', res.status);
+      }
+    } catch (err) {
+      console.error('[email] Intake form fetch error:', err);
+      // Don't block the booking confirmation just because the form fetch failed.
+    }
+  }
+
+  const clientAttachments = [
+    { filename: 'epoch-skin-appointment.ics', content: icsB64 },
+    ...(intakeFormB64 ? [{ filename: 'epoch-skin-intake-form.pdf', content: intakeFormB64 }] : []),
+  ];
+
   return Promise.all([
     resend.emails.send({
       from: `Epoch Skin <${FROM}>`, to: booking.email, reply_to: TO_KAYLA,
       subject: `Your Epoch Skin appointment — ${booking.service}`,
       html: bookingEmailHTML(booking, true),
-      attachments: [{ filename: 'epoch-skin-appointment.ics', content: icsB64 }],
+      attachments: clientAttachments,
     }),
     resend.emails.send({
       from: `Epoch Skin <${FROM}>`, to: TO_KAYLA, reply_to: booking.email,

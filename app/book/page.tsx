@@ -117,7 +117,7 @@ const SERVICE_CATALOG: CatalogItem[] = [
   {
     id: "facials",
     label: "Facials",
-    icon: "✦",
+    icon: "◈",
     mode: "flat",
     sections: [
       {
@@ -151,7 +151,7 @@ const SERVICE_CATALOG: CatalogItem[] = [
   {
     id: "back-body",
     label: "Back & Body",
-    icon: "◇",
+    icon: "◈",
     mode: "sections",
     sections: [
       {
@@ -204,7 +204,7 @@ const SERVICE_CATALOG: CatalogItem[] = [
   {
     id: "addons",
     label: "Add-Ons",
-    icon: "○",
+    icon: "◈",
     mode: "sections",
     sections: [
       {
@@ -590,20 +590,29 @@ export default function BookPage() {
               </div>
               {selectedServices.map(s => (
                 <div key={s.id}>
-                  <button
-                    onClick={() => setExpandedDesc(expandedDesc === s.id ? null : s.id)}
-                    className="w-full flex items-center justify-between px-6 py-3 hover:bg-[#FDF9F5] transition-colors text-left"
-                  >
-                    <div className="flex items-center gap-3">
-                      <span className="font-serif text-base text-[#1C1C1A]">{s.name}</span>
+                  <div className="w-full flex items-center justify-between px-6 py-3 hover:bg-[#FDF9F5] transition-colors">
+                    <button
+                      onClick={() => setExpandedDesc(expandedDesc === s.id ? null : s.id)}
+                      className="flex items-center gap-3 text-left flex-1 min-w-0"
+                    >
+                      <span className="font-serif text-base text-[#1C1C1A] truncate">{s.name}</span>
                       {s.desc && (
-                        <span className="text-[10px] text-[#C9A96E] font-sans tracking-wide">
+                        <span className="text-[10px] text-[#C9A96E] font-sans tracking-wide flex-shrink-0">
                           {expandedDesc === s.id ? "▲" : "▼"}
                         </span>
                       )}
+                    </button>
+                    <div className="flex items-center gap-4 flex-shrink-0">
+                      <span className="text-[#C9A96E] font-serif">${s.price}</span>
+                      <button
+                        onClick={() => toggleService(s)}
+                        aria-label={`Remove ${s.name}`}
+                        className="text-[#8C8680] hover:text-red-500 transition-colors text-lg leading-none w-5 h-5 flex items-center justify-center"
+                      >
+                        ×
+                      </button>
                     </div>
-                    <span className="text-[#C9A96E] font-serif">${s.price}</span>
-                  </button>
+                  </div>
                   {s.desc && expandedDesc === s.id && (
                     <div className="px-6 pb-4">
                       <p className="text-xs font-sans text-[#8C8680] leading-relaxed">{s.desc}</p>
@@ -611,6 +620,16 @@ export default function BookPage() {
                   )}
                 </div>
               ))}
+            </div>
+          )}
+
+          {selectedIds.length === 0 && (
+            <div className="mb-8 px-6 py-5 border border-[#E5DCCF] bg-[#FDF9F5] text-center">
+              <p className="text-sm font-sans text-[#5A5550] mb-3">No services selected.</p>
+              <button onClick={() => setStep(1)}
+                className="text-xs font-sans text-[#C9A96E] hover:underline">
+                ← Choose a service
+              </button>
             </div>
           )}
 
@@ -665,7 +684,7 @@ export default function BookPage() {
 
           <div className="flex justify-between">
             <button onClick={() => setStep(1)} className="text-sm font-sans text-[#8C8680] hover:text-[#1C1C1A] transition-colors">← Back</button>
-            <button onClick={() => setStep(3)} disabled={!selectedDate || !selectedTime}
+            <button onClick={() => setStep(3)} disabled={!selectedDate || !selectedTime || selectedIds.length === 0}
               className="px-8 py-3.5 bg-[#3E4A3C] text-[#C4974A] text-[11px] tracking-[0.22em]
                          uppercase font-sans hover:bg-[#C4974A] hover:text-white
                          transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed">

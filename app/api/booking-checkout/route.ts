@@ -42,6 +42,9 @@ export async function POST(req: NextRequest) {
     const service = resolved.map((s) => s.name).join(', ');
     const price = resolved.reduce((sum, s) => sum + s.price, 0);
     const duration = resolved.reduce((sum, s) => sum + s.duration, 0);
+    // Facials, vajacials, and bacials involve actives/extractions close to the
+    // skin's barrier — send the client the intake form for these.
+    const needsIntakeForm = resolved.some((s) => /^(facial|vaj|bacial)-/.test(s.id));
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
@@ -76,6 +79,7 @@ export async function POST(req: NextRequest) {
         date,
         time,
         duration: String(duration ?? 60),
+        needsIntakeForm: needsIntakeForm ? '1' : '',
       },
     });
 

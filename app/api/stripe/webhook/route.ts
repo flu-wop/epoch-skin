@@ -103,6 +103,7 @@ async function handleBooking(session: Stripe.Checkout.Session, meta: Record<stri
       duration:  parseInt(meta.duration ?? '60'),
       notes:     meta.notes    ?? '',
       sessionId: session.id,
+      needsIntakeForm: meta.needsIntakeForm === '1',
     };
 
     // Save to Turso — idempotent via UNIQUE(stripe_session_id)
