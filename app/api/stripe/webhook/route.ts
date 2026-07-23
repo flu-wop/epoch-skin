@@ -55,6 +55,11 @@ async function initDB(db: ReturnType<typeof getTurso>) {
       // Column already exists — fine.
     }
   }
+  try {
+    await db.execute(`ALTER TABLE bookings ADD COLUMN discount_code TEXT`);
+  } catch {
+    // Column already exists — fine.
+  }
   await db.execute(`
     CREATE TABLE IF NOT EXISTS orders (
       id                 INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -120,6 +125,7 @@ async function handleBooking(session: Stripe.Checkout.Session, meta: Record<stri
       sessionId: session.id,
       needsFacialForm: meta.needsFacialForm === '1',
       needsWaxingForm: meta.needsWaxingForm === '1',
+      discountCode: meta.discountCode || null,
     };
 
     // Save to Turso — idempotent via UNIQUE(stripe_session_id)
@@ -158,8 +164,8 @@ async function handleBooking(session: Stripe.Checkout.Session, meta: Record<stri
 
       const result = await db.execute({
         sql: `INSERT OR IGNORE INTO bookings
-              (name, email, phone, service, category, price, date, time, duration, notes, stripe_session_id, paid, had_facial_service, had_waxing_service)
-              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?)`,
+              (name, email, phone, service, category, price, date, time, duration, notes, stripe_session_id, paid, had_facial_service, had_waxing_service, discount_code)
+              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?, ?)`,
         args: [
           booking.name, booking.email, booking.phone || null,
           booking.service, booking.category || null, booking.price,
@@ -167,6 +173,7 @@ async function handleBooking(session: Stripe.Checkout.Session, meta: Record<stri
           booking.notes || null, booking.sessionId,
           meta.needsFacialForm === '1' ? 1 : 0,
           meta.needsWaxingForm === '1' ? 1 : 0,
+          booking.discountCode,
         ],
       });
       isDuplicate = result.rowsAffected === 0;

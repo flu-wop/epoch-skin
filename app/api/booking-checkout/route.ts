@@ -7,6 +7,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { rateLimit, clientIp } from '@/lib/rate-limit';
 import { BOOKING_SERVICES } from '@/lib/booking-catalog';
+import { resolveDiscountCode } from '@/lib/discounts';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2024-04-10',
@@ -19,7 +20,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = await req.json();
-    const { name, email, phone, notes, serviceIds, category, date, time } = body;
+    const { name, email, phone, notes, serviceIds, category, date, time, discountCode } = body;
 
     if (!name || !email || !date || !time || !Array.isArray(serviceIds) || serviceIds.length === 0) {
       return NextResponse.json({ error: 'Missing required fields.' }, { status: 400 });
@@ -40,8 +41,23 @@ export async function POST(req: NextRequest) {
     }
 
     const service = resolved.map((s) => s.name).join(', ');
-    const price = resolved.reduce((sum, s) => sum + s.price, 0);
+    const rawPrice = resolved.reduce((sum, s) => sum + s.price, 0);
     const duration = resolved.reduce((sum, s) => sum + s.duration, 0);
+
+    // Discount code — validated server-side against the same shared map the
+    // shop cart uses (lib/discounts.ts). Never trust a discounted price from
+    // the client.
+    let appliedCode: string | null = null;
+    let price = rawPrice;
+    if (typeof discountCode === 'string' && discountCode.trim().length > 0) {
+      const match = resolveDiscountCode(discountCode);
+      if (!match) {
+        return NextResponse.json({ error: 'Invalid discount code.' }, { status: 400 });
+      }
+      appliedCode = match.code;
+      price = Math.round(rawPrice * (1 - match.pct) * 100) / 100;
+    }
+
     // Facials, vajacials, and bacials involve actives/extractions close to the
     // skin's barrier — send the client the facial intake form for these.
     const needsFacialForm = resolved.some((s) => /^(facial|vaj|bacial)-/.test(s.id));
@@ -64,7 +80,7 @@ export async function POST(req: NextRequest) {
               name: `Epoch Skin — ${service}`,
               description: `${new Date(date + 'T12:00:00').toLocaleDateString('en-US', {
                 weekday: 'long', month: 'long', day: 'numeric',
-              })} at ${time} · ${duration} min`,
+              })} at ${time} · ${duration} min${appliedCode ? ` · Code ${appliedCode} applied` : ''}`,
             },
           },
         },
@@ -85,6 +101,7 @@ export async function POST(req: NextRequest) {
         duration: String(duration ?? 60),
         needsFacialForm: needsFacialForm ? '1' : '',
         needsWaxingForm: needsWaxingForm ? '1' : '',
+        discountCode: appliedCode ?? '',
       },
     });
 

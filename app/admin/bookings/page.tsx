@@ -18,6 +18,7 @@ interface Booking {
   time: string;
   duration: number | null;
   notes: string | null;
+  discount_code: string | null;
   created_at: string;
 }
 
@@ -310,6 +311,9 @@ export default function AdminBookingsPage() {
                       <td className="px-5 py-4 text-[#1C1C1A]">{b.service}</td>
                       <td className="px-5 py-4 text-[#C9A96E] font-medium whitespace-nowrap">
                         {b.price != null ? `$${b.price}` : '—'}
+                        {b.discount_code && (
+                          <span className="block text-[#8C8680] text-[10px] font-normal font-sans mt-0.5">{b.discount_code}</span>
+                        )}
                       </td>
                       <td className="px-5 py-4 text-[#5A5550] whitespace-nowrap">
                         {b.phone

@@ -3,6 +3,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
+import { resolveDiscountCode } from "@/lib/discounts";
 
 type Service = {
   id: string;
@@ -322,6 +323,29 @@ export default function BookPage() {
   const totalPrice    = selectedServices.reduce((sum, s) => sum + s.price, 0);
   const totalDuration = selectedServices.reduce((sum, s) => sum + s.duration, 0);
 
+  const [promoInput, setPromoInput] = useState("");
+  const [promoError, setPromoError] = useState("");
+  const [applied, setApplied] = useState<{ code: string; pct: number } | null>(null);
+  const discountAmount = applied ? totalPrice * applied.pct : 0;
+  const discountedTotal = Math.round((totalPrice - discountAmount) * 100) / 100;
+
+  const handleApplyPromo = () => {
+    setPromoError("");
+    const match = resolveDiscountCode(promoInput);
+    if (!match) {
+      setPromoError("That code isn\u2019t valid.");
+      setApplied(null);
+      return;
+    }
+    setApplied(match);
+  };
+
+  const handleRemovePromo = () => {
+    setApplied(null);
+    setPromoInput("");
+    setPromoError("");
+  };
+
   const toggleService = (svc: Service) => {
     setSelectedIds(prev =>
       prev.includes(svc.id) ? prev.filter(id => id !== svc.id) : [...prev, svc.id]
@@ -352,6 +376,7 @@ export default function BookPage() {
           serviceIds: selectedIds,
           category: selectedServices.map(s => s.category).join(", "),
           date: selectedDate, time: selectedTime,
+          discountCode: applied?.code ?? '',
         }),
       });
       const data = await res.json();
@@ -710,7 +735,46 @@ export default function BookPage() {
                     {new Date(selectedDate + "T12:00:00").toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })} at {selectedTime}
                   </p>
                 </div>
-                <p className="font-serif text-xl text-[#C9A96E]">${totalPrice}</p>
+                <div className="text-right">
+                  {applied && (
+                    <p className="text-[#8C8680] text-xs font-sans line-through">${totalPrice}</p>
+                  )}
+                  <p className="font-serif text-xl text-[#C9A96E]">${applied ? discountedTotal.toFixed(2) : totalPrice}</p>
+                </div>
+              </div>
+
+              {/* Discount code */}
+              <div className="mt-5 pt-5 border-t border-[#F0EBE0]">
+                {applied ? (
+                  <div className="flex items-center justify-between">
+                    <p className="text-[#4A5745] text-sm font-sans">
+                      Code <span className="font-medium">{applied.code}</span> applied — saved ${discountAmount.toFixed(2)}
+                    </p>
+                    <button onClick={handleRemovePromo} className="text-[#8C8680] hover:text-red-500 text-xs font-sans transition-colors">
+                      Remove
+                    </button>
+                  </div>
+                ) : (
+                  <div>
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={promoInput}
+                        onChange={(e) => { setPromoInput(e.target.value); setPromoError(""); }}
+                        onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); handleApplyPromo(); } }}
+                        placeholder="Discount code"
+                        className="flex-1 border border-[#E5DCCF] px-3.5 py-2.5 text-sm font-sans text-[#1C1C1A] placeholder-[#C0BAB4] focus:outline-none focus:border-[#C9A96E] transition-colors"
+                      />
+                      <button
+                        onClick={handleApplyPromo}
+                        className="px-5 py-2.5 border border-[#1C1C1A] text-[#1C1C1A] text-[10px] tracking-[0.18em] uppercase font-sans hover:bg-[#1C1C1A] hover:text-white transition-colors"
+                      >
+                        Apply
+                      </button>
+                    </div>
+                    {promoError && <p className="text-red-500 text-xs font-sans mt-2">{promoError}</p>}
+                  </div>
+                )}
               </div>
             </div>
           )}
@@ -752,7 +816,7 @@ export default function BookPage() {
               className="px-8 py-3.5 bg-[#C9A96E] text-[#1C1C1A] text-[11px] tracking-[0.22em]
                          uppercase font-sans font-medium hover:bg-[#D4AF88]
                          transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
-              {submitting ? "Redirecting to payment..." : `Pay $${totalPrice} & Confirm`}
+              {submitting ? "Redirecting to payment..." : `Pay $${applied ? discountedTotal.toFixed(2) : totalPrice} & Confirm`}
             </button>
           </div>
         </div>
