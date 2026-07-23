@@ -19,6 +19,10 @@ interface CartContextType {
   clearCart: () => void;
   itemCount: number;
   total: number;
+  isOpen: boolean;
+  openCart: () => void;
+  closeCart: () => void;
+  toggleCart: () => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -26,6 +30,7 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   // Load cart from localStorage on mount
   useEffect(() => {
@@ -59,6 +64,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         return [...currentItems, { ...newItem, quantity: 1 }];
       }
     });
+    setIsOpen(true);
   };
 
   const removeItem = (id: string) => {
@@ -85,6 +91,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const itemCount = items.reduce((total, item) => total + item.quantity, 0);
   const total = items.reduce((total, item) => total + item.price * item.quantity, 0);
 
+  const openCart   = () => setIsOpen(true);
+  const closeCart  = () => setIsOpen(false);
+  const toggleCart = () => setIsOpen((v) => !v);
+
   return (
     <CartContext.Provider
       value={{
@@ -95,6 +105,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
         clearCart,
         itemCount,
         total,
+        isOpen,
+        openCart,
+        closeCart,
+        toggleCart,
       }}
     >
       {children}

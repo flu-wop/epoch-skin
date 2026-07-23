@@ -22,7 +22,7 @@ const NAV = [
 export function SiteHeader() {
   const [open, setOpen]       = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const { items }             = useCart();
+  const { items, toggleCart }  = useCart();
   const count = items.reduce((s, i) => s + i.quantity, 0);
 
   useEffect(() => {
@@ -84,7 +84,7 @@ export function SiteHeader() {
               Book Now
             </Link>
 
-            <Link href="/cart" className="relative p-1 group" aria-label="Cart">
+            <button onClick={toggleCart} className="relative p-1 group" aria-label="Cart">
               <ShoppingBag className="h-5 w-5 text-[#5A5550] group-hover:text-[#C9A96E] transition-colors" />
               {count > 0 && (
                 <span className="absolute -top-1 -right-1 w-4 h-4 flex items-center justify-center
@@ -92,7 +92,7 @@ export function SiteHeader() {
                   {count}
                 </span>
               )}
-            </Link>
+            </button>
 
             <button onClick={() => setOpen(!open)}
               className="md:hidden p-1 text-[#5A5550] hover:text-[#1C1C1A] transition-colors"
