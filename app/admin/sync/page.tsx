@@ -44,6 +44,12 @@ interface WebhookCheckResult {
   sessions: SessionCheck[];
 }
 
+interface EnvVarResult {
+  name: string;
+  group: string;
+  present: boolean;
+}
+
 export default function AdminSyncPage() {
   const [secret, setSecret]   = useState("");
   const [syncing, setSyncing] = useState(false);
@@ -54,6 +60,29 @@ export default function AdminSyncPage() {
   const [webhookCheck, setWebhookCheck] = useState<WebhookCheckResult | null>(null);
   const [checkingWebhook, setCheckingWebhook] = useState(false);
   const [webhookError, setWebhookError] = useState("");
+  const [envResults, setEnvResults] = useState<EnvVarResult[] | null>(null);
+  const [checkingEnv, setCheckingEnv] = useState(false);
+  const [envError, setEnvError] = useState("");
+
+  const checkEnv = async () => {
+    if (!secret) { setEnvError('Enter your sync secret first.'); return; }
+    setCheckingEnv(true);
+    setEnvError("");
+    try {
+      const res = await fetch('/api/admin/env-check', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ secret }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      setEnvResults(data.results);
+    } catch (err: unknown) {
+      setEnvError(err instanceof Error ? err.message : 'Env check failed');
+    } finally {
+      setCheckingEnv(false);
+    }
+  };
 
   const checkWebhook = async () => {
     if (!secret) { setWebhookError('Enter your sync secret first.'); return; }
@@ -165,6 +194,61 @@ export default function AdminSyncPage() {
             </div>
           ) : (
             <p className="text-[#8C8680] text-sm font-sans">Click &ldquo;Check Status&rdquo; to see current sync state.</p>
+          )}
+        </div>
+
+        {/* Environment variables */}
+        <div className="bg-white border border-[#E5DCCF] p-7 mb-6">
+          <div className="flex items-center justify-between mb-2">
+            <h2 className="font-serif text-xl text-[#1C1C1A]">Environment Variables</h2>
+            <button onClick={checkEnv} disabled={checkingEnv}
+              className="text-[11px] tracking-[0.18em] uppercase font-sans border border-[#E5DCCF]
+                         text-[#5A5550] px-5 py-2 hover:border-[#C9A96E] hover:text-[#C9A96E]
+                         transition-colors duration-300 disabled:opacity-50">
+              {checkingEnv ? 'Checking...' : 'Check Env Vars'}
+            </button>
+          </div>
+          <p className="text-[#8C8680] text-xs font-sans mb-5">
+            Confirms which required environment variables are set in this deployment — never their values,
+            just present or missing. Uses the same sync secret below.
+          </p>
+
+          {envError && (
+            <div className="mb-4 p-3 border border-red-200 bg-red-50">
+              <p className="text-red-600 text-xs font-sans">{envError}</p>
+            </div>
+          )}
+
+          {envResults && (
+            <div className="space-y-4">
+              {Object.entries(
+                envResults.reduce<Record<string, EnvVarResult[]>>((acc, r) => {
+                  (acc[r.group] ??= []).push(r);
+                  return acc;
+                }, {})
+              ).map(([group, vars]) => (
+                <div key={group}>
+                  <p className="text-[10px] tracking-[0.2em] uppercase text-[#8C8680] font-sans mb-2">{group}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {vars.map((v) => (
+                      <span key={v.name} className={`px-2.5 py-1 text-[11px] font-sans ${
+                        v.present ? 'bg-[#EBF0EA] text-[#4A5745]' : 'bg-red-50 text-red-600'
+                      }`}>
+                        {v.present ? '✓' : '✗'} {v.name}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+              {envResults.every((r) => r.present) ? (
+                <p className="text-xs font-sans text-[#4A5745] pt-2">All required environment variables are set.</p>
+              ) : (
+                <p className="text-xs font-sans text-red-600 pt-2">
+                  {envResults.filter((r) => !r.present).length} variable(s) missing — set these in
+                  Vercel → Project → Settings → Environment Variables, then redeploy.
+                </p>
+              )}
+            </div>
           )}
         </div>
 
