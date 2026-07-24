@@ -39,15 +39,16 @@ async function initDB(db: ReturnType<typeof getTurso>) {
       created_at TEXT DEFAULT (datetime('now'))
     )
   `);
-  await db.execute(`
-    CREATE UNIQUE INDEX IF NOT EXISTS idx_session ON bookings(stripe_session_id)
-  `);
-  // Migration: track whether each booking included a facial-type or waxing
-  // service, so we can tell whether a new booking is a client's FIRST of
-  // that type (and therefore needs the intake form) or a repeat (already on
-  // file). ALTER TABLE ADD COLUMN errors if the column already exists on
-  // this libSQL version — that's expected on every run after the first and
-  // safely ignored.
+  // Migrations for `bookings` — ALTER TABLE ADD COLUMN errors if the column
+  // already exists on this libSQL version — that's expected on every run
+  // after the first and safely ignored. These MUST run before any
+  // CREATE INDEX on these columns, since CREATE TABLE IF NOT EXISTS is a
+  // no-op on a table that predates a given column, and an index on a
+  // nonexistent column throws SQL_INPUT_ERROR ("no such column").
+  // had_facial_service / had_waxing_service track whether a booking included
+  // a facial-type or waxing service, so we can tell whether a new booking is
+  // a client's FIRST of that type (and therefore needs the intake form) or a
+  // repeat (already on file).
   for (const col of ['had_facial_service', 'had_waxing_service']) {
     try {
       await db.execute(`ALTER TABLE bookings ADD COLUMN ${col} INTEGER DEFAULT 0`);
@@ -60,6 +61,14 @@ async function initDB(db: ReturnType<typeof getTurso>) {
   } catch {
     // Column already exists — fine.
   }
+  try {
+    await db.execute(`ALTER TABLE bookings ADD COLUMN stripe_session_id TEXT`);
+  } catch {
+    // Column already exists — fine.
+  }
+  await db.execute(`
+    CREATE UNIQUE INDEX IF NOT EXISTS idx_session ON bookings(stripe_session_id)
+  `);
   await db.execute(`
     CREATE TABLE IF NOT EXISTS orders (
       id                 INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -73,6 +82,11 @@ async function initDB(db: ReturnType<typeof getTurso>) {
       created_at         TEXT DEFAULT (datetime('now'))
     )
   `);
+  try {
+    await db.execute(`ALTER TABLE orders ADD COLUMN stripe_session_id TEXT`);
+  } catch {
+    // Column already exists — fine.
+  }
   await db.execute(`
     CREATE UNIQUE INDEX IF NOT EXISTS idx_order_session ON orders(stripe_session_id)
   `);
