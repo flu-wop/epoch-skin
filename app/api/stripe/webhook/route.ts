@@ -62,6 +62,14 @@ async function initDB(db: ReturnType<typeof getTurso>) {
     // Column already exists — fine.
   }
   try {
+    // Rows are only ever inserted after a successful Stripe payment, so
+    // DEFAULT 1 here matches the original CREATE TABLE intent (unlike
+    // had_facial_service/had_waxing_service, which correctly default to 0).
+    await db.execute(`ALTER TABLE bookings ADD COLUMN paid INTEGER DEFAULT 1`);
+  } catch {
+    // Column already exists — fine.
+  }
+  try {
     await db.execute(`ALTER TABLE bookings ADD COLUMN stripe_session_id TEXT`);
   } catch {
     // Column already exists — fine.
