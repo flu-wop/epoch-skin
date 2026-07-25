@@ -203,6 +203,42 @@ const SERVICE_CATALOG: CatalogItem[] = [
     ],
   },
   {
+    id: "massage",
+    label: "Massage",
+    icon: "◈",
+    mode: "sections",
+    sections: [
+      {
+        title: "Body Massage",
+        services: [
+          { id: "mas-body-30", name: "30 Min Full Body Massage", price: 50,  duration: 30, desc: "A focused full-body massage that releases tension and eases stress in a shorter session — ideal to pair with another service or as a quick reset." },
+          { id: "mas-body-60", name: "60 Min Full Body Massage", price: 85,  duration: 60, desc: "Our signature full-body massage. A complete, unhurried session that works through tension from head to toe, leaving you thoroughly relaxed." },
+          { id: "mas-body-90", name: "90 Min Full Body Massage", price: 120, duration: 90, desc: "An extended full-body massage with time to work deeper into problem areas. The most restorative option for chronic tension or a true escape." },
+        ],
+      },
+      {
+        title: "Foot Massage",
+        services: [
+          { id: "mas-foot-30", name: "30 Min Foot Massage", price: 40, duration: 30, desc: "Focused pressure-point work for tired, overworked feet. Relieves tension and improves circulation in a quick, targeted session." },
+          { id: "mas-foot-60", name: "60 Min Foot Massage", price: 80, duration: 60, desc: "An extended foot massage with time to fully work through tension in the feet, ankles, and lower legs. Deeply therapeutic." },
+        ],
+      },
+      {
+        title: "Scalp Massage",
+        services: [
+          { id: "mas-scalp-30", name: "30 Min Scalp Massage", price: 35, duration: 30, desc: "Relieves tension held in the scalp, temples, and neck. Genuinely melts stress and leaves you noticeably lighter." },
+          { id: "mas-scalp-45", name: "45 Min Scalp Massage", price: 45, duration: 45, desc: "An extended scalp massage with time to work through deeper tension — a favorite for headache relief and total relaxation." },
+        ],
+      },
+      {
+        title: "Combo Massage",
+        services: [
+          { id: "mas-combo-90", name: "90 Min Combo Massage", price: 135, duration: 90, desc: "A bundled session combining body, foot, and scalp massage in one visit — full-body relaxation without booking three separate appointments." },
+        ],
+      },
+    ],
+  },
+  {
     id: "addons",
     label: "Add-Ons",
     icon: "◈",

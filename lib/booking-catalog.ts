@@ -89,4 +89,12 @@ export const BOOKING_SERVICES: Record<string, CatalogService> = {
   "vaj-t3":             { name: "Vajacial Tier 3",                price: 90,  duration: 60 },
   "bacial-t1":          { name: "Bacial Tier 1",                  price: 75,  duration: 45 },
   "bacial-t2":          { name: "Bacial Tier 2",                  price: 95,  duration: 60 },
+  "mas-body-30":        { name: "30 Min Full Body Massage",       price: 50,  duration: 30 },
+  "mas-body-60":        { name: "60 Min Full Body Massage",       price: 85,  duration: 60 },
+  "mas-body-90":        { name: "90 Min Full Body Massage",       price: 120, duration: 90 },
+  "mas-foot-30":        { name: "30 Min Foot Massage",            price: 40,  duration: 30 },
+  "mas-foot-60":        { name: "60 Min Foot Massage",            price: 80,  duration: 60 },
+  "mas-scalp-30":       { name: "30 Min Scalp Massage",           price: 35,  duration: 30 },
+  "mas-scalp-45":       { name: "45 Min Scalp Massage",           price: 45,  duration: 45 },
+  "mas-combo-90":       { name: "90 Min Combo Massage",           price: 135, duration: 90 },
 };

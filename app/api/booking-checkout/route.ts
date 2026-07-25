@@ -65,6 +65,11 @@ export async function POST(req: NextRequest) {
     // booking can trigger both forms if it mixes waxing with a facial-type
     // service in the same appointment.
     const needsWaxingForm = resolved.some((s) => /^(w|m)-/.test(s.id));
+    // Standalone massage services get the massage intake form (contraindication
+    // screening — pregnancy, DVT/blood clots, recent surgery, etc.). Uses the
+    // `mas-` prefix specifically to avoid colliding with the `m-` prefix used
+    // by men's waxing above.
+    const needsMassageForm = resolved.some((s) => /^mas-/.test(s.id));
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
@@ -101,6 +106,7 @@ export async function POST(req: NextRequest) {
         duration: String(duration ?? 60),
         needsFacialForm: needsFacialForm ? '1' : '',
         needsWaxingForm: needsWaxingForm ? '1' : '',
+        needsMassageForm: needsMassageForm ? '1' : '',
         discountCode: appliedCode ?? '',
       },
     });

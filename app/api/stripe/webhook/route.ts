@@ -49,7 +49,7 @@ async function initDB(db: ReturnType<typeof getTurso>) {
   // a facial-type or waxing service, so we can tell whether a new booking is
   // a client's FIRST of that type (and therefore needs the intake form) or a
   // repeat (already on file).
-  for (const col of ['had_facial_service', 'had_waxing_service']) {
+  for (const col of ['had_facial_service', 'had_waxing_service', 'had_massage_service']) {
     try {
       await db.execute(`ALTER TABLE bookings ADD COLUMN ${col} INTEGER DEFAULT 0`);
     } catch {
@@ -147,6 +147,7 @@ async function handleBooking(session: Stripe.Checkout.Session, meta: Record<stri
       sessionId: session.id,
       needsFacialForm: meta.needsFacialForm === '1',
       needsWaxingForm: meta.needsWaxingForm === '1',
+      needsMassageForm: meta.needsMassageForm === '1',
       discountCode: meta.discountCode || null,
     };
 
@@ -183,11 +184,22 @@ async function handleBooking(session: Stripe.Checkout.Session, meta: Record<stri
           console.error('[webhook] Waxing-history lookup failed, defaulting to send:', lookupErr);
         }
       }
+      if (booking.needsMassageForm) {
+        try {
+          const prior = await db.execute({
+            sql: `SELECT 1 FROM bookings WHERE email = ? AND had_massage_service = 1 AND stripe_session_id != ? LIMIT 1`,
+            args: [booking.email, booking.sessionId],
+          });
+          booking.needsMassageForm = prior.rows.length === 0;
+        } catch (lookupErr) {
+          console.error('[webhook] Massage-history lookup failed, defaulting to send:', lookupErr);
+        }
+      }
 
       const result = await db.execute({
         sql: `INSERT OR IGNORE INTO bookings
-              (name, email, phone, service, category, price, date, time, duration, notes, stripe_session_id, paid, had_facial_service, had_waxing_service, discount_code)
-              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?, ?)`,
+              (name, email, phone, service, category, price, date, time, duration, notes, stripe_session_id, paid, had_facial_service, had_waxing_service, had_massage_service, discount_code)
+              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?, ?, ?)`,
         args: [
           booking.name, booking.email, booking.phone || null,
           booking.service, booking.category || null, booking.price,
@@ -195,6 +207,7 @@ async function handleBooking(session: Stripe.Checkout.Session, meta: Record<stri
           booking.notes || null, booking.sessionId,
           meta.needsFacialForm === '1' ? 1 : 0,
           meta.needsWaxingForm === '1' ? 1 : 0,
+          meta.needsMassageForm === '1' ? 1 : 0,
           booking.discountCode,
         ],
       });
