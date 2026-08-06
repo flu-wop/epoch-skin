@@ -9,13 +9,23 @@
 // Uses Square's REST API directly via fetch rather than the Square SDK —
 // no dependency/version to keep in sync, mirrors the Turso HTTP-API pattern
 // already used elsewhere on this stack.
+//
+// Processes in small concurrent batches rather than one-at-a-time — with
+// 80+ services and up to 2 network round trips each, a fully sequential
+// loop can outlast Vercel's function timeout and get killed mid-run,
+// leaving the rest of the catalog un-synced with no error surfaced.
 
 import { NextResponse } from 'next/server';
 import { BOOKING_SERVICES } from '@/lib/booking-catalog';
 import { rateLimit, clientIp } from '@/lib/rate-limit';
 import { timingSafeEqual } from 'crypto';
 
+// Give this route the most execution time Vercel allows on the current
+// plan (60s on Hobby, up to 300s on Pro) instead of the ~10s default.
+export const maxDuration = 60;
+
 const SQUARE_VERSION = '2024-06-25';
+const BATCH_SIZE = 8; // concurrent requests — comfortably under Square's rate limit
 
 function safeEq(a: string, b: string): boolean {
   const A = Buffer.from(a), B = Buffer.from(b);
@@ -66,6 +76,100 @@ function requireSquareEnv() {
   return null;
 }
 
+// Runs async `fn` over `items` with at most `size` in flight at once —
+// keeps total wall time down without firing all requests simultaneously.
+async function processBatched<T, R>(items: T[], size: number, fn: (item: T) => Promise<R>): Promise<R[]> {
+  const results: R[] = [];
+  for (let i = 0; i < items.length; i += size) {
+    const chunk = items.slice(i, i + size);
+    const chunkResults = await Promise.all(chunk.map(fn));
+    results.push(...chunkResults);
+  }
+  return results;
+}
+
+async function syncOne(id: string, service: { name: string; price: number }) {
+  const priceCents = Math.round(service.price * 100);
+  try {
+    const existingVariation = await findExistingBySku(id);
+
+    if (existingVariation) {
+      // Price is available straight off the search result — skip the extra
+      // GET-parent-item round trip entirely when nothing's changed.
+      const currentAmount = existingVariation.item_variation_data?.price_money?.amount;
+      const currentName = existingVariation.item_variation_data?.name;
+      if (currentAmount === priceCents && currentName === service.name) {
+        return { id, name: service.name, price: `$${service.price}`, action: 'unchanged' };
+      }
+
+      const itemId = existingVariation.item_variation_data.item_id;
+      const itemRes = await squareFetch(`/catalog/object/${itemId}`);
+      const item = itemRes.object;
+
+      await squareFetch('/catalog/object', {
+        method: 'POST',
+        body: JSON.stringify({
+          idempotency_key: `epoch-svc-${id}-${item.version}-${Date.now()}`,
+          object: {
+            type: 'ITEM',
+            id: item.id,
+            version: item.version,
+            item_data: {
+              ...item.item_data,
+              name: service.name,
+              variations: [
+                {
+                  type: 'ITEM_VARIATION',
+                  id: existingVariation.id,
+                  version: existingVariation.version,
+                  item_variation_data: {
+                    ...existingVariation.item_variation_data,
+                    name: service.name,
+                    sku: id,
+                    pricing_type: 'FIXED_PRICING',
+                    price_money: { amount: priceCents, currency: 'USD' },
+                  },
+                },
+              ],
+            },
+          },
+        }),
+      });
+      return { id, name: service.name, price: `$${service.price}`, action: 'updated' };
+    } else {
+      await squareFetch('/catalog/object', {
+        method: 'POST',
+        body: JSON.stringify({
+          idempotency_key: `epoch-svc-create-${id}`,
+          object: {
+            type: 'ITEM',
+            id: `#${id}`,
+            item_data: {
+              name: service.name,
+              variations: [
+                {
+                  type: 'ITEM_VARIATION',
+                  id: `#${id}-var`,
+                  item_variation_data: {
+                    name: service.name,
+                    sku: id,
+                    pricing_type: 'FIXED_PRICING',
+                    price_money: { amount: priceCents, currency: 'USD' },
+                  },
+                },
+              ],
+            },
+          },
+        }),
+      });
+      return { id, name: service.name, price: `$${service.price}`, action: 'created' };
+    }
+  } catch (err) {
+    console.error(`[square-sync] ${id} failed:`, err);
+    return { id, name: service.name, price: `$${service.price}`, action: 'error' };
+  }
+}
+
 export async function POST(req: Request) {
   const ok = await rateLimit(`square-sync:${clientIp(req)}`, 3, 900); // 3 per 15 min
   if (!ok) return NextResponse.json({ error: 'Too many attempts. Try again later.' }, { status: 429 });
@@ -85,87 +189,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const results = [];
-
-    for (const [id, service] of Object.entries(BOOKING_SERVICES)) {
-      const priceCents = Math.round(service.price * 100);
-      try {
-        const existingVariation = await findExistingBySku(id);
-
-        if (existingVariation) {
-          const itemId = existingVariation.item_variation_data.item_id;
-          const itemRes = await squareFetch(`/catalog/object/${itemId}`);
-          const item = itemRes.object;
-
-          const targetAmount = existingVariation.item_variation_data?.price_money?.amount;
-          if (targetAmount === priceCents && item.item_data?.name === service.name) {
-            results.push({ id, name: service.name, price: `$${service.price}`, action: 'unchanged' });
-            continue;
-          }
-
-          await squareFetch('/catalog/object', {
-            method: 'POST',
-            body: JSON.stringify({
-              idempotency_key: `epoch-svc-${id}-${item.version}-${Date.now()}`,
-              object: {
-                type: 'ITEM',
-                id: item.id,
-                version: item.version,
-                item_data: {
-                  ...item.item_data,
-                  name: service.name,
-                  variations: [
-                    {
-                      type: 'ITEM_VARIATION',
-                      id: existingVariation.id,
-                      version: existingVariation.version,
-                      item_variation_data: {
-                        ...existingVariation.item_variation_data,
-                        name: service.name,
-                        sku: id,
-                        pricing_type: 'FIXED_PRICING',
-                        price_money: { amount: priceCents, currency: 'USD' },
-                      },
-                    },
-                  ],
-                },
-              },
-            }),
-          });
-          results.push({ id, name: service.name, price: `$${service.price}`, action: 'updated' });
-        } else {
-          await squareFetch('/catalog/object', {
-            method: 'POST',
-            body: JSON.stringify({
-              idempotency_key: `epoch-svc-create-${id}`,
-              object: {
-                type: 'ITEM',
-                id: `#${id}`,
-                item_data: {
-                  name: service.name,
-                  variations: [
-                    {
-                      type: 'ITEM_VARIATION',
-                      id: `#${id}-var`,
-                      item_variation_data: {
-                        name: service.name,
-                        sku: id,
-                        pricing_type: 'FIXED_PRICING',
-                        price_money: { amount: priceCents, currency: 'USD' },
-                      },
-                    },
-                  ],
-                },
-              },
-            }),
-          });
-          results.push({ id, name: service.name, price: `$${service.price}`, action: 'created' });
-        }
-      } catch (err) {
-        console.error(`[square-sync] ${id} failed:`, err);
-        results.push({ id, name: service.name, price: `$${service.price}`, action: 'error' });
-      }
-    }
+    const entries = Object.entries(BOOKING_SERVICES);
+    const results = await processBatched(entries, BATCH_SIZE, ([id, service]) => syncOne(id, service));
 
     return NextResponse.json({ success: true, synced: results.length, results });
   } catch (err) {
@@ -181,7 +206,8 @@ export async function GET(req: Request) {
   const envErr = requireSquareEnv();
   if (envErr) return envErr;
 
-  const status = await Promise.all(Object.entries(BOOKING_SERVICES).map(async ([id, service]) => {
+  const entries = Object.entries(BOOKING_SERVICES);
+  const status = await processBatched(entries, BATCH_SIZE, async ([id, service]) => {
     try {
       const existing = await findExistingBySku(id);
       const inSquare = !!existing;
@@ -195,7 +221,7 @@ export async function GET(req: Request) {
       console.error(`[square-sync] status check for ${id} failed:`, err);
       return { id, name: service.name, catalogPrice: `$${service.price}`, inSquare: false, squarePrice: null, synced: false };
     }
-  }));
+  });
 
   return NextResponse.json({ services: status });
 }
