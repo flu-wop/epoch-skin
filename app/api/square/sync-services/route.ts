@@ -25,7 +25,7 @@ import { timingSafeEqual } from 'crypto';
 export const maxDuration = 60;
 
 const SQUARE_VERSION = '2024-06-25';
-const BATCH_SIZE = 8; // concurrent requests — comfortably under Square's rate limit
+const BATCH_SIZE = 16; // concurrent requests — still comfortably under Square's rate limit
 
 function safeEq(a: string, b: string): boolean {
   const A = Buffer.from(a), B = Buffer.from(b);
@@ -166,7 +166,8 @@ async function syncOne(id: string, service: { name: string; price: number }) {
     }
   } catch (err) {
     console.error(`[square-sync] ${id} failed:`, err);
-    return { id, name: service.name, price: `$${service.price}`, action: 'error' };
+    const message = err instanceof Error ? err.message.slice(0, 200) : 'Unknown error';
+    return { id, name: service.name, price: `$${service.price}`, action: 'error', detail: message };
   }
 }
 

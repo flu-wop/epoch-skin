@@ -55,6 +55,7 @@ interface SquareSyncResult {
   name: string;
   price: string;
   action: string;
+  detail?: string;
 }
 
 interface SquareStatusItem {
@@ -277,14 +278,24 @@ export default function AdminSyncPage() {
           {squareResults && (
             <div className="mt-6 pt-6 border-t border-[#F0EBE0]">
               <p className="font-sans text-sm text-[#1C1C1A] mb-4">Square sync complete — {squareResults.length} services processed</p>
+              {squareResults.some(r => r.action === 'error') && (
+                <p className="text-xs font-sans text-red-600 mb-3">
+                  {squareResults.filter(r => r.action === 'error').length} failed — click Sync Square Services again to retry (safe, matches on ID).
+                </p>
+              )}
               <div className="max-h-64 overflow-y-auto space-y-2">
                 {squareResults.map((r) => (
-                  <div key={r.id} className="flex items-center justify-between py-2 border-b border-[#F0EBE0] last:border-0">
-                    <span className="text-sm font-sans text-[#1C1C1A]">{r.name}</span>
-                    <span className="text-xs font-sans font-medium px-2 py-1 uppercase tracking-wide"
-                      style={{ color: r.action === 'created' ? '#4A9B6F' : r.action === 'updated' ? '#C9A96E' : r.action === 'error' ? '#E0453A' : '#8C8680' }}>
-                      {r.action}
-                    </span>
+                  <div key={r.id} className="py-2 border-b border-[#F0EBE0] last:border-0">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-sans text-[#1C1C1A]">{r.name}</span>
+                      <span className="text-xs font-sans font-medium px-2 py-1 uppercase tracking-wide"
+                        style={{ color: r.action === 'created' ? '#4A9B6F' : r.action === 'updated' ? '#C9A96E' : r.action === 'error' ? '#E0453A' : '#8C8680' }}>
+                        {r.action}
+                      </span>
+                    </div>
+                    {r.action === 'error' && r.detail && (
+                      <p className="text-[10px] font-sans text-red-500 mt-1">{r.detail}</p>
+                    )}
                   </div>
                 ))}
               </div>
