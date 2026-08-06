@@ -209,18 +209,93 @@ export default function AdminSyncPage() {
   return (
     <div className="min-h-screen bg-[#FAF7F2] py-16 px-5">
       <div className="max-w-3xl mx-auto">
-        <div className="mb-12">
+        <div className="mb-8">
           <p className="text-[11px] tracking-[0.28em] uppercase text-[#C9A96E] font-sans mb-3">Admin</p>
-          <h1 className="font-serif text-4xl text-[#1C1C1A] mb-3">Stripe Product Sync</h1>
+          <h1 className="font-serif text-4xl text-[#1C1C1A] mb-3">Catalog Sync</h1>
           <p className="text-[#5A5550] font-sans text-sm">
-            Syncs all 14 products from your catalog to Stripe. Safe to run multiple times — it will create new products or update existing ones without creating duplicates.
+            Syncs your product/service catalog to Stripe (shop checkout) and Square (in-person sales). Safe to run any number of times — matches existing entries, never duplicates.
           </p>
+        </div>
+
+        {/* Run Sync — both, up top */}
+        <div className="bg-white border border-[#E5DCCF] p-7 mb-6">
+          <h2 className="font-serif text-xl text-[#1C1C1A] mb-5">Run Sync</h2>
+          <input
+            type="password"
+            value={secret}
+            onChange={e => setSecret(e.target.value)}
+            placeholder="Sync secret (SYNC_SECRET env var)"
+            className="w-full mb-4 px-4 py-3 border border-[#E5DCCF] text-sm font-sans
+                       focus:outline-none focus:border-[#C9A96E] transition-colors"
+          />
+          <div className="flex flex-col sm:flex-row gap-3">
+            <button onClick={runSync} disabled={syncing}
+              className="flex-1 px-6 py-3 bg-[#3E4A3C] text-[#C4974A] text-[11px] tracking-[0.18em]
+                         uppercase font-sans hover:bg-[#C4974A] hover:text-white
+                         transition-all duration-400 disabled:opacity-50 whitespace-nowrap">
+              {syncing ? 'Syncing...' : 'Sync Stripe Products'}
+            </button>
+            <button onClick={runSquareSync} disabled={squareSyncing}
+              className="flex-1 px-6 py-3 bg-[#3E4A3C] text-[#C4974A] text-[11px] tracking-[0.18em]
+                         uppercase font-sans hover:bg-[#C4974A] hover:text-white
+                         transition-all duration-400 disabled:opacity-50 whitespace-nowrap">
+              {squareSyncing ? 'Syncing to Square...' : 'Sync Square Services'}
+            </button>
+          </div>
+          <p className="text-[#8C8680] text-xs font-sans mt-3">
+            Requires the SYNC_SECRET value set in Vercel env vars. Stripe syncs your shop products; Square syncs your booking services.
+          </p>
+
+          {error && (
+            <div className="mt-4 p-3 border border-red-200 bg-red-50">
+              <p className="text-red-600 text-xs font-sans">{error}</p>
+            </div>
+          )}
+          {squareError && (
+            <div className="mt-4 p-3 border border-red-200 bg-red-50">
+              <p className="text-red-600 text-xs font-sans">{squareError}</p>
+            </div>
+          )}
+
+          {results && (
+            <div className="mt-6 pt-6 border-t border-[#F0EBE0]">
+              <p className="font-sans text-sm text-[#1C1C1A] mb-4">Stripe sync complete — {results.length} products processed</p>
+              <div className="max-h-64 overflow-y-auto space-y-2">
+                {results.map((r) => (
+                  <div key={r.id} className="flex items-center justify-between py-2 border-b border-[#F0EBE0] last:border-0">
+                    <span className="text-sm font-sans text-[#1C1C1A]">{r.name}</span>
+                    <span className="text-xs font-sans font-medium px-2 py-1 uppercase tracking-wide"
+                      style={{ color: actionColor[r.action] ?? '#5A5550' }}>
+                      {r.action}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {squareResults && (
+            <div className="mt-6 pt-6 border-t border-[#F0EBE0]">
+              <p className="font-sans text-sm text-[#1C1C1A] mb-4">Square sync complete — {squareResults.length} services processed</p>
+              <div className="max-h-64 overflow-y-auto space-y-2">
+                {squareResults.map((r) => (
+                  <div key={r.id} className="flex items-center justify-between py-2 border-b border-[#F0EBE0] last:border-0">
+                    <span className="text-sm font-sans text-[#1C1C1A]">{r.name}</span>
+                    <span className="text-xs font-sans font-medium px-2 py-1 uppercase tracking-wide"
+                      style={{ color: r.action === 'created' ? '#4A9B6F' : r.action === 'updated' ? '#C9A96E' : r.action === 'error' ? '#E0453A' : '#8C8680' }}>
+                      {r.action}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Status check */}
         <div className="bg-white border border-[#E5DCCF] p-7 mb-6">
           <div className="flex items-center justify-between mb-5">
-            <h2 className="font-serif text-xl text-[#1C1C1A]">Current Status</h2>
+            <h2 className="font-serif text-xl text-[#1C1C1A]">Stripe Status</h2>
             <button onClick={checkStatus} disabled={checking}
               className="text-[11px] tracking-[0.18em] uppercase font-sans border border-[#E5DCCF]
                          text-[#5A5550] px-5 py-2 hover:border-[#C9A96E] hover:text-[#C9A96E]
@@ -255,6 +330,49 @@ export default function AdminSyncPage() {
           )}
         </div>
 
+        {/* Square catalog status */}
+        <div className="bg-white border border-[#E5DCCF] p-7 mb-6">
+          <div className="flex items-center justify-between mb-2">
+            <h2 className="font-serif text-xl text-[#1C1C1A]">Square Status</h2>
+            <button onClick={checkSquareStatus} disabled={squareChecking}
+              className="text-[11px] tracking-[0.18em] uppercase font-sans border border-[#E5DCCF]
+                         text-[#5A5550] px-5 py-2 hover:border-[#C9A96E] hover:text-[#C9A96E]
+                         transition-colors duration-300 disabled:opacity-50">
+              {squareChecking ? 'Checking...' : 'Check Status'}
+            </button>
+          </div>
+          <p className="text-[#8C8680] text-xs font-sans mb-5">
+            Booking services pushed into your Square Item Library, ready to ring up on the Square reader/app for in-person sales.
+          </p>
+
+          {squareStatus ? (
+            <div className="space-y-2">
+              <p className="text-xs text-[#8C8680] font-sans mb-3">
+                {squareStatus.filter(s => s.synced).length} / {squareStatus.length} services synced
+              </p>
+              <div className="max-h-64 overflow-y-auto space-y-1">
+                {squareStatus.map((s) => (
+                  <div key={s.id} className="flex items-center justify-between py-2 border-b border-[#F0EBE0] last:border-0">
+                    <span className="text-sm font-sans text-[#1C1C1A] flex-1">{s.name}</span>
+                    <div className="flex items-center gap-4 text-xs font-sans text-[#8C8680]">
+                      <span>{s.catalogPrice}</span>
+                      {s.inSquare ? (
+                        <span className={`px-2 py-0.5 text-[9px] tracking-wide uppercase ${s.synced ? 'bg-[#EBF0EA] text-[#4A5745]' : 'bg-[#FEF3E8] text-[#E07A3A]'}`}>
+                          {s.synced ? 'Synced' : `Square: ${s.squarePrice}`}
+                        </span>
+                      ) : (
+                        <span className="px-2 py-0.5 text-[9px] tracking-wide uppercase bg-red-50 text-red-500">Not in Square</span>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <p className="text-[#8C8680] text-sm font-sans">Click &ldquo;Check Status&rdquo; to see current sync state.</p>
+          )}
+        </div>
+
         {/* Environment variables */}
         <div className="bg-white border border-[#E5DCCF] p-7 mb-6">
           <div className="flex items-center justify-between mb-2">
@@ -268,7 +386,7 @@ export default function AdminSyncPage() {
           </div>
           <p className="text-[#8C8680] text-xs font-sans mb-5">
             Confirms which required environment variables are set in this deployment — never their values,
-            just present or missing. Uses the same sync secret below.
+            just present or missing. Uses the same sync secret above.
           </p>
 
           {envError && (
@@ -324,7 +442,7 @@ export default function AdminSyncPage() {
           <p className="text-[#8C8680] text-xs font-sans mb-5">
             Confirms the Stripe webhook is registered and enabled, then cross-checks the last 15 completed
             Stripe payments against Turso to catch cases where a customer paid but nothing got recorded.
-            Uses the same sync secret below.
+            Uses the same sync secret above.
           </p>
 
           {webhookError && (
@@ -390,133 +508,6 @@ export default function AdminSyncPage() {
             </div>
           )}
         </div>
-
-        {/* Sync trigger */}
-        <div className="bg-white border border-[#E5DCCF] p-7 mb-6">
-          <h2 className="font-serif text-xl text-[#1C1C1A] mb-5">Run Sync</h2>
-          <div className="flex gap-3 mb-4">
-            <input
-              type="password"
-              value={secret}
-              onChange={e => setSecret(e.target.value)}
-              placeholder="Sync secret (SYNC_SECRET env var)"
-              className="flex-1 px-4 py-3 border border-[#E5DCCF] text-sm font-sans
-                         focus:outline-none focus:border-[#C9A96E] transition-colors"
-            />
-            <button onClick={runSync} disabled={syncing}
-              className="px-6 py-3 bg-[#3E4A3C] text-[#C4974A] text-[11px] tracking-[0.18em]
-                         uppercase font-sans hover:bg-[#C4974A] hover:text-white
-                         transition-all duration-400 disabled:opacity-50 whitespace-nowrap">
-              {syncing ? 'Syncing...' : 'Sync Now'}
-            </button>
-          </div>
-          <p className="text-[#8C8680] text-xs font-sans">
-            Requires the SYNC_SECRET value set in Vercel env vars.
-          </p>
-        </div>
-
-        {/* Square catalog sync */}
-        <div className="bg-white border border-[#E5DCCF] p-7 mb-6">
-          <div className="flex items-center justify-between mb-2">
-            <h2 className="font-serif text-xl text-[#1C1C1A]">Square Item Library Sync</h2>
-            <button onClick={checkSquareStatus} disabled={squareChecking}
-              className="text-[11px] tracking-[0.18em] uppercase font-sans border border-[#E5DCCF]
-                         text-[#5A5550] px-5 py-2 hover:border-[#C9A96E] hover:text-[#C9A96E]
-                         transition-colors duration-300 disabled:opacity-50">
-              {squareChecking ? 'Checking...' : 'Check Status'}
-            </button>
-          </div>
-          <p className="text-[#8C8680] text-xs font-sans mb-5">
-            Pushes all booking services into your Square Item Library, so they&apos;re ready to ring up on the Square reader/app for in-person sales. Safe to run any number of times — matches on service ID, updates price/name if changed, never duplicates. Requires SQUARE_ACCESS_TOKEN, SQUARE_LOCATION_ID, and SQUARE_ENVIRONMENT set in Vercel.
-          </p>
-
-          {squareError && (
-            <div className="mb-4 p-3 border border-red-200 bg-red-50">
-              <p className="text-red-600 text-xs font-sans">{squareError}</p>
-            </div>
-          )}
-
-          {squareStatus && (
-            <div className="space-y-2 mb-5">
-              <p className="text-xs text-[#8C8680] font-sans mb-3">
-                {squareStatus.filter(s => s.synced).length} / {squareStatus.length} services synced
-              </p>
-              <div className="max-h-64 overflow-y-auto space-y-1">
-                {squareStatus.map((s) => (
-                  <div key={s.id} className="flex items-center justify-between py-2 border-b border-[#F0EBE0] last:border-0">
-                    <span className="text-sm font-sans text-[#1C1C1A] flex-1">{s.name}</span>
-                    <div className="flex items-center gap-4 text-xs font-sans text-[#8C8680]">
-                      <span>{s.catalogPrice}</span>
-                      {s.inSquare ? (
-                        <span className={`px-2 py-0.5 text-[9px] tracking-wide uppercase ${s.synced ? 'bg-[#EBF0EA] text-[#4A5745]' : 'bg-[#FEF3E8] text-[#E07A3A]'}`}>
-                          {s.synced ? 'Synced' : `Square: ${s.squarePrice}`}
-                        </span>
-                      ) : (
-                        <span className="px-2 py-0.5 text-[9px] tracking-wide uppercase bg-red-50 text-red-500">Not in Square</span>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          <button onClick={runSquareSync} disabled={squareSyncing}
-            className="px-6 py-3 bg-[#3E4A3C] text-[#C4974A] text-[11px] tracking-[0.18em]
-                       uppercase font-sans hover:bg-[#C4974A] hover:text-white
-                       transition-all duration-400 disabled:opacity-50">
-            {squareSyncing ? 'Syncing to Square...' : 'Sync Services to Square'}
-          </button>
-          <p className="text-[#8C8680] text-xs font-sans mt-2">Uses the sync secret entered above.</p>
-
-          {squareResults && (
-            <div className="mt-6 pt-6 border-t border-[#F0EBE0]">
-              <p className="font-sans text-sm text-[#1C1C1A] mb-4">
-                Sync complete — {squareResults.length} services processed
-              </p>
-              <div className="max-h-64 overflow-y-auto space-y-2">
-                {squareResults.map((r) => (
-                  <div key={r.id} className="flex items-center justify-between py-2 border-b border-[#F0EBE0] last:border-0">
-                    <span className="text-sm font-sans text-[#1C1C1A]">{r.name}</span>
-                    <span className="text-xs font-sans font-medium px-2 py-1 uppercase tracking-wide"
-                      style={{ color: r.action === 'created' ? '#4A9B6F' : r.action === 'updated' ? '#C9A96E' : r.action === 'error' ? '#E0453A' : '#8C8680' }}>
-                      {r.action}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Results */}
-        {results && (
-          <div className="bg-white border border-[#E5DCCF] p-7">
-            <h2 className="font-serif text-xl text-[#1C1C1A] mb-5">
-              Sync Complete — {results.length} products processed
-            </h2>
-            <div className="space-y-2">
-              {results.map((r) => (
-                <div key={r.id} className="flex items-center justify-between py-2.5 border-b border-[#F0EBE0] last:border-0">
-                  <div>
-                    <p className="text-sm font-sans text-[#1C1C1A]">{r.name}</p>
-                    <p className="text-[10px] font-sans text-[#8C8680] mt-0.5">{r.priceId}</p>
-                  </div>
-                  <span className="text-xs font-sans font-medium px-2 py-1 uppercase tracking-wide"
-                    style={{ color: actionColor[r.action] ?? '#5A5550' }}>
-                    {r.action}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {error && (
-          <div className="mt-4 p-4 border border-red-200 bg-red-50">
-            <p className="text-red-600 text-sm font-sans">{error}</p>
-          </div>
-        )}
 
         <div className="mt-8 p-5 bg-[#F5F0E8] border border-[#E5DCCF]">
           <p className="text-[11px] tracking-[0.18em] uppercase text-[#C9A96E] font-sans mb-2">API Usage</p>
