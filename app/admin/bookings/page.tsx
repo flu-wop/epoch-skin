@@ -19,8 +19,15 @@ interface Booking {
   duration: number | null;
   notes: string | null;
   discount_code: string | null;
+  payment_method: string | null;
   created_at: string;
 }
+
+const emptyForm = {
+  name: '', email: '', phone: '', service: '', category: '',
+  price: '', date: '', time: '', duration: '60', notes: '',
+  paymentMethod: 'square',
+};
 
 export default function AdminBookingsPage() {
   const [password, setPassword]     = useState('');
@@ -32,6 +39,10 @@ export default function AdminBookingsPage() {
   const [filter, setFilter]         = useState('');
   const [sortKey, setSortKey]       = useState<keyof Booking>('date');
   const [sortDir, setSortDir]       = useState<'asc' | 'desc'>('desc');
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [form, setForm]             = useState(emptyForm);
+  const [saving, setSaving]         = useState(false);
+  const [saveError, setSaveError]   = useState('');
 
   const fetchBookings = async () => {
     setLoading(true);
@@ -75,6 +86,28 @@ export default function AdminBookingsPage() {
       await fetchBookings();
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Incorrect password.');
+    }
+  };
+
+  const handleAddBooking = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSaving(true);
+    setSaveError('');
+    try {
+      const res = await fetch('/api/bookings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? 'Failed to save booking.');
+      setForm(emptyForm);
+      setShowAddModal(false);
+      await fetchBookings();
+    } catch (err: unknown) {
+      setSaveError(err instanceof Error ? err.message : 'Something went wrong');
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -161,6 +194,13 @@ export default function AdminBookingsPage() {
             <h1 className="font-serif text-4xl text-[#1C1C1A]">Bookings</h1>
           </div>
           <div className="flex gap-3 items-center">
+            <button
+              onClick={() => { setForm(emptyForm); setSaveError(''); setShowAddModal(true); }}
+              className="text-[11px] tracking-[0.18em] uppercase font-sans bg-[#3E4A3C] text-[#C4974A]
+                         px-5 py-2.5 hover:bg-[#C4974A] hover:text-white transition-all duration-300"
+            >
+              + Add Booking
+            </button>
             <a
               href="/admin"
               className="text-[11px] tracking-[0.18em] uppercase font-sans border border-[#E5DCCF]
@@ -314,6 +354,11 @@ export default function AdminBookingsPage() {
                         {b.discount_code && (
                           <span className="block text-[#8C8680] text-[10px] font-normal font-sans mt-0.5">{b.discount_code}</span>
                         )}
+                        {b.payment_method && b.payment_method !== 'stripe' && (
+                          <span className="block text-[9px] tracking-wide uppercase bg-[#F0EBE0] text-[#5A5550] px-1.5 py-0.5 mt-1 w-fit">
+                            {b.payment_method === 'square' ? 'In-Person · Square' : b.payment_method}
+                          </span>
+                        )}
                       </td>
                       <td className="px-5 py-4 text-[#5A5550] whitespace-nowrap">
                         {b.phone
@@ -344,6 +389,77 @@ export default function AdminBookingsPage() {
             In iCal: File → New Calendar Subscription → paste URL above
           </p>
         </div>
+
+        {/* Add Booking modal */}
+        {showAddModal && (
+          <div className="fixed inset-0 bg-black/40 flex items-center justify-center px-5 z-50">
+            <div className="bg-white w-full max-w-lg max-h-[90vh] overflow-y-auto p-7 border border-[#E5DCCF]">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="font-serif text-2xl text-[#1C1C1A]">Add In-Person Booking</h2>
+                <button
+                  onClick={() => setShowAddModal(false)}
+                  className="text-[#8C8680] hover:text-[#1C1C1A] text-sm font-sans"
+                >
+                  ✕
+                </button>
+              </div>
+              <p className="text-xs text-[#8C8680] font-sans mb-5">
+                Log a booking already paid in person (Square reader, cash, etc.). This won&apos;t charge anything — it just blocks the slot and adds it to the calendar feed.
+              </p>
+              <form onSubmit={handleAddBooking} className="space-y-3">
+                <div className="grid grid-cols-2 gap-3">
+                  <input required placeholder="Client name" value={form.name}
+                    onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+                    className="col-span-2 px-3 py-2.5 border border-[#E5DCCF] text-sm font-sans focus:outline-none focus:border-[#C9A96E]" />
+                  <input type="email" placeholder="Email (optional)" value={form.email}
+                    onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
+                    className="px-3 py-2.5 border border-[#E5DCCF] text-sm font-sans focus:outline-none focus:border-[#C9A96E]" />
+                  <input placeholder="Phone (optional)" value={form.phone}
+                    onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
+                    className="px-3 py-2.5 border border-[#E5DCCF] text-sm font-sans focus:outline-none focus:border-[#C9A96E]" />
+                  <input required placeholder="Service (e.g. Body Massage 60min)" value={form.service}
+                    onChange={e => setForm(f => ({ ...f, service: e.target.value }))}
+                    className="col-span-2 px-3 py-2.5 border border-[#E5DCCF] text-sm font-sans focus:outline-none focus:border-[#C9A96E]" />
+                  <input placeholder="Category (optional)" value={form.category}
+                    onChange={e => setForm(f => ({ ...f, category: e.target.value }))}
+                    className="px-3 py-2.5 border border-[#E5DCCF] text-sm font-sans focus:outline-none focus:border-[#C9A96E]" />
+                  <input type="number" min="0" step="0.01" placeholder="Price ($)" value={form.price}
+                    onChange={e => setForm(f => ({ ...f, price: e.target.value }))}
+                    className="px-3 py-2.5 border border-[#E5DCCF] text-sm font-sans focus:outline-none focus:border-[#C9A96E]" />
+                  <input required type="date" value={form.date}
+                    onChange={e => setForm(f => ({ ...f, date: e.target.value }))}
+                    className="px-3 py-2.5 border border-[#E5DCCF] text-sm font-sans focus:outline-none focus:border-[#C9A96E]" />
+                  <input required placeholder="Time (e.g. 2:30 PM)" value={form.time}
+                    onChange={e => setForm(f => ({ ...f, time: e.target.value }))}
+                    className="px-3 py-2.5 border border-[#E5DCCF] text-sm font-sans focus:outline-none focus:border-[#C9A96E]" />
+                  <input type="number" min="0" placeholder="Duration (min)" value={form.duration}
+                    onChange={e => setForm(f => ({ ...f, duration: e.target.value }))}
+                    className="px-3 py-2.5 border border-[#E5DCCF] text-sm font-sans focus:outline-none focus:border-[#C9A96E]" />
+                  <select value={form.paymentMethod}
+                    onChange={e => setForm(f => ({ ...f, paymentMethod: e.target.value }))}
+                    className="px-3 py-2.5 border border-[#E5DCCF] text-sm font-sans bg-white focus:outline-none focus:border-[#C9A96E]">
+                    <option value="square">Square (in-person)</option>
+                    <option value="cash">Cash</option>
+                    <option value="other">Other</option>
+                  </select>
+                  <textarea placeholder="Notes (optional)" value={form.notes} rows={2}
+                    onChange={e => setForm(f => ({ ...f, notes: e.target.value }))}
+                    className="col-span-2 px-3 py-2.5 border border-[#E5DCCF] text-sm font-sans focus:outline-none focus:border-[#C9A96E] resize-none" />
+                </div>
+                {saveError && <p className="text-red-500 text-xs font-sans">{saveError}</p>}
+                <button
+                  type="submit"
+                  disabled={saving}
+                  className="w-full py-3.5 bg-[#3E4A3C] text-[#C4974A] text-[11px] tracking-[0.2em]
+                             uppercase font-sans hover:bg-[#C4974A] hover:text-white transition-all
+                             duration-300 disabled:opacity-50"
+                >
+                  {saving ? 'Saving…' : 'Save Booking'}
+                </button>
+              </form>
+            </div>
+          </div>
+        )}
 
       </div>
     </div>
