@@ -154,7 +154,7 @@ export function ContactForm({
             id="phone"
             value={phone}
             onChange={handlePhoneChange}
-            placeholder="(504) 777-4094"
+            placeholder="(555) 123-4567"
             maxLength={14}
             className={`
               w-full px-4 py-3 rounded-lg border-2 transition-colors

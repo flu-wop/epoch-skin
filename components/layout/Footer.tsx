@@ -121,14 +121,6 @@ export function Footer() {
             <p className="text-[9px] tracking-[0.24em] uppercase text-[#C4974A] font-sans mb-6">Contact</p>
             <ul className="space-y-4 text-sm font-sans">
               <li>
-                <a href="tel:+15047774094"
-                  className="inline-flex items-center px-4 py-2 border border-[#7A9174]/40
-                             text-[#C4974A] text-[10px] tracking-[0.18em] uppercase font-sans
-                             hover:bg-[#C4974A] hover:text-white hover:border-[#C4974A] transition-colors duration-300">
-                  Call Now
-                </a>
-              </li>
-              <li>
                 <a href="mailto:kayla@epoch-skin.com"
                   className="text-[#7A9174] hover:text-[#C4974A] transition-colors">
                   kayla@epoch-skin.com

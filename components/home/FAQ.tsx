@@ -10,7 +10,7 @@ const FAQS = [
   },
   {
     q: "How do I book an appointment?",
-    a: "Visit our booking page, choose your services, select a date and time on our live calendar, and receive instant confirmation by email. For same-day bookings, call or text (504) 777-4094.",
+    a: "Visit our booking page, choose your services, select a date and time on our live calendar, and receive instant confirmation by email. For same-day bookings, email us directly.",
   },
   {
     q: "What is your shipping policy?",

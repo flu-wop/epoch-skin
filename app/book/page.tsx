@@ -500,7 +500,7 @@ export default function BookPage() {
             A confirmation has been sent to <strong>{form.email}</strong> with a calendar invite attached.
           </p>
           <p className="text-[#5A5550] font-sans text-sm mb-10">
-            Need to reschedule? Call or text <strong>(504) 777-4094</strong>.
+            Need to reschedule? Email <strong>kayla@epoch-skin.com</strong>.
           </p>
           <div className="flex flex-col gap-3">
             <button onClick={downloadICS}

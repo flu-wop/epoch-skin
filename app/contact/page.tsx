@@ -38,16 +38,6 @@ export default function ContactPage() {
           {/* Sidebar info */}
           <div className="space-y-8">
             <div>
-              <p className="text-xs tracking-widest uppercase text-[#D4AF77] mb-3">Call or Text</p>
-              <a href="tel:5047774094"
-                className="inline-flex items-center justify-center px-6 py-3
-                           bg-[#3E4A3C] text-[#C4974A] text-[11px] tracking-[0.2em] uppercase font-sans
-                           hover:bg-[#C4974A] hover:text-white transition-colors duration-300">
-                Call Now
-              </a>
-            </div>
-
-            <div>
               <p className="text-xs tracking-widest uppercase text-[#D4AF77] mb-3">Email</p>
               <a href="mailto:kayla@epoch-skin.com" className="text-[#555] hover:text-[#D4AF77] transition-colors text-sm">
                 kayla@epoch-skin.com

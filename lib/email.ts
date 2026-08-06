@@ -46,7 +46,7 @@ export function generateBookingICS(b: {
     'CALSCALE:GREGORIAN','METHOD:REQUEST','BEGIN:VEVENT',
     `UID:${uid}`,`DTSTAMP:${now}`,`DTSTART:${dtStart}`,`DTEND:${dtEnd}`,
     `SUMMARY:Epoch Skin – ${b.service}`,
-    `DESCRIPTION:Appointment at Epoch Skin\\nService: ${b.service}\\nDate: ${b.date} at ${b.time}\\n\\nQuestions? (504) 777-4094`,
+    `DESCRIPTION:Appointment at Epoch Skin\\nService: ${b.service}\\nDate: ${b.date} at ${b.time}\\n\\nQuestions? kayla@epoch-skin.com`,
     `LOCATION:Epoch Skin Studio\\, New Orleans\\, LA`,
     `ORGANIZER;CN=Epoch Skin:mailto:kayla@epoch-skin.com`,
     `ATTENDEE;ROLE=REQ-PARTICIPANT;CN=${b.name}:mailto:${b.email}`,
@@ -101,7 +101,7 @@ export function bookingEmailHTML(b: BookingEmailData, isClient: boolean): string
       const formWord = included.length > 1 ? 'intake forms' : 'a short intake form';
       return `<p style="font-size:13px;color:#5A5550;">Your appointment includes ${list} — we've attached ${formWord}. Please fill it out and bring it (or email it back) before your visit so we can tailor the treatment to your needs.</p>`;
     })()}
-    <p style="font-size:13px;color:#5A5550;">Need to reschedule? Call or text <strong>(504) 777-4094</strong> at least 24 hours in advance.</p>
+    <p style="font-size:13px;color:#5A5550;">Need to reschedule? Email <strong>kayla@epoch-skin.com</strong> at least 24 hours in advance.</p>
     <a href="${SITE}/book" style="display:inline-block;margin-top:16px;padding:12px 28px;background:#C9A96E;color:#1C1C1A;text-decoration:none;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;">Book Another Service</a>
     ` : `${(() => {
       const included: string[] = [];
@@ -116,7 +116,7 @@ export function bookingEmailHTML(b: BookingEmailData, isClient: boolean): string
     })()}<a href="mailto:${b.email}" style="display:inline-block;padding:12px 28px;background:#1C1C1A;color:#C9A96E;text-decoration:none;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;">Reply to ${b.name}</a>`}
   </div>
   <div style="background:#F5F0E8;padding:18px 36px;text-align:center;color:#8C8680;font-size:11px;">
-    <p style="margin:0;">© 2026 Epoch Skin · <a href="${SITE}" style="color:#C9A96E;">epoch-skin.com</a> · (504) 777-4094</p>
+    <p style="margin:0;">© 2026 Epoch Skin · <a href="${SITE}" style="color:#C9A96E;">epoch-skin.com</a></p>
   </div>
 </div></body></html>`;
 }
@@ -337,12 +337,12 @@ function orderEmailHTML(o: OrderEmailData, isClient: boolean): string {
     </table>
     <hr style="border:none;border-top:1px solid #E5DCCF;margin:24px 0;"/>
     ${isClient ? `
-    <p style="font-size:13px;color:#5A5550;">Allow 5–7 business days for standard shipping. Questions? Call or text <strong>(504) 777-4094</strong>.</p>
+    <p style="font-size:13px;color:#5A5550;">Allow 5–7 business days for standard shipping. Questions? Email <strong>kayla@epoch-skin.com</strong>.</p>
     <a href="${SITE}/shop" style="display:inline-block;margin-top:16px;padding:12px 28px;background:#C9A96E;color:#1C1C1A;text-decoration:none;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;">Shop More</a>
     ` : `<a href="mailto:${o.email}" style="display:inline-block;padding:12px 28px;background:#1C1C1A;color:#C9A96E;text-decoration:none;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;">Reply to Customer</a>`}
   </div>
   <div style="background:#F5F0E8;padding:18px 36px;text-align:center;color:#8C8680;font-size:11px;">
-    <p style="margin:0;">© 2026 Epoch Skin · <a href="${SITE}" style="color:#C9A96E;">epoch-skin.com</a> · (504) 777-4094</p>
+    <p style="margin:0;">© 2026 Epoch Skin · <a href="${SITE}" style="color:#C9A96E;">epoch-skin.com</a></p>
   </div>
 </div></body></html>`;
 }

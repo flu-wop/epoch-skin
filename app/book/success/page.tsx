@@ -23,9 +23,9 @@ function SuccessContent() {
           Payment received. A confirmation email with your calendar invite is on its way.
         </p>
         <p className="text-[#5A5550] font-sans text-sm mb-10">
-          Need to reschedule? Call or text{' '}
-          <a href="tel:5047774094" className="font-semibold text-[#1C1C1A] hover:text-[#C9A96E] transition-colors">
-            (504) 777-4094
+          Need to reschedule? Email{' '}
+          <a href="mailto:kayla@epoch-skin.com" className="font-semibold text-[#1C1C1A] hover:text-[#C9A96E] transition-colors">
+            kayla@epoch-skin.com
           </a>
           .
         </p>
