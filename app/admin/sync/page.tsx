@@ -50,6 +50,22 @@ interface EnvVarResult {
   present: boolean;
 }
 
+interface SquareSyncResult {
+  id: string;
+  name: string;
+  price: string;
+  action: string;
+}
+
+interface SquareStatusItem {
+  id: string;
+  name: string;
+  catalogPrice: string;
+  inSquare: boolean;
+  squarePrice: string | null;
+  synced: boolean;
+}
+
 export default function AdminSyncPage() {
   const [secret, setSecret]   = useState("");
   const [syncing, setSyncing] = useState(false);
@@ -63,6 +79,48 @@ export default function AdminSyncPage() {
   const [envResults, setEnvResults] = useState<EnvVarResult[] | null>(null);
   const [checkingEnv, setCheckingEnv] = useState(false);
   const [envError, setEnvError] = useState("");
+  const [squareStatus, setSquareStatus] = useState<SquareStatusItem[] | null>(null);
+  const [squareResults, setSquareResults] = useState<SquareSyncResult[] | null>(null);
+  const [squareSyncing, setSquareSyncing] = useState(false);
+  const [squareChecking, setSquareChecking] = useState(false);
+  const [squareError, setSquareError] = useState("");
+
+  const checkSquareStatus = async () => {
+    setSquareChecking(true);
+    setSquareError("");
+    try {
+      const res = await fetch('/api/square/sync-services');
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      setSquareStatus(data.services);
+    } catch (err: unknown) {
+      setSquareError(err instanceof Error ? err.message : 'Failed to check status');
+    } finally {
+      setSquareChecking(false);
+    }
+  };
+
+  const runSquareSync = async () => {
+    if (!secret) { setSquareError('Enter your sync secret first.'); return; }
+    setSquareSyncing(true);
+    setSquareError("");
+    setSquareResults(null);
+    try {
+      const res = await fetch('/api/square/sync-services', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ secret }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      setSquareResults(data.results);
+      await checkSquareStatus();
+    } catch (err: unknown) {
+      setSquareError(err instanceof Error ? err.message : 'Sync failed');
+    } finally {
+      setSquareSyncing(false);
+    }
+  };
 
   const checkEnv = async () => {
     if (!secret) { setEnvError('Enter your sync secret first.'); return; }
@@ -355,6 +413,80 @@ export default function AdminSyncPage() {
           <p className="text-[#8C8680] text-xs font-sans">
             Requires the SYNC_SECRET value set in Vercel env vars.
           </p>
+        </div>
+
+        {/* Square catalog sync */}
+        <div className="bg-white border border-[#E5DCCF] p-7 mb-6">
+          <div className="flex items-center justify-between mb-2">
+            <h2 className="font-serif text-xl text-[#1C1C1A]">Square Item Library Sync</h2>
+            <button onClick={checkSquareStatus} disabled={squareChecking}
+              className="text-[11px] tracking-[0.18em] uppercase font-sans border border-[#E5DCCF]
+                         text-[#5A5550] px-5 py-2 hover:border-[#C9A96E] hover:text-[#C9A96E]
+                         transition-colors duration-300 disabled:opacity-50">
+              {squareChecking ? 'Checking...' : 'Check Status'}
+            </button>
+          </div>
+          <p className="text-[#8C8680] text-xs font-sans mb-5">
+            Pushes all booking services into your Square Item Library, so they&apos;re ready to ring up on the Square reader/app for in-person sales. Safe to run any number of times — matches on service ID, updates price/name if changed, never duplicates. Requires SQUARE_ACCESS_TOKEN, SQUARE_LOCATION_ID, and SQUARE_ENVIRONMENT set in Vercel.
+          </p>
+
+          {squareError && (
+            <div className="mb-4 p-3 border border-red-200 bg-red-50">
+              <p className="text-red-600 text-xs font-sans">{squareError}</p>
+            </div>
+          )}
+
+          {squareStatus && (
+            <div className="space-y-2 mb-5">
+              <p className="text-xs text-[#8C8680] font-sans mb-3">
+                {squareStatus.filter(s => s.synced).length} / {squareStatus.length} services synced
+              </p>
+              <div className="max-h-64 overflow-y-auto space-y-1">
+                {squareStatus.map((s) => (
+                  <div key={s.id} className="flex items-center justify-between py-2 border-b border-[#F0EBE0] last:border-0">
+                    <span className="text-sm font-sans text-[#1C1C1A] flex-1">{s.name}</span>
+                    <div className="flex items-center gap-4 text-xs font-sans text-[#8C8680]">
+                      <span>{s.catalogPrice}</span>
+                      {s.inSquare ? (
+                        <span className={`px-2 py-0.5 text-[9px] tracking-wide uppercase ${s.synced ? 'bg-[#EBF0EA] text-[#4A5745]' : 'bg-[#FEF3E8] text-[#E07A3A]'}`}>
+                          {s.synced ? 'Synced' : `Square: ${s.squarePrice}`}
+                        </span>
+                      ) : (
+                        <span className="px-2 py-0.5 text-[9px] tracking-wide uppercase bg-red-50 text-red-500">Not in Square</span>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <button onClick={runSquareSync} disabled={squareSyncing}
+            className="px-6 py-3 bg-[#3E4A3C] text-[#C4974A] text-[11px] tracking-[0.18em]
+                       uppercase font-sans hover:bg-[#C4974A] hover:text-white
+                       transition-all duration-400 disabled:opacity-50">
+            {squareSyncing ? 'Syncing to Square...' : 'Sync Services to Square'}
+          </button>
+          <p className="text-[#8C8680] text-xs font-sans mt-2">Uses the sync secret entered above.</p>
+
+          {squareResults && (
+            <div className="mt-6 pt-6 border-t border-[#F0EBE0]">
+              <p className="font-sans text-sm text-[#1C1C1A] mb-4">
+                Sync complete — {squareResults.length} services processed
+              </p>
+              <div className="max-h-64 overflow-y-auto space-y-2">
+                {squareResults.map((r) => (
+                  <div key={r.id} className="flex items-center justify-between py-2 border-b border-[#F0EBE0] last:border-0">
+                    <span className="text-sm font-sans text-[#1C1C1A]">{r.name}</span>
+                    <span className="text-xs font-sans font-medium px-2 py-1 uppercase tracking-wide"
+                      style={{ color: r.action === 'created' ? '#4A9B6F' : r.action === 'updated' ? '#C9A96E' : r.action === 'error' ? '#E0453A' : '#8C8680' }}>
+                      {r.action}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Results */}
