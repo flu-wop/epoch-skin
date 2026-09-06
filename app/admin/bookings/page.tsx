@@ -146,12 +146,12 @@ export default function AdminBookingsPage() {
         <div className="max-w-6xl mx-auto">
 
           {/* Header */}
-          <div className="flex items-start justify-between mb-10">
+          <div className="flex flex-wrap items-start justify-between gap-y-4 mb-10">
             <div>
               <p className="text-[11px] tracking-[0.28em] uppercase text-[#C9A96E] font-sans mb-2">Admin</p>
               <h1 className="font-serif text-4xl text-[#1C1C1A]">Bookings</h1>
             </div>
-            <div className="flex gap-3 items-center">
+            <div className="flex flex-wrap gap-3 items-center">
               <button
                 onClick={() => { setForm(emptyForm); setSaveError(''); setShowAddModal(true); }}
                 className="text-[11px] tracking-[0.18em] uppercase font-sans bg-[#3E4A3C] text-[#C4974A]

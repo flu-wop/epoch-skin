@@ -118,7 +118,7 @@ export default function AdminOrdersPage() {
         <div className="max-w-6xl mx-auto">
 
           {/* Header */}
-          <div className="flex items-start justify-between mb-10">
+          <div className="flex flex-wrap items-start justify-between gap-y-4 mb-10">
             <div>
               <p className="text-[11px] tracking-[0.28em] uppercase text-[#C9A96E] font-sans mb-2">Admin</p>
               <h1 className="font-serif text-4xl text-[#1C1C1A]">Orders</h1>
