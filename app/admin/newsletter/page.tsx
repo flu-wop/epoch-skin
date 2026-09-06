@@ -4,6 +4,8 @@
 // Auth: POST /api/admin/login sets an httpOnly session cookie (see lib/admin-auth.ts).
 
 import { useState, useEffect } from 'react';
+import { AdminLoginScreen } from '@/components/admin/AdminLoginScreen';
+import { AdminShell } from '@/components/admin/AdminShell';
 
 interface Subscriber {
   id: number;
@@ -13,7 +15,6 @@ interface Subscriber {
 }
 
 export default function AdminNewsletterPage() {
-  const [password, setPassword]     = useState('');
   const [authed, setAuthed]         = useState(false);
   const [checkingSession, setCheckingSession] = useState(true);
   const [subscribers, setSubscribers] = useState<Subscriber[]>([]);
@@ -48,24 +49,6 @@ export default function AdminNewsletterPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
-    try {
-      const res = await fetch('/api/admin/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error ?? 'Incorrect password.');
-      setPassword('');
-      await fetchSubscribers();
-    } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Incorrect password.');
-    }
-  };
-
   const filtered = subscribers
     .filter(s => {
       if (!filter) return true;
@@ -99,81 +82,40 @@ export default function AdminNewsletterPage() {
 
   // ── Login screen ────────────────────────────────────────────────
   if (!authed) {
-    return (
-      <div className="min-h-screen bg-[#FAF7F2] flex items-center justify-center px-5">
-        <div className="w-full max-w-sm">
-          <p className="text-[11px] tracking-[0.28em] uppercase text-[#C9A96E] font-sans mb-3 text-center">Admin</p>
-          <h1 className="font-serif text-3xl text-[#1C1C1A] mb-8 text-center">Newsletter</h1>
-          <form onSubmit={handleLogin} className="space-y-4">
-            <input
-              type="password"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              placeholder="Password"
-              className="w-full px-4 py-3 border border-[#E5DCCF] bg-white text-sm font-sans
-                         focus:outline-none focus:border-[#C9A96E] transition-colors"
-              autoFocus
-            />
-            {error && <p className="text-red-500 text-xs font-sans">{error}</p>}
-            <button
-              type="submit"
-              className="w-full py-3.5 bg-[#3E4A3C] text-[#C4974A] text-[11px] tracking-[0.2em]
-                         uppercase font-sans hover:bg-[#C4974A] hover:text-white transition-all duration-300"
-            >
-              Enter
-            </button>
-          </form>
-        </div>
-      </div>
-    );
+    return <AdminLoginScreen title="Newsletter" onSuccess={fetchSubscribers} />;
   }
 
   // ── Dashboard ────────────────────────────────────────────────────
   return (
-    <div className="min-h-screen bg-[#FAF7F2] py-12 px-5">
-      <div className="max-w-4xl mx-auto">
+    <AdminShell onLogout={() => setAuthed(false)}>
+      <div className="py-12 px-5">
+        <div className="max-w-4xl mx-auto">
 
-        {/* Header */}
-        <div className="flex items-start justify-between mb-10">
-          <div>
-            <p className="text-[11px] tracking-[0.28em] uppercase text-[#C9A96E] font-sans mb-2">Admin</p>
-            <h1 className="font-serif text-4xl text-[#1C1C1A]">Newsletter</h1>
+          {/* Header */}
+          <div className="flex items-start justify-between mb-10">
+            <div>
+              <p className="text-[11px] tracking-[0.28em] uppercase text-[#C9A96E] font-sans mb-2">Admin</p>
+              <h1 className="font-serif text-4xl text-[#1C1C1A]">Newsletter</h1>
+            </div>
+            <div className="flex gap-3 items-center">
+              <button
+                onClick={downloadCSV}
+                className="text-[11px] tracking-[0.18em] uppercase font-sans border border-[#E5DCCF]
+                           text-[#5A5550] px-5 py-2.5 hover:border-[#C9A96E] hover:text-[#C9A96E]
+                           transition-colors duration-300"
+              >
+                Export CSV
+              </button>
+              <button
+                onClick={fetchSubscribers}
+                className="text-[11px] tracking-[0.18em] uppercase font-sans border border-[#E5DCCF]
+                           text-[#5A5550] px-5 py-2.5 hover:border-[#C9A96E] hover:text-[#C9A96E]
+                           transition-colors duration-300"
+              >
+                Refresh
+              </button>
+            </div>
           </div>
-          <div className="flex gap-3 items-center">
-            <a
-              href="/admin"
-              className="text-[11px] tracking-[0.18em] uppercase font-sans border border-[#E5DCCF]
-                         text-[#5A5550] px-5 py-2.5 hover:border-[#C9A96E] hover:text-[#C9A96E]
-                         transition-colors duration-300"
-            >
-              Admin Home
-            </a>
-            <button
-              onClick={downloadCSV}
-              className="text-[11px] tracking-[0.18em] uppercase font-sans border border-[#E5DCCF]
-                         text-[#5A5550] px-5 py-2.5 hover:border-[#C9A96E] hover:text-[#C9A96E]
-                         transition-colors duration-300"
-            >
-              Export CSV
-            </button>
-            <button
-              onClick={fetchSubscribers}
-              className="text-[11px] tracking-[0.18em] uppercase font-sans border border-[#E5DCCF]
-                         text-[#5A5550] px-5 py-2.5 hover:border-[#C9A96E] hover:text-[#C9A96E]
-                         transition-colors duration-300"
-            >
-              Refresh
-            </button>
-            <button
-              onClick={async () => { await fetch('/api/admin/login', { method: 'DELETE' }); setAuthed(false); }}
-              className="text-[11px] tracking-[0.18em] uppercase font-sans border border-[#E5DCCF]
-                         text-[#8C8680] px-5 py-2.5 hover:border-red-300 hover:text-red-500
-                         transition-colors duration-300"
-            >
-              Log Out
-            </button>
-          </div>
-        </div>
 
         {/* Stats row */}
         <div className="grid grid-cols-2 gap-4 mb-8">
@@ -258,6 +200,7 @@ export default function AdminNewsletterPage() {
         )}
 
       </div>
-    </div>
+      </div>
+    </AdminShell>
   );
 }

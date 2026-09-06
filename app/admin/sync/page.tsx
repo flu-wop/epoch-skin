@@ -4,6 +4,7 @@
 // Protected server-side by SYNC_SECRET (constant-time compare, rate limited).
 
 import { useState } from "react";
+import { AdminShell } from "@/components/admin/AdminShell";
 
 interface SyncResult {
   id: string;
@@ -208,8 +209,9 @@ export default function AdminSyncPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF7F2] py-16 px-5">
-      <div className="max-w-3xl mx-auto">
+    <AdminShell>
+      <div className="py-16 px-5">
+        <div className="max-w-3xl mx-auto">
         <div className="mb-8">
           <p className="text-[11px] tracking-[0.28em] uppercase text-[#C9A96E] font-sans mb-3">Admin</p>
           <h1 className="font-serif text-4xl text-[#1C1C1A] mb-3">Catalog Sync</h1>
@@ -536,6 +538,7 @@ export default function AdminSyncPage() {
           </code>
         </div>
       </div>
-    </div>
+      </div>
+    </AdminShell>
   );
 }
