@@ -120,19 +120,30 @@ export async function POST(req: NextRequest) {
     const session  = event.data.object as Stripe.Checkout.Session;
     const meta     = session.metadata ?? {};
 
+    // Both handlers already send a human alert on a DB-write failure (see
+    // sendDbWriteFailureAlert calls inside each) — but until now this
+    // handler still told Stripe "all good, don't retry" via an unconditional
+    // 200 even when that alert fired. A 500 here gives Stripe's own retry
+    // schedule a chance to recover a transient failure automatically,
+    // instead of relying solely on a human seeing the alert email.
+    let ok: boolean;
     if (meta.type === 'product') {
-      await handleProductOrder(session);
+      ok = await handleProductOrder(session);
     } else {
       // Default to booking for backward compatibility with any in-flight
       // sessions created before the `type` field existed.
-      await handleBooking(session, meta);
+      ok = await handleBooking(session, meta);
+    }
+
+    if (!ok) {
+      return NextResponse.json({ received: true, error: 'DB write failed, will retry' }, { status: 500 });
     }
   }
 
   return NextResponse.json({ received: true });
 }
 
-async function handleBooking(session: Stripe.Checkout.Session, meta: Record<string, string>) {
+async function handleBooking(session: Stripe.Checkout.Session, meta: Record<string, string>): Promise<boolean> {
     const booking = {
       name:      meta.name     ?? '',
       email:     meta.email    ?? session.customer_email ?? '',
@@ -237,7 +248,7 @@ async function handleBooking(session: Stripe.Checkout.Session, meta: Record<stri
 
     if (isDuplicate) {
       // Stripe retry of an event we already processed — don't re-send emails.
-      return;
+      return true;
     }
 
     // Send emails
@@ -246,9 +257,11 @@ async function handleBooking(session: Stripe.Checkout.Session, meta: Record<stri
     } catch (emailErr) {
       console.error('[webhook] Booking email error:', emailErr);
     }
+
+    return dbSaved;
 }
 
-async function handleProductOrder(session: Stripe.Checkout.Session) {
+async function handleProductOrder(session: Stripe.Checkout.Session): Promise<boolean> {
   const email = session.customer_details?.email ?? session.customer_email ?? '';
   const discountCode = session.metadata?.discountCode || null;
 
@@ -314,7 +327,7 @@ async function handleProductOrder(session: Stripe.Checkout.Session) {
     }
   }
 
-  if (isDuplicate) return;
+  if (isDuplicate) return true;
 
   try {
     await sendPaidOrderEmails({
@@ -323,4 +336,6 @@ async function handleProductOrder(session: Stripe.Checkout.Session) {
   } catch (emailErr) {
     console.error('[webhook] Order email error:', emailErr);
   }
+
+  return dbSaved;
 }
