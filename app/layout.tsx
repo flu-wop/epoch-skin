@@ -4,6 +4,8 @@ import { Playfair_Display, Inter } from 'next/font/google';
 import { Providers } from '@/components/Providers';
 import { SiteHeader } from '@/components/layout/SiteHeader';
 import { Footer } from '@/components/layout/Footer';
+import '@flu-wop/design-system/core.css';
+import '@flu-wop/design-system/themes/epoch.css';
 import './globals.css';
 
 const playfair = Playfair_Display({
@@ -57,7 +59,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
+    <html data-theme="epoch" lang="en" className={`${playfair.variable} ${inter.variable}`}>
       <body className="bg-[#FAF7F2] text-[#1C1C1A] font-sans antialiased">
         <Providers>
           <SiteHeader />
