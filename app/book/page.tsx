@@ -15,6 +15,7 @@ type Service = {
   price: number;
   duration: number;
   desc?: string;
+  shortDesc?: string; // shown under the name on step 1 only
 };
 
 type Section = {
@@ -130,24 +131,27 @@ const SERVICE_CATALOG: CatalogItem[] = [
         services: [
           {
             id: "facial-t1",
-            name: "Tier 1 Facial",
-            price: 50,
+            name: "Dewy Reset",
+            price: 80,
+            shortDesc: "A quick, refreshing treatment for instant radiance using certified organic actives.",
             duration: 30,
-            desc: "Indulge in a moment of pure serenity with our Tier 1 Facial — a luxurious entryway into professional skincare that cleanses, nurtures, and restores your skin to its most radiant self. This soothing, results-driven treatment is thoughtfully designed for all skin types, offering a gentle yet deeply effective experience that leaves you feeling refreshed, balanced, and glowing.",
+            desc: "Indulge in a moment of pure serenity with our Dewy Reset — a luxurious entryway into professional skincare that cleanses, nurtures, and restores your skin to its most radiant self. This soothing, results-driven treatment is thoughtfully designed for all skin types, offering a gentle yet deeply effective experience that leaves you feeling refreshed, balanced, and glowing.",
           },
           {
             id: "facial-t2",
-            name: "Tier 2 Facial",
-            price: 80,
+            name: "Glass Skin Protocol",
+            price: 130,
+            shortDesc: "Our signature K-Beauty layering facial for plump, luminous, glass-like skin.",
             duration: 60,
-            desc: "Immerse yourself in elevated skincare with our Tier 2 Facial — a luxurious, results-oriented treatment that combines deep renewal with soothing relaxation. Building upon the foundations of our Tier 1 experience, this advanced facial incorporates professional-grade technologies like diamond dermabrasion and the high frequency wand to more effectively address visible skin concerns while leaving your complexion profoundly rejuvenated, hydrated, and glowing.",
+            desc: "Immerse yourself in elevated skincare with our Glass Skin Protocol — a luxurious, results-oriented treatment that combines deep renewal with soothing relaxation. Building upon the foundations of our Dewy Reset experience, this advanced facial incorporates professional-grade technologies like diamond dermabrasion and the high frequency wand to more effectively address visible skin concerns while leaving your complexion profoundly rejuvenated, hydrated, and glowing.",
           },
           {
             id: "facial-t3",
-            name: "Tier 3 Facial",
-            price: 90,
+            name: "Epoch Radiance Ritual",
+            price: 190,
+            shortDesc: "An extended, transformative experience that deeply nourishes and restores the skin barrier.",
             duration: 75,
-            desc: "Elevate your skincare ritual with our Tier 3 Facial — the ultimate luxurious expression of advanced skin renewal. This premium, multi-technology treatment delivers deep therapeutic results while enveloping you in profound relaxation and indulgence. Building upon our foundational protocols, the Tier 3 combines the transformative power of HydraFacial, High Frequency, and a restorative add-on to comprehensively address your skin concerns and reveal visibly healthier, more luminous skin.",
+            desc: "Elevate your skincare ritual with our Epoch Radiance Ritual — the ultimate luxurious expression of advanced skin renewal. This premium, multi-technology treatment delivers deep therapeutic results while enveloping you in profound relaxation and indulgence. Building upon our foundational protocols, the Epoch Radiance Ritual combines the transformative power of HydraFacial, High Frequency, and a restorative add-on to comprehensively address your skin concerns and reveal visibly healthier, more luminous skin.",
           },
         ],
       },
@@ -164,17 +168,19 @@ const SERVICE_CATALOG: CatalogItem[] = [
         services: [
           {
             id: "bacial-t1",
-            name: "Bacial Tier 1",
-            price: 75,
+            name: "Back Glow Reset",
+            price: 100,
+            shortDesc: "A purifying and hydrating treatment that leaves the back soft, clear, and glowing.",
             duration: 45,
             desc: "A specialized treatment designed to transform the skin on your back. Just like a facial for your face, this treatment deeply cleanses, clarifies, and revitalizes the hard-to-reach area of your back, leaving it visibly clearer, smoother, and healthier.",
           },
           {
             id: "bacial-t2",
-            name: "Bacial Tier 2",
-            price: 95,
+            name: "Dewy Back Protocol",
+            price: 150,
+            shortDesc: "A thorough organic layering treatment designed for smooth, radiant, and refined back skin.",
             duration: 60,
-            desc: "Indulge in a deeper level of renewal with our Tier 2 Back Facial — a luxurious, results-driven treatment that elevates back care to the next level. This advanced session combines soothing relaxation with professional technologies like diamond dermabrasion and the high frequency wand to effectively target stubborn concerns while leaving the skin on your back visibly smoother, clearer, healthier, and glowing.",
+            desc: "Indulge in a deeper level of renewal with our Dewy Back Protocol — a luxurious, results-driven treatment that elevates back care to the next level. This advanced session combines soothing relaxation with professional technologies like diamond dermabrasion and the high frequency wand to effectively target stubborn concerns while leaving the skin on your back visibly smoother, clearer, healthier, and glowing.",
           },
         ],
       },
@@ -183,22 +189,25 @@ const SERVICE_CATALOG: CatalogItem[] = [
         services: [
           {
             id: "vaj-t1",
-            name: "Vajacial Tier 1",
-            price: 70,
+            name: "Intimate Glow Reset",
+            price: 85,
+            shortDesc: "A gentle, refreshing treatment that soothes and brightens delicate skin.",
             duration: 30,
             desc: "Indulge your skin with a deeply hydrating treatment. This luxurious vajacial features a Brazilian wax, expert extractions, and a restorative mask that calms inflammation while soothing post-wax imperfections, leaving your skin exquisitely soft, soothed, and radiant.",
           },
           {
             id: "vaj-t2",
-            name: "Vajacial Tier 2",
-            price: 80,
+            name: "Dewy Intimate Protocol",
+            price: 95,
+            shortDesc: "A calming organic protocol that hydrates, balances, and leaves skin soft and luminous.",
             duration: 45,
             desc: "Indulge in radiant luxury with our signature Brightening Vajacial. This exquisite treatment cultivates a luminous, even-toned complexion through a Brazilian wax, refined exfoliation, and a nourishing specialized gel mask that deeply hydrates the skin while visibly reducing the appearance of dark spots.",
           },
           {
             id: "vaj-t3",
-            name: "Vajacial Tier 3",
-            price: 90,
+            name: "Epoch Intimate Ritual",
+            price: 120,
+            shortDesc: "Our most complete intimate treatment for deep nourishment, clarity, and lasting comfort.",
             duration: 60,
             desc: "Indulge in our signature luxurious treatment, crafted to gently soothe inflammation and diminish blemishes. Using advanced ultrasonic scrubbing and high-frequency technology, we delicately purify the skin by removing impurities and toxins, leaving your Brazilian area deeply hydrated, silky-smooth, and radiant.",
           },
@@ -465,6 +474,9 @@ export default function BookPage() {
             <p className={`text-sm font-sans font-medium transition-colors duration-200 ${checked ? "text-[#C9A96E]" : "text-[#1C1C1A] group-hover:text-[#C9A96E]"}`}>
               {svc.name}
             </p>
+            {svc.shortDesc && (
+              <p className="text-xs text-[#8C8680] font-sans mt-1 leading-relaxed">{svc.shortDesc}</p>
+            )}
             {svc.duration > 0 && (
               <p className="text-[10px] text-[#C0BAB4] font-sans mt-1">{svc.duration} min</p>
             )}
