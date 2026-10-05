@@ -8,6 +8,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { createClient } from '@libsql/client';
 import { sendPaidBookingEmails, sendPaidOrderEmails, sendDbWriteFailureAlert } from '@/lib/email';
+import { BOOKING_SERVICES } from '@/lib/booking-catalog';
 
 const stripe  = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2024-04-10',
@@ -144,13 +145,28 @@ export async function POST(req: NextRequest) {
 }
 
 async function handleBooking(session: Stripe.Checkout.Session, meta: Record<string, string>): Promise<boolean> {
+    // Itemized services for the detailed email. The checkout route stores the
+    // service ids in metadata; names/durations/prices are looked up from the
+    // same server-side catalog the checkout used. Older in-flight sessions
+    // without serviceIds simply get an empty list (email falls back to the
+    // simple layout).
+    const services = (meta.serviceIds ?? '')
+      .split(',')
+      .map((id) => id.trim())
+      .filter(Boolean)
+      .map((id) => BOOKING_SERVICES[id])
+      .filter(Boolean)
+      .map((s) => ({ name: s.name, duration: s.duration, price: s.price }));
+
+    const servicePrice = parseFloat(meta.price ?? '0');
+
     const booking = {
       name:      meta.name     ?? '',
       email:     meta.email    ?? session.customer_email ?? '',
       phone:     meta.phone    ?? '',
       service:   meta.service  ?? '',
       category:  meta.category ?? '',
-      price:     parseFloat(meta.price ?? '0'),
+      price:     servicePrice,
       date:      meta.date     ?? '',
       time:      meta.time     ?? '',
       duration:  parseInt(meta.duration ?? '60'),
@@ -160,6 +176,12 @@ async function handleBooking(session: Stripe.Checkout.Session, meta: Record<stri
       needsWaxingForm: meta.needsWaxingForm === '1',
       needsMassageForm: meta.needsMassageForm === '1',
       discountCode: meta.discountCode || null,
+      // Price breakdown for the email
+      services,
+      subtotal:       parseFloat(meta.subtotal ?? meta.price ?? '0'),
+      discountAmount: parseFloat(meta.discountAmount ?? '0'),
+      shopFee:        parseFloat(meta.shopFee ?? '0'),
+      totalCharged:   parseFloat(meta.totalCharged ?? meta.price ?? '0'),
     };
 
     // Save to Turso — idempotent via UNIQUE(stripe_session_id)
@@ -238,7 +260,8 @@ async function handleBooking(session: Stripe.Checkout.Session, meta: Record<stri
           details: {
             Name: booking.name, Email: booking.email, Phone: booking.phone,
             Service: booking.service, Date: booking.date, Time: booking.time,
-            Duration: booking.duration, Price: booking.price, Notes: booking.notes,
+            Duration: booking.duration, Price: booking.price,
+            'Total charged': booking.totalCharged, Notes: booking.notes,
           },
         });
       } catch (alertErr) {
