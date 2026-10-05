@@ -1,4 +1,4 @@
-// app/api/booking-checkout/route.ts
+ // app/api/booking-checkout/route.ts
 // Creates a Stripe Checkout session for a booking.
 // On success, Stripe redirects to /book/success?session_id=xxx
 // Webhook at /api/stripe/webhook saves the booking + sends emails.
@@ -13,6 +13,10 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2024-04-10',
 });
 const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://epoch-skin.com';
+
+// Shop fee added on top of the service total (after any discount code).
+// Keep this number in sync with SHOP_FEE_RATE in app/book/page.tsx.
+const SHOP_FEE_RATE = 0.35;
 
 export async function POST(req: NextRequest) {
   const ok = await rateLimit(`booking-checkout:${clientIp(req)}`, 10, 600); // 10 per 10 min
@@ -58,6 +62,12 @@ export async function POST(req: NextRequest) {
       price = Math.round(rawPrice * (1 - match.pct) * 100) / 100;
     }
 
+    // Shop fee — calculated server-side on the post-discount service total.
+    const serviceCents = Math.round(price * 100);
+    const shopFeeCents = Math.round(serviceCents * SHOP_FEE_RATE);
+    const shopFee = shopFeeCents / 100;
+    const totalCharged = (serviceCents + shopFeeCents) / 100;
+
     // Facials, vajacials, and bacials involve actives/extractions close to the
     // skin's barrier — send the client the facial intake form for these.
     const needsFacialForm = resolved.some((s) => /^(facial|vaj|bacial)-/.test(s.id));
@@ -71,25 +81,40 @@ export async function POST(req: NextRequest) {
     // by men's waxing above.
     const needsMassageForm = resolved.some((s) => /^mas-/.test(s.id));
 
+    const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = [
+      {
+        quantity: 1,
+        price_data: {
+          currency: 'usd',
+          unit_amount: serviceCents,
+          product_data: {
+            name: `Epoch Skin — ${service}`,
+            description: `${new Date(date + 'T12:00:00').toLocaleDateString('en-US', {
+              weekday: 'long', month: 'long', day: 'numeric',
+            })} at ${time} · ${duration} min${appliedCode ? ` · Code ${appliedCode} applied` : ''}`,
+          },
+        },
+      },
+    ];
+
+    if (shopFeeCents > 0) {
+      lineItems.push({
+        quantity: 1,
+        price_data: {
+          currency: 'usd',
+          unit_amount: shopFeeCents,
+          product_data: {
+            name: `Shop fee (${Math.round(SHOP_FEE_RATE * 100)}%)`,
+          },
+        },
+      });
+    }
+
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       mode: 'payment',
       customer_email: email,
-      line_items: [
-        {
-          quantity: 1,
-          price_data: {
-            currency: 'usd',
-            unit_amount: Math.round(price * 100),
-            product_data: {
-              name: `Epoch Skin — ${service}`,
-              description: `${new Date(date + 'T12:00:00').toLocaleDateString('en-US', {
-                weekday: 'long', month: 'long', day: 'numeric',
-              })} at ${time} · ${duration} min${appliedCode ? ` · Code ${appliedCode} applied` : ''}`,
-            },
-          },
-        },
-      ],
+      line_items: lineItems,
       success_url: `${SITE}/book/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url:  `${SITE}/book?cancelled=1`,
       metadata: {
@@ -101,6 +126,8 @@ export async function POST(req: NextRequest) {
         service,
         category: category ?? '',
         price:    String(price),
+        shopFee:  String(shopFee),
+        totalCharged: String(totalCharged),
         date,
         time,
         duration: String(duration ?? 60),
