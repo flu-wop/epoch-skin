@@ -1,4 +1,4 @@
- // app/api/booking-checkout/route.ts
+// app/api/booking-checkout/route.ts
 // Creates a Stripe Checkout session for a booking.
 // On success, Stripe redirects to /book/success?session_id=xxx
 // Webhook at /api/stripe/webhook saves the booking + sends emails.
@@ -126,6 +126,9 @@ export async function POST(req: NextRequest) {
         service,
         category: category ?? '',
         price:    String(price),
+        subtotal: String(rawPrice),
+        discountAmount: String(Math.round((rawPrice - price) * 100) / 100),
+        serviceIds: resolved.map((s) => s.id).join(','),
         shopFee:  String(shopFee),
         totalCharged: String(totalCharged),
         date,
