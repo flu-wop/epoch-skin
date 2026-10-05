@@ -5,6 +5,10 @@ import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { resolveDiscountCode } from "@/lib/discounts";
 
+// Shop fee added on top of the service total (after any discount code).
+// Keep this number in sync with SHOP_FEE_RATE in app/api/booking-checkout/route.ts.
+const SHOP_FEE_RATE = 0.35;
+
 type Service = {
   id: string;
   name: string;
@@ -365,6 +369,11 @@ export default function BookPage() {
   const discountAmount = applied ? totalPrice * applied.pct : 0;
   const discountedTotal = Math.round((totalPrice - discountAmount) * 100) / 100;
 
+  // Shop fee is calculated on the post-discount service total.
+  const shopFee    = Math.round(discountedTotal * SHOP_FEE_RATE * 100) / 100;
+  const finalTotal = Math.round((discountedTotal + shopFee) * 100) / 100;
+  const shopFeePct = Math.round(SHOP_FEE_RATE * 100);
+
   const handleApplyPromo = () => {
     setPromoError("");
     const match = resolveDiscountCode(promoInput);
@@ -622,6 +631,7 @@ export default function BookPage() {
                     {selectedIds.length} service{selectedIds.length > 1 ? "s" : ""} · {totalDuration} min
                   </p>
                   <p className="font-serif text-xl text-[#FAF7F2] mt-0.5">${totalPrice}</p>
+                  <p className="text-[10px] text-[#C0BAB4] font-sans mt-0.5">+ {shopFeePct}% shop fee at checkout</p>
                 </div>
                 <button onClick={() => setStep(2)}
                   className="flex-shrink-0 px-8 py-3 bg-[#C9A96E] text-[#1C1C1A] text-[11px]
@@ -772,10 +782,7 @@ export default function BookPage() {
                   </p>
                 </div>
                 <div className="text-right">
-                  {applied && (
-                    <p className="text-[#8C8680] text-xs font-sans line-through">${totalPrice}</p>
-                  )}
-                  <p className="font-serif text-xl text-[#C9A96E]">${applied ? discountedTotal.toFixed(2) : totalPrice}</p>
+                  <p className="font-serif text-xl text-[#C9A96E]">${finalTotal.toFixed(2)}</p>
                 </div>
               </div>
 
@@ -811,6 +818,28 @@ export default function BookPage() {
                     {promoError && <p className="text-red-500 text-xs font-sans mt-2">{promoError}</p>}
                   </div>
                 )}
+              </div>
+
+              {/* Price breakdown */}
+              <div className="mt-5 pt-5 border-t border-[#F0EBE0] space-y-2 text-sm font-sans text-[#5A5550]">
+                <div className="flex justify-between">
+                  <span>Services</span>
+                  <span>${totalPrice.toFixed(2)}</span>
+                </div>
+                {applied && (
+                  <div className="flex justify-between text-[#4A5745]">
+                    <span>Discount ({applied.code})</span>
+                    <span>−${discountAmount.toFixed(2)}</span>
+                  </div>
+                )}
+                <div className="flex justify-between">
+                  <span>Shop fee ({shopFeePct}%)</span>
+                  <span>${shopFee.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between pt-2 border-t border-[#F0EBE0] text-[#1C1C1A] font-medium">
+                  <span>Total</span>
+                  <span>${finalTotal.toFixed(2)}</span>
+                </div>
               </div>
             </div>
           )}
@@ -852,7 +881,7 @@ export default function BookPage() {
               className="px-8 py-3.5 bg-[#C9A96E] text-[#1C1C1A] text-[11px] tracking-[0.22em]
                          uppercase font-sans font-medium hover:bg-[#D4AF88]
                          transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
-              {submitting ? "Redirecting to payment..." : `Pay $${applied ? discountedTotal.toFixed(2) : totalPrice} & Confirm`}
+              {submitting ? "Redirecting to payment..." : `Pay $${finalTotal.toFixed(2)} & Confirm`}
             </button>
           </div>
         </div>
