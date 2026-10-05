@@ -1,3 +1,4 @@
+// lib/email.ts
 import { Resend } from 'resend';
 
 export const getResend = () => new Resend(process.env.RESEND_API_KEY ?? '');
@@ -9,6 +10,12 @@ const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://epoch-skin.com';
 // ── Booking confirmation (the ONE live path — fired from the Stripe webhook
 // after a paid booking checkout completes) ─────────────────────────────────
 
+export interface BookingServiceLine {
+  name: string;
+  duration: number; // minutes
+  price: number;    // dollars (list price of this service)
+}
+
 export interface BookingEmailData {
   name: string;
   email: string;
@@ -17,14 +24,25 @@ export interface BookingEmailData {
   date: string;      // YYYY-MM-DD
   time: string;       // "2:00 PM"
   duration: number;   // minutes
-  price: number;
+  price: number;      // service total after any discount, before shop fee
   notes: string;
   needsFacialForm?: boolean; // true if booking includes a Facial/Vajacial/Bacial service
   needsWaxingForm?: boolean; // true if booking includes a waxing service
   needsMassageForm?: boolean; // true if booking includes a standalone massage service
+  // Itemized breakdown (used for the detailed email sent to Kayla)
+  services?: BookingServiceLine[];
+  subtotal?: number;         // sum of service list prices
+  discountCode?: string | null;
+  discountAmount?: number;   // dollars taken off by the discount code
+  shopFee?: number;          // dollars
+  totalCharged?: number;     // what the client actually paid (price + shopFee)
 }
 
 function pad(n: number) { return String(n).padStart(2, '0'); }
+
+function money2(n: number) {
+  return `$${n.toFixed(2)}`;
+}
 
 export function generateBookingICS(b: {
   name: string; email: string; service: string;
@@ -58,6 +76,71 @@ export function bookingEmailHTML(b: BookingEmailData, isClient: boolean): string
   const dateStr = new Date(b.date + 'T12:00:00').toLocaleDateString('en-US', {
     weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
   });
+
+  // What the client actually paid: service total + shop fee. Falls back to the
+  // service price for older sessions that predate the shop fee.
+  const totalPaid = b.totalCharged ?? b.price;
+
+  // The detailed itemized layout is only for Kayla's copy, and only when the
+  // service list is available.
+  const detailed = !isClient && !!b.services && b.services.length > 0;
+
+  const breakdownHTML = detailed ? (() => {
+    const svcs     = b.services!;
+    const subtotal = b.subtotal ?? svcs.reduce((sum, s) => sum + s.price, 0);
+    const discount = b.discountAmount ?? 0;
+    const fee      = b.shopFee ?? 0;
+    const base     = subtotal - discount;
+    const feePct   = base > 0 ? Math.round((fee / base) * 100) : 0;
+
+    const serviceRows = svcs.map((s, i) => `<tr>
+        <td style="padding:9px 0;border-bottom:1px solid #F0EBE0;color:#1C1C1A;">${i + 1}. ${s.name}</td>
+        <td style="padding:9px 0;border-bottom:1px solid #F0EBE0;color:#5A5550;text-align:center;white-space:nowrap;">${s.duration} min</td>
+        <td style="padding:9px 0;border-bottom:1px solid #F0EBE0;color:#1C1C1A;text-align:right;white-space:nowrap;">${money2(s.price)}</td>
+      </tr>`).join('');
+
+    return `
+    <hr style="border:none;border-top:1px solid #E5DCCF;margin:24px 0;"/>
+    <p style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#C9A96E;margin:0 0 10px;">Services booked (${svcs.length})</p>
+    <table style="width:100%;font-size:14px;border-collapse:collapse;">
+      <tr>
+        <td style="padding:6px 0;border-bottom:1px solid #E5DCCF;color:#8C8680;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;">Service</td>
+        <td style="padding:6px 0;border-bottom:1px solid #E5DCCF;color:#8C8680;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;text-align:center;">Duration</td>
+        <td style="padding:6px 0;border-bottom:1px solid #E5DCCF;color:#8C8680;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;text-align:right;">Price</td>
+      </tr>
+      ${serviceRows}
+      <tr>
+        <td style="padding:10px 0 0;color:#8C8680;">Total appointment time</td>
+        <td style="padding:10px 0 0;color:#1C1C1A;text-align:center;white-space:nowrap;">${b.duration} min</td>
+        <td></td>
+      </tr>
+    </table>
+    <hr style="border:none;border-top:1px solid #E5DCCF;margin:24px 0;"/>
+    <p style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#C9A96E;margin:0 0 10px;">Payment breakdown</p>
+    <table style="width:100%;font-size:14px;border-collapse:collapse;">
+      <tr>
+        <td style="padding:5px 0;color:#8C8680;">Services subtotal</td>
+        <td style="padding:5px 0;text-align:right;color:#1C1C1A;">${money2(subtotal)}</td>
+      </tr>
+      ${discount > 0 ? `<tr>
+        <td style="padding:5px 0;color:#4A9B6F;">Discount${b.discountCode ? ` (${b.discountCode})` : ''}</td>
+        <td style="padding:5px 0;text-align:right;color:#4A9B6F;">−${money2(discount)}</td>
+      </tr>
+      <tr>
+        <td style="padding:5px 0;color:#8C8680;">Services after discount</td>
+        <td style="padding:5px 0;text-align:right;color:#1C1C1A;">${money2(base)}</td>
+      </tr>` : ''}
+      <tr>
+        <td style="padding:5px 0;color:#8C8680;">Shop fee${feePct ? ` (${feePct}%)` : ''}</td>
+        <td style="padding:5px 0;text-align:right;color:#1C1C1A;">${money2(fee)}</td>
+      </tr>
+      <tr>
+        <td style="padding:12px 0 0;border-top:1px solid #E5DCCF;font-weight:600;color:#1C1C1A;">Total paid by client</td>
+        <td style="padding:12px 0 0;border-top:1px solid #E5DCCF;text-align:right;font-weight:600;color:#C9A96E;">${money2(totalPaid)}</td>
+      </tr>
+    </table>`;
+  })() : '';
+
   return `<!DOCTYPE html><html><head><meta charset="utf-8"/></head>
 <body style="margin:0;padding:0;background:#FAF7F2;font-family:Georgia,serif;">
 <div style="max-width:560px;margin:0 auto;background:#fff;">
@@ -73,11 +156,11 @@ export function bookingEmailHTML(b: BookingEmailData, isClient: boolean): string
     <hr style="border:none;border-top:1px solid #E5DCCF;margin:24px 0;"/>
     <table style="width:100%;font-size:14px;border-collapse:collapse;">
       ${[
-        ['Service',  b.service],
+        ...(detailed ? [] : [['Service', b.service]]),
         ['Date',     dateStr],
         ['Time',     b.time],
-        ['Duration', `${b.duration} min`],
-        ['Paid',     `$${b.price}`],
+        ...(detailed ? [] : [['Duration', `${b.duration} min`]]),
+        ...(detailed ? [] : [['Paid', money2(totalPaid)]]),
         ...(b.phone ? [['Phone', b.phone]] : []),
         ...(b.email ? [['Email', b.email]] : []),
         ...(b.notes ? [['Notes', b.notes]] : []),
@@ -86,6 +169,7 @@ export function bookingEmailHTML(b: BookingEmailData, isClient: boolean): string
         <td style="color:${k==='Paid'?'#C9A96E':'#1C1C1A'};${k==='Paid'?'font-weight:600;':''}padding:7px 0;">${v}</td>
       </tr>`).join('')}
     </table>
+    ${breakdownHTML}
     <hr style="border:none;border-top:1px solid #E5DCCF;margin:24px 0;"/>
     ${isClient ? `
     <p style="font-size:13px;color:#5A5550;">The .ics calendar file is attached — open it to add to Apple or Google Calendar.</p>
