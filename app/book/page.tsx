@@ -1,9 +1,10 @@
 "use client";
 // app/book/page.tsx
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { resolveDiscountCode } from "@/lib/discounts";
+import { TIME_SLOTS, getBlockedSlots, type BusyBlock } from "@/lib/availability-shared";
 
 // Shop fee added on top of the service total (after any discount code).
 // Keep this number in sync with SHOP_FEE_RATE in app/api/booking-checkout/route.ts.
@@ -301,12 +302,6 @@ const SERVICE_CATALOG: CatalogItem[] = [
   },
 ];
 
-const TIME_SLOTS = [
-  "9:00 AM","9:30 AM","10:00 AM","10:30 AM","11:00 AM","11:30 AM",
-  "12:00 PM","12:30 PM","1:00 PM","1:30 PM","2:00 PM","2:30 PM",
-  "3:00 PM","3:30 PM","4:00 PM","4:30 PM","5:00 PM","5:30 PM","6:00 PM",
-];
-
 type SelectedService = Service & { category: string };
 
 function getNextDays(n: number) {
@@ -320,8 +315,14 @@ function getNextDays(n: number) {
   return days;
 }
 
+// Local calendar date as YYYY-MM-DD. (toISOString() converts to UTC, which
+// rolls the date forward after ~7 PM Central and made the tapped day differ
+// from the day shown on the button.)
 function formatDate(d: Date) {
-  return d.toISOString().split("T")[0];
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
 }
 
 function getAllServices(): SelectedService[] {
@@ -361,6 +362,11 @@ export default function BookPage() {
   const [confirmed,     setConfirmed]     = useState(false);
   const [icsContent,    setIcsContent]    = useState("");
   const [error,         setError]         = useState("");
+  // Availability for the selected day: what's already booked, and load status.
+  const [busy,          setBusy]          = useState<BusyBlock[]>([]);
+  const [busyStatus,    setBusyStatus]    = useState<"idle" | "loading" | "ready" | "error">("idle");
+  const [busyNonce,     setBusyNonce]     = useState(0); // bump to force a refetch
+  const [timeNotice,    setTimeNotice]    = useState("");
 
   const availableDays = getNextDays(30);
   const allServices   = getAllServices();
@@ -414,6 +420,47 @@ export default function BookPage() {
     }
   }, [step]);
 
+  // Load the day's booked blocks whenever a date is chosen and the client is on
+  // the time step (so coming back to step 2 always shows fresh availability).
+  useEffect(() => {
+    if (!selectedDate || step !== 2) return;
+    let cancelled = false;
+    setBusyStatus("loading");
+    fetch(`/api/availability?date=${encodeURIComponent(selectedDate)}`, { cache: "no-store" })
+      .then(async (res) => {
+        if (!res.ok) throw new Error("availability failed");
+        return res.json();
+      })
+      .then((data) => {
+        if (cancelled) return;
+        setBusy(Array.isArray(data.busy) ? data.busy : []);
+        setBusyStatus("ready");
+      })
+      .catch(() => {
+        // Fail open: the server re-checks the time at checkout, so a failed
+        // lookup here must not lock clients out of booking.
+        if (cancelled) return;
+        setBusy([]);
+        setBusyStatus("error");
+      });
+    return () => { cancelled = true; };
+  }, [selectedDate, step, busyNonce]);
+
+  // Times that can't be booked for the length of the selected services.
+  const blockedSlots = useMemo(
+    () => (busyStatus === "ready" ? getBlockedSlots(totalDuration || 30, busy) : []),
+    [busyStatus, busy, totalDuration]
+  );
+
+  // If the chosen time becomes unavailable (a longer service was added, or the
+  // fresh availability shows it was taken), drop the selection and say why.
+  useEffect(() => {
+    if (selectedTime && blockedSlots.includes(selectedTime)) {
+      setSelectedTime("");
+      setTimeNotice("That time isn’t available for your selected services. Please choose another time.");
+    }
+  }, [blockedSlots, selectedTime]);
+
   const handleSubmit = async () => {
     if (!selectedIds.length || !selectedDate || !selectedTime || !form.name || !form.email) {
       setError("Please fill in all required fields.");
@@ -434,6 +481,16 @@ export default function BookPage() {
         }),
       });
       const data = await res.json();
+      if (res.status === 409 && data.code === "SLOT_TAKEN") {
+        // Someone else booked this time while the form was being filled in.
+        // Send the client back to the time step with fresh availability.
+        setSelectedTime("");
+        setTimeNotice(data.error ?? "That time was just booked. Please choose another time.");
+        setBusyNonce((n) => n + 1);
+        setStep(2);
+        setSubmitting(false);
+        return;
+      }
       if (!res.ok) throw new Error(data.error ?? "Booking failed");
       window.location.href = data.url;
     } catch (err: unknown) {
@@ -727,7 +784,7 @@ export default function BookPage() {
                   const isWeekend  = day.getDay() === 0;
                   const isSelected = selectedDate === dateStr;
                   return (
-                    <button key={dateStr} disabled={isWeekend} onClick={() => setSelectedDate(dateStr)}
+                    <button key={dateStr} disabled={isWeekend} onClick={() => { setSelectedDate(dateStr); setTimeNotice(""); }}
                       className={`flex-shrink-0 px-3 py-3 text-center border transition-all duration-300 min-w-[72px] ${
                         isWeekend ? "border-[#F0EBE0] text-[#D0C8BE] cursor-not-allowed"
                         : isSelected ? "border-[#C9A96E] bg-[#C9A96E] text-[#1C1C1A]"
@@ -752,22 +809,47 @@ export default function BookPage() {
           {selectedDate && (
             <div className="mb-8">
               <p className="text-[11px] tracking-[0.22em] uppercase text-[#C9A96E] font-sans mb-4">Select Time</p>
+              {timeNotice && (
+                <p className="mb-4 px-4 py-3 border border-[#E8C9A0] bg-[#FDF3E3] text-[#8A5A1E] text-xs font-sans leading-relaxed">
+                  {timeNotice}
+                </p>
+              )}
+              {busyStatus === "loading" && (
+                <p className="text-xs text-[#8C8680] font-sans mb-3">Checking availability…</p>
+              )}
+              {busyStatus === "error" && (
+                <p className="text-xs text-[#8C8680] font-sans mb-3">
+                  We couldn&apos;t check live availability. You can still pick a time — we&apos;ll confirm it at checkout.
+                </p>
+              )}
               <div className="grid grid-cols-4 sm:grid-cols-5 gap-2">
-                {TIME_SLOTS.map((slot) => (
-                  <button key={slot} onClick={() => setSelectedTime(slot)}
-                    className={`py-3 text-center text-xs font-sans tracking-wide border transition-all duration-300 ${
-                      selectedTime === slot ? "bg-[#3E4A3C] text-[#C4974A] border-[#3E4A3C]" : "border-[#E5DCCF] text-[#5A5550] hover:border-[#C9A96E]"
-                    }`}>
-                    {slot}
-                  </button>
-                ))}
+                {TIME_SLOTS.map((slot) => {
+                  const taken = blockedSlots.includes(slot);
+                  const checking = busyStatus === "loading";
+                  const isSelected = selectedTime === slot;
+                  return (
+                    <button key={slot}
+                      disabled={taken || checking}
+                      aria-disabled={taken || checking}
+                      title={taken ? "Unavailable" : undefined}
+                      onClick={() => { setSelectedTime(slot); setTimeNotice(""); }}
+                      className={`py-3 text-center text-xs font-sans tracking-wide border transition-all duration-300 ${
+                        taken ? "border-[#F0EBE0] text-[#D0C8BE] line-through cursor-not-allowed bg-[#FAF7F2]"
+                        : checking ? "border-[#F0EBE0] text-[#D0C8BE] cursor-wait"
+                        : isSelected ? "bg-[#3E4A3C] text-[#C4974A] border-[#3E4A3C]"
+                        : "border-[#E5DCCF] text-[#5A5550] hover:border-[#C9A96E]"
+                      }`}>
+                      {slot}
+                    </button>
+                  );
+                })}
               </div>
             </div>
           )}
 
           <div className="flex justify-between">
             <button onClick={() => setStep(1)} className="text-sm font-sans text-[#8C8680] hover:text-[#1C1C1A] transition-colors">← Back</button>
-            <button onClick={() => setStep(3)} disabled={!selectedDate || !selectedTime || selectedIds.length === 0}
+            <button onClick={() => setStep(3)} disabled={!selectedDate || !selectedTime || selectedIds.length === 0 || busyStatus === "loading"}
               className="px-8 py-3.5 bg-[#3E4A3C] text-[#C4974A] text-[11px] tracking-[0.22em]
                          uppercase font-sans hover:bg-[#C4974A] hover:text-white
                          transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed">

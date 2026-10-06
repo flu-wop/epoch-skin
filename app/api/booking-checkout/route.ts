@@ -8,6 +8,7 @@ import Stripe from 'stripe';
 import { rateLimit, clientIp } from '@/lib/rate-limit';
 import { BOOKING_SERVICES } from '@/lib/booking-catalog';
 import { resolveDiscountCode } from '@/lib/discounts';
+import { checkSlotAvailable, isValidDateString } from '@/lib/availability';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2024-04-10',
@@ -47,6 +48,24 @@ export async function POST(req: NextRequest) {
     const service = resolved.map((s) => s.name).join(', ');
     const rawPrice = resolved.reduce((sum, s) => sum + s.price, 0);
     const duration = resolved.reduce((sum, s) => sum + s.duration, 0);
+
+    // Re-check availability on the server, using the catalog duration (never a
+    // client-supplied one), before any payment is created. The booking page
+    // greys out taken times, but that is only a convenience — this is the real
+    // gate, so a hand-edited request can't double-book either.
+    if (!isValidDateString(String(date))) {
+      return NextResponse.json({ error: 'Invalid date.' }, { status: 400 });
+    }
+    const slot = await checkSlotAvailable(String(date), String(time), duration);
+    if (!slot.ok) {
+      if (slot.reason === 'INVALID_TIME') {
+        return NextResponse.json({ error: 'Invalid appointment time.' }, { status: 400 });
+      }
+      return NextResponse.json(
+        { error: 'That time was just booked by someone else. Please choose another time.', code: 'SLOT_TAKEN' },
+        { status: 409 }
+      );
+    }
 
     // Discount code — validated server-side against the same shared map the
     // shop cart uses (lib/discounts.ts). Never trust a discounted price from
