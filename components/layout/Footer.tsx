@@ -166,14 +166,14 @@ export function Footer() {
       {/* Built by signature */}
       <div className="border-t border-[#3E4A3C]">
         <p className="text-center text-[10px] tracking-[0.15em] uppercase font-sans text-[#526050] py-5">
-          Built by{" "}
+          Designed by{" "}
           <a
             href="https://in-flu-ential.vercel.app"
             target="_blank"
             rel="noopener noreferrer"
             className="text-[#C4974A] hover:text-[#D4AA6A] transition-colors duration-200"
           >
-            In-flu-ential LLC
+            IN-FLU-ENTIAL
           </a>
         </p>
       </div>
