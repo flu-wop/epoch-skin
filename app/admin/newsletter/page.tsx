@@ -5,7 +5,8 @@
 
 import { useState, useEffect } from 'react';
 import { AdminLoginScreen } from '@/components/admin/AdminLoginScreen';
-import { AdminShell } from '@/components/admin/AdminShell';
+import { RefreshCw, Download } from 'lucide-react';
+import { AdminShell, AdminPage, AdminPageHeader, adminBtn } from '@/components/admin/AdminShell';
 
 interface Subscriber {
   id: number;
@@ -88,56 +89,43 @@ export default function AdminNewsletterPage() {
   // ── Dashboard ────────────────────────────────────────────────────
   return (
     <AdminShell onLogout={() => setAuthed(false)}>
-      <div className="py-12 px-5">
-        <div className="max-w-4xl mx-auto">
-
-          {/* Header */}
-          <div className="flex flex-wrap items-start justify-between gap-y-4 mb-10">
-            <div>
-              <p className="text-[11px] tracking-[0.28em] uppercase text-[#C9A96E] font-sans mb-2">Admin</p>
-              <h1 className="font-serif text-4xl text-[#1C1C1A]">Newsletter</h1>
-            </div>
-            <div className="flex flex-wrap gap-3 items-center">
-              <button
-                onClick={downloadCSV}
-                className="text-[11px] tracking-[0.18em] uppercase font-sans border border-[#E5DCCF]
-                           text-[#5A5550] px-5 py-2.5 hover:border-[#C9A96E] hover:text-[#C9A96E]
-                           transition-colors duration-300"
-              >
-                Export CSV
+      <AdminPage>
+        <div className="max-w-4xl">
+        <AdminPageHeader
+          title="Newsletter"
+          actions={
+            <>
+              <button onClick={downloadCSV} className={adminBtn.secondary}>
+                <Download className="w-3.5 h-3.5" /> Export CSV
               </button>
-              <button
-                onClick={fetchSubscribers}
-                className="text-[11px] tracking-[0.18em] uppercase font-sans border border-[#E5DCCF]
-                           text-[#5A5550] px-5 py-2.5 hover:border-[#C9A96E] hover:text-[#C9A96E]
-                           transition-colors duration-300"
-              >
-                Refresh
+              <button onClick={fetchSubscribers} disabled={loading} className={adminBtn.secondary}>
+                <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} /> Refresh
               </button>
-            </div>
-          </div>
+            </>
+          }
+        />
 
         {/* Stats row */}
-        <div className="grid grid-cols-2 gap-4 mb-8">
+        <div className="grid grid-cols-2 gap-2 sm:gap-3 mb-6">
           {[
             { label: 'Total Subscribers', value: filtered.length },
             { label: 'This Month', value: filtered.filter(s => s.created_at.startsWith(new Date().toISOString().slice(0,7))).length },
           ].map(({ label, value }) => (
-            <div key={label} className="bg-white border border-[#E5DCCF] p-6">
-              <p className="text-[10px] tracking-[0.2em] uppercase text-[#8C8680] font-sans mb-2">{label}</p>
-              <p className="font-serif text-3xl text-[#1C1C1A]">{value}</p>
+            <div key={label} className="bg-white border border-[#E5DCCF] px-3 py-3 sm:p-5 min-w-0">
+              <p className="text-[10px] tracking-[0.16em] uppercase text-[#8C8680] mb-1.5 truncate">{label}</p>
+              <p className="font-serif text-xl sm:text-3xl text-[#1C1C1A] leading-none">{value}</p>
             </div>
           ))}
         </div>
 
         {/* Filter */}
-        <div className="mb-5">
+        <div className="mb-4">
           <input
             type="text"
             value={filter}
             onChange={e => setFilter(e.target.value)}
             placeholder="Search by email or source..."
-            className="w-full max-w-sm px-4 py-2.5 border border-[#E5DCCF] bg-white text-sm font-sans
+            className="w-full sm:max-w-sm h-10 px-3 border border-[#E5DCCF] bg-white text-sm font-sans
                        focus:outline-none focus:border-[#C9A96E] transition-colors"
           />
         </div>
@@ -155,8 +143,8 @@ export default function AdminNewsletterPage() {
             <p className="text-[#8C8680] font-sans text-sm tracking-widest uppercase">Loading...</p>
           </div>
         ) : filtered.length === 0 ? (
-          <div className="text-center py-20 bg-white border border-[#E5DCCF]">
-            <p className="font-serif text-2xl text-[#1C1C1A] mb-2">No subscribers yet</p>
+          <div className="text-center py-14 px-5 bg-white border border-[#E5DCCF]">
+            <p className="font-serif text-xl sm:text-2xl text-[#1C1C1A] mb-2">No subscribers yet</p>
             <p className="text-[#8C8680] text-sm font-sans">Subscribers will appear here once people sign up for the newsletter.</p>
           </div>
         ) : (
@@ -166,13 +154,13 @@ export default function AdminNewsletterPage() {
                 <tr className="border-b border-[#E5DCCF]">
                   <th
                     onClick={() => setSortDir(d => d === 'asc' ? 'desc' : 'asc')}
-                    className="text-left px-5 py-3.5 text-[10px] tracking-[0.2em] uppercase
-                               text-[#8C8680] cursor-pointer hover:text-[#C9A96E] transition-colors select-none"
+                    className="text-left px-4 sm:px-5 py-3 text-[10px] tracking-[0.2em] uppercase
+                               text-[#8C8680] cursor-pointer hover:text-[#A87C30] transition-colors select-none"
                   >
-                    Subscribed<span className="ml-1 text-[#C9A96E] opacity-60">{sortDir === 'asc' ? '↑' : '↓'}</span>
+                    Subscribed<span className="ml-1 text-[#A87C30] opacity-60">{sortDir === 'asc' ? '↑' : '↓'}</span>
                   </th>
-                  <th className="text-left px-5 py-3.5 text-[10px] tracking-[0.2em] uppercase text-[#8C8680]">Email</th>
-                  <th className="text-left px-5 py-3.5 text-[10px] tracking-[0.2em] uppercase text-[#8C8680]">Source</th>
+                  <th className="text-left px-4 sm:px-5 py-3 text-[10px] tracking-[0.2em] uppercase text-[#8C8680]">Email</th>
+                  <th className="text-left px-4 sm:px-5 py-3 text-[10px] tracking-[0.2em] uppercase text-[#8C8680]">Source</th>
                 </tr>
               </thead>
               <tbody>
@@ -183,15 +171,15 @@ export default function AdminNewsletterPage() {
                       ${i % 2 === 0 ? 'bg-white' : 'bg-[#FDFAF6]'}
                       hover:bg-[#FEF9F2]`}
                   >
-                    <td className="px-5 py-4 text-[#1C1C1A] whitespace-nowrap">
+                    <td className="px-4 sm:px-5 py-3.5 text-[#1C1C1A] whitespace-nowrap">
                       {new Date(s.created_at.replace(' ', 'T') + 'Z').toLocaleDateString('en-US', {
                         month: 'short', day: 'numeric', year: 'numeric'
                       })}
                     </td>
-                    <td className="px-5 py-4">
-                      <a href={`mailto:${s.email}`} className="text-[#C9A96E] text-xs hover:underline">{s.email}</a>
+                    <td className="px-4 sm:px-5 py-3.5">
+                      <a href={`mailto:${s.email}`} className="text-[#A87C30] text-xs hover:underline">{s.email}</a>
                     </td>
-                    <td className="px-5 py-4 text-[#5A5550]">{s.source ?? '—'}</td>
+                    <td className="px-4 sm:px-5 py-3.5 text-[#5A5550]">{s.source ?? '—'}</td>
                   </tr>
                 ))}
               </tbody>
@@ -199,8 +187,8 @@ export default function AdminNewsletterPage() {
           </div>
         )}
 
-      </div>
-      </div>
+        </div>
+      </AdminPage>
     </AdminShell>
   );
 }

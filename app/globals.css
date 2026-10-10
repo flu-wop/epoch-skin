@@ -280,3 +280,26 @@
 .newsletter-content ul, .newsletter-content ol { margin: 1em 0; padding-left: 1.5em; }
 .newsletter-content li { margin: 0.4em 0; }
 .newsletter-content strong { color: #111; }
+
+/* -- ADMIN · GLOW MAP --------------------------------------------- */
+@keyframes glow-twinkle {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.14); }
+}
+.glow-twinkle {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: glow-twinkle 4.5s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .glow-twinkle { animation: none; }
+}
+.no-scrollbar { scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
+/* Admin: 16px form text on phones so iOS Safari doesn't zoom on focus */
+@media (max-width: 639px) {
+  .admin-root input:not([type="checkbox"]):not([type="radio"]),
+  .admin-root select,
+  .admin-root textarea { font-size: 16px; }
+}

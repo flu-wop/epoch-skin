@@ -42,9 +42,9 @@ export function CartDrawer() {
         aria-label="Shopping cart"
         aria-modal="true"
         className={`fixed top-0 right-0 h-full w-full sm:w-[420px] bg-[#FAF7F2] z-[70]
-          shadow-[-8px_0_40px_rgba(28,28,26,0.12)] transition-transform duration-400 ease-out
+          transition-[transform,visibility] duration-400 ease-out
           flex flex-col
-          ${isOpen ? "translate-x-0" : "translate-x-full"}`}
+          ${isOpen ? "translate-x-0 shadow-[-8px_0_40px_rgba(28,28,26,0.12)]" : "translate-x-full invisible"}`}
       >
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-5 border-b border-[#E5DCCF]">

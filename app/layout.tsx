@@ -2,8 +2,8 @@
 import type { Metadata, Viewport } from 'next';
 import { Playfair_Display, Inter } from 'next/font/google';
 import { Providers } from '@/components/Providers';
-import { SiteHeader } from '@/components/layout/SiteHeader';
-import { Footer } from '@/components/layout/Footer';
+import { SiteChrome } from '@/components/layout/SiteChrome';
+import { SiteAnalytics } from '@/components/SiteAnalytics';
 import '@flu-wop/design-system/core.css';
 import '@flu-wop/design-system/themes/epoch.css';
 import './globals.css';
@@ -62,9 +62,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html data-theme="epoch" lang="en" className={`${playfair.variable} ${inter.variable}`}>
       <body className="bg-[#FAF7F2] text-[#1C1C1A] font-sans antialiased">
         <Providers>
-          <SiteHeader />
-          <main className="min-h-[60vh]">{children}</main>
-          <Footer />
+          <SiteChrome>{children}</SiteChrome>
+          <SiteAnalytics />
         </Providers>
       </body>
     </html>

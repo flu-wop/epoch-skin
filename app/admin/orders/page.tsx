@@ -6,7 +6,8 @@
 
 import { useState, useEffect } from 'react';
 import { AdminLoginScreen } from '@/components/admin/AdminLoginScreen';
-import { AdminShell } from '@/components/admin/AdminShell';
+import { RefreshCw, Search } from 'lucide-react';
+import { AdminShell, AdminPage, AdminPageHeader, adminBtn } from '@/components/admin/AdminShell';
 
 interface OrderItem {
   name: string;
@@ -27,8 +28,12 @@ interface Order {
 }
 
 function money(cents: number) {
-  return `$${(cents / 100).toFixed(2)}`;
+  return (cents / 100).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
 }
+
+const orderDate = (ts: string) =>
+  new Date(ts.replace(' ', 'T') + 'Z').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'America/Chicago' });
+const monthKey = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Chicago', year: 'numeric', month: '2-digit' });
 
 export default function AdminOrdersPage() {
   const [authed, setAuthed]         = useState(false);
@@ -87,16 +92,16 @@ export default function AdminOrdersPage() {
       );
     })
     .sort((a, b) => {
-      const av = a[sortKey] ?? '';
-      const bv = b[sortKey] ?? '';
-      const cmp = String(av).localeCompare(String(bv));
+      const cmp = sortKey === 'total_cents'
+        ? a.total_cents - b.total_cents
+        : String(a[sortKey] ?? '').localeCompare(String(b[sortKey] ?? ''));
       return sortDir === 'asc' ? cmp : -cmp;
     });
 
   const totalRevenue = filtered.reduce((sum, o) => sum + o.total_cents, 0);
 
   const SortIcon = ({ col }: { col: typeof sortKey }) => (
-    <span className="ml-1 text-[#C9A96E] opacity-60">
+    <span className="ml-1 text-[#C4974A] opacity-70">
       {sortKey === col ? (sortDir === 'asc' ? '↑' : '↓') : '↕'}
     </span>
   );
@@ -111,130 +116,124 @@ export default function AdminOrdersPage() {
     return <AdminLoginScreen title="Orders" onSuccess={fetchOrders} />;
   }
 
+  const thisMonth = monthKey.format(new Date());
+  const monthCount = orders.filter(o => monthKey.format(new Date(o.created_at.replace(' ', 'T') + 'Z')) === thisMonth).length;
+
   // ── Dashboard ────────────────────────────────────────────────────
   return (
     <AdminShell onLogout={() => setAuthed(false)}>
-      <div className="py-12 px-5">
-        <div className="max-w-6xl mx-auto">
-
-          {/* Header */}
-          <div className="flex flex-wrap items-start justify-between gap-y-4 mb-10">
-            <div>
-              <p className="text-[11px] tracking-[0.28em] uppercase text-[#C9A96E] font-sans mb-2">Admin</p>
-              <h1 className="font-serif text-4xl text-[#1C1C1A]">Orders</h1>
-            </div>
-            <button
-              onClick={fetchOrders}
-              className="text-[11px] tracking-[0.18em] uppercase font-sans border border-[#E5DCCF]
-                         text-[#5A5550] px-5 py-2.5 hover:border-[#C9A96E] hover:text-[#C9A96E]
-                         transition-colors duration-300"
-            >
-              Refresh
+      <AdminPage>
+        <AdminPageHeader
+          title="Orders"
+          actions={
+            <button onClick={fetchOrders} disabled={loading} className={adminBtn.secondary}>
+              <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} /> Refresh
             </button>
-          </div>
+          }
+        />
 
         {/* Stats row */}
-        <div className="grid grid-cols-3 gap-4 mb-8">
+        <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-6">
           {[
-            { label: 'Total Orders', value: filtered.length },
-            { label: 'Total Revenue', value: money(totalRevenue) },
-            { label: 'This Month', value: filtered.filter(o => o.created_at.startsWith(new Date().toISOString().slice(0,7))).length },
+            { label: 'Orders', value: String(filtered.length) },
+            { label: 'Revenue', value: money(totalRevenue).replace(/\.00$/, '') },
+            { label: 'This month', value: String(monthCount) },
           ].map(({ label, value }) => (
-            <div key={label} className="bg-white border border-[#E5DCCF] p-6">
-              <p className="text-[10px] tracking-[0.2em] uppercase text-[#8C8680] font-sans mb-2">{label}</p>
-              <p className="font-serif text-3xl text-[#1C1C1A]">{value}</p>
+            <div key={label} className="bg-white border border-[#E5DCCF] px-3 py-3 sm:p-5 min-w-0">
+              <p className="text-[10px] tracking-[0.16em] uppercase text-[#8C8680] mb-1.5 truncate">{label}</p>
+              <p className="font-serif text-xl sm:text-3xl text-[#1C1C1A] leading-none truncate">{value}</p>
             </div>
           ))}
         </div>
 
         {/* Filter */}
-        <div className="mb-5">
+        <div className="relative mb-4 sm:max-w-sm">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8C8680]" aria-hidden />
           <input
-            type="text"
+            type="search"
             value={filter}
             onChange={e => setFilter(e.target.value)}
-            placeholder="Search by email, item, or discount code..."
-            className="w-full max-w-sm px-4 py-2.5 border border-[#E5DCCF] bg-white text-sm font-sans
-                       focus:outline-none focus:border-[#C9A96E] transition-colors"
+            placeholder="Search email, item, or discount code"
+            aria-label="Search orders"
+            className="w-full h-10 pl-9 pr-3 border border-[#E5DCCF] bg-white text-sm focus:outline-none focus:border-[#C4974A]"
           />
         </div>
 
         {/* Error */}
         {error && (
           <div className="mb-6 p-4 border border-red-200 bg-red-50">
-            <p className="text-red-600 text-sm font-sans">{error}</p>
+            <p className="text-red-600 text-sm">{error}</p>
           </div>
         )}
 
-        {/* Table */}
-        {loading ? (
-          <div className="text-center py-20">
-            <p className="text-[#8C8680] font-sans text-sm tracking-widest uppercase">Loading...</p>
-          </div>
+        {loading && orders.length === 0 ? (
+          <div className="h-64 bg-white border border-[#E5DCCF] animate-pulse" />
         ) : filtered.length === 0 ? (
-          <div className="text-center py-20 bg-white border border-[#E5DCCF]">
-            <p className="font-serif text-2xl text-[#1C1C1A] mb-2">No orders yet</p>
-            <p className="text-[#8C8680] text-sm font-sans">Orders will appear here once customers check out from the shop.</p>
+          <div className="text-center py-14 px-5 bg-white border border-[#E5DCCF]">
+            <p className="font-serif text-xl sm:text-2xl text-[#1C1C1A] mb-2">{filter ? 'No matches' : 'No orders yet'}</p>
+            <p className="text-[#8C8680] text-sm">{filter ? 'Try a different search.' : 'Orders will appear here once customers check out from the shop.'}</p>
           </div>
         ) : (
-          <div className="bg-white border border-[#E5DCCF] overflow-x-auto">
-            <table className="w-full text-sm font-sans">
-              <thead>
-                <tr className="border-b border-[#E5DCCF]">
-                  {([
-                    ['created_at', 'Date'],
-                    ['email',      'Customer'],
-                    ['total_cents','Total'],
-                  ] as [typeof sortKey, string][]).map(([key, label]) => (
-                    <th
-                      key={key}
-                      onClick={() => handleSort(key)}
-                      className="text-left px-5 py-3.5 text-[10px] tracking-[0.2em] uppercase
-                                 text-[#8C8680] cursor-pointer hover:text-[#C9A96E] transition-colors select-none"
-                    >
-                      {label}<SortIcon col={key} />
-                    </th>
-                  ))}
-                  <th className="text-left px-5 py-3.5 text-[10px] tracking-[0.2em] uppercase text-[#8C8680]">Items</th>
-                  <th className="text-left px-5 py-3.5 text-[10px] tracking-[0.2em] uppercase text-[#8C8680]">Discount</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filtered.map((o, i) => (
-                  <tr
-                    key={o.id}
-                    className={`border-b border-[#F0EBE0] last:border-0 transition-colors
-                      ${i % 2 === 0 ? 'bg-white' : 'bg-[#FDFAF6]'}
-                      hover:bg-[#FEF9F2]`}
-                  >
-                    <td className="px-5 py-4 text-[#1C1C1A] whitespace-nowrap">
-                      {new Date(o.created_at.replace(' ', 'T') + 'Z').toLocaleDateString('en-US', {
-                        month: 'short', day: 'numeric', year: 'numeric'
-                      })}
-                    </td>
-                    <td className="px-5 py-4">
-                      <a href={`mailto:${o.email}`} className="text-[#C9A96E] text-xs hover:underline">{o.email}</a>
-                    </td>
-                    <td className="px-5 py-4 text-[#C9A96E] font-medium whitespace-nowrap">
-                      {money(o.total_cents)}
-                    </td>
-                    <td className="px-5 py-4 text-[#1C1C1A] text-xs max-w-[260px]">
-                      {o.items.map((it, idx) => (
-                        <div key={idx}>{it.name} × {it.quantity}</div>
-                      ))}
-                    </td>
-                    <td className="px-5 py-4 text-[#5A5550] whitespace-nowrap">
-                      {o.discount_code ?? '—'}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
+          <>
+            {/* Mobile cards */}
+            <ul className="sm:hidden bg-white border border-[#E5DCCF] divide-y divide-[#F0EBE0]">
+              {filtered.map((o) => (
+                <li key={o.id} className="px-4 py-3.5">
+                  <div className="flex items-baseline justify-between gap-3">
+                    <p className="text-[11px] text-[#8C8680]">{orderDate(o.created_at)}</p>
+                    <p className="text-sm text-[#1C1C1A] tabular-nums font-medium">{money(o.total_cents)}</p>
+                  </div>
+                  <ul className="mt-1 text-sm text-[#1C1C1A]">
+                    {o.items.map((it, idx) => <li key={idx}>{it.name} <span className="text-[#8C8680]">× {it.quantity}</span></li>)}
+                  </ul>
+                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1.5">
+                    <a href={`mailto:${o.email}`} className="text-xs text-[#A87C30] break-all">{o.email}</a>
+                    {o.discount_code && <span className="text-[9px] tracking-wide uppercase bg-[#F0EBE0] text-[#5A5550] px-1.5 py-0.5">{o.discount_code}</span>}
+                  </div>
+                </li>
+              ))}
+            </ul>
 
-      </div>
-      </div>
+            {/* Table (sm and up) */}
+            <div className="hidden sm:block bg-white border border-[#E5DCCF] overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-[#E5DCCF]">
+                    {([
+                      ['created_at', 'Date'],
+                      ['email',      'Customer'],
+                      ['total_cents','Total'],
+                    ] as [typeof sortKey, string][]).map(([key, label]) => (
+                      <th key={key} className="text-left px-4 lg:px-5 py-3.5 text-[10px] tracking-[0.2em] uppercase font-normal text-[#8C8680]">
+                        <button onClick={() => handleSort(key)} className="uppercase tracking-[0.2em] hover:text-[#A87C30] transition-colors">
+                          {label}<SortIcon col={key} />
+                        </button>
+                      </th>
+                    ))}
+                    <th className="text-left px-4 lg:px-5 py-3.5 text-[10px] tracking-[0.2em] uppercase font-normal text-[#8C8680]">Items</th>
+                    <th className="text-left px-4 lg:px-5 py-3.5 text-[10px] tracking-[0.2em] uppercase font-normal text-[#8C8680]">Discount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filtered.map((o) => (
+                    <tr key={o.id} className="border-b border-[#F0EBE0] last:border-0 hover:bg-[#FEF9F2] transition-colors align-top">
+                      <td className="px-4 lg:px-5 py-4 text-[#1C1C1A] whitespace-nowrap">{orderDate(o.created_at)}</td>
+                      <td className="px-4 lg:px-5 py-4">
+                        <a href={`mailto:${o.email}`} className="text-[#A87C30] text-xs hover:underline break-all">{o.email}</a>
+                      </td>
+                      <td className="px-4 lg:px-5 py-4 text-[#1C1C1A] font-medium whitespace-nowrap tabular-nums">{money(o.total_cents)}</td>
+                      <td className="px-4 lg:px-5 py-4 text-[#1C1C1A] text-xs min-w-[200px]">
+                        {o.items.map((it, idx) => <div key={idx}>{it.name} × {it.quantity}</div>)}
+                      </td>
+                      <td className="px-4 lg:px-5 py-4 text-[#5A5550] whitespace-nowrap">{o.discount_code ?? '—'}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
+        )}
+      </AdminPage>
     </AdminShell>
   );
 }

@@ -2,6 +2,7 @@
 // app/book/page.tsx
 
 import { useState, useRef, useEffect, useMemo } from "react";
+import { track } from "@/lib/track";
 import Link from "next/link";
 import { resolveDiscountCode } from "@/lib/discounts";
 import { TIME_SLOTS, getBlockedSlots, type BusyBlock } from "@/lib/availability-shared";
@@ -407,6 +408,7 @@ export default function BookPage() {
   };
 
   const toggleService = (svc: Service) => {
+    if (!selectedIds.includes(svc.id)) track("service_select", { item: svc.name, value: svc.price });
     setSelectedIds(prev =>
       prev.includes(svc.id) ? prev.filter(id => id !== svc.id) : [...prev, svc.id]
     );
@@ -468,6 +470,10 @@ export default function BookPage() {
     }
     setSubmitting(true);
     setError("");
+    track("booking_start", {
+      item: selectedServices.map(s => s.name).join(" | "),
+      value: selectedServices.reduce((sum, s) => sum + s.price, 0),
+    });
     try {
       const res = await fetch("/api/booking-checkout", {
         method: "POST",

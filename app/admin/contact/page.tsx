@@ -5,7 +5,8 @@
 
 import { useState, useEffect } from 'react';
 import { AdminLoginScreen } from '@/components/admin/AdminLoginScreen';
-import { AdminShell } from '@/components/admin/AdminShell';
+import { RefreshCw, Download } from 'lucide-react';
+import { AdminShell, AdminPage, AdminPageHeader, adminBtn } from '@/components/admin/AdminShell';
 
 interface Submission {
   id: number;
@@ -76,46 +77,40 @@ export default function AdminContactPage() {
   // ── Dashboard ────────────────────────────────────────────────────
   return (
     <AdminShell onLogout={() => setAuthed(false)}>
-      <div className="py-12 px-5">
-        <div className="max-w-4xl mx-auto">
-
-          {/* Header */}
-          <div className="flex flex-wrap items-start justify-between gap-y-4 mb-10">
-            <div>
-              <p className="text-[11px] tracking-[0.28em] uppercase text-[#C9A96E] font-sans mb-2">Admin</p>
-              <h1 className="font-serif text-4xl text-[#1C1C1A]">Contact Submissions</h1>
-            </div>
-            <button
-              onClick={fetchSubmissions}
-              className="text-[11px] tracking-[0.18em] uppercase font-sans border border-[#E5DCCF]
-                         text-[#5A5550] px-5 py-2.5 hover:border-[#C9A96E] hover:text-[#C9A96E]
-                         transition-colors duration-300"
-            >
-              Refresh
-            </button>
-          </div>
+      <AdminPage>
+        <div className="max-w-4xl">
+        <AdminPageHeader
+          title="Messages"
+          actions={
+            <>
+              <button onClick={fetchSubmissions} disabled={loading} className={adminBtn.secondary}>
+                <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} /> Refresh
+              </button>
+            </>
+          }
+        />
 
         {/* Stats row */}
-        <div className="grid grid-cols-2 gap-4 mb-8">
+        <div className="grid grid-cols-2 gap-2 sm:gap-3 mb-6">
           {[
             { label: 'Total Submissions', value: filtered.length },
             { label: 'This Month', value: filtered.filter(s => s.created_at.startsWith(new Date().toISOString().slice(0,7))).length },
           ].map(({ label, value }) => (
-            <div key={label} className="bg-white border border-[#E5DCCF] p-6">
-              <p className="text-[10px] tracking-[0.2em] uppercase text-[#8C8680] font-sans mb-2">{label}</p>
-              <p className="font-serif text-3xl text-[#1C1C1A]">{value}</p>
+            <div key={label} className="bg-white border border-[#E5DCCF] px-3 py-3 sm:p-5 min-w-0">
+              <p className="text-[10px] tracking-[0.16em] uppercase text-[#8C8680] mb-1.5 truncate">{label}</p>
+              <p className="font-serif text-xl sm:text-3xl text-[#1C1C1A] leading-none">{value}</p>
             </div>
           ))}
         </div>
 
         {/* Filter */}
-        <div className="mb-5">
+        <div className="mb-4">
           <input
             type="text"
             value={filter}
             onChange={e => setFilter(e.target.value)}
             placeholder="Search by name, email, service, or message..."
-            className="w-full max-w-sm px-4 py-2.5 border border-[#E5DCCF] bg-white text-sm font-sans
+            className="w-full sm:max-w-sm h-10 px-3 border border-[#E5DCCF] bg-white text-sm font-sans
                        focus:outline-none focus:border-[#C9A96E] transition-colors"
           />
         </div>
@@ -133,8 +128,8 @@ export default function AdminContactPage() {
             <p className="text-[#8C8680] font-sans text-sm tracking-widest uppercase">Loading...</p>
           </div>
         ) : filtered.length === 0 ? (
-          <div className="text-center py-20 bg-white border border-[#E5DCCF]">
-            <p className="font-serif text-2xl text-[#1C1C1A] mb-2">No submissions yet</p>
+          <div className="text-center py-14 px-5 bg-white border border-[#E5DCCF]">
+            <p className="font-serif text-xl sm:text-2xl text-[#1C1C1A] mb-2">No submissions yet</p>
             <p className="text-[#8C8680] text-sm font-sans">Contact form messages will appear here.</p>
           </div>
         ) : (
@@ -145,12 +140,11 @@ export default function AdminContactPage() {
                 <div key={s.id} className="bg-white border border-[#E5DCCF]">
                   <button
                     onClick={() => setExpanded(isOpen ? null : s.id)}
-                    className="w-full text-left px-5 py-4 flex items-center justify-between gap-4 font-sans"
+                    className="w-full text-left px-4 sm:px-5 py-4 flex items-start justify-between gap-3 font-sans"
                   >
                     <div className="min-w-0">
-                      <p className="text-[#1C1C1A] font-medium truncate">
-                        {s.name} <span className="text-[#8C8680] font-normal">— {s.email}</span>
-                      </p>
+                      <p className="text-[#1C1C1A] font-medium truncate">{s.name}</p>
+                      <p className="text-[#8C8680] text-xs truncate">{s.email}</p>
                       <p className="text-[#8C8680] text-xs truncate mt-0.5">
                         {s.service ? `${s.service} · ` : ''}{s.message}
                       </p>
@@ -162,11 +156,11 @@ export default function AdminContactPage() {
                     </span>
                   </button>
                   {isOpen && (
-                    <div className="px-5 pb-5 border-t border-[#F0EBE0] pt-4 font-sans text-sm">
-                      <p className="text-[#1C1C1A] whitespace-pre-wrap mb-4">{s.message}</p>
-                      <div className="flex gap-4 text-xs text-[#5A5550]">
-                        {s.phone && <a href={`tel:${s.phone}`} className="hover:text-[#C9A96E]">{s.phone}</a>}
-                        <a href={`mailto:${s.email}`} className="text-[#C9A96E] hover:underline">Reply by email</a>
+                    <div className="px-4 sm:px-5 pb-5 border-t border-[#F0EBE0] pt-4 font-sans text-sm">
+                      <p className="text-[#1C1C1A] whitespace-pre-wrap break-words mb-4">{s.message}</p>
+                      <div className="flex flex-wrap gap-x-4 gap-y-2 text-xs text-[#5A5550]">
+                        {s.phone && <a href={`tel:${s.phone}`} className="hover:text-[#A87C30]">{s.phone}</a>}
+                        <a href={`mailto:${s.email}`} className="text-[#A87C30] hover:underline">Reply by email</a>
                       </div>
                     </div>
                   )}
@@ -176,8 +170,8 @@ export default function AdminContactPage() {
           </div>
         )}
 
-      </div>
-      </div>
+        </div>
+      </AdminPage>
     </AdminShell>
   );
 }

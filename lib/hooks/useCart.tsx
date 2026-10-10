@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { track } from "@/lib/track";
 
 export interface CartItem {
   id: string;
@@ -49,6 +50,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, [items, isLoaded]);
 
   const addItem = (newItem: Omit<CartItem, "quantity">) => {
+    track("add_to_cart", { item: newItem.name, value: newItem.price });
     setItems((currentItems) => {
       const existingItem = currentItems.find((item) => item.id === newItem.id);
       

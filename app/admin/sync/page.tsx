@@ -4,7 +4,7 @@
 // Protected server-side by SYNC_SECRET (constant-time compare, rate limited).
 
 import { useState } from "react";
-import { AdminShell } from "@/components/admin/AdminShell";
+import { AdminShell, AdminPage } from "@/components/admin/AdminShell";
 
 interface SyncResult {
   id: string;
@@ -210,18 +210,18 @@ export default function AdminSyncPage() {
 
   return (
     <AdminShell>
-      <div className="py-16 px-5">
-        <div className="max-w-3xl mx-auto">
-        <div className="mb-8">
-          <p className="text-[11px] tracking-[0.28em] uppercase text-[#C9A96E] font-sans mb-3">Admin</p>
-          <h1 className="font-serif text-4xl text-[#1C1C1A] mb-3">Catalog Sync</h1>
+      <AdminPage>
+        <div className="max-w-3xl">
+        <div className="mb-6 sm:mb-8">
+          <p className="text-[10px] tracking-[0.26em] uppercase text-[#A87C30] mb-1.5">Admin</p>
+          <h1 className="font-serif text-3xl sm:text-4xl text-[#1C1C1A] leading-tight mb-2">Catalog Sync</h1>
           <p className="text-[#5A5550] font-sans text-sm">
             Syncs your product/service catalog to Stripe (shop checkout) and Square (in-person sales). Safe to run any number of times — matches existing entries, never duplicates.
           </p>
         </div>
 
         {/* Run Sync — both, up top */}
-        <div className="bg-white border border-[#E5DCCF] p-7 mb-6">
+        <div className="bg-white border border-[#E5DCCF] p-4 sm:p-7 mb-4 sm:mb-6">
           <h2 className="font-serif text-xl text-[#1C1C1A] mb-5">Run Sync</h2>
           <input
             type="password"
@@ -306,8 +306,8 @@ export default function AdminSyncPage() {
         </div>
 
         {/* Status check */}
-        <div className="bg-white border border-[#E5DCCF] p-7 mb-6">
-          <div className="flex items-center justify-between mb-5">
+        <div className="bg-white border border-[#E5DCCF] p-4 sm:p-7 mb-4 sm:mb-6">
+          <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
             <h2 className="font-serif text-xl text-[#1C1C1A]">Stripe Status</h2>
             <button onClick={checkStatus} disabled={checking}
               className="text-[11px] tracking-[0.18em] uppercase font-sans border border-[#E5DCCF]
@@ -344,7 +344,7 @@ export default function AdminSyncPage() {
         </div>
 
         {/* Square catalog status */}
-        <div className="bg-white border border-[#E5DCCF] p-7 mb-6">
+        <div className="bg-white border border-[#E5DCCF] p-4 sm:p-7 mb-4 sm:mb-6">
           <div className="flex items-center justify-between mb-2">
             <h2 className="font-serif text-xl text-[#1C1C1A]">Square Status</h2>
             <button onClick={checkSquareStatus} disabled={squareChecking}
@@ -387,7 +387,7 @@ export default function AdminSyncPage() {
         </div>
 
         {/* Environment variables */}
-        <div className="bg-white border border-[#E5DCCF] p-7 mb-6">
+        <div className="bg-white border border-[#E5DCCF] p-4 sm:p-7 mb-4 sm:mb-6">
           <div className="flex items-center justify-between mb-2">
             <h2 className="font-serif text-xl text-[#1C1C1A]">Environment Variables</h2>
             <button onClick={checkEnv} disabled={checkingEnv}
@@ -442,7 +442,7 @@ export default function AdminSyncPage() {
         </div>
 
         {/* Webhook health */}
-        <div className="bg-white border border-[#E5DCCF] p-7 mb-6">
+        <div className="bg-white border border-[#E5DCCF] p-4 sm:p-7 mb-4 sm:mb-6">
           <div className="flex items-center justify-between mb-2">
             <h2 className="font-serif text-xl text-[#1C1C1A]">Webhook Health</h2>
             <button onClick={checkWebhook} disabled={checkingWebhook}
@@ -523,22 +523,22 @@ export default function AdminSyncPage() {
         </div>
 
         <div className="mt-8 p-5 bg-[#F5F0E8] border border-[#E5DCCF]">
-          <p className="text-[11px] tracking-[0.18em] uppercase text-[#C9A96E] font-sans mb-2">API Usage</p>
+          <p className="text-[11px] tracking-[0.18em] uppercase text-[#A87C30] font-sans mb-2">API Usage</p>
           <p className="text-xs font-sans text-[#5A5550] mb-2">Check status (no auth):</p>
-          <code className="text-xs bg-white block p-3 border border-[#E5DCCF] text-[#1C1C1A]">
+          <code className="text-xs bg-white block p-3 whitespace-pre-wrap break-all border border-[#E5DCCF] text-[#1C1C1A]">
             GET /api/stripe/sync-products
           </code>
           <p className="text-xs font-sans text-[#5A5550] mb-2 mt-3">Run sync:</p>
-          <code className="text-xs bg-white block p-3 border border-[#E5DCCF] text-[#1C1C1A]">
+          <code className="text-xs bg-white block p-3 whitespace-pre-wrap break-all border border-[#E5DCCF] text-[#1C1C1A]">
             {`POST /api/stripe/sync-products\n{"secret": "your-sync-secret"}`}
           </code>
           <p className="text-xs font-sans text-[#5A5550] mb-2 mt-3">Check webhook health:</p>
-          <code className="text-xs bg-white block p-3 border border-[#E5DCCF] text-[#1C1C1A]">
+          <code className="text-xs bg-white block p-3 whitespace-pre-wrap break-all border border-[#E5DCCF] text-[#1C1C1A]">
             {`POST /api/stripe/webhook-check\n{"secret": "your-sync-secret"}`}
           </code>
         </div>
-      </div>
-      </div>
+        </div>
+      </AdminPage>
     </AdminShell>
   );
 }

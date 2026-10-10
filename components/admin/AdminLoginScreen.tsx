@@ -6,6 +6,7 @@
 // lib/admin-auth.ts). The password is verified server-side only.
 
 import { useState } from 'react';
+import Link from 'next/link';
 
 export function AdminLoginScreen({ title, onSuccess }: { title: string; onSuccess: () => void }) {
   const [password, setPassword] = useState('');
@@ -30,9 +31,10 @@ export function AdminLoginScreen({ title, onSuccess }: { title: string; onSucces
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF7F2] flex items-center justify-center px-5">
+    <div className="admin-root relative min-h-screen bg-[#FAF7F2] flex items-center justify-center px-5">
+      <Link href="/" className="absolute top-5 left-5 text-xs text-[#8C8680] hover:text-[#A87C30] transition-colors">← Back to site</Link>
       <div className="w-full max-w-sm">
-        <p className="text-[11px] tracking-[0.28em] uppercase text-[#C9A96E] font-sans mb-3 text-center">Epoch Skin</p>
+        <p className="text-[11px] tracking-[0.28em] uppercase text-[#A87C30] font-sans mb-3 text-center"><span aria-hidden>✦ </span>Epoch Skin</p>
         <h1 className="font-serif text-3xl text-[#1C1C1A] mb-8 text-center">{title}</h1>
         <form onSubmit={handleLogin} className="space-y-4">
           <input
@@ -40,6 +42,8 @@ export function AdminLoginScreen({ title, onSuccess }: { title: string; onSucces
             value={password}
             onChange={e => setPassword(e.target.value)}
             placeholder="Password"
+            aria-label="Admin password"
+            autoComplete="current-password"
             className="w-full px-4 py-3 border border-[#E5DCCF] bg-white text-sm font-sans
                        focus:outline-none focus:border-[#C9A96E] transition-colors"
             autoFocus

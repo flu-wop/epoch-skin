@@ -8,7 +8,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Menu, X, ShoppingBag } from "lucide-react";
+import { Menu, X, ShoppingBag, Lock } from "lucide-react";
 import { useCart } from "@/lib/hooks/useCart";
 
 const NAV = [
@@ -105,7 +105,7 @@ export function SiteHeader() {
 
       {/* ── Mobile drawer ── */}
       <div className={`md:hidden overflow-hidden transition-all duration-500 ${
-        open ? "max-h-[440px] border-t border-[#E5DCCF]" : "max-h-0"
+        open ? "max-h-[520px] border-t border-[#E5DCCF]" : "max-h-0"
       }`}>
         <nav className="max-w-[1320px] mx-auto px-5 py-7 space-y-5 bg-[#FAF7F2]">
           {NAV.map(({ label, href }) => (
@@ -120,6 +120,13 @@ export function SiteHeader() {
                        text-[10px] tracking-[0.22em] uppercase font-sans
                        hover:bg-[#C9A96E] hover:text-[#1C1C1A] transition-all mt-2">
             Book Now
+          </Link>
+          <Link href="/admin" onClick={() => setOpen(false)}
+            className="flex items-center justify-center gap-2 pt-4 mt-1 border-t border-[#E5DCCF]
+                       text-[10px] tracking-[0.22em] uppercase font-sans
+                       text-[#8C8680] hover:text-[#C9A96E] transition-colors">
+            <Lock className="h-3 w-3" strokeWidth={1.6} />
+            Admin
           </Link>
         </nav>
       </div>

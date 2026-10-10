@@ -3,7 +3,8 @@
 // The password itself never touches client-side JS or query params.
 import { NextResponse } from 'next/server';
 import { rateLimit, clientIp } from '@/lib/rate-limit';
-import { verifyAdminPassword, getAdminToken, ADMIN_COOKIE_NAME } from '@/lib/admin-auth';
+import { cookies } from 'next/headers';
+import { verifyAdminPassword, verifyAdminCookie, getAdminToken, ADMIN_COOKIE_NAME } from '@/lib/admin-auth';
 
 export async function POST(req: Request) {
   const ok = await rateLimit(`admin-login:${clientIp(req)}`, 5, 900); // 5 per 15 min
@@ -37,4 +38,11 @@ export async function DELETE() {
   const res = NextResponse.json({ success: true });
   res.cookies.set(ADMIN_COOKIE_NAME, '', { maxAge: 0, path: '/' });
   return res;
+}
+
+// Lightweight session check for admin pages (no DB hit).
+export async function GET() {
+  const store = await cookies();
+  const authed = verifyAdminCookie(store.get(ADMIN_COOKIE_NAME)?.value);
+  return NextResponse.json({ authed }, { status: authed ? 200 : 401, headers: { 'Cache-Control': 'no-store' } });
 }

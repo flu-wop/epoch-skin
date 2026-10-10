@@ -3,6 +3,7 @@
 // Uses lib/hooks/useCart (CartProvider-based, matches Providers.tsx)
 
 import { useCart } from '@/lib/hooks/useCart';
+import { track } from '@/lib/track';
 import { resolveDiscountCode } from '@/lib/discounts';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -59,6 +60,10 @@ export default function CartPage() {
   }, []);
 
   const handleCheckout = async () => {
+    track('checkout_start', {
+      item: items.map(i => i.name).join(' | '),
+      value: items.reduce((s, i) => s + i.price * i.quantity, 0),
+    });
     setLoading(true);
     setError('');
     try {
