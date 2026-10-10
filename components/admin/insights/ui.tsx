@@ -233,11 +233,12 @@ export function Funnel({ steps, color }: { steps: { label: string; value: number
   );
 }
 
-export function Segmented<T extends string | number>({ value, onChange, options, label }: {
-  value: T; onChange: (v: T) => void; options: { value: T; label: string }[]; label: string;
+export function Segmented<T extends string | number>({ value, onChange, options, label, tone = 'light' }: {
+  value: T; onChange: (v: T) => void; options: { value: T; label: string }[]; label: string; tone?: 'light' | 'dark';
 }) {
+  const dark = tone === 'dark';
   return (
-    <div role="radiogroup" aria-label={label} className="inline-flex border border-[#E5DCCF] bg-white p-0.5">
+    <div role="radiogroup" aria-label={label} className={`inline-flex p-0.5 border ${dark ? 'border-white/15 bg-white/[0.06] backdrop-blur-md' : 'border-[#E5DCCF] bg-white'}`}>
       {options.map((o) => (
         <button
           key={String(o.value)}
@@ -245,7 +246,9 @@ export function Segmented<T extends string | number>({ value, onChange, options,
           aria-checked={value === o.value}
           onClick={() => onChange(o.value)}
           className={`px-3 py-1.5 text-xs tracking-wide transition-colors min-h-[32px] ${
-            value === o.value ? 'bg-[#3E4A3C] text-[#F2E6C8]' : 'text-[#5A5550] hover:text-[#1C1C1A]'
+            dark
+              ? value === o.value ? 'bg-[#F2E6C8] text-[#141B15]' : 'text-white/70 hover:text-white'
+              : value === o.value ? 'bg-[#3E4A3C] text-[#F2E6C8]' : 'text-[#5A5550] hover:text-[#1C1C1A]'
           }`}
         >
           {o.label}

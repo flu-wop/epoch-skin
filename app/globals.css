@@ -291,8 +291,53 @@
   transform-origin: center;
   animation: glow-twinkle 4.5s ease-in-out infinite;
 }
+/* Floating-in-space layers */
+.space-depth {
+  transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translate(calc(var(--px, 0) * var(--depth) * 1px), calc(var(--py, 0) * var(--depth) * 1px));
+}
+@keyframes space-float {
+  0%   { transform: translate(0, 0); }
+  33%  { transform: translate(3px, -6px); }
+  66%  { transform: translate(-3px, -2px); }
+  100% { transform: translate(0, 0); }
+}
+.space-float { animation: space-float 9s ease-in-out infinite; }
+@keyframes space-drift {
+  from { transform: translate(0, 0); }
+  to   { transform: translate(-24px, 10px); }
+}
+.space-drift { animation: space-drift 60s ease-in-out infinite alternate; }
+@keyframes space-nebula {
+  0%   { transform: translate(0, 0) scale(1) rotate(0deg); }
+  100% { transform: translate(4%, -3%) scale(1.15) rotate(8deg); }
+}
+.space-nebula { animation: space-nebula 40s ease-in-out infinite alternate; }
+@keyframes space-shimmer {
+  0%, 100% { opacity: var(--o, 0.6); }
+  50%      { opacity: 0.08; }
+}
+.space-shimmer { animation: space-shimmer 5s ease-in-out infinite; }
+@keyframes space-shoot {
+  0%   { transform: translate(0, 0); opacity: 0; }
+  1%   { opacity: 1; }
+  7%   { transform: translate(-260px, 140px); opacity: 0; }
+  100% { transform: translate(-260px, 140px); opacity: 0; }
+}
+.space-shoot { animation: space-shoot 13s linear infinite; }
+@keyframes space-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.85; }
+  50%      { transform: scale(1.35); opacity: 0.25; }
+}
+.space-pulse { transform-box: fill-box; transform-origin: center; animation: space-pulse 2.4s ease-in-out infinite; }
+.space-star-core { transform-box: fill-box; transform-origin: center; transition: transform 0.35s ease, filter 0.35s ease; }
+.space-star:hover .space-star-core,
+.space-star:focus-visible .space-star-core { transform: scale(1.3); filter: brightness(1.15); }
+
 @media (prefers-reduced-motion: reduce) {
-  .glow-twinkle { animation: none; }
+  .glow-twinkle, .space-float, .space-drift, .space-nebula, .space-shimmer, .space-shoot, .space-pulse { animation: none; }
+  .space-shoot { display: none; }
+  .space-depth { transition: none; transform: none; }
 }
 .no-scrollbar { scrollbar-width: none; }
 .no-scrollbar::-webkit-scrollbar { display: none; }

@@ -15,7 +15,7 @@ import { GlowMap } from '@/components/admin/insights/GlowMap';
 import { ShopServices } from '@/components/admin/insights/ShopServices';
 import { ContentPlanner } from '@/components/admin/insights/ContentPlanner';
 import { Playbook } from '@/components/admin/insights/Playbook';
-import { Card, CardTitle, Segmented } from '@/components/admin/insights/ui';
+import { Segmented } from '@/components/admin/insights/ui';
 import { longDate } from '@/components/admin/insights/format';
 
 const TABS = [
@@ -134,12 +134,9 @@ function InsightsInner() {
         <div className={loading && data ? 'opacity-60 transition-opacity' : 'transition-opacity'}>
           {tab === 'overview' && data && <Overview data={data} />}
           {tab === 'glow' && data && (
-            <Card className="pb-0 sm:pb-6">
-              <CardTitle title="Glow Map" hint="Your catalog as a night sky, one constellation per category." />
-              <div className="-mx-4 sm:mx-0">
-                <GlowMap products={data.products} services={data.services} />
-              </div>
-            </Card>
+            <div className="-mx-4 sm:mx-0 sm:shadow-[0_30px_80px_-30px_rgba(5,8,10,0.6)]">
+              <GlowMap products={data.products} services={data.services} />
+            </div>
           )}
           {tab === 'shop' && data && <ShopServices data={data} />}
           {tab === 'content' && <ContentPlanner />}
