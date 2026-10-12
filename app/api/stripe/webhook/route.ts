@@ -8,6 +8,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { createClient } from '@libsql/client';
 import { sendPaidBookingEmails, sendPaidOrderEmails, sendDbWriteFailureAlert } from '@/lib/email';
+import { ensureIntakeSchema } from '@/lib/intake-db';
 import { BOOKING_SERVICES } from '@/lib/booking-catalog';
 
 const stripe  = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -190,6 +191,7 @@ async function handleBooking(session: Stripe.Checkout.Session, meta: Record<stri
     try {
       const db = getTurso();
       await initDB(db);
+      await ensureIntakeSchema(db);
 
       // Intake forms only need to go out once per client per treatment type —
       // check booking history by email before deciding whether to attach.
@@ -231,8 +233,8 @@ async function handleBooking(session: Stripe.Checkout.Session, meta: Record<stri
 
       const result = await db.execute({
         sql: `INSERT OR IGNORE INTO bookings
-              (name, email, phone, service, category, price, date, time, duration, notes, stripe_session_id, paid, had_facial_service, had_waxing_service, had_massage_service, discount_code)
-              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?, ?, ?)`,
+              (name, email, phone, service, category, price, date, time, duration, notes, stripe_session_id, paid, had_facial_service, had_waxing_service, had_massage_service, discount_code, needs_facial_form, needs_waxing_form, needs_massage_form)
+              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?, ?, ?, ?, ?, ?)`,
         args: [
           booking.name, booking.email, booking.phone || null,
           booking.service, booking.category || null, booking.price,
@@ -242,6 +244,9 @@ async function handleBooking(session: Stripe.Checkout.Session, meta: Record<stri
           meta.needsWaxingForm === '1' ? 1 : 0,
           meta.needsMassageForm === '1' ? 1 : 0,
           booking.discountCode,
+          booking.needsFacialForm ? 1 : 0,
+          booking.needsWaxingForm ? 1 : 0,
+          booking.needsMassageForm ? 1 : 0,
         ],
       });
       isDuplicate = result.rowsAffected === 0;
