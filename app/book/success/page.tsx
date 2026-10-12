@@ -6,13 +6,14 @@
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Suspense } from 'react';
+import IntakeSection from '@/components/intake/IntakeSection';
 
 function SuccessContent() {
   const params    = useSearchParams();
   const sessionId = params.get('session_id');
 
   return (
-    <div className="min-h-screen bg-[#FAF7F2] flex items-center justify-center px-5">
+    <div className="min-h-screen bg-[#FAF7F2] flex flex-col items-center justify-center px-5 py-16 sm:py-24">
       <div className="text-center max-w-md">
         <div className="w-16 h-16 rounded-full bg-[#F5EDD8] flex items-center justify-center mx-auto mb-8 text-2xl">
           ✨
@@ -53,6 +54,8 @@ function SuccessContent() {
           </Link>
         </div>
       </div>
+
+      {sessionId && <IntakeSection sessionId={sessionId} />}
     </div>
   );
 }

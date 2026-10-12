@@ -29,6 +29,7 @@ export interface BookingEmailData {
   needsFacialForm?: boolean; // true if booking includes a Facial/Vajacial/Bacial service
   needsWaxingForm?: boolean; // true if booking includes a waxing service
   needsMassageForm?: boolean; // true if booking includes a standalone massage service
+  sessionId?: string;         // Stripe Checkout session id — keys the on-site intake form link
   // Itemized breakdown (used for the detailed email sent to Kayla)
   services?: BookingServiceLine[];
   subtotal?: number;         // sum of service list prices
@@ -182,8 +183,10 @@ export function bookingEmailHTML(b: BookingEmailData, isClient: boolean): string
       const list = included.length === 1 ? included[0]
         : included.length === 2 ? `${included[0]} and ${included[1]}`
         : `${included.slice(0, -1).join(', ')}, and ${included[included.length - 1]}`;
-      const formWord = included.length > 1 ? 'intake forms' : 'a short intake form';
-      return `<p style="font-size:13px;color:#5A5550;">Your appointment includes ${list} — we've attached ${formWord}. Please fill it out and bring it (or email it back) before your visit so we can tailor the treatment to your needs.</p>`;
+      const formWord = included.length > 1 ? 'short intake forms' : 'a short intake form';
+      const formUrl = b.sessionId ? `${SITE}/book/success?session_id=${encodeURIComponent(b.sessionId)}#intake` : `${SITE}/book`;
+      return `<p style="font-size:13px;color:#5A5550;">Your appointment includes ${list} — please complete ${formWord} online before your visit (about 5 minutes) so we can tailor the treatment to your needs.</p>
+      <a href="${formUrl}" style="display:inline-block;margin:4px 0 12px;padding:12px 28px;background:#1C1C1A;color:#C9A96E;text-decoration:none;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;">Complete Intake Form</a>`;
     })()}
     <p style="font-size:13px;color:#5A5550;">Need to reschedule? Email <strong>kayla@epoch-skin.com</strong> at least 24 hours in advance.</p>
     <a href="${SITE}/book" style="display:inline-block;margin-top:16px;padding:12px 28px;background:#C9A96E;color:#1C1C1A;text-decoration:none;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;">Book Another Service</a>
@@ -196,7 +199,7 @@ export function bookingEmailHTML(b: BookingEmailData, isClient: boolean): string
       const list = included.length === 1 ? included[0]
         : included.length === 2 ? `${included[0]} and ${included[1]}`
         : `${included.slice(0, -1).join(', ')}, and ${included[included.length - 1]}`;
-      return `<p style="font-size:13px;color:#5A5550;">This booking includes ${list} — the client was emailed the intake form(s) to fill out before their visit.</p>`;
+      return `<p style="font-size:13px;color:#5A5550;">This booking includes ${list} — the client was given a link to complete the intake form(s) online — you'll get each completed form as a PDF by email.</p>`;
     })()}<a href="mailto:${b.email}" style="display:inline-block;padding:12px 28px;background:#1C1C1A;color:#C9A96E;text-decoration:none;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;">Reply to ${b.name}</a>`}
   </div>
   <div style="background:#F5F0E8;padding:18px 36px;text-align:center;color:#8C8680;font-size:11px;">
@@ -210,35 +213,10 @@ export async function sendPaidBookingEmails(booking: BookingEmailData) {
   const icsB64 = Buffer.from(ics).toString('base64');
   const resend = getResend();
 
-  // Fetch whichever intake form(s) apply from our own public/forms/ folder
-  // (not embedded in the bundle — they're multi-MB PDFs) and attach to the
-  // client's copy only.
-  async function fetchFormB64(filename: string): Promise<string | null> {
-    try {
-      const res = await fetch(`${SITE}/forms/${filename}`);
-      if (res.ok) {
-        const buf = await res.arrayBuffer();
-        return Buffer.from(buf).toString('base64');
-      }
-      console.error('[email] Intake form fetch failed:', filename, res.status);
-    } catch (err) {
-      console.error('[email] Intake form fetch error:', filename, err);
-      // Don't block the booking confirmation just because the form fetch failed.
-    }
-    return null;
-  }
-
-  const [facialFormB64, waxingFormB64, massageFormB64] = await Promise.all([
-    booking.needsFacialForm  ? fetchFormB64('epoch-skin-intake-facials.pdf') : Promise.resolve(null),
-    booking.needsWaxingForm  ? fetchFormB64('epoch-skin-intake-waxing.pdf')  : Promise.resolve(null),
-    booking.needsMassageForm ? fetchFormB64('epoch-skin-intake-massage.pdf') : Promise.resolve(null),
-  ]);
-
+  // Intake forms are now completed on the confirmation page (and via the
+  // link in this email), so no blank PDFs are attached anymore.
   const clientAttachments = [
     { filename: 'epoch-skin-appointment.ics', content: icsB64 },
-    ...(facialFormB64  ? [{ filename: 'epoch-skin-facial-intake-form.pdf',  content: facialFormB64  }] : []),
-    ...(waxingFormB64  ? [{ filename: 'epoch-skin-waxing-intake-form.pdf',  content: waxingFormB64  }] : []),
-    ...(massageFormB64 ? [{ filename: 'epoch-skin-massage-intake-form.pdf', content: massageFormB64 }] : []),
   ];
 
   return Promise.all([
@@ -255,6 +233,41 @@ export async function sendPaidBookingEmails(booking: BookingEmailData) {
       attachments: [{ filename: 'appointment.ics', content: icsB64 }],
     }),
   ]);
+}
+
+// ── Completed intake form → Kayla (PDF attachment) ─────────────────────────
+
+const esc = (v: string) =>
+  v.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+export async function sendIntakeSubmissionEmail({
+  clientName, clientEmail, formLabel, service, appointment, pdf,
+}: {
+  clientName: string; clientEmail: string; formLabel: string;
+  service: string; appointment: string; pdf: Uint8Array;
+}) {
+  const resend = getResend();
+  const safeFile = clientName.replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '').toLowerCase() || 'client';
+  const res = await resend.emails.send({
+    from: `Epoch Skin <${FROM}>`,
+    to: TO_KAYLA,
+    reply_to: clientEmail,
+    subject: `Intake form (${formLabel}): ${clientName} — ${appointment}`,
+    html: `<div style="font-family:Arial,sans-serif;color:#1C1C1A;max-width:560px;">
+      <p><strong>${esc(clientName)}</strong> completed the ${esc(formLabel.toLowerCase())} intake form online.</p>
+      <p style="color:#5A5550;font-size:13px;">Booking: ${esc(service)} — ${esc(appointment)}<br/>Reply to this email to reach the client (${esc(clientEmail)}).</p>
+      <p style="color:#5A5550;font-size:13px;">The completed form is attached as a PDF.</p>
+    </div>`,
+    attachments: [{
+      filename: `epoch-skin-${formLabel.toLowerCase()}-intake-${safeFile}.pdf`,
+      content: Buffer.from(pdf),
+    }],
+  });
+  // Resend's SDK returns { error } instead of throwing — surface it.
+  if ((res as { error?: unknown }).error) {
+    throw new Error(`Resend rejected the intake email: ${JSON.stringify((res as { error?: unknown }).error)}`);
+  }
+  return res;
 }
 
 // ── Contact form ─────────────────────────────────────────────────────────
