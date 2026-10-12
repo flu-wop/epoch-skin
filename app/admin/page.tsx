@@ -24,6 +24,7 @@ const DESCRIPTIONS: Record<string, string> = {
   '/admin/newsletter': 'Subscribers & issues',
   '/admin/contact': 'Contact form messages',
   '/admin/sync': 'Push catalog to Stripe & Square',
+  '/admin/system': 'Env vars, webhooks & integrations',
 };
 
 function greeting() {

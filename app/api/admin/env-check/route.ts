@@ -6,33 +6,15 @@
 import { NextResponse } from 'next/server';
 import { timingSafeEqual } from 'crypto';
 import { rateLimit, clientIp } from '@/lib/rate-limit';
+import { REQUIRED_VARS } from '@/lib/health-checks';
 
 function safeEq(a: string, b: string): boolean {
   const A = Buffer.from(a), B = Buffer.from(b);
   return A.length === B.length && timingSafeEqual(A, B);
 }
 
-// Mirrors .env.example — keep these two in sync when either changes.
-const REQUIRED_VARS = [
-  { name: 'STRIPE_SECRET_KEY', group: 'Stripe' },
-  { name: 'STRIPE_WEBHOOK_SECRET', group: 'Stripe' },
-  { name: 'TURSO_DATABASE_URL', group: 'Turso' },
-  { name: 'TURSO_AUTH_TOKEN', group: 'Turso' },
-  { name: 'RESEND_API_KEY', group: 'Resend' },
-  { name: 'RESEND_FROM_EMAIL', group: 'Resend' },
-  { name: 'RESEND_TO_EMAIL', group: 'Resend' },
-  { name: 'NEWSLETTER_TO', group: 'Resend' },
-  { name: 'ADMIN_PASSWORD', group: 'Admin panel' },
-  { name: 'SYNC_SECRET', group: 'Stripe sync' },
-  { name: 'SQUARE_ACCESS_TOKEN', group: 'Square' },
-  { name: 'SQUARE_LOCATION_ID', group: 'Square' },
-  { name: 'SQUARE_ENVIRONMENT', group: 'Square' },
-  { name: 'NEXT_PUBLIC_SITE_URL', group: 'Site' },
-  { name: 'ANTHROPIC_API_KEY', group: 'Newsletter engine' },
-  { name: 'CRON_SECRET', group: 'Newsletter engine' },
-  { name: 'NEWSLETTER_SECRET', group: 'Newsletter engine' },
-  { name: 'APPROVER_EMAIL', group: 'Newsletter engine' },
-] as const;
+// The list lives in lib/health-checks.ts (REQUIRED_VARS) so /admin/system and
+// this route can never disagree. Keep it in sync with .env.example.
 
 export async function POST(req: Request) {
   const ok = await rateLimit(`env-check:${clientIp(req)}`, 10, 900);

@@ -10,7 +10,7 @@ import { useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import {
-  Home, Sparkles, CalendarDays, ShoppingBag, Mail, MessageSquare, RefreshCw, ExternalLink,
+  Home, Sparkles, CalendarDays, ShoppingBag, Mail, MessageSquare, RefreshCw, Activity, ExternalLink,
 } from 'lucide-react';
 import { LogoutButton } from './LogoutButton';
 
@@ -22,6 +22,7 @@ export const ADMIN_SECTIONS = [
   { href: '/admin/newsletter', label: 'Newsletter', icon: Mail },
   { href: '/admin/contact',    label: 'Messages',   icon: MessageSquare },
   { href: '/admin/sync',       label: 'Sync',       icon: RefreshCw },
+  { href: '/admin/system',     label: 'System',     icon: Activity },
 ];
 
 export function AdminShell({ children, onLogout }: { children: React.ReactNode; onLogout?: () => void }) {
