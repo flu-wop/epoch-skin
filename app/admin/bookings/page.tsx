@@ -7,7 +7,7 @@
 
 import { Suspense, useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { Plus, RefreshCw, Search, CalendarPlus, X, Phone, Mail } from 'lucide-react';
+import { Plus, RefreshCw, Search, CalendarPlus, X, Phone, Mail, Pencil, Ban, RotateCcw } from 'lucide-react';
 import { AdminLoginScreen } from '@/components/admin/AdminLoginScreen';
 import { AdminShell, AdminPage, AdminPageHeader, adminBtn } from '@/components/admin/AdminShell';
 import { Segmented } from '@/components/admin/insights/ui';
@@ -28,6 +28,7 @@ interface Booking {
   notes: string | null;
   discount_code: string | null;
   payment_method: string | null;
+  status: string | null;
   created_at: string;
 }
 
@@ -40,7 +41,10 @@ const emptyForm = {
 const inputCls = 'w-full h-11 px-3 border border-[#E5DCCF] bg-white text-sm focus:outline-none focus:border-[#C4974A]';
 const labelCls = 'block text-[10px] tracking-[0.16em] uppercase text-[#8C8680] mb-1';
 
-type View = 'upcoming' | 'past' | 'all';
+type View = 'upcoming' | 'past' | 'all' | 'cancelled';
+
+const isCancelled = (b: Booking) => b.status === 'cancelled';
+const isStripeBooking = (b: Booking) => !b.payment_method || b.payment_method === 'stripe';
 
 function todayLocal() {
   return new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Chicago' }).format(new Date());
@@ -63,6 +67,11 @@ function BookingsInner() {
   const [form, setForm]             = useState(emptyForm);
   const [saving, setSaving]         = useState(false);
   const [saveError, setSaveError]   = useState('');
+  const [editing, setEditing]       = useState<Booking | null>(null);
+  const [conflict, setConflict]     = useState(false);
+  const [actionError, setActionError] = useState('');
+  const showModal = showAddModal || editing !== null;
+  const closeModal = () => { setShowAddModal(false); setEditing(null); setConflict(false); };
 
   const fetchBookings = async () => {
     setLoading(true);
@@ -93,18 +102,76 @@ function BookingsInner() {
   }, []);
 
   useEffect(() => {
-    if (!showAddModal) return;
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setShowAddModal(false); };
+    if (!showModal) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') { setShowAddModal(false); setEditing(null); setConflict(false); } };
     document.addEventListener('keydown', onKey);
     document.body.style.overflow = 'hidden';
     return () => { document.removeEventListener('keydown', onKey); document.body.style.overflow = ''; };
-  }, [showAddModal]);
+  }, [showModal]);
 
-  const handleAddBooking = async (e: React.FormEvent) => {
+  const openEdit = (b: Booking) => {
+    setForm({
+      name: b.name ?? '',
+      email: b.email === '(in-person)' ? '' : (b.email ?? ''),
+      phone: b.phone ?? '',
+      service: b.service ?? '',
+      category: b.category ?? '',
+      price: b.price != null ? String(b.price) : '',
+      date: b.date ?? '',
+      time: b.time ?? '',
+      duration: String(b.duration ?? 60),
+      notes: b.notes ?? '',
+      paymentMethod: ['square', 'cash', 'other'].includes(String(b.payment_method)) ? String(b.payment_method) : 'square',
+    });
+    setSaveError('');
+    setConflict(false);
+    setEditing(b);
+  };
+
+  const patchBooking = async (payload: Record<string, unknown>) => {
+    const res = await fetch('/api/bookings', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    const data = await res.json().catch(() => ({}));
+    return { res, data };
+  };
+
+  // Cancel keeps the record but frees the slot; restore re-checks the slot.
+  const setBookingStatus = async (b: Booking, status: 'cancelled' | 'confirmed') => {
+    setActionError('');
+    if (status === 'cancelled' && !window.confirm(`Cancel ${b.name}'s booking on ${fmtDate(b.date)} at ${time12(b.time)}?\n\nThe record is kept and the time slot opens back up.`)) return;
+    const { res, data } = await patchBooking({ id: b.id, status });
+    if (res.status === 409 && status === 'confirmed') {
+      if (window.confirm(`${data.error ?? 'That time is taken.'}\n\nRestore anyway?`)) {
+        const retry = await patchBooking({ id: b.id, status, force: true });
+        if (!retry.res.ok) { setActionError(retry.data.error ?? 'Failed to restore booking.'); return; }
+        await fetchBookings();
+      }
+      return;
+    }
+    if (!res.ok) { setActionError(data.error ?? 'Failed to update booking.'); return; }
+    await fetchBookings();
+  };
+
+  const handleAddBooking = async (e: React.FormEvent, force = false) => {
     e.preventDefault();
     setSaving(true);
     setSaveError('');
+    setConflict(false);
     try {
+      if (editing) {
+        const { res, data } = await patchBooking({ id: editing.id, ...form, force });
+        if (res.status === 409) {
+          setConflict(true);
+          throw new Error(data.error ?? 'That time is taken.');
+        }
+        if (!res.ok) throw new Error(data.error ?? 'Failed to update booking.');
+        closeModal();
+        await fetchBookings();
+        return;
+      }
       const res = await fetch('/api/bookings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -139,6 +206,7 @@ function BookingsInner() {
 
   const today = todayLocal();
   const filtered = bookings
+    .filter(b => (view === 'cancelled' ? isCancelled(b) : view === 'all' ? true : !isCancelled(b)))
     .filter(b => (view === 'upcoming' ? b.date >= today : view === 'past' ? b.date < today : true))
     .filter(b => {
       if (!filter) return true;
@@ -162,8 +230,8 @@ function BookingsInner() {
       return sortDir === 'asc' ? cmp : -cmp;
     });
 
-  const totalRevenue = filtered.reduce((sum, b) => sum + (b.price ?? 0), 0);
-  const thisMonth = bookings.filter(b => b.date.startsWith(today.slice(0, 7))).length;
+  const totalRevenue = filtered.filter(b => !isCancelled(b)).reduce((sum, b) => sum + (b.price ?? 0), 0);
+  const thisMonth = bookings.filter(b => !isCancelled(b) && b.date.startsWith(today.slice(0, 7))).length;
 
   const SortIcon = ({ col }: { col: keyof Booking }) => (
     <span className="ml-1 text-[#C4974A] opacity-70">
@@ -177,6 +245,28 @@ function BookingsInner() {
         {b.payment_method === 'square' ? 'In-person · Square' : b.payment_method}
       </span>
     ) : null;
+
+  const StatusTag = ({ b }: { b: Booking }) =>
+    isCancelled(b) ? (
+      <span className="inline-block text-[9px] tracking-wide uppercase bg-red-50 text-red-700 px-1.5 py-0.5">Cancelled</span>
+    ) : null;
+
+  const RowActions = ({ b }: { b: Booking }) => (
+    <div className="flex items-center gap-2">
+      <button onClick={() => openEdit(b)} className="inline-flex items-center gap-1 h-8 px-2.5 border border-[#E5DCCF] text-xs text-[#5A5550] hover:border-[#C4974A] hover:text-[#A87C30]">
+        <Pencil className="w-3 h-3" /> Edit
+      </button>
+      {isCancelled(b) ? (
+        <button onClick={() => setBookingStatus(b, 'confirmed')} className="inline-flex items-center gap-1 h-8 px-2.5 border border-[#E5DCCF] text-xs text-[#5A5550] hover:border-[#C4974A] hover:text-[#A87C30]">
+          <RotateCcw className="w-3 h-3" /> Restore
+        </button>
+      ) : (
+        <button onClick={() => setBookingStatus(b, 'cancelled')} className="inline-flex items-center gap-1 h-8 px-2.5 border border-[#E5DCCF] text-xs text-[#5A5550] hover:border-red-300 hover:text-red-700">
+          <Ban className="w-3 h-3" /> Cancel
+        </button>
+      )}
+    </div>
+  );
 
   // ── Checking for existing session ───────────────────────────────
   if (checkingSession) {
@@ -196,7 +286,7 @@ function BookingsInner() {
           title="Bookings"
           actions={
             <>
-              <button onClick={() => { setForm(emptyForm); setSaveError(''); setShowAddModal(true); }} className={adminBtn.primary}>
+              <button onClick={() => { setForm(emptyForm); setSaveError(''); setConflict(false); setEditing(null); setShowAddModal(true); }} className={adminBtn.primary}>
                 <Plus className="w-3.5 h-3.5" /> Add booking
               </button>
               <a href="/api/calendar.ics" target="_blank" className={adminBtn.secondary}>
@@ -212,7 +302,7 @@ function BookingsInner() {
         {/* Stats row */}
         <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-6">
           {[
-            { label: view === 'upcoming' ? 'Upcoming' : view === 'past' ? 'Past' : 'Bookings', value: String(filtered.length) },
+            { label: view === 'upcoming' ? 'Upcoming' : view === 'past' ? 'Past' : view === 'cancelled' ? 'Cancelled' : 'Bookings', value: String(filtered.length) },
             { label: 'Revenue', value: money(totalRevenue) },
             { label: 'This month', value: String(thisMonth) },
           ].map(({ label, value }) => (
@@ -226,7 +316,7 @@ function BookingsInner() {
         {/* Filters */}
         <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-4">
           <Segmented label="Show bookings" value={view} onChange={changeView}
-            options={[{ value: 'upcoming', label: 'Upcoming' }, { value: 'past', label: 'Past' }, { value: 'all', label: 'All' }]} />
+            options={[{ value: 'upcoming', label: 'Upcoming' }, { value: 'past', label: 'Past' }, { value: 'cancelled', label: 'Cancelled' }, { value: 'all', label: 'All' }]} />
           <div className="relative flex-1 sm:max-w-sm">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8C8680]" aria-hidden />
             <input
@@ -239,6 +329,10 @@ function BookingsInner() {
             />
           </div>
         </div>
+
+        {actionError && (
+          <div className="mb-4 p-3 border border-red-200 bg-red-50"><p className="text-red-600 text-sm">{actionError}</p></div>
+        )}
 
         {/* Error */}
         {error && (
@@ -263,7 +357,7 @@ function BookingsInner() {
             {/* Mobile cards */}
             <ul className="sm:hidden bg-white border border-[#E5DCCF] divide-y divide-[#F0EBE0]">
               {filtered.map((b) => (
-                <li key={b.id} className="px-4 py-3.5">
+                <li key={b.id} className={`px-4 py-3.5 ${isCancelled(b) ? 'opacity-60' : ''}`}>
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
                       <p className={`text-[11px] ${b.date === today ? 'text-[#A87C30] font-medium' : 'text-[#8C8680]'}`}>
@@ -286,7 +380,9 @@ function BookingsInner() {
                       <a href={`mailto:${b.email}`} className="inline-flex items-center gap-1 text-xs text-[#A87C30] min-w-0 truncate"><Mail className="w-3 h-3 shrink-0" />{b.email}</a>
                     )}
                     <PayTag b={b} />
+                    <StatusTag b={b} />
                   </div>
+                  <div className="mt-3"><RowActions b={b} /></div>
                 </li>
               ))}
             </ul>
@@ -310,11 +406,12 @@ function BookingsInner() {
                       </th>
                     ))}
                     <th className="text-left px-4 lg:px-5 py-3.5 text-[10px] tracking-[0.2em] uppercase font-normal text-[#8C8680]">Notes</th>
+                    <th className="px-4 lg:px-5 py-3.5"><span className="sr-only">Actions</span></th>
                   </tr>
                 </thead>
                 <tbody>
                   {filtered.map((b) => (
-                    <tr key={b.id} className="border-b border-[#F0EBE0] last:border-0 hover:bg-[#FEF9F2] transition-colors align-top">
+                    <tr key={b.id} className={`border-b border-[#F0EBE0] last:border-0 hover:bg-[#FEF9F2] transition-colors align-top ${isCancelled(b) ? 'opacity-60' : ''}`}>
                       <td className="px-4 lg:px-5 py-4 text-[#1C1C1A] whitespace-nowrap">
                         {fmtDate(b.date)}
                         <span className="block text-xs text-[#8C8680]">
@@ -331,11 +428,13 @@ function BookingsInner() {
                         {b.price != null ? money(b.price, true) : '—'}
                         {b.discount_code && <span className="block text-[#8C8680] text-[10px] mt-0.5">{b.discount_code}</span>}
                         <span className="block mt-1"><PayTag b={b} /></span>
+                        <span className="block mt-1"><StatusTag b={b} /></span>
                       </td>
                       <td className="px-4 lg:px-5 py-4 text-[#5A5550] whitespace-nowrap">
                         {b.phone ? <a href={`tel:${b.phone}`} className="hover:text-[#A87C30] transition-colors">{b.phone}</a> : '—'}
                       </td>
                       <td className="px-4 lg:px-5 py-4 text-[#8C8680] text-xs max-w-[220px]">{b.notes ?? '—'}</td>
+                      <td className="px-4 lg:px-5 py-4 whitespace-nowrap"><RowActions b={b} /></td>
                     </tr>
                   ))}
                 </tbody>
@@ -360,8 +459,8 @@ function BookingsInner() {
       </AdminPage>
 
       {/* Add Booking — bottom sheet on phones, dialog on larger screens */}
-      {showAddModal && (
-        <div className="fixed inset-0 bg-black/40 flex items-end sm:items-center justify-center sm:px-5 z-50" onClick={() => setShowAddModal(false)}>
+      {showModal && (
+        <div className="fixed inset-0 bg-black/40 flex items-end sm:items-center justify-center sm:px-5 z-50" onClick={closeModal}>
           <div
             role="dialog"
             aria-modal="true"
@@ -370,13 +469,17 @@ function BookingsInner() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between mb-2">
-              <h2 id="add-booking-title" className="font-serif text-xl sm:text-2xl text-[#1C1C1A]">Add in-person booking</h2>
-              <button onClick={() => setShowAddModal(false)} aria-label="Close" className="w-9 h-9 -mr-2 flex items-center justify-center text-[#8C8680] hover:text-[#1C1C1A]">
+              <h2 id="add-booking-title" className="font-serif text-xl sm:text-2xl text-[#1C1C1A]">{editing ? 'Edit booking' : 'Add in-person booking'}</h2>
+              <button onClick={closeModal} aria-label="Close" className="w-9 h-9 -mr-2 flex items-center justify-center text-[#8C8680] hover:text-[#1C1C1A]">
                 <X className="w-4 h-4" />
               </button>
             </div>
             <p className="text-xs text-[#8C8680] mb-5 leading-relaxed">
-              Log a booking already paid in person (Square reader, cash, etc.). This won&apos;t charge anything — it just blocks the slot and adds it to the calendar feed.
+              {editing
+                ? (isStripeBooking(editing)
+                    ? 'Paid online through Stripe, so price and payment method are locked. Everything else can be changed. Clients are not emailed about edits.'
+                    : 'Changes save immediately. Clients are not emailed about edits.')
+                : 'Log a booking already paid in person (Square reader, cash, etc.). This won\'t charge anything — it just blocks the slot and adds it to the calendar feed.'}
             </p>
             <form onSubmit={handleAddBooking} className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -404,12 +507,13 @@ function BookingsInner() {
                   <label className={labelCls} htmlFor="ab-time">Time</label>
                   <select id="ab-time" required value={form.time} onChange={e => setForm(f => ({ ...f, time: e.target.value }))} className={inputCls}>
                     <option value="" disabled>Choose a time</option>
+                    {form.time && !TIME_SLOTS.includes(form.time) && <option value={form.time}>{form.time}</option>}
                     {TIME_SLOTS.map(t => <option key={t} value={t}>{t}</option>)}
                   </select>
                 </div>
                 <div>
                   <label className={labelCls} htmlFor="ab-price">Price ($)</label>
-                  <input id="ab-price" type="number" inputMode="decimal" min="0" step="0.01" value={form.price} onChange={e => setForm(f => ({ ...f, price: e.target.value }))} className={inputCls} />
+                  <input id="ab-price" type="number" inputMode="decimal" min="0" step="0.01" value={form.price} disabled={!!editing && isStripeBooking(editing)} onChange={e => setForm(f => ({ ...f, price: e.target.value }))} className={`${inputCls} disabled:bg-[#F5F0E8] disabled:text-[#8C8680]`} />
                 </div>
                 <div>
                   <label className={labelCls} htmlFor="ab-duration">Duration (min)</label>
@@ -421,7 +525,7 @@ function BookingsInner() {
                 </div>
                 <div>
                   <label className={labelCls} htmlFor="ab-pay">Paid with</label>
-                  <select id="ab-pay" value={form.paymentMethod} onChange={e => setForm(f => ({ ...f, paymentMethod: e.target.value }))} className={inputCls}>
+                  <select id="ab-pay" value={form.paymentMethod} disabled={!!editing && isStripeBooking(editing)} onChange={e => setForm(f => ({ ...f, paymentMethod: e.target.value }))} className={`${inputCls} disabled:bg-[#F5F0E8] disabled:text-[#8C8680]`}>
                     <option value="square">Square (in-person)</option>
                     <option value="cash">Cash</option>
                     <option value="other">Other</option>
@@ -434,8 +538,13 @@ function BookingsInner() {
                 </div>
               </div>
               {saveError && <p className="text-red-600 text-xs">{saveError}</p>}
+              {conflict && (
+                <button type="button" disabled={saving} onClick={(e) => handleAddBooking(e as unknown as React.FormEvent, true)} className={`${adminBtn.secondary} w-full h-11`}>
+                  Save anyway (double-book)
+                </button>
+              )}
               <button type="submit" disabled={saving} className={`${adminBtn.primary} w-full h-12`}>
-                {saving ? 'Saving…' : 'Save booking'}
+                {saving ? 'Saving…' : editing ? 'Save changes' : 'Save booking'}
               </button>
             </form>
           </div>

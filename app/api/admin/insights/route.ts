@@ -8,6 +8,7 @@ import { cookies } from 'next/headers';
 import { verifyAdminCookie, ADMIN_COOKIE_NAME } from '@/lib/admin-auth';
 import { parseTimeToMinutes } from '@/lib/availability-shared';
 import { getTurso, ensureInsightsTables, ensureCoreTables } from '@/lib/insights-db';
+import { ensureBookingStatus } from '@/lib/booking-status';
 import {
   products, PRODUCT_GROUP, SERVICE_BY_NAME, SERVICE_COUNT, PRODUCT_COUNT,
   matchProduct, productBySlugPath, norm,
@@ -53,11 +54,12 @@ export async function GET(req: Request) {
   try {
     const db = getTurso();
     await Promise.all([ensureInsightsTables(db), ensureCoreTables(db)]);
+    await ensureBookingStatus(db);
 
     const [ordersRes, bookingsRes, eventsRes, prevVisRes, firstEvRes, upcomingRes] = await Promise.all([
       db.execute({ sql: 'SELECT items, total_cents, created_at FROM orders WHERE created_at >= ?', args: [sqlFloor] }),
       db.execute({
-        sql: 'SELECT service, price, created_at, stripe_session_id, paid FROM bookings WHERE created_at >= ?',
+        sql: 'SELECT service, price, created_at, stripe_session_id, paid FROM bookings WHERE created_at >= ? AND (status IS NULL OR status != \'cancelled\')',
         args: [sqlFloor],
       }),
       db.execute({
@@ -71,7 +73,7 @@ export async function GET(req: Request) {
       db.execute('SELECT MIN(ts) AS first FROM site_events'),
       db.execute({
         sql: `SELECT id, name, service, date, time, duration, price FROM bookings
-              WHERE date >= ? AND (paid IS NULL OR paid != 0) ORDER BY date LIMIT 40`,
+              WHERE date >= ? AND (paid IS NULL OR paid != 0) AND (status IS NULL OR status != 'cancelled') ORDER BY date LIMIT 40`,
         args: [today],
       }),
     ]);

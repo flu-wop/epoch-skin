@@ -65,7 +65,8 @@ export async function GET() {
     `);
 
     const result = await db.execute('SELECT * FROM bookings ORDER BY date ASC, time ASC');
-    const bookings = result.rows;
+    // Cancelled bookings stay in the table but drop off the calendar feed.
+    const bookings = result.rows.filter((b) => String(b.status ?? '') !== 'cancelled');
 
     const now = new Date().toISOString().replace(/[\-:.]/g, '').slice(0, 15) + 'Z';
 

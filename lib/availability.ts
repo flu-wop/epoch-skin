@@ -12,6 +12,7 @@ import {
   isSlotBlocked,
   parseTimeToMinutes,
 } from '@/lib/availability-shared';
+import { ACTIVE_BOOKING_SQL, ensureBookingStatus } from '@/lib/booking-status';
 
 function getTurso() {
   return createClient({
@@ -29,12 +30,15 @@ export function isValidDateString(date: string): boolean {
 }
 
 // Existing appointments for one day, as time + duration only (no client info).
-export async function getBusyBlocks(date: string): Promise<BusyBlock[]> {
+// Cancelled bookings don't block. `excludeId` skips one booking so an edit
+// isn't flagged as conflicting with itself.
+export async function getBusyBlocks(date: string, excludeId?: number): Promise<BusyBlock[]> {
   const db = getTurso();
   try {
+    await ensureBookingStatus(db);
     const result = await db.execute({
-      sql: 'SELECT time, duration FROM bookings WHERE date = ?',
-      args: [date],
+      sql: `SELECT time, duration FROM bookings WHERE date = ? AND ${ACTIVE_BOOKING_SQL}${excludeId != null ? ' AND id != ?' : ''}`,
+      args: excludeId != null ? [date, excludeId] : [date],
     });
     const blocks: BusyBlock[] = [];
     for (const row of result.rows) {
@@ -61,9 +65,9 @@ export type SlotCheck =
 
 // Authoritative check used by checkout: is this exact time bookable right now
 // for a service of this length?
-export async function checkSlotAvailable(date: string, time: string, duration: number): Promise<SlotCheck> {
+export async function checkSlotAvailable(date: string, time: string, duration: number, excludeId?: number): Promise<SlotCheck> {
   if (!TIME_SLOTS.includes(time)) return { ok: false, reason: 'INVALID_TIME' };
-  const busy = await getBusyBlocks(date);
+  const busy = await getBusyBlocks(date, excludeId);
   if (isSlotBlocked(time, duration, busy)) return { ok: false, reason: 'SLOT_TAKEN' };
   return { ok: true };
 }
