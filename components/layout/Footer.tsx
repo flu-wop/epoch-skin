@@ -168,7 +168,7 @@ export function Footer() {
         <p className="text-center text-[10px] tracking-[0.15em] uppercase font-sans text-[#526050] py-5">
           Designed by{" "}
           <a
-            href="https://in-flu-ential.vercel.app"
+            href="https://influential.live"
             target="_blank"
             rel="noopener noreferrer"
             className="text-[#C4974A] hover:text-[#D4AA6A] transition-colors duration-200"
